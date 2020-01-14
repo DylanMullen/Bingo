@@ -1,24 +1,14 @@
 package me.dylanmullen.bingo.core;
 
-import java.util.UUID;
-
-import me.dylanmullen.bingo.net.Client;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class Main
 {
 
-	
-	public static void main(String[] args)
+	public static void main(String args[]) throws Exception
 	{
-		Client c = new Client("localhost", 4585);
-		c.sendPacket("001/id/" + UUID.randomUUID() + "/nl/" + System.currentTimeMillis());
-		
-		byte[] recieve = new byte[1024];
-		while(true)
-		{
-			String s = c.recieve();
-			System.out.println(s);
-		}
 	}
 
 }
