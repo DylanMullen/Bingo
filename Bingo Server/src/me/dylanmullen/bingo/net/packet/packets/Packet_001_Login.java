@@ -1,55 +1,37 @@
 package me.dylanmullen.bingo.net.packet.packets;
 
 import java.net.InetAddress;
-import java.util.Date;
 import java.util.UUID;
 
-import me.dylanmullen.bingo.core.BingoServer;
-import me.dylanmullen.bingo.game.user.BUser;
 import me.dylanmullen.bingo.game.user.UserManager;
 import me.dylanmullen.bingo.net.Client;
 import me.dylanmullen.bingo.net.packet.Packet;
+import me.dylanmullen.bingo.net.packet.PacketHandler;
+import me.dylanmullen.bingo.net.packet.PacketType;
 
 public class Packet_001_Login extends Packet
 {
 
-	private InetAddress address;
-	private int port;
-
-	public Packet_001_Login(InetAddress address, int port, String data)
+	// /id/001/m/<uuid>/t/<time>
+	public Packet_001_Login(PacketHandler handler, InetAddress address, int port, String data)
 	{
-		super(data);
-		this.address = address;
-		this.port = port;
+		super(handler, address, port, PacketType.LOGIN.getID(), data);
 	}
 
-	/*
-	 * Packet: 001 UUID Time Sent
-	 */
 	@Override
 	public void handle()
 	{
-		String[] data = getData().split("/nl/");
-		UUID uuid = UUID.fromString(data[0]);
-		long time = Long.parseLong(data[1]);
+		String mes = getAbsoluteData()[0];
+		String time = getAbsoluteData()[1];
 
-		printTime(time);
+		UUID uuid = UUID.fromString(mes);
+		long millis = Long.parseLong(time);
 
-		Client c = new Client(address, port);
-		System.out.println(c.getAddress().getHostAddress());
-		System.out.println(c.getPort());
-		BUser user = new BUser(c, uuid);
-
-		UserManager.getInstance().add(user);
-		setData("001\nConnected\n" + System.currentTimeMillis());
-		BingoServer.getInstance().getServer().send(c, this);
-	}
-
-	private void printTime(long time)
-	{
-		Date d = new Date(time);
-		System.out.println("Client sent Packet: " + getFormatter().format(d));
-		System.out.println("Time taken: " + (System.currentTimeMillis() - time) + "ms");
+		Client c = new Client(getAddress(), getPort());
+		UserManager.getInstance().create(c, uuid);
+		System.out.println("Connected @ " + System.currentTimeMillis());
+		System.out.println("Time Taken: " + (System.currentTimeMillis() - millis));
+		System.out.println("Users: " + UserManager.getInstance().users.size());
 	}
 
 }

@@ -1,5 +1,6 @@
 package me.dylanmullen.bingo.core;
 
+import me.dylanmullen.bingo.controllers.GameController;
 import me.dylanmullen.bingo.controllers.MySQLController;
 import me.dylanmullen.bingo.game.user.UserManager;
 import me.dylanmullen.bingo.net.Server;
@@ -14,6 +15,7 @@ public class BingoServer
 
 	private UserManager userManager;
 
+	private GameController game;
 	private MySQLController mysql;
 
 	public BingoServer(int port)
@@ -33,7 +35,9 @@ public class BingoServer
 	{
 		this.server = new Server(port);
 		this.userManager = new UserManager();
-		this.mysql = new MySQLController("bingo", "127.0.0.1", 3306);
+		this.game=new GameController();
+		
+//		this.mysql = new MySQLController("bingo", "127.0.0.1", 3306);
 	}
 
 	private void start()

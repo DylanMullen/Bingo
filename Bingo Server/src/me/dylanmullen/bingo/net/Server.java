@@ -36,12 +36,12 @@ public class Server
 			return;
 		}
 
-		byte[] recieve = new byte[1024];
 
 		thread = new Thread(() ->
 		{
 			while (listening)
 			{
+				byte[] recieve = new byte[1024];
 				DatagramPacket packet = new DatagramPacket(recieve, recieve.length);
 				try
 				{
@@ -50,7 +50,7 @@ public class Server
 				{
 					e.printStackTrace();
 				}
-				System.out.println("Address:" + packet.getAddress() + ":" + packet.getPort());
+				String s = new String(packet.getData()).trim();
 				handler.handle(packet);
 			}
 		});
@@ -62,10 +62,6 @@ public class Server
 		handler.sendPacket(c, packet);
 	}
 
-	public void send(InetAddress address, int port, Packet packet)
-	{
-
-	}
 
 	public synchronized void start()
 	{

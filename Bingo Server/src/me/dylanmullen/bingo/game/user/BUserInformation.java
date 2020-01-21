@@ -16,7 +16,7 @@ public class BUserInformation
 	public BUserInformation(UUID uuid)
 	{
 		this.uuid = uuid;
-		collectInfo();
+//		collectInfo();
 	}
 	
 	private void collectInfo()

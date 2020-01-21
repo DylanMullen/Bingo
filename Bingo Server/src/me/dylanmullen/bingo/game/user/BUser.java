@@ -2,6 +2,7 @@ package me.dylanmullen.bingo.game.user;
 
 import java.util.UUID;
 
+import me.dylanmullen.bingo.game.BingoCard;
 import me.dylanmullen.bingo.net.Client;
 
 public class BUser
@@ -11,6 +12,7 @@ public class BUser
 	private UUID uuid;
 
 	private BUserInformation info;
+	private BingoCard card;
 
 	public BUser(Client c, UUID uuid)
 	{
@@ -22,6 +24,11 @@ public class BUser
 	private void init()
 	{
 		this.info = new BUserInformation(uuid);
+	}
+	
+	public void setCard(BingoCard card)
+	{
+		this.card = card;
 	}
 
 	public Client getClient()
@@ -38,4 +45,10 @@ public class BUser
 	{
 		return info;
 	}
+
+	public BingoCard getCard()
+	{
+		return card;
+	}
+	
 }

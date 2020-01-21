@@ -27,8 +27,9 @@ public class Client
 		}
 	}
 
-	public void sendPacket(String mes)
+	public synchronized void sendPacket(String mes)
 	{
+		System.out.println(mes);
 		DatagramPacket packet = new DatagramPacket(mes.getBytes(), mes.getBytes().length, ip, port);
 		try
 		{
@@ -48,7 +49,6 @@ public class Client
 			socket.receive(packet);
 		} catch (IOException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return decodeData(packet.getData());
