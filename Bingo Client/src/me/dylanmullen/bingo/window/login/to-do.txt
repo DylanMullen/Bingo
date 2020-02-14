@@ -1,0 +1,18 @@
+To complete before Login Window is completed:
+	1. Create home tab
+	2. Create register tab
+	3. Give functionality to:
+	- login
+      	- Send data collected to the server
+      	- Get a response and launch the main program
+   	- register
+      	- Send the register data to the server
+      	- Get a response and make them login
+      
+Probably should do these:
+	1. Make an actual UIButton class, instead of using JLabels directly
+		- Benefits:
+			- Much cleaner code
+			- More control over custom features, eg: bg-colour
+	2. Look into how to make gradient backgrounds
+	3. Implement gradient backgrounds...
