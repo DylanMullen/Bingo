@@ -7,6 +7,8 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import me.dylanmullen.bingo.net.packet.Packet;
+
 public class Client
 {
 
@@ -27,10 +29,9 @@ public class Client
 		}
 	}
 
-	public synchronized void sendPacket(String mes)
+	public synchronized void sendPacket(Packet p)
 	{
-		System.out.println(mes);
-		DatagramPacket packet = new DatagramPacket(mes.getBytes(), mes.getBytes().length, ip, port);
+		DatagramPacket packet = new DatagramPacket(p.getDataByte(), p.getDataByte().length, ip, port);
 		try
 		{
 			socket.send(packet);
@@ -53,10 +54,10 @@ public class Client
 		}
 		return decodeData(packet.getData());
 	}
-	
+
 	private String decodeData(byte[] data)
 	{
 		return new String(data);
 	}
-	
+
 }

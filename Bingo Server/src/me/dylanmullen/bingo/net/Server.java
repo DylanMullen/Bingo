@@ -51,6 +51,7 @@ public class Server
 					e.printStackTrace();
 				}
 				String s = new String(packet.getData()).trim();
+				System.out.println(s);
 				handler.handle(packet);
 			}
 		});

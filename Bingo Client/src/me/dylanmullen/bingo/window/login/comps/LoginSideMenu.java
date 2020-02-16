@@ -34,8 +34,8 @@ public class LoginSideMenu extends JPanel
 		JLabel lblLogin = new JLabel("Login");
 		JLabel lblRegister = new JLabel("Register");
 		lblLogin.setBounds(0, 140, 220, 50);
-		lblRegister.setBounds(0, 235, 220, 50);
-		lblHome.setBounds(0, 45, 220, 50);
+//		lblRegister.setBounds(0, 235, 220, 50);
+//		lblHome.setBounds(0, 45, 220, 50);
 
 		buttons.add(lblHome);
 		buttons.add(lblLogin);

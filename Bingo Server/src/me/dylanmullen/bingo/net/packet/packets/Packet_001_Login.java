@@ -12,7 +12,7 @@ import me.dylanmullen.bingo.net.packet.PacketType;
 public class Packet_001_Login extends Packet
 {
 
-	// /id/001/m/<uuid>/t/<time>
+	// /id/001/m/username/nl/password/t/<time>
 	public Packet_001_Login(PacketHandler handler, InetAddress address, int port, String data)
 	{
 		super(handler, address, port, PacketType.LOGIN.getID(), data);
@@ -22,16 +22,14 @@ public class Packet_001_Login extends Packet
 	public void handle()
 	{
 		String mes = getAbsoluteData()[0];
-		String time = getAbsoluteData()[1];
-
-		UUID uuid = UUID.fromString(mes);
-		long millis = Long.parseLong(time);
-
-		Client c = new Client(getAddress(), getPort());
-		UserManager.getInstance().create(c, uuid);
-		System.out.println("Connected @ " + System.currentTimeMillis());
-		System.out.println("Time Taken: " + (System.currentTimeMillis() - millis));
-		System.out.println("Users: " + UserManager.getInstance().users.size());
+		
+		String username = mes.split("/nl/")[0];
+		String password = mes.split("/nl/")[1];
+		
+		UUID uuid = UUID.randomUUID();
+		UserManager.getInstance().create(new Client(getAddress(), getPort()), uuid);
+		
+		System.out.println(username + " "+password);
 	}
 
 }

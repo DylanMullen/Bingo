@@ -33,7 +33,7 @@ public class LoginContent extends JPanel
 
 	private void generateCards(LoginWindow lw)
 	{
-		cards.add(new HomeCard(lw, "home"));
+//		cards.add(new HomeCard(lw, "home"));
 		cards.add(new LoginCard(lw, "login"));
 	}
 

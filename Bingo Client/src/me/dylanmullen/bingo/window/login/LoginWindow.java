@@ -1,14 +1,12 @@
 package me.dylanmullen.bingo.window.login;
 
-import java.awt.CardLayout;
 import java.awt.Color;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import me.dylanmullen.bingo.net.Client;
 import me.dylanmullen.bingo.window.login.comps.LoginContent;
 import me.dylanmullen.bingo.window.login.comps.LoginSideMenu;
 import me.dylanmullen.bingo.window.login.comps.LoginTopMenu;
@@ -26,6 +24,8 @@ public class LoginWindow extends JFrame
 	private LoginSideMenu lsm;
 	private LoginContent lc;
 	
+	private Client client;
+	
 	/**
 	 * Create the frame.
 	 */
@@ -38,6 +38,7 @@ public class LoginWindow extends JFrame
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		generatePanels();
+		createClient();
 	}
 
 	private void generatePanels()
@@ -58,6 +59,16 @@ public class LoginWindow extends JFrame
 		contentPane.add(lsm);
 		lsm.setBackground(background_darkened);
 
+	}
+	
+	public void createClient()
+	{
+		this.client = new Client("localhost", 4585);
+	}
+	
+	public Client getClient()
+	{
+		return client;
 	}
 	
 	public LoginContent getLoginContent()

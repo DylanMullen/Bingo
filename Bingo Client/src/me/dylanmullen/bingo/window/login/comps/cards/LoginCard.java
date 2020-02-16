@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Insets;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -27,6 +28,7 @@ public class LoginCard extends Card
 	{
 		super(lw, name);
 		generateContent();
+		styleInput();
 		generateLabels();
 		styleLabels();
 	}
@@ -44,15 +46,17 @@ public class LoginCard extends Card
 		message.add(lblNewLabel);
 
 		userName = new JTextField();
+		userName.setName("username");
 		userName.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		userName.setBounds(185, 89, 333, 51);
 		add(userName);
 
 		password = new JPasswordField();
+		password.setName("password");
 		password.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		password.setBounds(185, 158, 333, 51);
 		add(password);
-
+		
 	}
 
 	public void generateLabels()
@@ -90,6 +94,12 @@ public class LoginCard extends Card
 		}
 	}
 
+	private void styleInput()
+	{
+		userName.setMargin(new Insets(10,15,10,15));
+		password.setMargin(new Insets(10,15,10,15));
+	}
+	
 	private void styleButton(JLabel label)
 	{
 		label.setBackground(button);

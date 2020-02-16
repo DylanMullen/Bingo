@@ -27,6 +27,7 @@ public abstract class Card extends JPanel
 	{
 		this.window=lw;
 		this.name=name;
+		setName("l_c_"+name);
 		setLayout(null);
 	}
 	

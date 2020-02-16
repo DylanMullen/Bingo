@@ -1,8 +1,5 @@
 package me.dylanmullen.bingo.core;
 
-import javax.swing.JTextField;
-
-import me.dylanmullen.bingo.window.Window;
 import me.dylanmullen.bingo.window.login.LoginWindow;
 
 public class Main
@@ -16,6 +13,7 @@ public class Main
 	public Main()
 	{
 		LoginWindow lw = new LoginWindow();
+		lw.setLocationRelativeTo(null);
 		lw.setVisible(true);
 	}
 
