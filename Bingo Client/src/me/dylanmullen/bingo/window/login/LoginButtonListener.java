@@ -11,7 +11,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import me.dylanmullen.bingo.net.PacketHandler;
-import me.dylanmullen.bingo.net.packet.Packet;
 
 public class LoginButtonListener implements MouseListener
 {
@@ -38,29 +37,9 @@ public class LoginButtonListener implements MouseListener
 
 		if (label.getParent().getName().startsWith("l_c_"))
 		{
-			Container container = label.getParent();
-
-			String format = "<username>/nl/<password>";
-			for(Component c : container.getComponents())
-			{
-				if(c.getName()==null)
-					continue;
-				if(c.getName().equalsIgnoreCase("username"))
-				{
-					JTextField tx = ((JTextField)c);
-					format = format.replace("<username>", tx.getText());
-				}
-				if(c.getName().equalsIgnoreCase("password"))
-				{
-					JPasswordField tx = ((JPasswordField)c);
-					format = format.replace("<password>", new String(tx.getPassword()));
-				}
-			}
-			Packet p = PacketHandler.createPacket(001, format);
-			PacketHandler.sendPacket(window.getClient(), p);
+			handleCardButtons(label.getParent());
 			return;
 		}
-
 		if (label.getParent().getName().equalsIgnoreCase("l_side"))
 		{
 			String text = label.getText();
@@ -94,9 +73,27 @@ public class LoginButtonListener implements MouseListener
 	{
 	}
 
-	private void handleCardButtons(JLabel label)
+	private void handleCardButtons(Container c)
 	{
-		String parentName = label.getName().substring(1, 4);
+		String card = c.getName();
+		System.out.println("test");
+		if (card.contains("login"))
+		{
+			String format = "?username/nl/?password";
+			for (Component comp : c.getComponents())
+			{
+				if (comp instanceof JTextField)
+				{
+					JTextField tx = (JTextField) comp;
+					format = format.replace("?username", tx.getText());
+				}
+				if (comp instanceof JPasswordField)
+				{
+					JPasswordField tx = (JPasswordField) comp;
+					format = format.replace("?password", new String(tx.getPassword()));
+				}
+			}
+		}
 	}
 
 }

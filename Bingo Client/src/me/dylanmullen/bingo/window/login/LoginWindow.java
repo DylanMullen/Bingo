@@ -75,4 +75,5 @@ public class LoginWindow extends JFrame
 	{
 		return lc;
 	}
+	
 }

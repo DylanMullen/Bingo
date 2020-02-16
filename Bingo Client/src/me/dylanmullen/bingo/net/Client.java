@@ -1,13 +1,9 @@
 package me.dylanmullen.bingo.net;
 
-import java.io.IOException;
-import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-
-import me.dylanmullen.bingo.net.packet.Packet;
 
 public class Client
 {
@@ -29,35 +25,19 @@ public class Client
 		}
 	}
 
-	public synchronized void sendPacket(Packet p)
+	public DatagramSocket getSocket()
 	{
-		DatagramPacket packet = new DatagramPacket(p.getDataByte(), p.getDataByte().length, ip, port);
-		try
-		{
-			socket.send(packet);
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
+		return socket;
 	}
-
-	public String recieve()
+	
+	public InetAddress getIP()
 	{
-		byte[] data = new byte[1024];
-		DatagramPacket packet = new DatagramPacket(data, data.length);
-		try
-		{
-			socket.receive(packet);
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		return decodeData(packet.getData());
+		return ip;
 	}
-
-	private String decodeData(byte[] data)
+	
+	public int getPort()
 	{
-		return new String(data);
+		return port;
 	}
 
 }

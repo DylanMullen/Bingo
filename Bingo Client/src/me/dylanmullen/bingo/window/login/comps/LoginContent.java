@@ -57,5 +57,18 @@ public class LoginContent extends JPanel
 	{
 		return cl;
 	}
+	
+	public Card getCard(String name)
+	{
+		for(int i = 0; i < cards.size();i++)
+		{
+			Card c = cards.get(i);
+			if(c.getCardName().equalsIgnoreCase(name))
+			{
+				return c;
+			}
+		}
+		return null;
+	}
 
 }

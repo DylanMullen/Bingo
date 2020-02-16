@@ -7,6 +7,7 @@ import java.net.InetAddress;
 
 import me.dylanmullen.bingo.net.packet.Packet;
 import me.dylanmullen.bingo.net.packet.PacketHandler;
+import me.dylanmullen.bingo.net.packet.packets.Packet_001_Login;
 
 public class Server
 {
@@ -52,7 +53,8 @@ public class Server
 				}
 				String s = new String(packet.getData()).trim();
 				System.out.println(s);
-				handler.handle(packet);
+				handler.sendPacket(new Packet_001_Login(handler, packet.getAddress(), packet.getPort(), s));
+//				handler.handle(packet);
 			}
 		});
 		this.listening = true;

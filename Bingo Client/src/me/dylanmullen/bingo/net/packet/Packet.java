@@ -1,7 +1,11 @@
 package me.dylanmullen.bingo.net.packet;
 
+import java.net.DatagramPacket;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.UUID;
+
+import me.dylanmullen.bingo.net.Client;
 
 public class Packet
 {
@@ -9,8 +13,10 @@ public class Packet
 	private int id;
 	private String data;
 	private DateFormat formatter;
+	
+	private final String format = "?id;/m/?message/m/;?pu;?time";
 
-	// /id/<id>/m/(message/nl/message...)/t/<time>
+	// <id>;/m<message>m/;<packetUUID>;<time>
 	public Packet(int id, String data)
 	{
 		this.id = id;
@@ -21,8 +27,10 @@ public class Packet
 
 	protected String generatePacketString(String message)
 	{
-		message = message.replace("\n", "/nl/");
-		return "/id/" + getID() + "/m/" + message + "/t/" + System.currentTimeMillis();
+		String temp = format;
+		temp = temp.replace("?id", getID());
+		temp = temp.replace("?message", message);
+		return temp;
 	}
 
 	private String getID()
@@ -58,5 +66,20 @@ public class Packet
 	public byte[] getDataByte()
 	{
 		return getData().getBytes();
+	}
+	
+	public void setTime()
+	{
+		data = data.replace("?time", System.currentTimeMillis()+"");
+	}
+	
+	public void setPacketUUID(UUID uuid)
+	{
+		data = data.replace("?pu", uuid.toString());
+	}
+
+	public DatagramPacket convert(Client c)
+	{
+		return new DatagramPacket(getDataByte(), getDataByte().length, c.getIP(), c.getPort());
 	}
 }

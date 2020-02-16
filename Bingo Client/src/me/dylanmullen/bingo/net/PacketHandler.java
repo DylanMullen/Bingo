@@ -1,5 +1,6 @@
 package me.dylanmullen.bingo.net;
 
+import me.dylanmullen.bingo.net.handlers.ClientHandler;
 import me.dylanmullen.bingo.net.packet.Packet;
 import me.dylanmullen.bingo.net.packet.PacketType;
 
@@ -13,12 +14,12 @@ public class PacketHandler
 			return null;
 		
 		Packet p = new Packet(type.getID(),data);
-		System.out.println(type.getID());
 		return p;
 	}
 	
-	public static void sendPacket(Client c, Packet packet)
+	public static void sendPacket(Packet packet)
 	{
-		c.sendPacket(packet);
+		PacketTicket ticket = new PacketTicket(packet, null);
+		ClientHandler.getInstance().submitTicket(ticket);
 	}
 }
