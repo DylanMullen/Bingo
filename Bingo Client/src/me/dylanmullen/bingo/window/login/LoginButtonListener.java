@@ -11,6 +11,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import me.dylanmullen.bingo.net.PacketHandler;
+import me.dylanmullen.bingo.net.handlers.ClientHandler;
 
 public class LoginButtonListener implements MouseListener
 {
@@ -93,6 +94,7 @@ public class LoginButtonListener implements MouseListener
 					format = format.replace("?password", new String(tx.getPassword()));
 				}
 			}
+			PacketHandler.sendPacket(PacketHandler.createPacket(001, format));
 		}
 	}
 

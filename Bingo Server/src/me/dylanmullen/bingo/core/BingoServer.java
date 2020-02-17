@@ -1,8 +1,8 @@
 package me.dylanmullen.bingo.core;
 
 import me.dylanmullen.bingo.controllers.GameController;
-import me.dylanmullen.bingo.controllers.MySQLController;
 import me.dylanmullen.bingo.game.user.UserManager;
+import me.dylanmullen.bingo.mysql.MySQLController;
 import me.dylanmullen.bingo.net.Server;
 
 public class BingoServer
@@ -44,12 +44,10 @@ public class BingoServer
 	{
 		init();
 		System.out.println("Server Started");
-		server.start();
 	}
 
 	public void stop()
 	{
-		server.stop();
 	}
 
 	public UserManager getUserManager()

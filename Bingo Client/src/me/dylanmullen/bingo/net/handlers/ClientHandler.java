@@ -75,6 +75,9 @@ public class ClientHandler
 
 	public PacketTicket getTicket(UUID uuid)
 	{
+		if(uuid == null)
+			return null;
+		
 		for (int i = 0; i < tickets.size(); i++)
 		{
 			PacketTicket ticket = tickets.get(i);

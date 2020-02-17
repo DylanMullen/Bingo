@@ -1,38 +1,56 @@
 package me.dylanmullen.bingo.net.packet;
 
+import java.net.DatagramPacket;
 import java.net.InetAddress;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.util.UUID;
+
+import me.dylanmullen.bingo.net.Client;
 
 public abstract class Packet
 {
 
 	private int id;
+	private Client client;
 	private String data;
-	private DateFormat formatter;
 
-	private PacketHandler handler;
 	private InetAddress address;
 	private int port;
 
-	// /id/<id>/m/(message/nl/message...)/t/<time>
-	public Packet(PacketHandler handler, InetAddress address, int port, int id, String data)
+	public Packet(int id, Client c, String message, boolean format)
 	{
-		this.handler = handler;
-		this.address = address;
-		this.port = port;
-		this.data = data;
 		this.id = id;
-
-		this.formatter = new SimpleDateFormat("dd/MM/yyyy @ HH:mm:ss.SSS");
+		this.client = c;
+		if(format)
+			setDataFormat(message);
+		else
+			this.data=message;
 	}
-
+	
 	public abstract void handle();
 
-	protected String generatePacketString(String message)
+	protected String getMessage()
 	{
-		message = message.replace("\n", "/nl/");
-		return "/id/" + getID() + "/m/" + message + "/t/" + System.currentTimeMillis();
+		String[] dataSplit = data.split(";");
+		return dataSplit[1].split("/m/|/m/")[1];
+	}
+	
+	protected UUID getUUID()
+	{
+		String[] dataSplit = data.split(";");
+		return UUID.fromString(dataSplit[2]);
+	}
+	
+	public DatagramPacket convert()
+	{
+		return new DatagramPacket(getDataAsByteArr(), getDataAsByteArr().length, client.getAddress(), client.getPort());
+	}
+	
+	public void setDataFormat(String message)
+	{
+		String temp = PacketHandler.PACKET_FORMAT;
+		temp = temp.replace("?id", getID());
+		temp = temp.replace("?message", message);
+		this.data = temp;
 	}
 
 	private String getID()
@@ -50,45 +68,29 @@ public abstract class Packet
 		return s;
 	}
 
-	protected String[] getAbsoluteData()
+	public void setTime()
 	{
-		String s = getData();
-		s = s.replace("/m/", "");
-		return s.split("/t/");
+		data = data.replace("?time", System.currentTimeMillis() + "");
 	}
 
-	protected void sendPacket()
+	public void setPacketUUID(UUID uuid)
 	{
-		handler.sendPacket(this);
+		data = data.replace("?pu", uuid.toString());
 	}
 
-	protected String getData()
+	public String getData()
 	{
 		return data;
 	}
 
-	protected void setData(String data)
+	public byte[] getDataAsByteArr()
 	{
-		this.data = generatePacketString(data);
+		return data.getBytes();
 	}
 
-	protected DateFormat getFormatter()
+	public Client getClient()
 	{
-		return formatter;
+		return client;
 	}
 
-	protected InetAddress getAddress()
-	{
-		return address;
-	}
-
-	protected int getPort()
-	{
-		return port;
-	}
-
-	public byte[] getDataByte()
-	{
-		return getData().getBytes();
-	}
 }

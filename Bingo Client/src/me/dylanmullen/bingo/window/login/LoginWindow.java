@@ -39,6 +39,7 @@ public class LoginWindow extends JFrame
 		setContentPane(contentPane);
 		generatePanels();
 		createClient();
+		setVisible(true);
 	}
 
 	private void generatePanels()

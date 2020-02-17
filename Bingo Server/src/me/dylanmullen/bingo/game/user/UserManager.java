@@ -1,61 +1,40 @@
 package me.dylanmullen.bingo.game.user;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
+import me.dylanmullen.bingo.game.user.callbacks.UserLoginCallback;
+import me.dylanmullen.bingo.mysql.MySQLController;
+import me.dylanmullen.bingo.mysql.SQLFactory;
+import me.dylanmullen.bingo.mysql.sql_util.SQLTicket;
 import me.dylanmullen.bingo.net.Client;
 
 public class UserManager
 {
 
 	private static UserManager instance;
-	public List<BUser> users;
+
+	public UserManager()
+	{
+		if (instance == null)
+			instance = this;
+	}
+
+	public void login(Client client, UUID packetUUID, String username, String password)
+	{
+		UserLoginCallback callback = new UserLoginCallback(client, packetUUID);
+		SQLTicket ticket = SQLFactory.selectData("b_userlogin", "uuid", new String[] { "username", "password" },
+				new String[] { username, password }, callback);
+		SQLFactory.sendTicket(ticket);
+	}
 
 	public static UserManager getInstance()
 	{
 		return instance;
 	}
 
-	public UserManager()
+	public void addUser(UUID uuid)
 	{
-		if (instance == null)
-			instance = this;
 
-		this.users = new ArrayList<BUser>();
-	}
-
-	public void create(Client c, UUID uuid)
-	{
-		add(new BUser(c, uuid));
-	}
-
-	private void add(BUser user)
-	{
-		if (users.contains(user))
-			return;
-		this.users.add(user);
-	}
-
-	public void remove(BUser user)
-	{
-		if (!users.contains(user))
-		{
-			return;
-		}
-		this.users.remove(user);
-	}
-
-	public BUser getUser(UUID uuid)
-	{
-		for (BUser user : users)
-		{
-			if (user.getUuid().toString().equalsIgnoreCase(uuid.toString()))
-			{
-				return user;
-			}
-		}
-		return null;
 	}
 
 }

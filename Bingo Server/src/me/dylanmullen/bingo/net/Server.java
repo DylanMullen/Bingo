@@ -1,94 +1,64 @@
 package me.dylanmullen.bingo.net;
 
-import java.io.IOException;
-import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-
-import me.dylanmullen.bingo.net.packet.Packet;
-import me.dylanmullen.bingo.net.packet.PacketHandler;
-import me.dylanmullen.bingo.net.packet.packets.Packet_001_Login;
+import java.net.SocketException;
+import java.util.ArrayList;
 
 public class Server
 {
 
-	private DatagramSocket socket;
-	private int port;
-
-	private Thread thread;
-	private boolean listening;
-
-	private PacketHandler handler;
+	private DatagramSocket server;
+	
+	private ArrayList<Client> clientsConnected = new ArrayList<>();
 
 	public Server(int port)
 	{
-		this.port = port;
-	}
-
-	private void init()
-	{
 		try
 		{
-			this.socket = new DatagramSocket(port);
-			this.handler = new PacketHandler(socket);
-		} catch (Exception e)
+			this.server = new DatagramSocket(port);
+		} catch (SocketException e)
 		{
-			e.printStackTrace();
-			return;
-		}
-
-
-		thread = new Thread(() ->
-		{
-			while (listening)
-			{
-				byte[] recieve = new byte[1024];
-				DatagramPacket packet = new DatagramPacket(recieve, recieve.length);
-				try
-				{
-					socket.receive(packet);
-				} catch (IOException e)
-				{
-					e.printStackTrace();
-				}
-				String s = new String(packet.getData()).trim();
-				System.out.println(s);
-				handler.sendPacket(new Packet_001_Login(handler, packet.getAddress(), packet.getPort(), s));
-//				handler.handle(packet);
-			}
-		});
-		this.listening = true;
-	}
-
-	public void send(Client c, Packet packet)
-	{
-		handler.sendPacket(c, packet);
-	}
-
-
-	public synchronized void start()
-	{
-		if (listening)
-			return;
-
-		init();
-		thread.start();
-	}
-
-	public synchronized void stop()
-	{
-		if (!listening)
-			return;
-
-		try
-		{
-			listening = false;
-			thread.join();
-		} catch (InterruptedException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("Failed to initialize server: " +e.getMessage());
 		}
 	}
-
+	
+	public void addClient(Client client)
+	{
+		if(clientsConnected.contains(client))
+			return;
+		clientsConnected.add(client);
+	}
+	
+	public void removeClient(Client client)
+	{
+		if(!clientsConnected.contains(client))
+			return;
+		clientsConnected.remove(client);
+	}
+	
+	public Client getClient(InetAddress address, int port)
+	{
+		for(Client c : clientsConnected)
+		{
+			if(c.getAddress().equals(address) && c.getPort()==port)
+				return c;
+		}
+		
+		Client client = new Client(address, port);
+		addClient(client);
+		return client;
+	}
+	
+	public DatagramSocket getServer()
+	{
+		return server;
+	}
+	
+	public ArrayList<Client> getClients()
+	{
+		return clientsConnected;
+	}
+	
+	
 }

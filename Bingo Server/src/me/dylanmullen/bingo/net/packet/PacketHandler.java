@@ -1,95 +1,55 @@
 package me.dylanmullen.bingo.net.packet;
 
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
+import java.util.UUID;
 
 import me.dylanmullen.bingo.net.Client;
+import me.dylanmullen.bingo.net.handlers.ServerHandler;
 import me.dylanmullen.bingo.net.packet.packets.Packet_001_Login;
-import me.dylanmullen.bingo.net.packet.packets.Packet_002_Disconnect;
-import me.dylanmullen.bingo.net.packet.packets.Packet_003_Request;
+import me.dylanmullen.bingo.net.packet.packets.Packet_005_Response;
+import me.dylanmullen.bingo.net.packet.packets.Packet_005_Response.ResponseType;
 
 public class PacketHandler
 {
+	
+	public static final String PACKET_FORMAT = "?id;/m/?message/m/;?pu;?time";
 
-	private Thread sendThread;
-	private DatagramSocket socket;
-
-	public PacketHandler(DatagramSocket socket)
+	public void handle(Client c, String data)
 	{
-		this.socket = socket;
-	}
-
-	public synchronized void handle(DatagramPacket packet)
-	{
-		String data = decodeData(packet.getData());
-		String[] j = data.split("/id/");
-		int x = Integer.parseInt(j[1].substring(0, 3));
-		PacketType type = PacketType.getPacket(x);
-
-		Packet p = null;
-		switch (type)
-		{
-			case INVALID:
-				break;
-			case LOGIN:
-				p = new Packet_001_Login(this, packet.getAddress(), packet.getPort(), j[1].substring(3));
-				break;
-			case REQUEST:
-				p = new Packet_003_Request(this, packet.getAddress(), packet.getPort(), j[1].substring(3));
-				break;
-			case DISCONNECT:
-				p = new Packet_002_Disconnect(this, packet.getAddress(), packet.getPort(), j[1].substring(3));
-				break;
-			default:
-				break;
-		}
-
-		if (p == null)
-			return;
-		p.handle();
-	}
-
-	public void sendPacket(Client c, Packet packet)
-	{
-		sendThread = new Thread(()->
-		{
-			DatagramPacket pack = new DatagramPacket(packet.getDataByte(), packet.getDataByte().length, c.getAddress(), c.getPort());
-			try
-			{
-				socket.send(pack);
-			} catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-		});
-		sendThread.start();
-	}
-	public void sendPacket(Packet packet)
-	{
-		sendThread = new Thread(()->
-		{
-			DatagramPacket pack = new DatagramPacket(packet.getDataByte(), packet.getDataByte().length, packet.getAddress(), packet.getPort());
-			try
-			{
-				socket.send(pack);
-			} catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-		});
-		sendThread.start();
+		int id = (Integer.parseInt(data.split(";", 2)[0]));
+		Packet packet = createPacket(c, id, data);
+		
+		if(packet != null)
+			packet.handle();
 	}
 	
-	/**
-	 * Decodes data from byte[] to String. TO-DO: - Implement End-to-End encryption
-	 * - Decode it here.
-	 * 
-	 * @param data
-	 */
-	private String decodeData(byte[] data)
+	public static Packet createPacket(Client c, int id, String message)
 	{
-		return new String(data).trim();
+		PacketType type = PacketType.getPacketTypeByID(id);
+		
+		switch(type)
+		{
+			case LOGIN:
+				return new Packet_001_Login(c, message);
+			case REGISTER:
+				break;
+			case DISCONNECT:
+				break;
+			case REQUEST:
+				break;
+			case RESPONSE:
+				return new Packet_005_Response(c, null, message, null);
+			case INVALID:
+				break;
+			default:
+		}
+		return null;
 	}
-
+	
+	public static void sendPacket(Packet packet, PacketCallback callback)
+	{
+		PacketTicket ticket = new PacketTicket(packet, callback);
+		ServerHandler.getHandler().submitTicket(ticket);
+	}
+	
+	
 }

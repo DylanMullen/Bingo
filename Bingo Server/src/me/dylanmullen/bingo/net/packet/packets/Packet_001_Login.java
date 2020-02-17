@@ -1,35 +1,35 @@
 package me.dylanmullen.bingo.net.packet.packets;
 
-import java.net.InetAddress;
 import java.util.UUID;
 
 import me.dylanmullen.bingo.game.user.UserManager;
 import me.dylanmullen.bingo.net.Client;
 import me.dylanmullen.bingo.net.packet.Packet;
-import me.dylanmullen.bingo.net.packet.PacketHandler;
-import me.dylanmullen.bingo.net.packet.PacketType;
 
 public class Packet_001_Login extends Packet
 {
 
-	// /id/001/m/username/nl/password/t/<time>
-	public Packet_001_Login(PacketHandler handler, InetAddress address, int port, String data)
+	@SuppressWarnings("unused")
+	private final String format = "username/nl/password";
+	
+	public Packet_001_Login(Client client, String message)
 	{
-		super(handler, address, port, PacketType.LOGIN.getID(), data);
+		super(001, client, message, false);
 	}
 
 	@Override
 	public void handle()
 	{
-		String mes = getAbsoluteData()[0];
+		String message = getMessage();
+		UUID uuid = getUUID();
 		
-		String username = mes.split("/nl/")[0];
-		String password = mes.split("/nl/")[1];
+		String username = message.split("/nl/")[0];
+		String password = message.split("/nl/")[1];
 		
-		UUID uuid = UUID.randomUUID();
-		UserManager.getInstance().create(new Client(getAddress(), getPort()), uuid);
-		
-		System.out.println(username + " "+password);
+		//Auth
+		UserManager.getInstance().login(getClient(), uuid, username, password);
 	}
+	
+	
 
 }
