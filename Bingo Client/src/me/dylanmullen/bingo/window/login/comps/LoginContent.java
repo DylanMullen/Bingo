@@ -10,6 +10,7 @@ import me.dylanmullen.bingo.window.login.LoginWindow;
 import me.dylanmullen.bingo.window.login.comps.cards.Card;
 import me.dylanmullen.bingo.window.login.comps.cards.HomeCard;
 import me.dylanmullen.bingo.window.login.comps.cards.LoginCard;
+import me.dylanmullen.bingo.window.ui.UIColour;
 
 public class LoginContent extends JPanel
 {
@@ -23,7 +24,6 @@ public class LoginContent extends JPanel
 	 */
 	public LoginContent(LoginWindow lw)
 	{
-		setBackground(background);
 		setLayout(new CardLayout(0, 0));
 
 		generateCards(lw);

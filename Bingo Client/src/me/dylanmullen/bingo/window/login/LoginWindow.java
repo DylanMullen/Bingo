@@ -1,6 +1,10 @@
 package me.dylanmullen.bingo.window.login;
 
 import java.awt.Color;
+import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -10,6 +14,8 @@ import me.dylanmullen.bingo.net.Client;
 import me.dylanmullen.bingo.window.login.comps.LoginContent;
 import me.dylanmullen.bingo.window.login.comps.LoginSideMenu;
 import me.dylanmullen.bingo.window.login.comps.LoginTopMenu;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 public class LoginWindow extends JFrame
 {
@@ -23,9 +29,10 @@ public class LoginWindow extends JFrame
 	private LoginTopMenu ltm;
 	private LoginSideMenu lsm;
 	private LoginContent lc;
-	
+
 	private Client client;
-	
+	private Point initialClick;
+
 	/**
 	 * Create the frame.
 	 */
@@ -39,6 +46,42 @@ public class LoginWindow extends JFrame
 		setContentPane(contentPane);
 		generatePanels();
 		createClient();
+
+		JFrame frame = this;
+		contentPane.addMouseMotionListener(new MouseMotionListener()
+		{
+
+			public void mouseDragged(MouseEvent e)
+			{
+				int thisX = frame.getLocation().x;
+				int thisY = frame.getLocation().y;
+
+				// Determine how much the mouse moved since the initial click
+				int xMoved = e.getX() - initialClick.x;
+				int yMoved = e.getY() - initialClick.y;
+
+				// Move window to this position
+				int X = thisX + xMoved;
+				int Y = thisY + yMoved;
+				frame.setLocation(X, Y);
+			}
+
+			@Override
+			public void mouseMoved(MouseEvent e)
+			{
+				// TODO Auto-generated method stub
+
+			}
+		});
+		contentPane.addMouseListener(new MouseAdapter()
+		{
+			public void mousePressed(MouseEvent e)
+			{
+				initialClick = e.getPoint();
+				getComponentAt(initialClick);
+			}
+		});
+
 		setVisible(true);
 	}
 
@@ -46,35 +89,35 @@ public class LoginWindow extends JFrame
 	{
 		contentPane.setLayout(null);
 
-		ltm= new LoginTopMenu();
+		ltm = new LoginTopMenu();
+		ltm.setVisible(false);
 		ltm.setBounds(0, 0, 750, 50);
 		contentPane.add(ltm);
-		ltm.setBackground(background_dark);
-
+		
 		lc = new LoginContent(this);
+		lc.setVisible(false);
 		lc.setBounds(220, 50, 530, 330);
 		contentPane.add(lc);
-		
+
 		lsm = new LoginSideMenu(this);
+		lsm.setVisible(false);
 		lsm.setBounds(0, 50, 220, 330);
 		contentPane.add(lsm);
-		lsm.setBackground(background_darkened);
 
 	}
-	
+
 	public void createClient()
 	{
 		this.client = new Client("localhost", 4585);
 	}
-	
+
 	public Client getClient()
 	{
 		return client;
 	}
-	
+
 	public LoginContent getLoginContent()
 	{
 		return lc;
 	}
-	
 }

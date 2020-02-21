@@ -10,12 +10,10 @@ import javax.swing.SwingConstants;
 
 import me.dylanmullen.bingo.window.login.LoginButtonListener;
 import me.dylanmullen.bingo.window.login.LoginWindow;
+import me.dylanmullen.bingo.window.ui.UIColour;
 
 public class LoginSideMenu extends JPanel
 {
-
-	private Color button = new Color(0x3498db);
-	private Color button_hovered = new Color(0x2980b9);
 
 	private ArrayList<JLabel> buttons = new ArrayList<>();
 
@@ -34,8 +32,8 @@ public class LoginSideMenu extends JPanel
 		JLabel lblLogin = new JLabel("Login");
 		JLabel lblRegister = new JLabel("Register");
 		lblLogin.setBounds(0, 140, 220, 50);
-//		lblRegister.setBounds(0, 235, 220, 50);
-//		lblHome.setBounds(0, 45, 220, 50);
+		lblRegister.setBounds(0, 235, 220, 50);
+		lblHome.setBounds(0, 45, 220, 50);
 
 		buttons.add(lblHome);
 		buttons.add(lblLogin);
@@ -50,7 +48,6 @@ public class LoginSideMenu extends JPanel
 			label.setOpaque(true);
 			label.setFont(new Font("Tahoma", Font.PLAIN, 20));
 			label.setHorizontalAlignment(SwingConstants.CENTER);
-			label.setBackground(button);
 			label.setForeground(Color.WHITE);
 			label.addMouseListener(new LoginButtonListener(lw));
 			add(label);

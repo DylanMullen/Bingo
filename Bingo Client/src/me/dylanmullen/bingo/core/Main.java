@@ -1,21 +1,20 @@
 package me.dylanmullen.bingo.core;
 
-import me.dylanmullen.bingo.net.PacketHandler;
-import me.dylanmullen.bingo.net.handlers.ClientHandler;
 import me.dylanmullen.bingo.window.login.LoginWindow;
 
 public class Main
 {
 
-	public static void main(String args[]) throws Exception
+	public static void main(String[] args)
 	{
 		new Main();
 	}
 
 	public Main()
 	{
-		new ClientHandler("localhost", 4585);
+//		BingoWindow bw = new BingoWindow();
 		LoginWindow lw = new LoginWindow();
+
 	}
 
 }
