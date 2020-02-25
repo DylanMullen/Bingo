@@ -21,7 +21,6 @@ public class MainContent extends Panel
 	public void setup()
 	{
 		setBounds(x, y, width, height);
-		System.out.println(getX()+":"+getY());
 		setBackground(UIColour.FRAME_BINGO_BG.toColor());
 		setLayout(null);
 		panels = new HashSet<Panel>();

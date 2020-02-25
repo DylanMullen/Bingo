@@ -1,6 +1,6 @@
 package me.dylanmullen.bingo.core;
 
-import me.dylanmullen.bingo.controllers.GameController;
+import me.dylanmullen.bingo.game.GameController;
 import me.dylanmullen.bingo.game.user.UserManager;
 import me.dylanmullen.bingo.mysql.MySQLController;
 import me.dylanmullen.bingo.net.Server;

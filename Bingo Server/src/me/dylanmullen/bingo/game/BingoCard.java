@@ -1,22 +1,30 @@
 package me.dylanmullen.bingo.game;
 
 import java.util.Random;
+import java.util.UUID;
+
+import me.dylanmullen.bingo.game.user.User;
 
 public class BingoCard
 {
 
 	private BingoRow[] rows;
 	private Random random;
+	private User owner;
 
-	public BingoCard()
+	private UUID uuid;
+
+	public BingoCard(User user, long seed)
 	{
+		this.owner = user;
 		this.rows = new BingoRow[3];
 		this.random = new Random();
 
 		for (int i = 0; i < 3; i++)
 			this.rows[i] = new BingoRow();
 
-		this.random.setSeed(System.currentTimeMillis());
+		this.random = new Random(seed);
+		this.uuid = UUID.randomUUID();
 	}
 
 	public void generate()
@@ -31,7 +39,6 @@ public class BingoCard
 			}
 			row.complete();
 		}
-		print();
 	}
 
 	private void print()
@@ -60,6 +67,7 @@ public class BingoCard
 			BingoRow row = rows[i];
 			sb.append(row.toString() + (rows.length - 1 == i ? "" : "/"));
 		}
+		sb.append("/u/" + uuid.toString());
 		return sb.toString();
 	}
 
@@ -84,5 +92,15 @@ public class BingoCard
 				return true;
 		}
 		return false;
+	}
+
+	public UUID getUuid()
+	{
+		return uuid;
+	}
+
+	public User getOwner()
+	{
+		return owner;
 	}
 }

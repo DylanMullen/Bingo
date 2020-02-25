@@ -19,7 +19,7 @@ public class UserLoginCallback extends SQLCallback
 	public UserLoginCallback(Client client, UUID packetUUID)
 	{
 		this.packetToRelay = packetUUID;
-		this.client=client;
+		this.client = client;
 	}
 
 	@Override
@@ -28,7 +28,6 @@ public class UserLoginCallback extends SQLCallback
 		try
 		{
 			Packet_005_Response res = (Packet_005_Response) PacketHandler.createPacket(client, 005, "");
-			System.out.println("Callback");
 			if (!result.isBeforeFirst())
 			{
 				res.constructMessage(ResponseType.FAILURE, "User Not Found", packetToRelay);
@@ -37,13 +36,12 @@ public class UserLoginCallback extends SQLCallback
 			}
 			result.next();
 			UUID uuid = UUID.fromString(result.getString(1));
-			UserManager.getInstance().addUser(uuid);
-			
+			UserManager.getInstance().addUser(client, uuid);
+
 			res.constructMessage(ResponseType.SUCCESS, uuid.toString(), packetToRelay);
 			PacketHandler.sendPacket(res, null);
 		} catch (SQLException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return false;

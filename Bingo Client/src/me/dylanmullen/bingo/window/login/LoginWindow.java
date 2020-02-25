@@ -1,123 +1,64 @@
 package me.dylanmullen.bingo.window.login;
 
-import java.awt.Color;
-import java.awt.Point;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import me.dylanmullen.bingo.net.Client;
-import me.dylanmullen.bingo.window.login.comps.LoginContent;
-import me.dylanmullen.bingo.window.login.comps.LoginSideMenu;
-import me.dylanmullen.bingo.window.login.comps.LoginTopMenu;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
+import me.dylanmullen.bingo.window.login.comp.UITextField;
+import me.dylanmullen.bingo.window.login.comp.TEST;
+import me.dylanmullen.bingo.window.login.comp.TopMenu;
 
 public class LoginWindow extends JFrame
 {
 
 	private JPanel contentPane;
 
-	private Color background = new Color(0x6a89cc);
-	private Color background_dark = new Color(0x4a69bd);
-	private Color background_darkened = new Color(0x1e3799);
-
-	private LoginTopMenu ltm;
-	private LoginSideMenu lsm;
-	private LoginContent lc;
-
-	private Client client;
-	private Point initialClick;
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args)
+	{
+		EventQueue.invokeLater(new Runnable()
+		{
+			public void run()
+			{
+				try
+				{
+					LoginWindow frame = new LoginWindow();
+					frame.setVisible(true);
+				} catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
 	/**
 	 * Create the frame.
 	 */
 	public LoginWindow()
 	{
-		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 750, 380);
+		setBounds(100, 100, 450, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-		generatePanels();
-		createClient();
-
-		JFrame frame = this;
-		contentPane.addMouseMotionListener(new MouseMotionListener()
-		{
-
-			public void mouseDragged(MouseEvent e)
-			{
-				int thisX = frame.getLocation().x;
-				int thisY = frame.getLocation().y;
-
-				// Determine how much the mouse moved since the initial click
-				int xMoved = e.getX() - initialClick.x;
-				int yMoved = e.getY() - initialClick.y;
-
-				// Move window to this position
-				int X = thisX + xMoved;
-				int Y = thisY + yMoved;
-				frame.setLocation(X, Y);
-			}
-
-			@Override
-			public void mouseMoved(MouseEvent e)
-			{
-				// TODO Auto-generated method stub
-
-			}
-		});
-		contentPane.addMouseListener(new MouseAdapter()
-		{
-			public void mousePressed(MouseEvent e)
-			{
-				initialClick = e.getPoint();
-				getComponentAt(initialClick);
-			}
-		});
-
-		setVisible(true);
-	}
-
-	private void generatePanels()
-	{
-		contentPane.setLayout(null);
-
-		ltm = new LoginTopMenu();
-		ltm.setVisible(false);
-		ltm.setBounds(0, 0, 750, 50);
-		contentPane.add(ltm);
+		setLocationRelativeTo(null);
+		setUndecorated(true);
+		setLayout(null);
+		TopMenu menu = new TopMenu(0, 0, getWidth(), getHeight() / 10);
+		menu.setup();
+		menu.create();
+		add(menu);
 		
-		lc = new LoginContent(this);
-		lc.setVisible(false);
-		lc.setBounds(220, 50, 530, 330);
-		contentPane.add(lc);
-
-		lsm = new LoginSideMenu(this);
-		lsm.setVisible(false);
-		lsm.setBounds(0, 50, 220, 330);
-		contentPane.add(lsm);
+		TEST test = new TEST();
+		add(test);
 
 	}
 
-	public void createClient()
-	{
-		this.client = new Client("localhost", 4585);
-	}
-
-	public Client getClient()
-	{
-		return client;
-	}
-
-	public LoginContent getLoginContent()
-	{
-		return lc;
-	}
 }

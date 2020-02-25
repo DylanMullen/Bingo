@@ -106,7 +106,6 @@ public class MySQLController implements Runnable
 	{
 		if (queue.contains(ticket))
 			return;
-		System.out.println("Ticket added");
 		queue.add(ticket);
 	}
 

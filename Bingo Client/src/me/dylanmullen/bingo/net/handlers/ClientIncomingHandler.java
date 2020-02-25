@@ -18,7 +18,7 @@ public class ClientIncomingHandler implements Runnable
 	{
 		this.client = client;
 		start();
-		
+
 	}
 
 	public synchronized void start()
@@ -48,8 +48,7 @@ public class ClientIncomingHandler implements Runnable
 			DatagramPacket dp = new DatagramPacket(recieve, recieve.length);
 			client.getSocket().receive(dp);
 			String decode = decodeData(dp.getData());
-//			ClientHandler.getInstance().handleIncoming(getUUID(decode), decode);
-			System.out.println(decode);
+			ClientHandler.getInstance().handleIncoming(getUUID(decode), decode);
 		} catch (IOException e)
 		{
 			System.err.println("Error recieving a packet!");
@@ -63,7 +62,7 @@ public class ClientIncomingHandler implements Runnable
 
 	private UUID getUUID(String s)
 	{
-		String j = s.split(";")[2];
-		return UUID.fromString(j);
+		String[] j = s.split("/m/|/m/");
+		return UUID.fromString(j[1].split("/nl/")[1]);
 	}
 }

@@ -67,7 +67,6 @@ public class ClientOutgoingHandler implements Runnable
 	public void addPacket(Packet packet)
 	{
 		queue.add(packet);
-		System.out.println(queue.size());
 	}
 
 }

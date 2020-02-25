@@ -22,7 +22,6 @@ public class PacketTicket
 		
 		packetToSend.setPacketUUID(getUUID());
 	}
-	
 
 	public Packet getPacketToSend()
 	{

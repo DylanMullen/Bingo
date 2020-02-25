@@ -1,17 +1,17 @@
 package me.dylanmullen.bingo.window.bingo;
 
 import java.awt.EventQueue;
-import java.awt.Point;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import me.dylanmullen.bingo.game.BingoGame;
+import me.dylanmullen.bingo.game.GamePanel;
 import me.dylanmullen.bingo.window.bingo.panels.TM_Bingo;
-import me.dylanmullen.bingo.window.bingo.panels.content.MainContent;
+import me.dylanmullen.bingo.window.bingo.panels.content.PlayContent;
 import me.dylanmullen.bingo.window.bingo.panels.sidemenu.SP_Bingo;
-import me.dylanmullen.bingo.window.ui.UIColour;
 
 public class BingoWindow extends JFrame
 {
@@ -38,8 +38,10 @@ public class BingoWindow extends JFrame
 			{
 				try
 				{
+					long now = System.currentTimeMillis();
 					BingoWindow frame = new BingoWindow();
 					frame.setVisible(true);
+					System.out.println(System.currentTimeMillis()-now);
 				} catch (Exception e)
 				{
 					e.printStackTrace();
@@ -72,12 +74,18 @@ public class BingoWindow extends JFrame
 		topMenu_1.create();
 		contentPane.add(topMenu_1);
 
-		MainContent content = new MainContent(getWidth()/4, getHeight() / 10, getWidth() / 4 * 3, getHeight() / 10 * 9);
-		content.setup();
-		content.create();
-		contentPane.add(content);
+		BingoGame game = new BingoGame();
+		game.createPanel(getWidth()/4, getHeight() / 10, getWidth() / 4 * 3, getHeight() / 10 * 9);
+		game.getGamePanel().setup();
+		game.getGamePanel().create();
+		
+//		GamePanel gp = new GamePanel(getWidth()/4, getHeight() / 10, getWidth() / 4 * 3, getHeight() / 10 * 9);
+//		gp.setup();
+//		gp.create();
+		contentPane.add(game.getGamePanel());
 
 		setLocationRelativeTo(null);
+		setVisible(true);
 	}
 
 	public void create()

@@ -20,7 +20,6 @@ public class SP_Bingo extends Panel
 	@Override
 	public void setup()
 	{
-		System.out.println();
 		setBounds(x, y, width, height);
 		setLayout(null);
 		setBackground(UIColour.FRAME_BINGO_BG_TOP.toColor());

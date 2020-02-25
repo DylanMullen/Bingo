@@ -24,7 +24,7 @@ public class Client
 			e.printStackTrace();
 		}
 	}
-
+	
 	public DatagramSocket getSocket()
 	{
 		return socket;

@@ -35,7 +35,7 @@ public class OutgoingHandler implements Runnable
 	public void run()
 	{
 		running = true;
-		System.out.print("Packeting Outgoing on: " + thread.getId());
+		System.out.println("Packeting Outgoing on: " + thread.getId());
 		while (running)
 		{
 			process();

@@ -1,5 +1,6 @@
 package me.dylanmullen.bingo.window.bingo.panels.sidemenu;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -25,25 +26,42 @@ public class ProfilePanel extends Panel
 		setBounds(x, y, width, height);
 		setBorder(new EmptyBorder(12, 12, 12, 12));
 		setOpaque(false);
+		size = getWidth() / 10;
+		System.out.println(getWidth());
 	}
 
 	@Override
 	public void create()
 	{
-
+		
 	}
 
+	private int size;
 
 	@Override
 	protected void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
-		Graphics2D g2 = (Graphics2D)g;
-		
+		Graphics2D g2 = (Graphics2D) g;
+
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2.setColor(UIColour.BTN_FAILURE.toColor());
 		g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
-		
+
+//		paintGrid(g);
+	}
+
+	private void paintGrid(Graphics g)
+	{
+		g.setColor(Color.white);
+		for (int y = 0; y < getHeight(); y += size)
+		{
+			g.drawLine(0, y, getHeight(), y);
+			for (int x = 0; x < getWidth(); x += size)
+			{
+				g.drawLine(x, 0, x, getWidth());
+			}
+		}
 	}
 
 }
