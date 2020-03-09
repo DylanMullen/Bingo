@@ -16,13 +16,14 @@ public class BingoCard extends JComponent
 {
 
 	private BingoSquare[] squares;
-	private  final int BUFFER = 35;
+	private final int BUFFER = 35;
+
+	private boolean purchased = false;
 
 	private UUID uuid;
 
 	public BingoCard(int x, int y, int w, int h)
 	{
-		setBackground(UIColour.FRAME_BINGO_BG_TOP.toColor());
 		setOpaque(true);
 		int widthSize = w / 9;
 		int heightSize = h / 3;
@@ -54,6 +55,7 @@ public class BingoCard extends JComponent
 	@Override
 	protected void paintComponent(Graphics g)
 	{
+		setBackground((purchased ? UIColour.FRAME_BINGO_BG : UIColour.BTN_BINGO_ACTIVE).toColor());
 		super.paintComponent(g);
 
 		Graphics2D g2 = (Graphics2D) g;
@@ -63,7 +65,7 @@ public class BingoCard extends JComponent
 		int fontSize = 25; // font for everything else
 		Font font = new Font("Calibri", Font.PLAIN, fontSize);
 		g2.setFont(font);
-		g2.setColor(UIColour.BTN_BINGO_ACTIVE.toColor());
+		g2.setColor(getBackground());
 		g2.fillRect(0, 0, getWidth(), getHeight());
 		paintGrid(g2);
 		paintTop(g2);
@@ -76,7 +78,7 @@ public class BingoCard extends JComponent
 		{
 			BingoSquare square = squares[i];
 
-			g2.setColor(Color.BLACK);
+			g2.setColor((square.isCalled() ? Color.RED : Color.BLACK));
 			g2.fill(square);
 			g2.setColor(Color.WHITE);
 			g2.draw(square);
@@ -93,7 +95,7 @@ public class BingoCard extends JComponent
 	{
 		if (uuid == null)
 			return;
-		Font font = new Font("Calibri", Font.PLAIN,20);
+		Font font = new Font("Calibri", Font.PLAIN, 20);
 		g2.setFont(font);
 		g2.drawString(uuid.toString(), 0, 32);
 	}
@@ -106,7 +108,7 @@ public class BingoCard extends JComponent
 		for (int i = 0; i < temp.length; i++)
 		{
 			String[] numbers = temp[i].split("\\.");
-			setNumber(Integer.parseInt(numbers[0]));	
+			setNumber(Integer.parseInt(numbers[0]));
 			setNumber(Integer.parseInt(numbers[1]));
 			setNumber(Integer.parseInt(numbers[2]));
 			setNumber(Integer.parseInt(numbers[3]));
@@ -115,12 +117,37 @@ public class BingoCard extends JComponent
 		}
 	}
 
+	public UUID getUUID()
+	{
+		return uuid;
+	}
+
 	private int row = 0;
 
 	private void setNumber(int x)
 	{
 		int index = (x / 10 == 9 ? 8 : x / 10);
 		squares[index + row * 9].setNumber(x);
+	}
+
+	public void markNumber(int num)
+	{
+		for (BingoSquare square : squares)
+			if (square.getNumber() == num)
+			{
+				square.setCalled(true);
+				repaint();
+			}
+	}
+
+	public void setPurchased(boolean val)
+	{
+		this.purchased = val;
+	}
+
+	public boolean isPurchased()
+	{
+		return purchased;
 	}
 
 }

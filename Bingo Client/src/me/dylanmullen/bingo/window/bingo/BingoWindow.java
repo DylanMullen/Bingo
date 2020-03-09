@@ -22,11 +22,6 @@ public class BingoWindow extends JFrame
 
 	private boolean debug = true;
 
-	private ArrayList<JPanel> panels;
-	private JPanel topMenu;
-	private JPanel sidePanel;
-	private JPanel content;
-
 	/**
 	 * Launch the application.
 	 */
@@ -41,7 +36,7 @@ public class BingoWindow extends JFrame
 					long now = System.currentTimeMillis();
 					BingoWindow frame = new BingoWindow();
 					frame.setVisible(true);
-					System.out.println(System.currentTimeMillis()-now);
+					System.out.println(System.currentTimeMillis() - now);
 				} catch (Exception e)
 				{
 					e.printStackTrace();
@@ -75,11 +70,12 @@ public class BingoWindow extends JFrame
 		contentPane.add(topMenu_1);
 
 		BingoGame game = new BingoGame();
-		game.createPanel(getWidth()/4, getHeight() / 10, getWidth() / 4 * 3, getHeight() / 10 * 9);
+		game.createPanel(getWidth() / 4, getHeight() / 10, getWidth() / 4 * 3, getHeight() / 10 * 9);
 		game.getGamePanel().setup();
 		game.getGamePanel().create();
-		
-//		GamePanel gp = new GamePanel(getWidth()/4, getHeight() / 10, getWidth() / 4 * 3, getHeight() / 10 * 9);
+
+		// GamePanel gp = new GamePanel(getWidth()/4, getHeight() / 10, getWidth() / 4 *
+		// 3, getHeight() / 10 * 9);
 //		gp.setup();
 //		gp.create();
 		contentPane.add(game.getGamePanel());

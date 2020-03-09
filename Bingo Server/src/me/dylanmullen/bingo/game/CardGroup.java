@@ -1,6 +1,7 @@
 package me.dylanmullen.bingo.game;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import me.dylanmullen.bingo.game.user.User;
 
@@ -8,13 +9,11 @@ public class CardGroup
 {
 
 	private User owner;
-	private long seed;
 	private ArrayList<BingoCard> cards;
 
-	public CardGroup(long seed, User user)
+	public CardGroup(User user)
 	{
 		this.owner = user;
-		this.seed = seed;
 		this.cards = new ArrayList<BingoCard>();
 	}
 
@@ -22,10 +21,36 @@ public class CardGroup
 	{
 		for (int i = 0; i < 3; i++)
 		{
-			BingoCard card = new BingoCard(owner, seed);
+			BingoCard card = new BingoCard(owner);
 			card.generate();
 			cards.add(card);
 		}
+	}
+	
+	public BingoCard getCard(User user)
+	{
+		for (BingoCard bingoCard : cards)
+		{
+			if(bingoCard.getOwner().equals(user))
+				return bingoCard;
+		}
+		return null;
+	}
+	
+	public boolean remove(BingoCard card)
+	{
+		cards.remove(card);
+		return cards.isEmpty();
+	}
+	
+	public void addCard(BingoCard card)
+	{
+		cards.add(card);
+	}
+	
+	public User getOwner()
+	{
+		return owner;
 	}
 
 	public String toString()

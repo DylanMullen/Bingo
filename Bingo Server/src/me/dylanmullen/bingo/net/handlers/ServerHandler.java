@@ -77,7 +77,6 @@ public class ServerHandler
 				return;
 			}
 		}
-		System.out.println("Test");
 		packetHandler.handle(client, data);
 	}
 

@@ -1,7 +1,5 @@
 package me.dylanmullen.bingo.game.components;
 
-import java.awt.Color;
-
 import me.dylanmullen.bingo.game.CardGroupComp;
 import me.dylanmullen.bingo.window.ui.Panel;
 import me.dylanmullen.bingo.window.ui.UIColour;
@@ -24,13 +22,9 @@ public class GameComponent extends Panel
 		setLayout(null);
 		setBackground(UIColour.FRAME_BINGO_BG.toColor());
 
-//		join = new JoinComponent(12, (getHeight() / 10), getWidth() - 24, (getHeight() / 2));
-//		join.setup();
-//		add(join);
-
-		comp = new CardGroupComp(12, 12, getWidth() - 24, getHeight() -  24);
-		comp.setup();
-		add(comp);
+		join = new JoinComponent(12, (getHeight() / 10), getWidth() - 24, (getHeight() / 2));
+		join.setup();
+		add(join);
 	}
 
 	@Override
@@ -41,9 +35,20 @@ public class GameComponent extends Panel
 
 	public void disableJoinButton()
 	{
-		remove(join);
+		join.setVisible(false);
+		System.out.println("Removed");
 	}
-	
+
+	public void createCardGroup()
+	{
+		comp = new CardGroupComp(12, 12, getWidth() - 24, getHeight() - 24);
+		comp.setup();
+		add(comp);
+		comp.setVisible(false);
+		comp.setVisible(true);
+		comp.requestNumbers();
+	}
+
 	public CardGroupComp getCardGroup()
 	{
 		return comp;

@@ -48,16 +48,18 @@ public class OutgoingHandler implements Runnable
 		{
 			for (int i = 0; i < queue.size(); i++)
 			{
-				DebugUtils.sendThreadInformation(Thread.currentThread());
 				sendPacket(queue.get(i));
 				queue.remove(i);
 			}
 		}
 	}
-	
+
 	public void submitPacket(Packet packet)
 	{
-		queue.add(packet);
+		synchronized (queue)
+		{
+			queue.add(packet);
+		}
 	}
 
 	private void sendPacket(Packet packet)
@@ -66,15 +68,15 @@ public class OutgoingHandler implements Runnable
 		{
 			packet.setTime();
 			server.getServer().send(packet.convert());
-		}catch(IOException e)
+		} catch (IOException e)
 		{
-			System.err.println("Failed to send packet: "+e.getMessage());
+			System.err.println("Failed to send packet: " + e.getMessage());
 		}
 	}
-	
+
 	public void end()
 	{
-		this.running=false;
+		this.running = false;
 	}
 
 }

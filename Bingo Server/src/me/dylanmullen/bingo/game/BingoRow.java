@@ -65,6 +65,17 @@ public class BingoRow
 		return true;
 	}
 
+	public boolean isFinished(int[] nums)
+	{
+		for (int i = 0; i < numbers.length; i++)
+		{
+			int num = numbers[i];
+			if (nums[num - 1] != 1)
+				return false;
+		}
+		return true;
+	}
+
 	@Override
 	public String toString()
 	{

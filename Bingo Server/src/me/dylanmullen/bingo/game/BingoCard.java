@@ -3,6 +3,7 @@ package me.dylanmullen.bingo.game;
 import java.util.Random;
 import java.util.UUID;
 
+import me.dylanmullen.bingo.game.BingoGame.LineState;
 import me.dylanmullen.bingo.game.user.User;
 
 public class BingoCard
@@ -14,7 +15,7 @@ public class BingoCard
 
 	private UUID uuid;
 
-	public BingoCard(User user, long seed)
+	public BingoCard(User user)
 	{
 		this.owner = user;
 		this.rows = new BingoRow[3];
@@ -23,7 +24,7 @@ public class BingoCard
 		for (int i = 0; i < 3; i++)
 			this.rows[i] = new BingoRow();
 
-		this.random = new Random(seed);
+		this.random = new Random();
 		this.uuid = UUID.randomUUID();
 	}
 
@@ -92,6 +93,38 @@ public class BingoCard
 				return true;
 		}
 		return false;
+	}
+
+	public boolean isWinner(LineState state, int[] numbers)
+	{
+		int required = 0;
+
+		switch (state)
+		{
+			case ONE:
+				required = 1;
+				break;
+			case TWO:
+				required = 2;
+				break;
+			case FULLHOUSE:
+				required = 3;
+				break;
+			default:
+				break;
+		}
+
+		if (required == 0)
+			return false;
+
+		int temp = 0;
+		for (BingoRow row : rows)
+		{
+			if (row.isFinished(numbers))
+				temp++;
+		}
+
+		return temp == required;
 	}
 
 	public UUID getUuid()

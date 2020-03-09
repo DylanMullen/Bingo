@@ -65,5 +65,10 @@ public class UserManager
 			return null;
 		}
 	}
+	
+	public HashSet<User> getUsers()
+	{
+		return users;
+	}
 
 }

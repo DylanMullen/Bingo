@@ -31,7 +31,8 @@ public class Packet_006_JoinGame extends Packet
 		}
 
 		BingoGame game = GameController.getInstance().placeUser(u);
-		res.constructMessage(ResponseType.SUCCESS, game.getGameUUID().toString(), getUUID());
+		res.constructMessage(ResponseType.SUCCESS, game.getGameUUID().toString() + "/nl/" + game.getGameState(),
+				getUUID());
 		PacketHandler.sendPacket(res, null);
 	}
 

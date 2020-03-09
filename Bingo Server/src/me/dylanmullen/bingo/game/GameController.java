@@ -37,7 +37,23 @@ public class GameController
 		res.constructMessage(ResponseType.SUCCESS, cg.toString(), packetToRelay);
 		PacketHandler.sendPacket(res, null);
 	}
-	
+
+	public void purchaseCard(User u, UUID uuid, UUID packetToRelay)
+	{
+		BingoGame game = u.getCurrentGame();
+		CardGroup cg = game.getCardGroup(u);
+		BingoCard card = cg.getCard(u);
+		game.addCard(card);
+		
+		if (cg.remove(card))
+			game.removeCardGroup(cg);
+
+		Packet_005_Response res = (Packet_005_Response) PacketHandler.createPacket(u.getClient(), 005, "");
+		res.constructMessage(ResponseType.SUCCESS, uuid.toString(), packetToRelay);
+		PacketHandler.sendPacket(res, null);
+		
+	}
+
 	public BingoGame placeUser(User u)
 	{
 		if (u.getCurrentGame() != null)

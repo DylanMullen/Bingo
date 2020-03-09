@@ -1,7 +1,6 @@
 package me.dylanmullen.bingo.game.components;
 
 import me.dylanmullen.bingo.window.ui.Panel;
-import me.dylanmullen.bingo.window.ui.UIColour;
 
 public class NumbersCalledComponent extends Panel
 {
@@ -36,11 +35,27 @@ public class NumbersCalledComponent extends Panel
 			numbers[i] = new NumberGrid(indentX, indentY, gridSize, gridSize);
 			numbers[i].setup();
 			indentX += gridSize + 12;
-			numbers[i].updateCurrentNumber(i);
 			add(numbers[i]);
 		}
 		numbers[0].setFirst(true);
+	}
 
+	public void update(int num)
+	{
+		int temp = numbers[0].getCurrentNumber();
+		numbers[0].updateCurrentNumber(num);
+		numbers[0].repaint();
+		if(temp != -1)
+		{
+			for(int i = 1; i < numbers.length;i++)
+			{
+				if(temp == -1)
+					break;
+				temp = numbers[i].updateCurrentNumber(temp);
+				numbers[i].repaint();
+			}
+		}
+		repaint();
 	}
 
 }

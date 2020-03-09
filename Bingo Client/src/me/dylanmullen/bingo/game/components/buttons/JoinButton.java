@@ -8,7 +8,7 @@ import java.awt.RenderingHints;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import me.dylanmullen.bingo.game.components.buttons.listeners.JoinButtonListener;
+import me.dylanmullen.bingo.game.components.listeners.JoinButtonListener;
 import me.dylanmullen.bingo.window.ui.UIButton;
 import me.dylanmullen.bingo.window.ui.UIColour;
 

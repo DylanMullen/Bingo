@@ -53,5 +53,10 @@ public class GamePanel extends Panel
 	{
 		return game;
 	}
+	
+	public NumbersCalledComponent getNumbersComp()
+	{
+		return numbersComp;
+	}
 
 }

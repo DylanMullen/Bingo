@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import me.dylanmullen.bingo.net.Client;
+import me.dylanmullen.bingo.net.PacketHandler;
 import me.dylanmullen.bingo.net.PacketTicket;
 import me.dylanmullen.bingo.net.runnables.PingTask;
 
@@ -66,15 +67,20 @@ public class ClientHandler
 
 	public void handleIncoming(UUID uuid, String decode)
 	{
-		PacketTicket ticket = getTicket(uuid);
-		if (ticket != null && ticket.getCallback() != null)
+		if(uuid != null)
 		{
-			ticket.getCallback().setData(decode);
-			ticket.getCallback().callback();
-			System.out.println("recied and callbacked");
-			tickets.remove(ticket);
+			PacketTicket ticket = getTicket(uuid);
+			if (ticket != null && ticket.getCallback() != null)
+			{
+				ticket.getCallback().setData(decode);
+				ticket.getCallback().callback();
+				System.out.println("recied and callbacked");
+				tickets.remove(ticket);
+				return;
+			}
 			return;
 		}
+		PacketHandler.handlePacket(decode);
 	}
 
 	private void createClient(String address, int port)

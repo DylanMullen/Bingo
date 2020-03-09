@@ -48,7 +48,12 @@ public class ClientIncomingHandler implements Runnable
 			DatagramPacket dp = new DatagramPacket(recieve, recieve.length);
 			client.getSocket().receive(dp);
 			String decode = decodeData(dp.getData());
-			ClientHandler.getInstance().handleIncoming(getUUID(decode), decode);
+			int id = Integer.parseInt(decode.split(";")[0]);
+			
+			if(id == 5)
+				ClientHandler.getInstance().handleIncoming(getUUID(decode), decode);
+			else
+				ClientHandler.getInstance().handleIncoming(null, decode);
 		} catch (IOException e)
 		{
 			System.err.println("Error recieving a packet!");

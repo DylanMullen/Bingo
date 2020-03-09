@@ -1,4 +1,4 @@
-package me.dylanmullen.bingo.game.components.buttons.listeners;
+package me.dylanmullen.bingo.game.components.listeners;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -16,7 +16,7 @@ public class JoinButtonListener implements MouseListener
 	{
 		if (clicked)
 			return;
-
+		System.out.println("TEST");
 		PacketHandler.sendPacket(PacketHandler.createPacket(006, ""), new JoinCallback());
 	}
 

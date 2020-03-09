@@ -1,5 +1,7 @@
 package me.dylanmullen.bingo.game.callbacks;
 
+import java.util.UUID;
+
 import me.dylanmullen.bingo.game.BingoGame;
 import me.dylanmullen.bingo.net.packet.PacketCallback;
 
@@ -13,8 +15,10 @@ public class JoinCallback extends PacketCallback
 	@Override
 	public boolean callback()
 	{
-		System.out.println(getData());
-		BingoGame.getInstance().setGameJoined(true);
+		String[] j = getMessage().split("/nl/");
+		UUID uuid = UUID.fromString(j[2]);
+		int id = Integer.parseInt(j[3]);
+		BingoGame.getInstance().setGameJoined(true, id);
 		return false;
 	}
 
