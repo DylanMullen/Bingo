@@ -16,7 +16,6 @@ public class JoinButtonListener implements MouseListener
 	{
 		if (clicked)
 			return;
-		System.out.println("TEST");
 		PacketHandler.sendPacket(PacketHandler.createPacket(006, ""), new JoinCallback());
 	}
 

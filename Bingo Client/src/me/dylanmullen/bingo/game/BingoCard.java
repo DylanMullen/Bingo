@@ -10,6 +10,7 @@ import java.util.UUID;
 import javax.swing.JComponent;
 
 import me.dylanmullen.bingo.game.components.BingoSquare;
+import me.dylanmullen.bingo.game.components.listeners.PurchaseListener;
 import me.dylanmullen.bingo.window.ui.UIColour;
 
 public class BingoCard extends JComponent
@@ -19,7 +20,8 @@ public class BingoCard extends JComponent
 	private final int BUFFER = 35;
 
 	private boolean purchased = false;
-
+	private boolean selected = false;
+	
 	private UUID uuid;
 
 	public BingoCard(int x, int y, int w, int h)
@@ -55,7 +57,9 @@ public class BingoCard extends JComponent
 	@Override
 	protected void paintComponent(Graphics g)
 	{
-		setBackground((purchased ? UIColour.FRAME_BINGO_BG : UIColour.BTN_BINGO_ACTIVE).toColor());
+		setBackground(
+				(purchased ? UIColour.CARD_PURCHASED : (selected ? UIColour.CARD_SELECTED : UIColour.CARD_DEFAULT))
+						.toColor());
 		super.paintComponent(g);
 
 		Graphics2D g2 = (Graphics2D) g;
@@ -78,7 +82,7 @@ public class BingoCard extends JComponent
 		{
 			BingoSquare square = squares[i];
 
-			g2.setColor((square.isCalled() ? Color.RED : Color.BLACK));
+			g2.setColor((square.isCalled() ? UIColour.SQUARE_MARKED.toColor() : Color.BLACK));
 			g2.fill(square);
 			g2.setColor(Color.WHITE);
 			g2.draw(square);
@@ -103,8 +107,18 @@ public class BingoCard extends JComponent
 	public void setCardNumbers(String s, UUID uuid)
 	{
 		this.uuid = uuid;
-		System.out.println(uuid == null);
 		String[] temp = s.split("/");
+		row = 0;
+
+		setPurchased(false);
+		
+		for (int i = 0; i < squares.length; i++)
+		{
+			BingoSquare square = squares[i];
+			square.setNumber(-1);
+			square.setCalled(false);
+		}
+		
 		for (int i = 0; i < temp.length; i++)
 		{
 			String[] numbers = temp[i].split("\\.");
@@ -148,6 +162,11 @@ public class BingoCard extends JComponent
 	public boolean isPurchased()
 	{
 		return purchased;
+	}
+
+	public void setSelected(boolean selected)
+	{
+		this.selected = selected;
 	}
 
 }

@@ -1,5 +1,6 @@
 package me.dylanmullen.bingo.game;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.UUID;
 
@@ -95,7 +96,7 @@ public class BingoCard
 		return false;
 	}
 
-	public boolean isWinner(LineState state, int[] numbers)
+	public boolean isWinner(LineState state, ArrayList<Integer> numbers)
 	{
 		int required = 0;
 
@@ -136,4 +137,23 @@ public class BingoCard
 	{
 		return owner;
 	}
+
+	public int[] getNumbers()
+	{
+		int[] numbers = new int[15];
+		int index = 0;
+		for(BingoRow row : rows)
+		{
+			if(index > 14)
+				break;
+			for(int x =0; x < row.getNumbers().length;x++)
+			{
+				int j = row.getNumbers()[x];
+				numbers[index]=j;
+				index++;
+			}
+		}
+		return numbers;
+	}
+
 }

@@ -2,6 +2,7 @@ package me.dylanmullen.bingo.game;
 
 import me.dylanmullen.bingo.game.components.ChatComponent;
 import me.dylanmullen.bingo.game.components.GameComponent;
+import me.dylanmullen.bingo.game.components.HeaderPanel;
 import me.dylanmullen.bingo.game.components.NumbersCalledComponent;
 import me.dylanmullen.bingo.window.ui.Panel;
 import me.dylanmullen.bingo.window.ui.UIColour;
@@ -11,7 +12,7 @@ public class GamePanel extends Panel
 
 	private static final long serialVersionUID = 3683450078479151314L;
 
-	private NumbersCalledComponent numbersComp;
+	private HeaderPanel header;
 	private ChatComponent chat;
 	private GameComponent game;
 
@@ -27,16 +28,16 @@ public class GamePanel extends Panel
 		setLayout(null);
 		setBackground(UIColour.FRAME_BINGO_BG.toColor());
 		
-		this.numbersComp = new NumbersCalledComponent(0, 0, getWidth(), getHeight() / 6);
-		numbersComp.setup();
-		numbersComp.create();
-
-		this.game = new GameComponent(0, numbersComp.getHeight(), (int) (getWidth() / 3) * 2,
-				getHeight() - numbersComp.getHeight());
+		this.header=new HeaderPanel(0, 0, getWidth(), getHeight()/6);
+		header.setup();
+		header.create();
+		
+		this.game = new GameComponent(0, header.getHeight(), (int) (getWidth() / 3) * 2,
+				getHeight() - header.getHeight());
 		game.setup();
 		game.create();
 		
-		this.chat= new ChatComponent(game.getWidth(), numbersComp.getHeight(), getWidth()-game.getWidth(), getHeight()-numbersComp.getHeight());
+		this.chat= new ChatComponent(game.getWidth(), header.getHeight(), getWidth()-game.getWidth(), getHeight()-header.getHeight());
 		chat.setup();
 		chat.create();
 	}
@@ -44,9 +45,14 @@ public class GamePanel extends Panel
 	@Override
 	public void create()
 	{
-		add(numbersComp);
+		add(header);
 		add(game);
 		add(chat);
+	}
+	
+	public void repaint()
+	{
+		super.repaint();
 	}
 	
 	public GameComponent getGameComponent()
@@ -56,7 +62,12 @@ public class GamePanel extends Panel
 	
 	public NumbersCalledComponent getNumbersComp()
 	{
-		return numbersComp;
+		return header.getNumbersComp();
+	}
+	
+	public HeaderPanel getHeader()
+	{
+		return header;
 	}
 
 }

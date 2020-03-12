@@ -10,8 +10,10 @@ import me.dylanmullen.bingo.net.PacketHandler;
 public class PurchaseListener implements MouseListener
 {
 
+	private long SENT_DELAY = 2500;
+
 	private BingoCard card;
-	private boolean sent;
+	private long lastSent;
 
 	public PurchaseListener(BingoCard card)
 	{
@@ -21,10 +23,10 @@ public class PurchaseListener implements MouseListener
 	@Override
 	public void mouseClicked(MouseEvent e)
 	{
-		if (sent)
+		if (System.currentTimeMillis() - lastSent <= SENT_DELAY)
 			return;
 		PacketHandler.sendPacket(PacketHandler.createPacket(8, card.getUUID().toString()), new PurchaseCallback(card));
-		sent = true;
+		lastSent = System.currentTimeMillis();
 	}
 
 	@Override

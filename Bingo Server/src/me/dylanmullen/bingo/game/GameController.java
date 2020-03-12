@@ -42,16 +42,15 @@ public class GameController
 	{
 		BingoGame game = u.getCurrentGame();
 		CardGroup cg = game.getCardGroup(u);
-		BingoCard card = cg.getCard(u);
-		game.addCard(card);
-		
+		BingoCard card = cg.getCard(uuid);
+		game.addCard(u, card);
 		if (cg.remove(card))
 			game.removeCardGroup(cg);
 
 		Packet_005_Response res = (Packet_005_Response) PacketHandler.createPacket(u.getClient(), 005, "");
 		res.constructMessage(ResponseType.SUCCESS, uuid.toString(), packetToRelay);
 		PacketHandler.sendPacket(res, null);
-		
+
 	}
 
 	public BingoGame placeUser(User u)

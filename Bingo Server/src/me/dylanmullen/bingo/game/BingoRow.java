@@ -1,5 +1,7 @@
 package me.dylanmullen.bingo.game;
 
+import java.util.ArrayList;
+
 public class BingoRow
 {
 
@@ -65,12 +67,12 @@ public class BingoRow
 		return true;
 	}
 
-	public boolean isFinished(int[] nums)
+	public boolean isFinished(ArrayList<Integer> nums)
 	{
 		for (int i = 0; i < numbers.length; i++)
 		{
 			int num = numbers[i];
-			if (nums[num - 1] != 1)
+			if (!nums.contains(num))
 				return false;
 		}
 		return true;

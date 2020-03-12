@@ -22,6 +22,7 @@ public class BingoSquare extends Rectangle
 
 	public void setNumber(int number)
 	{
+		setCalled(false);
 		this.number = number;
 	}
 

@@ -5,10 +5,10 @@ import me.dylanmullen.bingo.game.BingoGame;
 public class LobbyRunnable implements Runnable
 {
 
-	private final int COUNTER = 5;
+	private int COUNTER = 5;
 
 	private BingoGame game;
-	private boolean finished;
+	private boolean finished=false;
 	private long start = -1;
 
 	public LobbyRunnable(BingoGame game)
@@ -24,7 +24,14 @@ public class LobbyRunnable implements Runnable
 			setStart();
 			long now = System.currentTimeMillis();
 			if (now - start >= COUNTER * 1000)
-				finished = true;
+			{
+				if (game.getPlayersPlayingSize() >= 1)
+					finished = true;
+				else
+				{
+					start = System.currentTimeMillis();
+				}
+			}
 		}
 		game.sendUserCards();
 	}

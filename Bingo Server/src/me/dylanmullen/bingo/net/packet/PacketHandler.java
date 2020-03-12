@@ -13,6 +13,7 @@ import me.dylanmullen.bingo.net.packet.packets.Packet_008_PurchaseCard;
 import me.dylanmullen.bingo.net.packet.packets.Packet_009_SendNumber;
 import me.dylanmullen.bingo.net.packet.packets.Packet_010_GameStateChange;
 import me.dylanmullen.bingo.net.packet.packets.Packet_011_SendCards;
+import me.dylanmullen.bingo.net.packet.packets.Packet_Generic;
 
 public class PacketHandler
 {
@@ -36,10 +37,6 @@ public class PacketHandler
 		{
 			case LOGIN:
 				return new Packet_001_Login(c, message);
-			case REGISTER:
-				break;
-			case DISCONNECT:
-				break;
 			case REQUEST:
 				return new Packet_004_Request(004, c, message, false);
 			case RESPONSE:
@@ -57,8 +54,8 @@ public class PacketHandler
 			case SEND_CARDS:
 				return new Packet_011_SendCards(c, message);
 			default:
+				return new Packet_Generic(id, c, message);
 		}
-		return null;
 	}
 
 	public static void sendPacket(Packet packet, PacketCallback callback)

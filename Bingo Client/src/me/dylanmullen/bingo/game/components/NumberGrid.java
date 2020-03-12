@@ -9,6 +9,8 @@ import java.awt.RenderingHints;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+import me.dylanmullen.bingo.window.ui.UIColour;
+
 public class NumberGrid extends JLabel
 {
 
@@ -48,11 +50,17 @@ public class NumberGrid extends JLabel
 		drawCircles(g2);
 		super.paintComponent(g);
 	}
-	
+
 	private void drawCircles(Graphics2D g2)
 	{
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g2.setColor(Color.BLACK);
+
+		UIColour colour = UIColour.getBingoBallColour(currentNumber);
+		if (colour == null)
+			return;
+		
+		g2.setColor(colour.toColor());
+
 		if (!isFirst)
 			g2.fillOval((int) ((w / 2) - ((h / 1.25) / 2)), (int) ((w / 2) - ((h / 1.25) / 2)), (int) (h / 1.25),
 					(int) (h / 1.25));

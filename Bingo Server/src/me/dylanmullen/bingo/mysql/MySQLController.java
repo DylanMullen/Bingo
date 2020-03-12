@@ -104,9 +104,12 @@ public class MySQLController implements Runnable
 
 	public void submitTicket(SQLTicket ticket)
 	{
-		if (queue.contains(ticket))
-			return;
-		queue.add(ticket);
+		synchronized(queue)
+		{
+			if (queue.contains(ticket))
+				return;
+			queue.add(ticket);
+		}
 	}
 
 	public synchronized void dispose()

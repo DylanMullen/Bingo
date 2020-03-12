@@ -1,7 +1,9 @@
 package me.dylanmullen.bingo.game;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Random;
 import java.util.UUID;
 
 import me.dylanmullen.bingo.game.runnables.GameRunnable;
@@ -13,20 +15,20 @@ public class BingoGame
 {
 
 	private UUID gameUUID;
-	private HashSet<User> users;
-	private HashSet<BingoCard> cardsInPlay;
+	private HashSet<User> usersConnected;
+	private HashMap<User, CardGroup> cardsInPlay;
 	private HashSet<CardGroup> potentialCards;
 
-	private Random random;
-	private long seed;
-
-	private int[] numbers;
+	private ArrayList<Integer> numbers;
+	private ArrayList<Integer> numbersCalled;
 
 	private int maxPlayers;
 	private static GameState state = GameState.LOBBY;
-	private static LineState lineState;
+	private static LineState lineState = LineState.ONE;
 
 	private Thread thread;
+	private boolean playing;
+	private boolean shouldRestart = false;
 
 	public enum GameState
 	{
@@ -35,112 +37,213 @@ public class BingoGame
 
 	public enum LineState
 	{
-		ONE, TWO, FULLHOUSE;
+		ONE(0), TWO(1), FULLHOUSE(2);
+
+		private int state;
+
+		private LineState(int state)
+		{
+			this.state = state;
+		}
+
+		public int getState()
+		{
+			return state;
+		}
+
+		public static LineState getStateByID(int id)
+		{
+			for (LineState ls : values())
+				if (ls.state == id)
+					return ls;
+			return null;
+		}
 	}
 
 	public BingoGame(int playerCap)
 	{
 		this.gameUUID = UUID.randomUUID();
-		this.users = new HashSet<User>();
+		this.usersConnected = new HashSet<User>();
 		this.potentialCards = new HashSet<CardGroup>();
-		this.cardsInPlay = new HashSet<BingoCard>();
+		this.cardsInPlay = new HashMap<User, CardGroup>();
 
 		this.maxPlayers = playerCap;
 
-		this.random = new Random();
-		this.seed = System.currentTimeMillis();
+		this.numbers = new ArrayList<Integer>();
+		this.numbersCalled = new ArrayList<Integer>();
 
-		this.numbers = new int[90];
+		setupNumbers();
 		start();
+	}
+
+	public void setupNumbers()
+	{
+		numbers.clear();
+		numbersCalled.clear();
+		for (int i = 0; i < 90; i++)
+		{
+			numbers.add(i + 1);
+		}
+		Collections.shuffle(numbers);
 	}
 
 	public void start()
 	{
 		thread = new Thread(() ->
 		{
-			state = GameState.LOBBY;
-			new LobbyRunnable(this).run();
-			state = GameState.PLAYING;
-			new GameRunnable(this).run();
+			do
+			{
+				state = GameState.LOBBY;
+				new LobbyRunnable(this).run();
+				state = GameState.PLAYING;
+				new GameRunnable(this).run();
+				restart();
+			} while (playing);
+			dispose();
 		});
+		playing = true;
 		thread.start();
 	}
 
-	public void end()
+	public void restart()
 	{
+		if (!shouldRestart)
+			return;
+
+		state = GameState.LOBBY;
+		lineState = LineState.ONE;
+		cardsInPlay.clear();
+		potentialCards.clear();
+		setupNumbers();
+		sendPotentialCards();
+		shouldRestart = false;
+	}
+
+	public synchronized void dispose()
+	{
+		try
+		{
+			thread.join();
+		} catch (InterruptedException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	public void sendUserCards()
 	{
-		for (User u : users)
+		for (User u : cardsInPlay.keySet())
 		{
-			StringBuilder sb = new StringBuilder();
-			for (BingoCard card : cardsInPlay)
-			{
-				if (u.equals(card.getOwner()))
-					sb.append(card.getUuid().toString() + "/nl/");
-			}
-			String mes = sb.toString();
-			if (mes.length() != 0)
-				mes = mes.substring(0, (mes.length() - ("/nl/").length()));
-			PacketHandler.sendPacket(PacketHandler.createPacket(u.getClient(), 11, mes), null);
+			CardGroup cg = cardsInPlay.get(u);
+			PacketHandler.sendPacket(PacketHandler.createPacket(u.getClient(), 11, cg.getCardUUIDs()), null);
 		}
+		rig();
+	}
 
+	public void sendPotentialCards()
+	{
+		for (User u : usersConnected)
+		{
+			CardGroup cg = generateCardGroup(u);
+			PacketHandler.sendPacket(PacketHandler.createPacket(u.getClient(), 14, cg.toString()), null);
+		}
+	}
+
+	public int getPlayersPlayingSize()
+	{
+		return cardsInPlay.keySet().size();
+	}
+
+	// DEBUG TOOL
+	public void rig()
+	{
+		int[] x = cardsInPlay.values().iterator().next().firstNumbers();
+
+		numbers.clear();
+		for (int j = 0; j < x.length; j++)
+		{
+			numbers.add(x[j]);
+		}
 	}
 
 	public int pickNumber()
 	{
 		if (allNumbersUsed())
 			return -1;
-		int number = random.nextInt(90 - 1) + 1;
 
-		if (numbers[number - 1] == 1)
-		{
-			return pickNumber();
-		}
-
-		numbers[number - 1] = 1;
+		int number = numbers.get(0);
+		numbers.remove(0);
+		numbersCalled.add(number);
 		return number;
 	}
 
-	private boolean allNumbersUsed()
-	{
-		for (int i = 0; i < numbers.length; i++)
-		{
-			if (numbers[i] == 0)
-				return false;
-		}
-		return true;
-	}
-
-	public boolean checkWinners(int num)
+	public boolean checkWinners()
 	{
 		boolean status = false;
 
-		for (BingoCard card : cardsInPlay)
+		for (User u : cardsInPlay.keySet())
 		{
-			status = card.isWinner(lineState, numbers);
+			CardGroup cg = cardsInPlay.get(u);
+			status = cg.checkWinner(lineState, numbersCalled);
+			if (status)
+				return status;
 		}
-
 		return status;
 	}
 
-	public HashSet<BingoCard> getWinners()
+	public ArrayList<User> getWinners()
 	{
-		HashSet<BingoCard> winners = new HashSet<BingoCard>();
-		for (BingoCard card : cardsInPlay)
+		ArrayList<User> winners = new ArrayList<User>();
+		for (User u : cardsInPlay.keySet())
 		{
-			if (card.isWinner(lineState, numbers))
-				winners.add(card);
+			if (cardsInPlay.get(u).checkWinner(lineState, numbersCalled))
+				winners.add(u);
 		}
 		return winners;
 	}
 
+	public ArrayList<BingoCard> getWinningCards(User u)
+	{
+		return cardsInPlay.get(u).getWinningCards(lineState, numbersCalled);
+	}
+
+	public void handleWinning()
+	{
+		ArrayList<User> winners = getWinners();
+
+		StringBuilder winnerNames = new StringBuilder();
+		for (int i = 0; i < winners.size(); i++)
+		{
+			User u = winners.get(i);
+			winnerNames.append(u.getUUID().toString() + (winners.size() - 1 == i ? "" : "/nl/"));
+		}
+		sendPacket(13, winnerNames.toString());
+		if (lineState != LineState.FULLHOUSE)
+		{
+			sendPacket(12, lineState.state + "");
+			updateLineState();
+		} else
+		{
+			shouldRestart = true;
+		}
+	}
+
+	private void updateLineState()
+	{
+		int index = lineState.state + 1;
+		lineState = LineState.getStateByID(index);
+	}
+
+	private boolean allNumbersUsed()
+	{
+		return numbers.isEmpty();
+	}
+
 	public void addPlayer(User u)
 	{
-		if (users.contains(u))
+		if (usersConnected.contains(u))
 			return;
-		users.add(u);
+		usersConnected.add(u);
 		u.setCurrentGame(this);
 	}
 
@@ -157,9 +260,17 @@ public class BingoGame
 		potentialCards.remove(group);
 	}
 
-	public void addCard(BingoCard card)
+	public void addCard(User u, BingoCard card)
 	{
-		cardsInPlay.add(card);
+		synchronized (cardsInPlay)
+		{
+			if (!cardsInPlay.containsKey(u))
+				cardsInPlay.put(u, new CardGroup(u));
+
+			CardGroup cg = cardsInPlay.get(u);
+			cg.addCard(card);
+			cardsInPlay.put(u, cg);
+		}
 	}
 
 	public CardGroup getCardGroup(User u)
@@ -170,30 +281,24 @@ public class BingoGame
 		return null;
 	}
 
-	public BingoCard getCard(User u)
+	public CardGroup getCards(User u)
 	{
-		for (BingoCard card : cardsInPlay)
-			if (card.getOwner().equals(u))
-				return card;
-		return null;
+		return cardsInPlay.get(u);
 	}
 
 	public boolean hasUser(User u)
 	{
-		return users.contains(u);
+		return usersConnected.contains(u);
 	}
 
-	public boolean hasCard(User u)
+	public boolean hasCards(User u)
 	{
-		for (BingoCard card : cardsInPlay)
-			if (card.getOwner().equals(u))
-				return true;
-		return false;
+		return cardsInPlay.containsKey(u);
 	}
 
 	public void sendPacket(int id, String mes)
 	{
-		for (User user : users)
+		for (User user : usersConnected)
 		{
 			PacketHandler.sendPacket(PacketHandler.createPacket(user.getClient(), id, mes), null);
 		}
@@ -206,7 +311,7 @@ public class BingoGame
 
 	public HashSet<User> getPlayers()
 	{
-		return users;
+		return usersConnected;
 	}
 
 	public String getGameState()
@@ -222,6 +327,11 @@ public class BingoGame
 			default:
 				return "-1";
 		}
+	}
+
+	public boolean shouldRestart()
+	{
+		return shouldRestart;
 	}
 
 }

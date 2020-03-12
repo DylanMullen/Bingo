@@ -6,6 +6,7 @@ public class GameRunnable implements Runnable
 {
 
 	private BingoGame game;
+
 	private boolean playing;
 	private boolean paused;
 
@@ -24,19 +25,38 @@ public class GameRunnable implements Runnable
 		{
 			if (paused)
 			{
-				if (System.currentTimeMillis() - then >= 2000)
+				int delay = 500;
+
+				if (System.currentTimeMillis() - then >= delay)
+				{
+					if (game.shouldRestart())
+					{
+						playing = false;
+						continue;
+					}
 					paused = false;
+				}
 				else
+				{
 					continue;
+				}
 			}
 
 			int num = game.pickNumber();
-
 			if (num == -1)
+			{
 				playing = false;
+				continue;
+			}
 			game.sendPacket(9, num + "");
+
 			paused = true;
+			if (game.checkWinners())
+			{
+				game.handleWinning();
+			}
 			then = System.currentTimeMillis();
+
 		}
 		System.out.println("Game finished");
 	}

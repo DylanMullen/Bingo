@@ -17,6 +17,7 @@ public class Main
 		new ClientHandler("localhost", 4585);
 		PacketHandler.sendPacket(PacketHandler.createPacket(001, "dylan/nl/test"), null);
 		new BingoWindow();
+	
 	}
 
 }

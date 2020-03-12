@@ -20,7 +20,8 @@ public class BingoCardListener implements MouseListener
 	public void mouseClicked(MouseEvent e)
 	{
 		BingoCard card = (BingoCard) e.getComponent();
-		group.showSelector(card);
+		if(!card.isPurchased())
+			group.showSelector(card);
 	}
 
 	@Override

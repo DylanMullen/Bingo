@@ -12,9 +12,6 @@ public class PacketHandler
 	public static Packet createPacket(int id, String data)
 	{
 		PacketType type = PacketType.getPacket(id);
-		if (type == PacketType.INVALID)
-			return null;
-
 		Packet p = new Packet(type.getID(), data);
 		return p;
 	}
@@ -28,7 +25,6 @@ public class PacketHandler
 	public static void handlePacket(String data)
 	{
 		int id = (Integer.parseInt(data.split(";", 2)[0]));
-		System.out.println("recieveed");
 		switch (id)
 		{
 			case 9:
@@ -39,6 +35,16 @@ public class PacketHandler
 				break;
 			case 11:
 				BingoGame.getInstance().updateCards(data);
+				break;
+			case 12:
+				BingoGame.getInstance().updateLineState(data);
+				break;
+			case 13:
+				BingoGame.getInstance().showWinners(data);
+				break;
+			case 14:
+				BingoGame.getInstance().restart(data);
+				break;
 			default:
 				return;
 		}

@@ -70,7 +70,9 @@ public class CardGroupComp extends Panel
 
 			String[] temp = data[i].split("/u/");
 			UUID uuid = UUID.fromString(temp[1]);
+			System.out.println("\t" + temp[0]);
 			cards[index].setCardNumbers(temp[0], uuid);
+			cards[index].setVisible(true);
 			index++;
 		}
 		for (int i = 0; i < cards.length; i++)
@@ -95,6 +97,7 @@ public class CardGroupComp extends Panel
 		{
 			UUID uuid = UUID.fromString(j);
 			cardsToUpdate.add(uuid);
+			System.out.println(j);
 		}
 
 		for (BingoCard card : cards)
@@ -105,8 +108,13 @@ public class CardGroupComp extends Panel
 				card.setVisible(false);
 				card.setPurchased(false);
 				card.repaint();
+				continue;
 			}
+			card.setVisible(true);
+			card.repaint();
 		}
+
+		repaint();
 
 	}
 
@@ -126,9 +134,27 @@ public class CardGroupComp extends Panel
 		}
 	}
 
+	public boolean hasCards()
+	{
+		for (BingoCard card : cards)
+		{
+			if (card.isVisible())
+				return true;
+		}
+		return false;
+	}
+
 	public void showSelector(BingoCard card)
 	{
 		selectors.get(card).setVisible(true);
+		card.setSelected(true);
+		repaint();
+	}
+
+	public void disableSelector(BingoCard card)
+	{
+		selectors.get(card).setVisible(false);
+		card.setSelected(false);
 		repaint();
 	}
 
