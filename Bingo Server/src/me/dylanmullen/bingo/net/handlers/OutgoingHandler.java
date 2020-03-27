@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import me.dylanmullen.bingo.net.Server;
 import me.dylanmullen.bingo.net.packet.Packet;
-import me.dylanmullen.bingo.util.DebugUtils;
 
 public class OutgoingHandler implements Runnable
 {

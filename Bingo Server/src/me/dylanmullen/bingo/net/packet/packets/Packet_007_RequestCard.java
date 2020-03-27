@@ -1,5 +1,6 @@
 package me.dylanmullen.bingo.net.packet.packets;
 
+import me.dylanmullen.bingo.core.BingoServer;
 import me.dylanmullen.bingo.game.GameController;
 import me.dylanmullen.bingo.game.user.User;
 import me.dylanmullen.bingo.game.user.UserManager;
@@ -18,7 +19,7 @@ public class Packet_007_RequestCard extends Packet
 	public void handle()
 	{
 		User user = UserManager.getInstance().getUser(getClient());
-		GameController.getInstance().handleCardRequest(user, getUUID());
+		BingoServer.getInstance().getGame().handleCardRequest(user, getUUID());
 	}
 
 }

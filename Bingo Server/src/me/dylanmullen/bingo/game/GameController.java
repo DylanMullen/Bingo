@@ -24,11 +24,6 @@ public class GameController
 		games = new HashSet<BingoGame>();
 	}
 
-	public static GameController getInstance()
-	{
-		return instance;
-	}
-
 	public void handleCardRequest(User u, UUID packetToRelay)
 	{
 		BingoGame game = u.getCurrentGame();

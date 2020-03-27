@@ -5,6 +5,8 @@ public class BingoApp
 
 	public BingoApp()
 	{
+		
+		
 	}
 	
 }

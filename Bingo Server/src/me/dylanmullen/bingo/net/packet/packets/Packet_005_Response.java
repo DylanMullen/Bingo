@@ -26,7 +26,7 @@ public class Packet_005_Response extends Packet
 	}
 
 	// 005;/m/<id>;<pu>message/m/;?pu;?time
-	public Packet_005_Response(Client c, ResponseType type, String message, UUID packetUUID)
+	public Packet_005_Response(Client c, ResponseType type, String message)
 	{
 		super(005, c, message, true);
 	}

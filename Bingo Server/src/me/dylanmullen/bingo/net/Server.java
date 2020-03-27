@@ -11,6 +11,7 @@ public class Server
 	private DatagramSocket server;
 	
 	private ArrayList<Client> clientsConnected = new ArrayList<>();
+	private boolean valid=true;
 
 	public Server(int port)
 	{
@@ -20,6 +21,7 @@ public class Server
 		} catch (SocketException e)
 		{
 			System.err.println("Failed to initialize server: " +e.getMessage());
+			valid = false;
 		}
 	}
 	
@@ -60,5 +62,8 @@ public class Server
 		return clientsConnected;
 	}
 	
-	
+	public boolean isValid()
+	{
+		return valid;
+	}
 }

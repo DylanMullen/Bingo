@@ -5,7 +5,7 @@ import me.dylanmullen.bingo.game.user.UserManager;
 import me.dylanmullen.bingo.net.Client;
 import me.dylanmullen.bingo.net.handlers.ServerHandler;
 import me.dylanmullen.bingo.net.packet.packets.Packet_001_Login;
-import me.dylanmullen.bingo.net.packet.packets.Packet_004_Request;
+import me.dylanmullen.bingo.net.packet.packets.Packet_004_Ping;
 import me.dylanmullen.bingo.net.packet.packets.Packet_005_Response;
 import me.dylanmullen.bingo.net.packet.packets.Packet_006_JoinGame;
 import me.dylanmullen.bingo.net.packet.packets.Packet_007_RequestCard;
@@ -24,7 +24,7 @@ public class PacketHandler
 	{
 		int id = (Integer.parseInt(data.split(";", 2)[0]));
 		Packet packet = createPacket(c, id, data);
-
+		
 		if (packet != null)
 			packet.handle();
 	}
@@ -37,10 +37,10 @@ public class PacketHandler
 		{
 			case LOGIN:
 				return new Packet_001_Login(c, message);
-			case REQUEST:
-				return new Packet_004_Request(004, c, message, false);
+			case PING:
+				return new Packet_004_Ping(004, c, message);
 			case RESPONSE:
-				return new Packet_005_Response(c, null, message, null);
+				return new Packet_005_Response(c, null, message);
 			case JOIN_GAME:
 				return new Packet_006_JoinGame(c, message);
 			case REQUEST_CARD:

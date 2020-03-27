@@ -19,7 +19,8 @@ public class MySQLController implements Runnable
 
 	private Thread thread;
 	private boolean running;
-
+	private boolean connected;
+	
 	private Config config;
 	private SQLDatabase database;
 
@@ -36,13 +37,38 @@ public class MySQLController implements Runnable
 			return;
 		thread = new Thread(this);
 		thread.start();
+		
+		// WAITING FOR A RESPONSE ON CONNECT
+		synchronized(thread)
+		{
+			try
+			{
+				wait();
+			} catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override
 	public void run()
 	{
 		database = new SQLDatabase(config);
-		database.connect();
+		connected = database.connect();
+	
+		synchronized(this)
+		{
+			notify();
+		}
+		
+		System.out.println(connected);
+		
+		if(!connected)
+		{
+			System.out.println("Failed to connect!");
+			return;
+		}
 
 		while (database.isConnected())
 		{
@@ -125,5 +151,14 @@ public class MySQLController implements Runnable
 			e.printStackTrace();
 		}
 	}
-
+	
+	public boolean isConnected()
+	{
+		return connected;
+	}
+	
+	public Thread getThread()
+	{
+		return thread;
+	}
 }

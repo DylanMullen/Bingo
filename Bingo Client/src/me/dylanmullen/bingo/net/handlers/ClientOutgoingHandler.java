@@ -60,13 +60,17 @@ public class ClientOutgoingHandler implements Runnable
 			client.getSocket().send(packet.convert(client));
 		} catch (Exception e)
 		{
-			System.out.println("Failed to send packet: " + e.getMessage());
+//			System.out.println("Failed to send packet: " + e.);
+			e.printStackTrace();
 		}
 	}
 
 	public void addPacket(Packet packet)
 	{
-		queue.add(packet);
+		synchronized(queue)
+		{
+			queue.add(packet);
+		}
 	}
 
 }

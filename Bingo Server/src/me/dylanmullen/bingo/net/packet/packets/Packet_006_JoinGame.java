@@ -1,5 +1,6 @@
 package me.dylanmullen.bingo.net.packet.packets;
 
+import me.dylanmullen.bingo.core.BingoServer;
 import me.dylanmullen.bingo.game.BingoGame;
 import me.dylanmullen.bingo.game.GameController;
 import me.dylanmullen.bingo.game.user.User;
@@ -30,7 +31,7 @@ public class Packet_006_JoinGame extends Packet
 			return;
 		}
 
-		BingoGame game = GameController.getInstance().placeUser(u);
+		BingoGame game = BingoServer.getInstance().getGame().placeUser(u);
 		res.constructMessage(ResponseType.SUCCESS, game.getGameUUID().toString() + "/nl/" + game.getGameState(),
 				getUUID());
 		PacketHandler.sendPacket(res, null);

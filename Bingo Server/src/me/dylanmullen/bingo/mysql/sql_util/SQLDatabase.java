@@ -23,7 +23,7 @@ public class SQLDatabase
 	public SQLDatabase(Config config)
 	{
 		this.databaseName = config.getValue("dbName");
-		this.address =config.getValue("host");
+		this.address = config.getValue("host");
 		this.port = Integer.parseInt(config.getValue("port"));
 		this.username = config.getValue("username");
 		this.password = config.getValue("password");
@@ -40,14 +40,16 @@ public class SQLDatabase
 			this.connection = DriverManager.getConnection(
 					"jdbc:mysql://" + this.address + ":" + this.port + "/" + this.databaseName, username, password);
 			connected = true;
-			System.out.println("MySQL Connected. Time taken: " + (System.currentTimeMillis() - last) / 1000 + "ms");
+			System.out.println("MySQL Connected. Time taken: " + (System.currentTimeMillis() - last) + "ms");
+			return connected;
 		} catch (SQLException e)
 		{
 			System.err.println("Error connecting to MySQL database: " + e.getMessage());
+			System.err.println("Time Taken: " + (System.currentTimeMillis() - last) + "ms");
+			return false;
 		}
-		return false;
 	}
-	
+
 	public Connection getConnection()
 	{
 		return connection;

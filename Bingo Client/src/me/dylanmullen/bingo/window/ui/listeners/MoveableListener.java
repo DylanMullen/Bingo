@@ -28,11 +28,9 @@ public class MoveableListener extends MouseAdapter implements MouseListener
 		int thisX = e.getComponent().getLocation().x;
 		int thisY = e.getComponent().getLocation().y;
 
-		// Determine how much the mouse moved since the initial click
 		int xMoved = e.getX() - initialClick.x;
 		int yMoved = e.getY() - initialClick.y;
 
-		// Move window to this position
 		int X = thisX + xMoved;
 		int Y = thisY + yMoved;
 

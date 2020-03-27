@@ -74,7 +74,6 @@ public class ClientHandler
 			{
 				ticket.getCallback().setData(decode);
 				ticket.getCallback().callback();
-				System.out.println("recied and callbacked");
 				tickets.remove(ticket);
 				return;
 			}
@@ -92,8 +91,6 @@ public class ClientHandler
 	{
 		if (uuid == null)
 			return null;
-
-		System.out.println(uuid.toString());
 
 		for (int i = 0; i < tickets.size(); i++)
 		{

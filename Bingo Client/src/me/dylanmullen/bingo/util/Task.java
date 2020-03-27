@@ -8,11 +8,12 @@ public abstract class Task implements Runnable
 	private boolean repeatingTask;
 
 	private long last;
-	private long delay;
+	private double delay;
 
-	public Task(int seconds)
+	public Task(double seconds)
 	{
 		this.delay = seconds * 1000;
+		System.out.println(delay);
 		this.thread = new Thread(this);
 		setRepeatingTask(true);
 	}
@@ -55,7 +56,9 @@ public abstract class Task implements Runnable
 		while (running)
 		{
 			if (delay == -1)
+			{
 				task();
+			}
 			else if (System.currentTimeMillis() - getLast() >= getDelay())
 			{
 				task();
@@ -70,7 +73,7 @@ public abstract class Task implements Runnable
 		return last;
 	}
 
-	public long getDelay()
+	public double getDelay()
 	{
 		return delay;
 	}

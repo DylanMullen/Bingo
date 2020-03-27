@@ -1,17 +1,14 @@
 package me.dylanmullen.bingo.window.bingo;
 
 import java.awt.EventQueue;
-import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import me.dylanmullen.bingo.game.BingoGame;
-import me.dylanmullen.bingo.game.GamePanel;
-import me.dylanmullen.bingo.window.bingo.panels.TM_Bingo;
-import me.dylanmullen.bingo.window.bingo.panels.content.PlayContent;
 import me.dylanmullen.bingo.window.bingo.panels.sidemenu.SP_Bingo;
+import me.dylanmullen.bingo.window.login.panels.TopMenu;
 
 public class BingoWindow extends JFrame
 {
@@ -64,7 +61,7 @@ public class BingoWindow extends JFrame
 		sidePanel_1.create();
 		contentPane.add(sidePanel_1);
 
-		TM_Bingo topMenu_1 = new TM_Bingo(this, getWidth() / 4, 0, getWidth() / 4 * 3, getHeight() / 10);
+		TopMenu topMenu_1 = new TopMenu(this, getWidth() / 4, 0, getWidth() / 4 * 3, getHeight() / 10);
 		topMenu_1.setup();
 		topMenu_1.create();
 		contentPane.add(topMenu_1);

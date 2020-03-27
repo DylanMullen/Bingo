@@ -1,22 +1,25 @@
 package me.dylanmullen.bingo.core;
 
+import me.dylanmullen.bingo.configs.Config;
 import me.dylanmullen.bingo.game.GameController;
 import me.dylanmullen.bingo.game.user.UserManager;
 import me.dylanmullen.bingo.mysql.MySQLController;
-import me.dylanmullen.bingo.net.Server;
+import me.dylanmullen.bingo.net.handlers.ServerHandler;
 
 public class BingoServer
 {
 
 	private static BingoServer instance;
 
-	private Server server;
+	private ServerHandler serverHandler;
 	private int port;
 
 	private UserManager userManager;
 
 	private GameController game;
 	private MySQLController mysql;
+
+	private boolean initialized = true;
 
 	public BingoServer(int port)
 	{
@@ -33,16 +36,30 @@ public class BingoServer
 
 	private void init()
 	{
-		this.server = new Server(port);
+		this.mysql = new MySQLController(new Config(getClass().getClassLoader().getResourceAsStream("mysql.config")));
+		mysql.start();
+
+		if (!mysql.isConnected())
+		{
+			initialized=false;
+			return;
+		}
+
+		this.game = new GameController();
 		this.userManager = new UserManager();
-		this.game=new GameController();
-		
-//		this.mysql = new MySQLController("bingo", "127.0.0.1", 3306);
+		this.serverHandler = new ServerHandler(port);
+
 	}
 
 	private void start()
 	{
 		init();
+		if(!initialized)
+		{
+			System.err.println("Failed to start server.\nExiting");
+			return;
+		}
+		serverHandler.start();
 		System.out.println("Server Started");
 	}
 
@@ -55,13 +72,13 @@ public class BingoServer
 		return userManager;
 	}
 
-	public Server getServer()
-	{
-		return server;
-	}
-	
 	public MySQLController getMySQL()
 	{
 		return mysql;
+	}
+	
+	public GameController getGame()
+	{
+		return game;
 	}
 }

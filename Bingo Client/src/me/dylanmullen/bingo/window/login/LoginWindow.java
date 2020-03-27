@@ -7,9 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import me.dylanmullen.bingo.window.login.comp.UITextField;
-import me.dylanmullen.bingo.window.login.comp.TEST;
-import me.dylanmullen.bingo.window.login.comp.TopMenu;
+import me.dylanmullen.bingo.window.login.panels.LoginPanel;
+import me.dylanmullen.bingo.window.login.panels.TopMenu;
 
 public class LoginWindow extends JFrame
 {
@@ -28,7 +27,6 @@ public class LoginWindow extends JFrame
 				try
 				{
 					LoginWindow frame = new LoginWindow();
-					frame.setVisible(true);
 				} catch (Exception e)
 				{
 					e.printStackTrace();
@@ -51,14 +49,17 @@ public class LoginWindow extends JFrame
 		setLocationRelativeTo(null);
 		setUndecorated(true);
 		setLayout(null);
-		TopMenu menu = new TopMenu(0, 0, getWidth(), getHeight() / 10);
+		TopMenu menu = new TopMenu(this, 0, 0, getWidth(), getHeight() / 10);
 		menu.setup();
 		menu.create();
-		add(menu);
-		
-		TEST test = new TEST();
-		add(test);
+		contentPane.add(menu);
 
+		LoginPanel comp = new LoginPanel(0, menu.getHeight(), getWidth(), getHeight()-menu.getHeight());
+		comp.create();
+		contentPane.add(comp);
+		setVisible(true);
+		
+		contentPane.requestFocusInWindow();
 	}
 
 }

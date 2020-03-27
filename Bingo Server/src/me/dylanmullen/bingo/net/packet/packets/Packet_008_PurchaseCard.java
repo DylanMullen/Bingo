@@ -2,6 +2,7 @@ package me.dylanmullen.bingo.net.packet.packets;
 
 import java.util.UUID;
 
+import me.dylanmullen.bingo.core.BingoServer;
 import me.dylanmullen.bingo.game.GameController;
 import me.dylanmullen.bingo.game.user.User;
 import me.dylanmullen.bingo.game.user.UserManager;
@@ -22,7 +23,7 @@ public class Packet_008_PurchaseCard extends Packet
 	{
 		User u = UserManager.getInstance().getUser(getClient());
 		UUID uuid = UUID.fromString(getMessage());
-		GameController.getInstance().purchaseCard(u, uuid, getUUID());
+		BingoServer.getInstance().getGame().purchaseCard(u, uuid, getUUID());
 	}
 
 }

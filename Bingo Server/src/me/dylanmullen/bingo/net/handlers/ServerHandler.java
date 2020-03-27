@@ -20,23 +20,28 @@ public class ServerHandler
 	private PacketHandler packetHandler;
 
 	private ArrayList<PacketTicket> tickets = new ArrayList<>();
-
+	
 	public ServerHandler(int port)
 	{
 		if (handler == null)
 			handler = this;
 
 		createServer(port);
-		createHandlers();
 	}
 
 	public static ServerHandler getHandler()
 	{
 		return handler;
 	}
+	
+	public boolean isSetup()
+	{
+		return server.isValid();
+	}
 
 	public void start()
 	{
+		createHandlers();
 		income.start();
 		outgoing.start();
 	}
