@@ -1,7 +1,6 @@
 package me.dylanmullen.bingo.window.login;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -13,27 +12,9 @@ import me.dylanmullen.bingo.window.login.panels.TopMenu;
 public class LoginWindow extends JFrame
 {
 
+	private static final long serialVersionUID = -4105651394392717980L;
+	
 	private JPanel contentPane;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args)
-	{
-		EventQueue.invokeLater(new Runnable()
-		{
-			public void run()
-			{
-				try
-				{
-					LoginWindow frame = new LoginWindow();
-				} catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
@@ -41,7 +22,7 @@ public class LoginWindow extends JFrame
 	public LoginWindow()
 	{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 600);
+		setBounds(100, 100, 450, 400);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -49,7 +30,7 @@ public class LoginWindow extends JFrame
 		setLocationRelativeTo(null);
 		setUndecorated(true);
 		setLayout(null);
-		TopMenu menu = new TopMenu(this, 0, 0, getWidth(), getHeight() / 10);
+		TopMenu menu = new TopMenu(this, 0, 0, getWidth(), (int)((getHeight() / 10)*1.25));
 		menu.setup();
 		menu.create();
 		contentPane.add(menu);

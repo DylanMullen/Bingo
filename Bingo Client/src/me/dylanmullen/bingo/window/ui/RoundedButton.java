@@ -1,4 +1,4 @@
-package me.dylanmullen.bingo.window.login.comp;
+package me.dylanmullen.bingo.window.ui;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -9,8 +9,6 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import me.dylanmullen.bingo.util.FontUtil;
-import me.dylanmullen.bingo.window.ui.UIButton;
-import me.dylanmullen.bingo.window.ui.UIColour;
 
 public class RoundedButton extends UIButton
 {
@@ -23,6 +21,10 @@ public class RoundedButton extends UIButton
 	{
 		super(text, x, y, width, height);
 	}
+	public RoundedButton(String text)
+	{
+		super(text);
+	}
 
 	@Override
 	protected void setup()
@@ -34,7 +36,6 @@ public class RoundedButton extends UIButton
 		text.setBounds(0, 0, getWidth(), getHeight());
 		text.setHorizontalAlignment(SwingConstants.CENTER);
 		text.setFont(FontUtil.getFont(text, getText(), 0, 0));
-		text.setBackground(Color.black);
 	}
 
 	@Override
@@ -42,6 +43,7 @@ public class RoundedButton extends UIButton
 	{
 		setup();
 		add(text);
+		System.out.println("BUttons");
 		return this;
 	}
 	

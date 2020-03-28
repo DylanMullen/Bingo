@@ -21,15 +21,26 @@ public class UITextField extends JTextField
 
 	public UITextField(String placeholder, int[] properties)
 	{
-		this.placeholder = placeholder;
+		this(placeholder);
 		setBounds(properties[0], properties[1], properties[2], properties[3]);
-		setBorder(BorderFactory.createEmptyBorder(5, 10, 8, 10));
 		setup();
+	}
+
+	public UITextField(String placeHolder)
+	{
+		this.placeholder = placeHolder;
+		setup();
+	}
+
+	public void resize(int[] properties)
+	{
+		setBounds(properties[0], properties[1], properties[2], properties[3]);
 	}
 
 	private void setup()
 	{
 		setOpaque(false);
+		setBorder(BorderFactory.createEmptyBorder(5, 10, 8, 10));
 
 		setFont(new Font("Calibri", Font.PLAIN, 25));
 		setText(placeholder);

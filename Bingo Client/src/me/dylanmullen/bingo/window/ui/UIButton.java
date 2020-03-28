@@ -34,7 +34,8 @@ public abstract class UIButton extends JPanel
 
 	public void init()
 	{
-		setBounds(x, y, width, height);
+		if (width > 0 || height > 0)
+			setBounds(x, y, width, height);
 		setLayout(null);
 		setOpaque(true);
 	}

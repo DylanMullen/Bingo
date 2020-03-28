@@ -12,11 +12,18 @@ public abstract class Panel extends JPanel
 
 	public Panel(int x, int y, int width, int height)
 	{
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
+		setBounds(x, y, width, height);
 		setLayout(null);
+	}
+
+	@Override
+	public void setBounds(int x, int y, int width, int height)
+	{
+		super.setBounds(x, y, width, height);
+		this.x = getX();
+		this.y = getY();
+		this.width = getWidth();
+		this.height = getHeight();
 	}
 
 	public abstract void setup();

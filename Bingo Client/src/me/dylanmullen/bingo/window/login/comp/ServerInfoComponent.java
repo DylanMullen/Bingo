@@ -27,11 +27,15 @@ public class ServerInfoComponent extends Panel implements EventListener
 	{
 		super(x, y, width, height);
 	}
+	
+	public ServerInfoComponent()
+	{
+		super(0, 0, 0, 0);
+	}
 
 	@Override
 	public void setup()
 	{
-		setBounds(x, y, width, height);
 		setLayout(null);
 		setOpaque(false);
 		EventHandler.registerListener(this);
