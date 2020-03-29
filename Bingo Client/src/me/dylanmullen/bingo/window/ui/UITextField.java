@@ -7,6 +7,8 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JTextField;
@@ -18,6 +20,8 @@ public class UITextField extends JTextField
 	private static final long serialVersionUID = 1882505527244454420L;
 
 	private String placeholder;
+	private boolean hovered;
+	private boolean focused;
 
 	public UITextField(String placeholder, int[] properties)
 	{
@@ -49,11 +53,38 @@ public class UITextField extends JTextField
 		updateBackground(UIColour.FRAME_BINGO_BG);
 		setForeground(Color.LIGHT_GRAY);
 
+		addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseExited(MouseEvent e)
+			{
+				hovered = false;
+				if (!focused)
+				{
+					updateBackground(UIColour.FRAME_BINGO_BG);
+					setForeground(Color.LIGHT_GRAY);
+					repaint();
+				}
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e)
+			{
+				hovered = true;
+				if (!focused)
+				{
+					updateBackground(UIColour.FRAME_BINGO_BG_TOP);
+					repaint();
+				}
+			}
+		});
+
 		addFocusListener(new FocusListener()
 		{
 			@Override
 			public void focusLost(FocusEvent e)
 			{
+				focused = false;
 				updateBackground(UIColour.FRAME_BINGO_BG);
 				if (getText().isEmpty())
 				{
@@ -65,6 +96,7 @@ public class UITextField extends JTextField
 			@Override
 			public void focusGained(FocusEvent e)
 			{
+				focused = true;
 				if (getText().equals(placeholder))
 				{
 					setText("");
@@ -94,6 +126,16 @@ public class UITextField extends JTextField
 		g2.fillRoundRect(0, getHeight() - 8, getWidth(), 8, 15, 15);
 
 		super.paintComponent(g);
+	}
+
+	public String getPlaceholder()
+	{
+		return placeholder;
+	}
+
+	public boolean isPlaceholder()
+	{
+		return getText().equals(placeholder);
 	}
 
 }

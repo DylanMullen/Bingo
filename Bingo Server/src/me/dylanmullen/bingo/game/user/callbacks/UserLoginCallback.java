@@ -30,7 +30,7 @@ public class UserLoginCallback extends SQLCallback
 			Packet_005_Response res = (Packet_005_Response) PacketHandler.createPacket(client, 005, "");
 			if (!result.isBeforeFirst())
 			{
-				res.constructMessage(ResponseType.FAILURE, "User Not Found", packetToRelay);
+				res.constructMessage(ResponseType.FAILURE, "Invalid Username/Password", packetToRelay);
 				PacketHandler.sendPacket(res, null);
 				return false;
 			}

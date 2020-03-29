@@ -1,12 +1,12 @@
 package me.dylanmullen.bingo.game.components.listeners;
 
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import me.dylanmullen.bingo.game.BingoCard;
 import me.dylanmullen.bingo.game.CardGroupComp;
 
-public class BingoCardListener implements MouseListener
+public class BingoCardListener extends MouseAdapter
 {
 
 	private CardGroupComp group;
@@ -23,29 +23,4 @@ public class BingoCardListener implements MouseListener
 		if(!card.isPurchased())
 			group.showSelector(card);
 	}
-
-	@Override
-	public void mouseEntered(MouseEvent e)
-	{
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e)
-	{
-
-	}
-
-	@Override
-	public void mousePressed(MouseEvent arg0)
-	{
-
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent arg0)
-	{
-		// TODO Auto-generated method stub
-
-	}
-
 }

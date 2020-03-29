@@ -1,6 +1,6 @@
 package me.dylanmullen.bingo.window.bingo;
 
-import java.awt.EventQueue;
+import java.util.UUID;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -17,35 +17,10 @@ public class BingoWindow extends JFrame
 
 	private JPanel contentPane;
 
-	private boolean debug = true;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args)
-	{
-		EventQueue.invokeLater(new Runnable()
-		{
-			public void run()
-			{
-				try
-				{
-					long now = System.currentTimeMillis();
-					BingoWindow frame = new BingoWindow();
-					frame.setVisible(true);
-					System.out.println(System.currentTimeMillis() - now);
-				} catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
 	/**
 	 * Create the frame.
 	 */
-	public BingoWindow()
+	public BingoWindow(UUID uuid)
 	{
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -54,7 +29,6 @@ public class BingoWindow extends JFrame
 		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		create();
 
 		SP_Bingo sidePanel_1 = new SP_Bingo(0, 0, getWidth() / 4, getHeight());
 		sidePanel_1.setup();
@@ -68,20 +42,11 @@ public class BingoWindow extends JFrame
 
 		BingoGame game = new BingoGame();
 		game.createPanel(getWidth() / 4, getHeight() / 10, getWidth() / 4 * 3, getHeight() / 10 * 9);
+		game.setPlayerUUID(uuid);
 		game.getGamePanel().setup();
 		game.getGamePanel().create();
-
-		// GamePanel gp = new GamePanel(getWidth()/4, getHeight() / 10, getWidth() / 4 *
-		// 3, getHeight() / 10 * 9);
-//		gp.setup();
-//		gp.create();
 		contentPane.add(game.getGamePanel());
 
 		setLocationRelativeTo(null);
-		setVisible(true);
-	}
-
-	public void create()
-	{
 	}
 }

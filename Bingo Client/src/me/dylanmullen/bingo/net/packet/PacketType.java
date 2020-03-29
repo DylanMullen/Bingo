@@ -2,7 +2,7 @@ package me.dylanmullen.bingo.net.packet;
 
 public enum PacketType
 {
-	INVALID(-1), LOGIN(001), REGISTER(002), DISCONNECT(003), PING(004), RESPONSE(005), JOIN_GAME(006),
+	INVALID(-1), LOGIN(1), REGISTER(2), DISCONNECT(003), PING(004), RESPONSE(005), JOIN_GAME(006),
 	REQUEST_CARD(007), PURCHASE_CARD(8);
 
 	private int id;

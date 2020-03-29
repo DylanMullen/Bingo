@@ -1,7 +1,6 @@
 package me.dylanmullen.bingo.window.login.panels;
 
 import me.dylanmullen.bingo.window.login.comp.LoginInfoComponent;
-import me.dylanmullen.bingo.window.login.comp.ServerInfoComponent;
 import me.dylanmullen.bingo.window.login.comp.WarningInfoComponent;
 import me.dylanmullen.bingo.window.ui.Panel;
 import me.dylanmullen.bingo.window.ui.UIColour;
@@ -39,10 +38,10 @@ public class LoginPanel extends Panel
 		warningInfoComponent = new WarningInfoComponent();
 		grid.addGridItem(new GridItem(warningInfoComponent, 1, 1), 0);
 
-		loginInfoComponent = new LoginInfoComponent(indent, warningInfoComponent.getHeight() + (indent),
+		loginInfoComponent = new LoginInfoComponent(this, indent, warningInfoComponent.getHeight() + (indent),
 				getWidth() - (indent * 2), (height / 6 * 4) - (indent));
 		grid.addGridItem(new GridItem(loginInfoComponent, 2, 1), 1);
-		
+
 		grid.updateItems();
 		loginInfoComponent.create();
 		warningInfoComponent.create();
@@ -54,6 +53,16 @@ public class LoginPanel extends Panel
 		setup();
 		add(warningInfoComponent);
 		add(loginInfoComponent);
+	}
+
+	public LoginInfoComponent getLoginInfoComponent()
+	{
+		return loginInfoComponent;
+	}
+
+	public WarningInfoComponent getWarningInfoComponent()
+	{
+		return warningInfoComponent;
 	}
 
 }

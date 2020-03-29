@@ -47,18 +47,17 @@ public class IncomingHandler implements Runnable
 		{
 			DatagramPacket dp = new DatagramPacket(recieve, recieve.length);
 			server.getServer().receive(dp);
-			
+
 			Client client = null;
-			synchronized(server.getClients())
+			synchronized (server.getClients())
 			{
 				client = server.getClient(dp.getAddress(), dp.getPort());
 			}
-			
-			if(client == null)
+
+			if (client == null)
 				return;
-			
+
 			String decode = decodeData(dp.getData());
-			DebugUtils.sendThreadInformation(Thread.currentThread());
 			ServerHandler.getHandler().handleIncoming(getPacketUUID(decode), client, decode);
 		} catch (IOException e)
 		{
@@ -70,14 +69,14 @@ public class IncomingHandler implements Runnable
 	{
 		return new String(data);
 	}
-	
+
 	private UUID getPacketUUID(String s)
 	{
 		return UUID.fromString(s.split(";")[2]);
 	}
-	
+
 	public void end()
 	{
-		this.listening=false;
+		this.listening = false;
 	}
 }

@@ -38,8 +38,6 @@ public class LoginWindow extends JFrame
 		LoginPanel comp = new LoginPanel(0, menu.getHeight(), getWidth(), getHeight()-menu.getHeight());
 		comp.create();
 		contentPane.add(comp);
-		setVisible(true);
-		
 		contentPane.requestFocusInWindow();
 	}
 

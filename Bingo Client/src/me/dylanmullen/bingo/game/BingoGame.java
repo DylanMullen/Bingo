@@ -1,10 +1,15 @@
 package me.dylanmullen.bingo.game;
 
+import java.util.UUID;
+
 public class BingoGame
 {
 
+	
 	private static BingoGame instance;
 	private GamePanel gamePanel;
+
+	private UUID playerUUID;
 
 	private boolean gameJoined;
 	private GameState state;
@@ -167,6 +172,16 @@ public class BingoGame
 		getGamePanel().getGameComponent().getWinner().setVisible(false);
 		getGamePanel().getNumbersComp().restart();
 		getGamePanel().getGameComponent().repaint();
+	}
+	
+	public void setPlayerUUID(UUID playerUUID)
+	{
+		this.playerUUID = playerUUID;
+	}
+	
+	public UUID getPlayerUUID()
+	{
+		return playerUUID;
 	}
 
 }

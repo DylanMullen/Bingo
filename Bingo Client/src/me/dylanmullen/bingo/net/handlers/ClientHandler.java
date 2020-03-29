@@ -34,8 +34,8 @@ public class ClientHandler
 
 	private void createRunnables()
 	{
-//		pingTask = new PingTask(2);
-//		pingTask.start();
+		pingTask = new PingTask(1);
+		pingTask.start();
 	}
 
 	private void createHandlers()

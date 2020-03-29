@@ -28,7 +28,7 @@ public class WarningInfoComponent extends RoundedPanel
 		information = new JLabel();
 		information.setBounds(0, 0, getWidth(), getHeight());
 		System.out.println(getWidth());
-		information.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+//		information.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		updateText("Please Login/Register");
 		information.setHorizontalAlignment(SwingConstants.CENTER);
 		information.setVerticalTextPosition(SwingConstants.CENTER);
@@ -44,19 +44,19 @@ public class WarningInfoComponent extends RoundedPanel
 
 	public void updateText(String text)
 	{
-		if(text.contains("\n"))
+		if (text.contains("\n"))
 		{
 			StringBuilder sb = new StringBuilder();
 			String[] split = text.split("\n");
-			sb.append("<html>");
-			for(int i =0; i < split.length;i++)
-				sb.append(split[i]+ (split.length-1==i?"":"<br>"));
-			sb.append("</html>");
+			sb.append("<html><center>");
+			for (int i = 0; i < split.length; i++)
+				sb.append(split[i] + (split.length - 1 == i ? "" : "<br>"));
+			sb.append("</center></html>");
 			text = sb.toString();
 		}
-		
+
 		information.setText(text);
-		information.setFont(FontUtil.getFont(information, text, 30, 30));
+		information.setFont(FontUtil.getFont(information, text, 30, 30, 25));
 	}
 
 	public void updateBackground(UIColour colour)

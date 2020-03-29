@@ -7,6 +7,8 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPasswordField;
@@ -18,6 +20,8 @@ public class UIPasswordField extends JPasswordField
 	private static final long serialVersionUID = 8395208345260502315L;
 
 	private String placeholder;
+	private boolean hovered;
+	private boolean focused;
 
 	public UIPasswordField(String placeholder, int[] properties)
 	{
@@ -36,7 +40,7 @@ public class UIPasswordField extends JPasswordField
 	{
 		setBounds(properties[0], properties[1], properties[2], properties[3]);
 	}
-	
+
 	private void setup()
 	{
 		setOpaque(false);
@@ -55,6 +59,7 @@ public class UIPasswordField extends JPasswordField
 			@Override
 			public void focusLost(FocusEvent e)
 			{
+				focused = false;
 				updateBackground(UIColour.FRAME_BINGO_BG);
 				if (getPassword().length == 0)
 				{
@@ -69,6 +74,7 @@ public class UIPasswordField extends JPasswordField
 			@Override
 			public void focusGained(FocusEvent e)
 			{
+				focused = true;
 				if (new String(getPassword()).equals(placeholder))
 				{
 					setText("");
@@ -76,6 +82,32 @@ public class UIPasswordField extends JPasswordField
 				setEchoChar((char) 0);
 				updateBackground(UIColour.FRAME_BINGO_BG_TOP);
 				setCaretPosition(getPassword().length);
+			}
+		});
+
+		addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseExited(MouseEvent e)
+			{
+				hovered = false;
+				if (!focused)
+				{
+					updateBackground(UIColour.FRAME_BINGO_BG);
+					setForeground(Color.LIGHT_GRAY);
+					repaint();
+				}
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e)
+			{
+				hovered = true;
+				if (!focused)
+				{
+					updateBackground(UIColour.FRAME_BINGO_BG_TOP);
+					repaint();
+				}
 			}
 		});
 	}
@@ -99,6 +131,11 @@ public class UIPasswordField extends JPasswordField
 		g2.fillRoundRect(0, getHeight() - 8, getWidth(), 8, 15, 15);
 
 		super.paintComponent(g);
+	}
+
+	public boolean isPlaceHolder()
+	{
+		return new String(getPassword()).equals(placeholder);
 	}
 
 }
