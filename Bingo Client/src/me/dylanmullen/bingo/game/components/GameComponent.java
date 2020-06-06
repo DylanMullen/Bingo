@@ -28,8 +28,9 @@ public class GameComponent extends Panel
 		setLayout(null);
 		setBackground(UIColour.FRAME_BINGO_BG.toColor());
 
-		join = new JoinComponent(12, (getHeight() / 10), getWidth() - 24, (getHeight() / 2));
-		join.setup();
+		join = new JoinComponent(getWidth() / 10, (int) ((getHeight() / 10) * 1.5), (getWidth() / 10) * 8,
+				(getHeight() / 10) * 5, 25);
+		join.create();
 		add(join);
 	}
 
@@ -49,7 +50,7 @@ public class GameComponent extends Panel
 	{
 		join.setVisible(false);
 	}
-	
+
 	public void restart()
 	{
 		comp.repaint();

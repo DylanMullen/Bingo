@@ -157,6 +157,13 @@ public class CardGroupComp extends Panel
 		card.setSelected(false);
 		repaint();
 	}
+	
+	public void disableSelectors()
+	{
+		for(ImageComponent ic : selectors.values())
+			ic.setVisible(false);
+		repaint();
+	}
 
 	public void requestNumbers()
 	{

@@ -32,20 +32,26 @@ public class Grid
 		items.add(item);
 	}
 
-	public void updateItems()
+	public List<GridItem> updateItems()
 	{
-		int yPos = settings.getGap();
+		List<GridItem> items = new ArrayList<>();
+		int yPos = y + settings.getGap();
 		for (int i = 0; i < settings.getRows(); i++)
 		{
 			List<GridItem> itemsRow = getItemsOnRow(i);
-			int xPos = settings.getGap();
+			int height = getMaxHeightOnRow(itemsRow);
+			height = (height == -1 ? settings.getItemHeight() : height);
+
+			int xPos = x + settings.getGap();
 			for (GridItem item : itemsRow)
 			{
-				item.updateSize(xPos, yPos, settings.getItemWidth(), settings.getItemHeight(), settings.getGap());
+				item.updateSize(xPos, yPos, settings.getItemWidth(), height, settings.getGap());
 				xPos += item.getWidth(settings.getItemWidth(), settings.getGap()) + settings.getGap() * 2;
+				items.add(item);
 			}
-			yPos += settings.getItemHeight();
+			yPos += height;
 		}
+		return items;
 	}
 
 	public List<GridItem> getItemsOnRow(int row)
@@ -60,5 +66,18 @@ public class Grid
 		}
 
 		return items;
+	}
+
+	public int getMaxHeightOnRow(List<GridItem> row)
+	{
+		int height = -1;
+		for (GridItem item : row)
+		{
+			if (item.getFixedHeight() == -1)
+				continue;
+			if (item.getFixedHeight() > height)
+				height = item.getFixedHeight();
+		}
+		return height;
 	}
 }

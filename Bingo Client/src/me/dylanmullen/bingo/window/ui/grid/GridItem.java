@@ -8,12 +8,23 @@ public class GridItem
 	private JComponent comp;
 	private double rowSpan, colSpan;
 	private int rowPosition;
+	private int fixedHeight;
 
 	public GridItem(JComponent comp, double rowSpan, double colSpan)
 	{
 		this.comp = comp;
 		this.rowSpan = rowSpan;
 		this.colSpan = colSpan;
+		this.fixedHeight = -1;
+		this.rowPosition = -1;
+	}
+
+	public GridItem(JComponent comp, double rowSpan, double colSpan, int fixedHeight)
+	{
+		this.comp = comp;
+		this.rowSpan = rowSpan;
+		this.colSpan = colSpan;
+		this.fixedHeight = fixedHeight;
 		this.rowPosition = -1;
 	}
 
@@ -42,5 +53,15 @@ public class GridItem
 	public int getRowPosition()
 	{
 		return rowPosition;
+	}
+	
+	public int getFixedHeight()
+	{
+		return fixedHeight;
+	}
+
+	public JComponent getComponent()
+	{
+		return comp;
 	}
 }

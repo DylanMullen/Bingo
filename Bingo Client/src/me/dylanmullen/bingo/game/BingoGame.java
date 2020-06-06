@@ -129,10 +129,11 @@ public class BingoGame
 	{
 		if (getGamePanel().getGameComponent().getCardGroup() != null)
 		{
+			gamePanel.getGameComponent().getCardGroup().disableSelectors();
 			gamePanel.getHeader().showNumberComp();
 		}
 	}
-
+	
 	public void updateCards(String data)
 	{
 		try

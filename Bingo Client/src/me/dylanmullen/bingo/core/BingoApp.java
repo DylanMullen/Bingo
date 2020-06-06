@@ -27,7 +27,8 @@ public class BingoApp
 		if(instance == null)
 			instance = this;
 		init();
-		openLoginWindow();
+//		openLoginWindow();
+		openBingoWindow(UUID.randomUUID());
 	}
 	
 	public static BingoApp getInstance()
@@ -55,9 +56,9 @@ public class BingoApp
 
 	public void openBingoWindow(UUID uuid)
 	{
-		login.dispose();
-		
-		System.out.println(SwingUtilities.isEventDispatchThread());
+//		login.dispose();
+//		
+//		System.out.println(SwingUtilities.isEventDispatchThread());
 		EventQueue.invokeLater(new Runnable()
 		{
 			@Override

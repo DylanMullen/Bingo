@@ -1,6 +1,8 @@
 package me.dylanmullen.bingo.game.components.buttons;
 
 import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -17,21 +19,23 @@ public class JoinButton extends UIButton
 
 	private JLabel label;
 
-	public JoinButton(String text, int x, int y, int width, int height)
+	public JoinButton(String text)
 	{
-		super(text, x, y, width, height);
+		super(text);
 	}
 
 	@Override
 	protected void setup()
 	{
 		init();
-		setBackground(UIColour.BTN_BINGO_ACTIVE.toColor());
+		setBackground(UIColour.BTN_BINGO_TEXT.toColor());
 		setOpaque(false);
 		
 		label = new JLabel(getText());
 		label.setBounds(12, 12, getWidth() - 24, getHeight() - 24);
 		label.setHorizontalAlignment(SwingConstants.CENTER);
+		label.setFont(new Font("Calibri",Font.PLAIN,32));
+//		label.setForeground(Color.DARK_GRAY);
 		add(label);
 		addMouseListener(new JoinButtonListener());
 	}

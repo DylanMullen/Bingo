@@ -1,45 +1,62 @@
 package me.dylanmullen.bingo.game.components;
 
+import java.awt.Color;
+import java.awt.Font;
+
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import me.dylanmullen.bingo.game.components.buttons.JoinButton;
-import me.dylanmullen.bingo.window.ui.Panel;
+import me.dylanmullen.bingo.window.ui.RoundedPanel;
 import me.dylanmullen.bingo.window.ui.UIColour;
+import me.dylanmullen.bingo.window.ui.grid.Grid;
+import me.dylanmullen.bingo.window.ui.grid.GridItem;
+import me.dylanmullen.bingo.window.ui.grid.GridSettings;
 
-public class JoinComponent extends Panel
+public class JoinComponent extends RoundedPanel
 {
+
+	private static final long serialVersionUID = -9169345629205701763L;
+
+	private Grid grid;
 
 	private JLabel text;
 	private JoinButton button;
 
-	public JoinComponent(int x, int y, int width, int height)
+	public JoinComponent(int x, int y, int width, int height, int arc)
 	{
-		super(x, y, width, height);
+		super(x, y, width, height, arc);
+		int indent = 15;
+		this.grid = new Grid(new GridSettings(width-(indent*2), height-(indent*2), 3, 2, 5), indent, indent);
 	}
 
 	@Override
 	public void setup()
 	{
-		setBounds(x, y, width, height);
 		setBackground(UIColour.FRAME_BINGO_BG_TOP.toColor());
 		this.text = new JLabel();
-		text.setBounds(50, (getHeight() / 2) - ((getHeight() / 4))-12, getWidth() - 100, getHeight() / 4);
+		grid.addGridItem(new GridItem(text, 2, 2), 0);
 		text.setOpaque(true);
-		text.setText("You must first join a game!");
+		text.setText("You need to join a game!");
+		text.setFont(new Font("Calbiri",Font.PLAIN,32));
+		text.setForeground(Color.WHITE);
+		text.setBackground(UIColour.BTN_BINGO_ACTIVE.toColor());
 		text.setHorizontalAlignment(SwingConstants.CENTER);
-		add(text);
 
-		button = new JoinButton("Join!", text.getX(), (getHeight() / 2) + 12, text.getWidth(), 60);
+		button = new JoinButton("Join Game!");
+		grid.addGridItem(new GridItem(button, 1, 2), 2);
+
+		grid.updateItems();
+
 		button.create();
-		add(button);
 	}
 
 	@Override
 	public void create()
 	{
-		// TODO Auto-generated method stub
-
+		setup();
+		add(text);
+		add(button);
 	}
 
 }
