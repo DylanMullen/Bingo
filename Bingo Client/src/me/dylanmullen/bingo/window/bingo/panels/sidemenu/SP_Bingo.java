@@ -11,10 +11,16 @@ import me.dylanmullen.bingo.window.ui.UIColour;
 
 public class SP_Bingo extends Panel
 {
-
+	
+	private static SP_Bingo instance;
+	
+	private ProfilePanel panel;
+	
 	public SP_Bingo(int x, int y, int width, int height)
 	{
 		super(x, y, width, height);
+		if(instance ==null)
+			instance = this;
 	}
 
 	@Override
@@ -28,7 +34,7 @@ public class SP_Bingo extends Panel
 	@Override
 	public void create()
 	{
-		ProfilePanel panel = new ProfilePanel(30, 30, getWidth()-60, (int)(getHeight()/2.75));
+		panel = new ProfilePanel(30, 30, getWidth()-60, (int)(getHeight()/2.75));
 		panel.setup();
 		add(panel);
 		createButtons();
@@ -62,6 +68,14 @@ public class SP_Bingo extends Panel
 			g.drawLine(0, 12, getWidth(), 12);
 			g.drawLine(0,(getHeight()/2)-12,getWidth(),(getHeight()/2)-12);
 		}
+	}
+	public ProfilePanel getPanel()
+	{
+		return panel;
+	}
+	public static SP_Bingo getInstance()
+	{
+		return instance;
 	}
 
 }

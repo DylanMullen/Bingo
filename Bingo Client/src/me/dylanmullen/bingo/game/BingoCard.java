@@ -10,18 +10,19 @@ import java.util.UUID;
 import javax.swing.JComponent;
 
 import me.dylanmullen.bingo.game.components.BingoSquare;
-import me.dylanmullen.bingo.game.components.listeners.PurchaseListener;
 import me.dylanmullen.bingo.window.ui.UIColour;
 
 public class BingoCard extends JComponent
 {
 
+	private static final long serialVersionUID = -1646554212523678637L;
+	
 	private BingoSquare[] squares;
 	private final int BUFFER = 35;
 
 	private boolean purchased = false;
 	private boolean selected = false;
-	
+
 	private UUID uuid;
 
 	public BingoCard(int x, int y, int w, int h)
@@ -63,10 +64,9 @@ public class BingoCard extends JComponent
 		super.paintComponent(g);
 
 		Graphics2D g2 = (Graphics2D) g;
-		// font anti-aliasing
 		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-		int fontSize = 25; // font for everything else
+		int fontSize = 25; 
 		Font font = new Font("Calibri", Font.PLAIN, fontSize);
 		g2.setFont(font);
 		g2.setColor(getBackground());
@@ -82,7 +82,7 @@ public class BingoCard extends JComponent
 		{
 			BingoSquare square = squares[i];
 
-			g2.setColor((square.isCalled() ? UIColour.SQUARE_MARKED.toColor() : Color.BLACK));
+			g2.setColor((square.isCalled() ? UIColour.SQUARE_MARKED.toColor() : getColour(i)));
 			g2.fill(square);
 			g2.setColor(Color.WHITE);
 			g2.draw(square);
@@ -95,13 +95,18 @@ public class BingoCard extends JComponent
 		}
 	}
 
+	private Color getColour(int n)
+	{
+		return (n % 2 == 0 ? UIColour.FRAME_BINGO_BG_SIDE.toColor() : UIColour.FRAME_BINGO_BG_TOP.toColor());
+	}
+
 	private void paintTop(Graphics2D g2)
 	{
 		if (uuid == null)
 			return;
 		Font font = new Font("Calibri", Font.PLAIN, 20);
 		g2.setFont(font);
-		g2.drawString(uuid.toString(), 0, 32);
+		g2.drawString(uuid.toString(), 10, 10);
 	}
 
 	public void setCardNumbers(String s, UUID uuid)
@@ -111,14 +116,14 @@ public class BingoCard extends JComponent
 		row = 0;
 
 		setPurchased(false);
-		
+
 		for (int i = 0; i < squares.length; i++)
 		{
 			BingoSquare square = squares[i];
 			square.setNumber(-1);
 			square.setCalled(false);
 		}
-		
+
 		for (int i = 0; i < temp.length; i++)
 		{
 			String[] numbers = temp[i].split("\\.");

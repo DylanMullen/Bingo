@@ -25,26 +25,28 @@ public class UserLoginCallback extends SQLCallback
 	@Override
 	public boolean callback()
 	{
+		sendResponse();
+		return false;
+	}
+
+	private void sendResponse()
+	{
 		try
 		{
-			Packet_005_Response res = (Packet_005_Response) PacketHandler.createPacket(client, 005, "");
 			if (!result.isBeforeFirst())
 			{
+				Packet_005_Response res = (Packet_005_Response) PacketHandler.createPacket(client, 005, "");
 				res.constructMessage(ResponseType.FAILURE, "Invalid Username/Password", packetToRelay);
 				PacketHandler.sendPacket(res, null);
-				return false;
+				return;
 			}
 			result.next();
 			UUID uuid = UUID.fromString(result.getString(1));
 			UserManager.getInstance().addUser(client, uuid);
-
-			res.constructMessage(ResponseType.SUCCESS, uuid.toString(), packetToRelay);
-			PacketHandler.sendPacket(res, null);
+			UserManager.getInstance().getUser(uuid).loadInformation(packetToRelay);
 		} catch (SQLException e)
 		{
 			e.printStackTrace();
 		}
-		return false;
 	}
-
 }

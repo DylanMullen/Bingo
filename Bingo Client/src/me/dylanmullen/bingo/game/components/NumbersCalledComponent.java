@@ -3,6 +3,7 @@ package me.dylanmullen.bingo.game.components;
 import javax.swing.JLabel;
 
 import me.dylanmullen.bingo.window.ui.Panel;
+import me.dylanmullen.bingo.window.ui.UIColour;
 
 public class NumbersCalledComponent extends Panel
 {
@@ -27,6 +28,7 @@ public class NumbersCalledComponent extends Panel
 	{
 		setBounds(x, y, width, height);
 		setLayout(null);
+		setBackground(UIColour.BTN_BINGO_ACTIVE.toColor());
 		this.numbers = new NumberGrid[5];
 		this.gridSize = (getHeight() - 24);
 	}

@@ -1,18 +1,16 @@
 package me.dylanmullen.bingo.window.bingo.panels.sidemenu;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.swing.JLabel;
 import javax.swing.border.EmptyBorder;
 
-import me.dylanmullen.bingo.gfx.ImageAtlas;
+import me.dylanmullen.bingo.game.BingoGame;
 import me.dylanmullen.bingo.window.ui.ImageComponent;
 import me.dylanmullen.bingo.window.ui.Panel;
 import me.dylanmullen.bingo.window.ui.UIColour;
@@ -26,6 +24,7 @@ public class ProfilePanel extends Panel
 	private static final long serialVersionUID = 3952772083758555561L;
 
 	private Grid grid;
+	private List<InfoComponent> infoComp = new ArrayList<>();
 
 	public ProfilePanel(int x, int y, int width, int height)
 	{
@@ -38,7 +37,6 @@ public class ProfilePanel extends Panel
 		setBounds(x, y, width, height);
 		setBorder(new EmptyBorder(12, 12, 12, 12));
 		setOpaque(false);
-		size = getWidth() / 10;
 		grid = new Grid(new GridSettings(width-10, height-110, 4, 1, 5), 5, 105);
 
 		ImageComponent ic = new ImageComponent(10, 10, width-20, 90);
@@ -57,10 +55,10 @@ public class ProfilePanel extends Panel
 
 	private void setupFields()
 	{
-		InfoComponent username = new InfoComponent("Username", "PlaceholderTXT", 0, 0, 0, 0);
-		InfoComponent money = new InfoComponent("Money", "PlaceholderTxt", 0, 0, 0, 0);
-		InfoComponent wins = new InfoComponent("Wins", "PlaceholderTxt", 0, 0, 0, 0);
-		InfoComponent ratio = new InfoComponent("Win/Lose %", "PlaceholderTxt", 0, 0, 0, 0);
+		InfoComponent username = new InfoComponent("Username", "Loading...", 0, 0, 0, 0);
+		InfoComponent money = new InfoComponent("Money", "Loading...", 0, 0, 0, 0);
+		InfoComponent wins = new InfoComponent("Wins", "Loading...", 0, 0, 0, 0);
+		InfoComponent ratio = new InfoComponent("Win/Lose %", "Loading...", 0, 0, 0, 0);
 		grid.addGridItem(new GridItem(username, 1, 1), 0);
 		grid.addGridItem(new GridItem(money, 1, 1), 1);
 		grid.addGridItem(new GridItem(wins, 1, 1), 2);
@@ -70,6 +68,10 @@ public class ProfilePanel extends Panel
 		ratio.setup();
 		wins.setup();
 		money.setup();
+		infoComp.add(username);
+		infoComp.add(money);
+		infoComp.add(wins);
+		infoComp.add(ratio);
 	}
 	
 	@Override
@@ -80,9 +82,8 @@ public class ProfilePanel extends Panel
 			add(item.getComponent());
 			System.out.println(1 - 1);
 		}
+		updateItems();
 	}
-
-	private int size;
 
 	@Override
 	protected void paintComponent(Graphics g)
@@ -94,20 +95,13 @@ public class ProfilePanel extends Panel
 		g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
 		super.paintComponent(g);
 
-//		paintGrid(g);
 	}
-
-	private void paintGrid(Graphics g)
+	
+	public void updateItems()
 	{
-		g.setColor(Color.white);
-		for (int y = 0; y < getHeight(); y += size)
-		{
-			g.drawLine(0, y, getHeight(), y);
-			for (int x = 0; x < getWidth(); x += size)
-			{
-				g.drawLine(x, 0, x, getWidth());
-			}
-		}
+		infoComp.get(0).getInfo().setText(BingoGame.getInstance().getUserInformation().getDisplayName());
+		infoComp.get(1).getInfo().setText(BingoGame.getInstance().getUserInformation().getCredits()+"");
+		infoComp.get(2).getInfo().setText(BingoGame.getInstance().getUserInformation().getWins()+"");
+		infoComp.get(3).getInfo().setText("N/A");
 	}
-
 }

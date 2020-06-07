@@ -1,12 +1,8 @@
 package me.dylanmullen.bingo.core;
 
 import java.awt.EventQueue;
-import java.awt.event.WindowEvent;
-import java.util.UUID;
 
-import javax.swing.SwingUtilities;
-
-import me.dylanmullen.bingo.game.BingoGame;
+import me.dylanmullen.bingo.game.UserInformation;
 import me.dylanmullen.bingo.net.handlers.ClientHandler;
 import me.dylanmullen.bingo.window.bingo.BingoWindow;
 import me.dylanmullen.bingo.window.login.LoginWindow;
@@ -15,22 +11,22 @@ public class BingoApp
 {
 
 	private static BingoApp instance;
-	
+
 	private ClientHandler clientHandler;
-	
+
 	/* Windows */
 	private LoginWindow login;
 	private BingoWindow bingo;
 
 	public BingoApp()
 	{
-		if(instance == null)
+		if (instance == null)
 			instance = this;
 		init();
-//		openLoginWindow();
-		openBingoWindow(UUID.randomUUID());
+		openLoginWindow();
+//		openBingoWindow(UUID.randomUUID());
 	}
-	
+
 	public static BingoApp getInstance()
 	{
 		return instance;
@@ -54,17 +50,16 @@ public class BingoApp
 		});
 	}
 
-	public void openBingoWindow(UUID uuid)
+	public void openBingoWindow(UserInformation ui)
 	{
-//		login.dispose();
-//		
-//		System.out.println(SwingUtilities.isEventDispatchThread());
+		System.out.println(2);
+		login.dispose();
 		EventQueue.invokeLater(new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				bingo = new BingoWindow(uuid);
+				bingo = new BingoWindow(ui);
 				bingo.setVisible(true);
 			}
 		});

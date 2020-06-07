@@ -39,9 +39,9 @@ public class UserManager
 	{
 		synchronized(users)
 		{
-			User u = new User(client, uuid);
-			if (users.contains(u))
+			if(getUser(uuid)!=null)
 				return;
+			User u = new User(client, uuid);
 			users.add(u);
 			System.err.println("Added to Users");
 		}

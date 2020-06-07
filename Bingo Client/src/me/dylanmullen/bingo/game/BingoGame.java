@@ -2,14 +2,16 @@ package me.dylanmullen.bingo.game;
 
 import java.util.UUID;
 
+import me.dylanmullen.bingo.window.bingo.panels.sidemenu.SP_Bingo;
+
 public class BingoGame
 {
 
-	
 	private static BingoGame instance;
 	private GamePanel gamePanel;
 
 	private UUID playerUUID;
+	private UserInformation userInformation;
 
 	private boolean gameJoined;
 	private GameState state;
@@ -133,7 +135,7 @@ public class BingoGame
 			gamePanel.getHeader().showNumberComp();
 		}
 	}
-	
+
 	public void updateCards(String data)
 	{
 		try
@@ -174,15 +176,14 @@ public class BingoGame
 		getGamePanel().getNumbersComp().restart();
 		getGamePanel().getGameComponent().repaint();
 	}
-	
-	public void setPlayerUUID(UUID playerUUID)
-	{
-		this.playerUUID = playerUUID;
-	}
-	
-	public UUID getPlayerUUID()
-	{
-		return playerUUID;
-	}
 
+	public void setUserInformation(UserInformation userInformation)
+	{
+		this.userInformation = userInformation;
+	}
+	
+	public UserInformation getUserInformation()
+	{
+		return userInformation;
+	}
 }

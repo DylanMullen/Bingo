@@ -53,6 +53,11 @@ public class InfoComponent extends Panel
 		create();
 	}
 
+	public JLabel getInfo()
+	{
+		return info;
+	}
+	
 	@Override
 	public void create()
 	{
