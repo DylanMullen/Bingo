@@ -22,11 +22,11 @@ public class SQLDatabase
 
 	public SQLDatabase(Config config)
 	{
-		this.databaseName = config.getValue("dbName");
-		this.address = config.getValue("host");
-		this.port = Integer.parseInt(config.getValue("port"));
-		this.username = config.getValue("username");
-		this.password = config.getValue("password");
+		this.databaseName = (String) config.getValue("database", "databaseName");
+		this.address = (String) config.getValue("hostAddress", "ip");
+		this.port = ((Long) config.getValue("hostAddress", "port")).intValue();
+		this.username = (String) config.getValue("credentials", "username");
+		this.password = (String) config.getValue("credentials", "password");
 	}
 
 	public boolean connect()

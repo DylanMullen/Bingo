@@ -12,7 +12,7 @@ public class FontUtil
 	{
 	}
 
-	private static Dimension getFontSize(FontMetrics metrics, Font font, String text, int LR, int TB)
+	public static Dimension getFontSize(FontMetrics metrics, Font font, String text, int LR, int TB)
 	{
 		int hgt = metrics.getAscent() + metrics.getDescent() + metrics.getLeading();
 		int adv = metrics.stringWidth(text);

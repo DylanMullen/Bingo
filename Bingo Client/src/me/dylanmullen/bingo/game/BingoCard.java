@@ -1,6 +1,7 @@
 package me.dylanmullen.bingo.game;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -10,24 +11,28 @@ import java.util.UUID;
 import javax.swing.JComponent;
 
 import me.dylanmullen.bingo.game.components.BingoSquare;
+import me.dylanmullen.bingo.util.FontUtil;
 import me.dylanmullen.bingo.window.ui.UIColour;
 
 public class BingoCard extends JComponent
 {
 
 	private static final long serialVersionUID = -1646554212523678637L;
-	
+
 	private BingoSquare[] squares;
-	private final int BUFFER = 35;
+	private final int BUFFER = 36;
 
 	private boolean purchased = false;
 	private boolean selected = false;
 
 	private UUID uuid;
 
+	private int x, y;
+
 	public BingoCard(int x, int y, int w, int h)
 	{
-		setOpaque(true);
+		this.x = x;
+		this.y = y;
 		int widthSize = w / 9;
 		int heightSize = h / 3;
 
@@ -61,16 +66,17 @@ public class BingoCard extends JComponent
 		setBackground(
 				(purchased ? UIColour.CARD_PURCHASED : (selected ? UIColour.CARD_SELECTED : UIColour.CARD_DEFAULT))
 						.toColor());
-		super.paintComponent(g);
 
 		Graphics2D g2 = (Graphics2D) g;
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-		int fontSize = 25; 
+		g2.setColor(getBackground());
+		g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
+
+		int fontSize = 25;
 		Font font = new Font("Calibri", Font.PLAIN, fontSize);
 		g2.setFont(font);
-		g2.setColor(getBackground());
-		g2.fillRect(0, 0, getWidth(), getHeight());
 		paintGrid(g2);
 		paintTop(g2);
 
@@ -84,14 +90,26 @@ public class BingoCard extends JComponent
 
 			g2.setColor((square.isCalled() ? UIColour.SQUARE_MARKED.toColor() : getColour(i)));
 			g2.fill(square);
+
+			Dimension dim = FontUtil.getFontSize(getFontMetrics(g2.getFont()), g2.getFont(), square.getNumber()+"", 0, 0);
+			int xp = (int) ((int) square.getX() + square.getWidth()/2-(dim.width/2));
+			int yp = (int) ((int) square.getY() + square.getHeight()/2+(dim.height/4));
+
 			g2.setColor(Color.WHITE);
-			g2.draw(square);
-
-			int xp = (int) ((int) square.getX() + square.getWidth() - (square.getWidth() / 1.5));
-			int yp = (int) ((int) square.getY() + (square.getHeight() / 1.5));
-
 			if (!square.isEmpty())
 				g2.drawString(square.getNumber() + "", xp, yp);
+
+//			g2.setColor(Color.red);
+//			g2.drawLine(square.x, square.y+square.height/2, square.x+square.width, square.y+square.height/2);
+//			g2.drawLine(square.x+square.width/2, square.y, square.x+square.width/2, square.y+square.height);
+			
+			int radius = (square.height-5);
+			
+			Color col = UIColour.FRAME_BINGO_BG_TOP.toColor();
+			g2.setColor(new Color(col.getRed(), col.getGreen(), col.getBlue(), 95));
+			if (square.isCalled())
+				g2.fillOval((int) (square.x + square.width / 2 - radius/2), (int) (square.y +square.height/2- radius/2),
+					radius, radius);
 		}
 	}
 
@@ -106,7 +124,9 @@ public class BingoCard extends JComponent
 			return;
 		Font font = new Font("Calibri", Font.PLAIN, 20);
 		g2.setFont(font);
-		g2.drawString(uuid.toString(), 10, 10);
+		g2.setColor(Color.WHITE);
+		Dimension dim = FontUtil.getFontSize(getFontMetrics(font), font, uuid.toString(), 0, 0);
+		g2.drawString(uuid.toString(), getWidth() / 2 - (dim.width / 2), BUFFER / 2 + dim.height / 4);
 	}
 
 	public void setCardNumbers(String s, UUID uuid)
@@ -134,6 +154,12 @@ public class BingoCard extends JComponent
 			setNumber(Integer.parseInt(numbers[4]));
 			row++;
 		}
+	}
+
+	public void setCard(BingoCard card)
+	{
+		this.uuid = card.getUUID();
+		this.squares = card.getSquares();
 	}
 
 	public UUID getUUID()
@@ -174,4 +200,19 @@ public class BingoCard extends JComponent
 		this.selected = selected;
 	}
 
+	public void setUUID(UUID uuid)
+	{
+		this.uuid = uuid;
+	}
+
+	public BingoSquare[] getSquares()
+	{
+		return squares;
+	}
+
+	public void setY(int y)
+	{
+		setBounds(x, y, getWidth(), getHeight());
+		repaint();
+	}
 }

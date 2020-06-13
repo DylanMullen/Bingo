@@ -33,7 +33,7 @@ public class TopMenu extends Panel
 		setBackground(UIColour.FRAME_BINGO_BG_SIDE.toColor());
 		close = new CloseButton("", getWidth() - 100, 0, 100, getHeight());
 		close.create();
-		ServerInfoComponent si = new ServerInfoComponent(15, 10, width/8, height-20);
+		ServerInfoComponent si = new ServerInfoComponent((close.getX()-10)-(width/8), 10, width/8, height-20);
 		si.create();
 		add(si);
 		addMouseListener(listener);

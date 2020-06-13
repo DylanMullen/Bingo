@@ -1,5 +1,6 @@
 package me.dylanmullen.bingo.window.login.comp;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -64,8 +65,22 @@ public class ServerInfoComponent extends Panel implements EventListener
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2.setColor(getBackground());
-		g2.fillRoundRect(0, 0, width, height, 15, 15);
-		super.paintComponent(g);
+
+		if(height > 50)
+		{
+			g2.fillRoundRect(0, 0, width, height, 15, 15);
+			super.paintComponent(g);
+			return;
+		}
+		else
+		{
+			if(statusText.isVisible())
+				statusText.setVisible(false);
+			g2.fillOval(width/4, 0, height, height);
+			/* TODO secondary inner colour */
+//			g2.setColor(Color.BLACK);
+//			g2.fillOval(width/4+5, 5, height-10, height-10);
+		}
 	}
 
 	public void setStatus(ServerStatus status)

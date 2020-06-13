@@ -12,6 +12,8 @@ import me.dylanmullen.bingo.window.ui.UIColour;
 public class SP_Bingo extends Panel
 {
 	
+	private static final long serialVersionUID = 7856700131153385897L;
+
 	private static SP_Bingo instance;
 	
 	private ProfilePanel panel;
@@ -46,8 +48,8 @@ public class SP_Bingo extends Panel
 	{
 		ButtonContainer buttons = new ButtonContainer(0, getHeight() / 2, getWidth(), getHeight() / 2)
 				.setButtonHeight(60);
-		buttons.addButton(new SidePanelButton("Home", new Dimension(1, 0)).setActive(true));
-		buttons.addButton(new SidePanelButton("Play",new Dimension(2, 0)));
+		buttons.addButton(new SidePanelButton("Home", new Dimension(1, 0)));
+		buttons.addButton(new SidePanelButton("Play",new Dimension(2, 0)).setActive(true));
 		buttons.addButton(new SidePanelButton("Settings",new Dimension(3, 0)));
 
 		buttons.populate();

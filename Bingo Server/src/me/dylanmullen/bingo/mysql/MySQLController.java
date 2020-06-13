@@ -62,8 +62,6 @@ public class MySQLController implements Runnable
 			notify();
 		}
 		
-		System.out.println(connected);
-		
 		if(!connected)
 		{
 			System.out.println("Failed to connect!");

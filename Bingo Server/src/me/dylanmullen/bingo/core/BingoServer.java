@@ -1,6 +1,11 @@
 package me.dylanmullen.bingo.core;
 
+import java.io.File;
+import java.io.InputStreamReader;
+import java.net.URISyntaxException;
+
 import me.dylanmullen.bingo.configs.Config;
+import me.dylanmullen.bingo.configs.ConfigManager;
 import me.dylanmullen.bingo.game.GameController;
 import me.dylanmullen.bingo.game.user.UserManager;
 import me.dylanmullen.bingo.mysql.MySQLController;
@@ -36,7 +41,7 @@ public class BingoServer
 
 	private void init()
 	{
-		this.mysql = new MySQLController(new Config(getClass().getClassLoader().getResourceAsStream("mysql.config")));
+		this.mysql = new MySQLController(ConfigManager.getInstance().getConfig("mysql"));
 		mysql.start();
 
 		if (!mysql.isConnected())

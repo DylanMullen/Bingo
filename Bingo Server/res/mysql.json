@@ -1,0 +1,17 @@
+{
+  "credentials": {
+    "username": "root",
+    "password": ""
+  },
+  "hostAddress": {
+    "ip": "localhost",
+    "port": 3306
+  },
+  "database": {
+    "databaseName": "bingo",
+    "tables": {
+      "loginTable": "user_login",
+      "userInfo": "user_info"
+    }
+  }
+}

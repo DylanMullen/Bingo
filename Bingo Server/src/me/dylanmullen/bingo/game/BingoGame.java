@@ -137,6 +137,7 @@ public class BingoGame
 			CardGroup cg = cardsInPlay.get(u);
 			PacketHandler.sendPacket(PacketHandler.createPacket(u.getClient(), 11, cg.getCardUUIDs()), null);
 		}
+		rig();
 	}
 
 	public void sendPotentialCards()

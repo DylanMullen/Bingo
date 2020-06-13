@@ -1,7 +1,6 @@
 package me.dylanmullen.bingo.game;
 
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -36,26 +35,33 @@ public class CardGroupComp extends Panel
 		setLayout(null);
 		this.cards = new BingoCard[3];
 
-		int indentY = 5;
-		int contHeight = getHeight() - (5 * 5);
-		int height = contHeight / 3 - 35;
 		for (int i = 0; i < cards.length; i++)
 		{
-			cards[i] = new BingoCard(5, indentY, ((getWidth() - 10) / 4) * 3, height);
+			cards[i] = new BingoCard(5, getIndentY(i), ((getWidth() - 10) / 4) * 3, getContainerHeight());
 			cards[i].addMouseListener(new BingoCardListener(this));
 
-			ImageComponent ic = new ImageComponent(cards[i].getX() + cards[i].getWidth() + 5, indentY,
+			ImageComponent ic = new ImageComponent(cards[i].getX() + cards[i].getWidth() + 5, getIndentY(i),
 					(getWidth() - cards[i].getWidth()) - 15, cards[i].getHeight());
 			ic.setVisible(false);
 			ic.setImage(ATLAS.getImage(0, 0));
 			ic.addMouseListener(new PurchaseListener(cards[i]));
-			indentY += height + 35 + 10;
-
+			
 			add(cards[i]);
 			add(ic);
 			selectors.put(cards[i], ic);
 		}
 		setBackground(Color.WHITE);
+	}
+
+	private int getIndentY(int pos)
+	{
+		return (getContainerHeight() * pos) + (36 * pos) + (10 * pos) + 5;
+	}
+
+	private int getContainerHeight()
+	{
+		int contHeight = getHeight() - (5 * 5);
+		return height = contHeight / 3 - 36;
 	}
 
 	public void setCardNumbers(String[] data)
@@ -70,9 +76,9 @@ public class CardGroupComp extends Panel
 
 			String[] temp = data[i].split("/u/");
 			UUID uuid = UUID.fromString(temp[1]);
-			System.out.println("\t" + temp[0]);
 			cards[index].setCardNumbers(temp[0], uuid);
 			cards[index].setVisible(true);
+			cards[index].setY(getIndentY(index));
 			index++;
 		}
 		for (int i = 0; i < cards.length; i++)
@@ -82,46 +88,40 @@ public class CardGroupComp extends Panel
 	public void updateCardNumbers(String[] data)
 	{
 		if (data == null)
-		{
-			for (BingoCard card : cards)
-			{
-				card.setVisible(false);
-				card.setPurchased(false);
-				card.repaint();
-			}
 			return;
-		}
 
-		ArrayList<UUID> cardsToUpdate = new ArrayList<>();
-		for (String j : data)
+		for (int i =0; i < data.length;i++)
 		{
-			UUID uuid = UUID.fromString(j);
-			cardsToUpdate.add(uuid);
-			System.out.println(j);
+			UUID uuid = UUID.fromString(data[i]);
+			BingoCard card = getCard(uuid);
+			card.setPurchased(true);
+			card.setY(getIndentY(i));
+			card.repaint();
+			
 		}
 
 		for (BingoCard card : cards)
-		{
-			UUID cardU = card.getUUID();
-			if (!cardsToUpdate.contains(cardU))
+			if (!card.isPurchased())
 			{
 				card.setVisible(false);
-				card.setPurchased(false);
-				card.repaint();
-				continue;
+				card.setSelected(false);
 			}
-			card.setVisible(true);
-			card.repaint();
-		}
 
 		repaint();
-
 	}
 
 	@Override
 	public void create()
 	{
 
+	}
+
+	public BingoCard getCard(UUID uuid)
+	{
+		for (BingoCard card : cards)
+			if (card.getUUID().toString().equals(uuid.toString()))
+				return card;
+		return null;
 	}
 
 	public void markNumber(int num)
@@ -157,10 +157,10 @@ public class CardGroupComp extends Panel
 		card.setSelected(false);
 		repaint();
 	}
-	
+
 	public void disableSelectors()
 	{
-		for(ImageComponent ic : selectors.values())
+		for (ImageComponent ic : selectors.values())
 			ic.setVisible(false);
 		repaint();
 	}

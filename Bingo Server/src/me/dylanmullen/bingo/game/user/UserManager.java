@@ -40,7 +40,8 @@ public class UserManager
 		synchronized(users)
 		{
 			if(getUser(uuid)!=null)
-				return;
+				users.remove(getUser(uuid));
+
 			User u = new User(client, uuid);
 			users.add(u);
 			System.err.println("Added to Users");
