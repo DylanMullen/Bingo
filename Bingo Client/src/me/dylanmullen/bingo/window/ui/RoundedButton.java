@@ -3,6 +3,8 @@ package me.dylanmullen.bingo.window.ui;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -66,6 +68,23 @@ public class RoundedButton extends UIButton
 			public void mouseClicked(MouseEvent e)
 			{
 				setActive(true);
+				repaint();
+			}	
+		});
+		addFocusListener(new FocusListener()
+		{
+			
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				hovered=false;
+				repaint();
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e)
+			{
+				hovered=true;
 				repaint();
 			}
 		});

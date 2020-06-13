@@ -1,7 +1,9 @@
 package me.dylanmullen.bingo.window.ui.grid;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Grid
 {
@@ -9,7 +11,7 @@ public class Grid
 	private GridSettings settings;
 	private int x, y;
 
-	private List<GridItem> items;
+	private Map<Integer, List<GridItem>> itemsMap;
 
 	/**
 	 * @param x        xPosition (must not include indentations)
@@ -21,63 +23,43 @@ public class Grid
 		this.settings = settings;
 		this.x = x;
 		this.y = y;
-		this.items = new ArrayList<GridItem>();
+		this.itemsMap = new HashMap<>();
 	}
 
-	public void addGridItem(GridItem item, int row)
+	public void addGridItem(GridItem item, int row, boolean update)
 	{
-		item.setRowPosition(row);
-		if (items.contains(item))
-			return;
+		if (!itemsMap.containsKey(row))
+			itemsMap.put(row, new ArrayList<GridItem>());
+
+		List<GridItem> items = itemsMap.get(row);
 		items.add(item);
+		
+		if (update)
+			updateBounds(row);
 	}
-
-	public List<GridItem> updateItems()
+	
+	public void addGridItem(GridItem item,int row)
 	{
-		List<GridItem> items = new ArrayList<>();
-		int yPos = y + settings.getGap();
-		for (int i = 0; i < settings.getRows(); i++)
-		{
-			List<GridItem> itemsRow = getItemsOnRow(i);
-			int height = getMaxHeightOnRow(itemsRow);
-			height = (height == -1 ? settings.getItemHeight() : height);
-
-			int xPos = x + settings.getGap();
-			for (GridItem item : itemsRow)
-			{
-				item.updateSize(xPos, yPos, settings.getItemWidth(), height, settings.getGap());
-				xPos += item.getWidth(settings.getItemWidth(), settings.getGap()) + settings.getGap() * 2;
-				items.add(item);
-			}
-			yPos += height;
-		}
-		return items;
+		addGridItem(item, row, true);
 	}
 
-	public List<GridItem> getItemsOnRow(int row)
+	public void setGridItems(int row, List<GridItem> itemList)
 	{
-		List<GridItem> items = new ArrayList<GridItem>();
-		for (GridItem item : this.items)
-		{
-			if (item.getRowPosition() == row)
-			{
-				items.add(item);
-			}
-		}
-
-		return items;
+		itemsMap.put(row, itemList);
+		updateBounds(row);
 	}
 
-	public int getMaxHeightOnRow(List<GridItem> row)
+	public void updateBounds(int row)
 	{
-		int height = -1;
-		for (GridItem item : row)
+		List<GridItem> items = itemsMap.get(row);
+		int height = settings.getItemHeight();
+		int xPos = x + settings.getGap();
+		int yPos = y + settings.getGap() + (row * height);
+		for (GridItem item : items)
 		{
-			if (item.getFixedHeight() == -1)
-				continue;
-			if (item.getFixedHeight() > height)
-				height = item.getFixedHeight();
+			item.updateSize(xPos, yPos, settings.getItemWidth(), height, settings.getGap());
+			xPos += item.getWidth(settings.getItemWidth(), settings.getGap()) + settings.getGap() * 2;
 		}
-		return height;
 	}
+
 }

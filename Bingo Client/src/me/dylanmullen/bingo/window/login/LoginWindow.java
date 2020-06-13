@@ -21,6 +21,16 @@ public class LoginWindow extends JFrame
 	 */
 	public LoginWindow()
 	{
+		setup();
+		
+		setupComponents();
+		
+		contentPane.requestFocusInWindow();
+		
+	}
+	
+	public void setup()
+	{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 400);
 		contentPane = new JPanel();
@@ -30,15 +40,20 @@ public class LoginWindow extends JFrame
 		setLocationRelativeTo(null);
 		setUndecorated(true);
 		setLayout(null);
+	}
+	
+	public void setupComponents()
+	{
 		TopMenu menu = new TopMenu(this, 0, 0, getWidth(), (int)((getHeight() / 10)*1.25));
 		menu.setup();
-		menu.create();
-		contentPane.add(menu);
-
+		
 		LoginPanel comp = new LoginPanel(0, menu.getHeight(), getWidth(), getHeight()-menu.getHeight());
+		comp.setup();
+		
 		comp.create();
-		contentPane.add(comp);
-		contentPane.requestFocusInWindow();
-	}
+		menu.create();
 
+		contentPane.add(comp);
+		contentPane.add(menu);
+	}
 }

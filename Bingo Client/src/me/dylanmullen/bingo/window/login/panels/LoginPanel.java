@@ -36,13 +36,12 @@ public class LoginPanel extends Panel
 		grid = new Grid(new GridSettings(width, height, 3, 1, 10), 0, 0);
 
 		warningInfoComponent = new WarningInfoComponent();
-		grid.addGridItem(new GridItem(warningInfoComponent, 1, 1), 0);
+		grid.addGridItem(new GridItem(warningInfoComponent, 1, 1), 0, true);
 
 		loginInfoComponent = new LoginInfoComponent(this, indent, warningInfoComponent.getHeight() + (indent),
 				getWidth() - (indent * 2), (height / 6 * 4) - (indent));
-		grid.addGridItem(new GridItem(loginInfoComponent, 2, 1), 1);
+		grid.addGridItem(new GridItem(loginInfoComponent, 2, 1), 1, true);
 
-		grid.updateItems();
 		loginInfoComponent.create();
 		warningInfoComponent.create();
 	}
@@ -50,7 +49,6 @@ public class LoginPanel extends Panel
 	@Override
 	public void create()
 	{
-		setup();
 		add(warningInfoComponent);
 		add(loginInfoComponent);
 	}

@@ -40,21 +40,21 @@ public class LoginInfoComponent extends Panel implements IGridItem
 		Grid grid = new Grid(new GridSettings(width, height, 3, 2, (width / 100)), 0, 0);
 
 		username = new UITextField("Username");
-		grid.addGridItem(new GridItem(username, 1, 2), 0);
+		grid.addGridItem(new GridItem(username, 1, 2), 0, true);
 
 		password = new UIPasswordField("Password");
-		grid.addGridItem(new GridItem(password, 1, 2), 1);
+		grid.addGridItem(new GridItem(password, 1, 2), 1, true);
 
 		RoundedButton login = new RoundedButton("Login", UIColour.BTN_LOGIN);
 		login.addMouseListener(new LoginButtonListener(panel));
 		buttons.add(login);
-		grid.addGridItem(new GridItem(login, 1, 1), 2);
+		grid.addGridItem(new GridItem(login, 1, 1), 2, false);
 
 		RoundedButton register = new RoundedButton("Register", UIColour.BTN_REGISTER);
-		grid.addGridItem(new GridItem(register, 1, 1), 2);
+		grid.addGridItem(new GridItem(register, 1, 1), 2, true);
 		buttons.add(register);
 
-		grid.updateItems();
+//		grid.updateItems();
 
 		setOpaque(false);
 	}
@@ -69,6 +69,7 @@ public class LoginInfoComponent extends Panel implements IGridItem
 		for (RoundedButton button : buttons)
 		{
 			button.create();
+			button.setFocusable(true);
 			add(button);
 		}
 	}

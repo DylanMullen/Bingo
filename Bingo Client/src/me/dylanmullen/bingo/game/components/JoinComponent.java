@@ -46,7 +46,7 @@ public class JoinComponent extends RoundedPanel
 		button = new JoinButton("Join Game!");
 		grid.addGridItem(new GridItem(button, 1, 2), 2);
 
-		grid.updateItems();
+//		grid.updateItems();
 
 		button.create();
 	}

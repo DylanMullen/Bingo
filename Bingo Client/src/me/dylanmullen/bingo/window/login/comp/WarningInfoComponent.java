@@ -27,8 +27,6 @@ public class WarningInfoComponent extends RoundedPanel
 
 		information = new JLabel();
 		information.setBounds(0, 0, getWidth(), getHeight());
-		System.out.println(getWidth());
-//		information.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		updateText("Please Login/Register");
 		information.setHorizontalAlignment(SwingConstants.CENTER);
 		information.setVerticalTextPosition(SwingConstants.CENTER);

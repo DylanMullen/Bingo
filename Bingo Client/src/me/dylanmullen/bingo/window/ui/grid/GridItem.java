@@ -31,8 +31,6 @@ public class GridItem
 	public void updateSize(int x, int y, int width, int height, int gap)
 	{
 		comp.setBounds(x, y, getWidth(width, gap), getHeight(height, gap));
-		if (comp instanceof IGridItem)
-			((IGridItem) comp).resizeComponents();
 	}
 
 	public int getWidth(int width, int gap)

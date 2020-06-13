@@ -37,9 +37,9 @@ public class ProfilePanel extends Panel
 		setBounds(x, y, width, height);
 		setBorder(new EmptyBorder(12, 12, 12, 12));
 		setOpaque(false);
-		grid = new Grid(new GridSettings(width-10, height-110, 4, 1, 5), 5, 105);
+		grid = new Grid(new GridSettings(width - 10, height - 110, 4, 1, 5), 5, 105);
 
-		ImageComponent ic = new ImageComponent(10, 10, width-20, 90);
+		ImageComponent ic = new ImageComponent(10, 10, width - 20, 90);
 		try
 		{
 			ic.setImage(ImageIO.read(getClass().getClassLoader().getResourceAsStream("placeholder.png")));
@@ -63,7 +63,6 @@ public class ProfilePanel extends Panel
 		grid.addGridItem(new GridItem(money, 1, 1), 1);
 		grid.addGridItem(new GridItem(wins, 1, 1), 2);
 		grid.addGridItem(new GridItem(ratio, 1, 1), 3);
-		grid.updateItems();
 		username.setup();
 		ratio.setup();
 		wins.setup();
@@ -73,16 +72,15 @@ public class ProfilePanel extends Panel
 		infoComp.add(wins);
 		infoComp.add(ratio);
 	}
-	
+
 	@Override
 	public void create()
 	{
-		for (GridItem item : grid.updateItems())
-		{
-			add(item.getComponent());
-			System.out.println(1 - 1);
-		}
 		updateItems();
+		for (InfoComponent item : infoComp)
+		{
+			add(item);
+		}
 	}
 
 	@Override
@@ -96,12 +94,12 @@ public class ProfilePanel extends Panel
 		super.paintComponent(g);
 
 	}
-	
+
 	public void updateItems()
 	{
 		infoComp.get(0).getInfo().setText(BingoGame.getInstance().getUserInformation().getDisplayName());
-		infoComp.get(1).getInfo().setText(BingoGame.getInstance().getUserInformation().getCredits()+"");
-		infoComp.get(2).getInfo().setText(BingoGame.getInstance().getUserInformation().getWins()+"");
+		infoComp.get(1).getInfo().setText(BingoGame.getInstance().getUserInformation().getCredits() + "");
+		infoComp.get(2).getInfo().setText(BingoGame.getInstance().getUserInformation().getWins() + "");
 		infoComp.get(3).getInfo().setText("N/A");
 	}
 }

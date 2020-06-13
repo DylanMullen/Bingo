@@ -1,15 +1,14 @@
 package me.dylanmullen.bingo.game;
 
 import java.awt.Color;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import me.dylanmullen.bingo.game.callbacks.CardRequestCallback;
 import me.dylanmullen.bingo.game.components.listeners.BingoCardListener;
-import me.dylanmullen.bingo.game.components.listeners.PurchaseListener;
-import me.dylanmullen.bingo.gfx.ImageAtlas;
+import me.dylanmullen.bingo.game.components.overlays.PurchaseOverlay;
 import me.dylanmullen.bingo.net.PacketHandler;
-import me.dylanmullen.bingo.window.ui.ImageComponent;
 import me.dylanmullen.bingo.window.ui.Panel;
 
 public class CardGroupComp extends Panel
@@ -18,13 +17,13 @@ public class CardGroupComp extends Panel
 	private static final long serialVersionUID = -2951295854163796573L;
 
 	private BingoCard[] cards;
-	private HashMap<BingoCard, ImageComponent> selectors = new HashMap<BingoCard, ImageComponent>();
 
-	private final ImageAtlas ATLAS = new ImageAtlas("uiAtlas.png", 42);
+	private List<PurchaseOverlay> overlays = new ArrayList<PurchaseOverlay>();
 
 	public CardGroupComp(int x, int y, int width, int height)
 	{
 		super(x, y, width, height);
+		this.cards = new BingoCard[3];
 		setOpaque(false);
 	}
 
@@ -33,22 +32,12 @@ public class CardGroupComp extends Panel
 	{
 		setBounds(x, y, width, height);
 		setLayout(null);
-		this.cards = new BingoCard[3];
 
 		for (int i = 0; i < cards.length; i++)
 		{
-			cards[i] = new BingoCard(5, getIndentY(i), ((getWidth() - 10) / 4) * 3, getContainerHeight());
+			cards[i] = new BingoCard(25, getIndentY(i), (getWidth() - 50), getContainerHeight());
 			cards[i].addMouseListener(new BingoCardListener(this));
-
-			ImageComponent ic = new ImageComponent(cards[i].getX() + cards[i].getWidth() + 5, getIndentY(i),
-					(getWidth() - cards[i].getWidth()) - 15, cards[i].getHeight());
-			ic.setVisible(false);
-			ic.setImage(ATLAS.getImage(0, 0));
-			ic.addMouseListener(new PurchaseListener(cards[i]));
-			
 			add(cards[i]);
-			add(ic);
-			selectors.put(cards[i], ic);
 		}
 		setBackground(Color.WHITE);
 	}
@@ -90,14 +79,14 @@ public class CardGroupComp extends Panel
 		if (data == null)
 			return;
 
-		for (int i =0; i < data.length;i++)
+		for (int i = 0; i < data.length; i++)
 		{
 			UUID uuid = UUID.fromString(data[i]);
 			BingoCard card = getCard(uuid);
 			card.setPurchased(true);
 			card.setY(getIndentY(i));
 			card.repaint();
-			
+
 		}
 
 		for (BingoCard card : cards)
@@ -144,25 +133,44 @@ public class CardGroupComp extends Panel
 		return false;
 	}
 
+	public PurchaseOverlay getOverlay(BingoCard card)
+	{
+		for (PurchaseOverlay overlay : overlays)
+			if (overlay.getCard().equals(card))
+			{
+				System.out.println("RET");
+				return overlay;
+			}
+
+		PurchaseOverlay overlay = new PurchaseOverlay(card, Color.red, 100, 0, card.BUFFER, card.getWidth(),
+				card.getHeight() - card.BUFFER);
+		overlays.add(overlay);
+		card.add(overlay);
+		card.repaint();
+		return overlay;
+	}
+
 	public void showSelector(BingoCard card)
 	{
-		selectors.get(card).setVisible(true);
+		getOverlay(card).setVisible(true);
 		card.setSelected(true);
 		repaint();
 	}
 
 	public void disableSelector(BingoCard card)
 	{
-		selectors.get(card).setVisible(false);
+//		getOverlay(card).setVisible(false);
 		card.setSelected(false);
 		repaint();
 	}
 
 	public void disableSelectors()
 	{
-		for (ImageComponent ic : selectors.values())
-			ic.setVisible(false);
-		repaint();
+		for (int i = 0; i < cards.length; i++)
+		{
+			getOverlay(cards[i]);
+			repaint();
+		}
 	}
 
 	public void requestNumbers()

@@ -46,5 +46,10 @@ public class User
 	{
 		return client;
 	}
+	
+	public UserInformation getUserInformation()
+	{
+		return userInformation;
+	}
 
 }

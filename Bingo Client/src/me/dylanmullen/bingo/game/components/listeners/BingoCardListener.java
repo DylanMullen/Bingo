@@ -21,6 +21,8 @@ public class BingoCardListener extends MouseAdapter
 	{
 		BingoCard card = (BingoCard) e.getComponent();
 		if(!card.isPurchased())
+		{
 			group.showSelector(card);
+		}
 	}
 }

@@ -34,7 +34,7 @@ public class InfoComponent extends Panel
 		grid = new Grid(new GridSettings(width, height, 1, 2, 0), 0, 0);
 		grid.addGridItem(new GridItem(header, 1, 1), 0);
 		grid.addGridItem(new GridItem(info, 1, 1), 0);
-		grid.updateItems();
+//		grid.updateItems();
 		
 		Font headerF = new Font("Calibri", Font.PLAIN, 20);
 		Font font = new Font("Calibri", Font.PLAIN, 16);

@@ -11,6 +11,7 @@ import java.util.UUID;
 import javax.swing.JComponent;
 
 import me.dylanmullen.bingo.game.components.BingoSquare;
+import me.dylanmullen.bingo.game.components.overlays.PurchaseOverlay;
 import me.dylanmullen.bingo.util.FontUtil;
 import me.dylanmullen.bingo.window.ui.UIColour;
 
@@ -19,8 +20,10 @@ public class BingoCard extends JComponent
 
 	private static final long serialVersionUID = -1646554212523678637L;
 
+	private PurchaseOverlay po;
+
 	private BingoSquare[] squares;
-	private final int BUFFER = 36;
+	public final int BUFFER = 36;
 
 	private boolean purchased = false;
 	private boolean selected = false;
@@ -33,6 +36,11 @@ public class BingoCard extends JComponent
 	{
 		this.x = x;
 		this.y = y;
+		createSquares(w, h);
+	}
+
+	private void createSquares(int w, int h)
+	{
 		int widthSize = w / 9;
 		int heightSize = h / 3;
 
@@ -42,6 +50,7 @@ public class BingoCard extends JComponent
 			h = heightSize * 3;
 
 		h += BUFFER;
+
 		setBounds(x, y, w, h);
 		squares = new BingoSquare[9 * 3];
 
@@ -91,9 +100,10 @@ public class BingoCard extends JComponent
 			g2.setColor((square.isCalled() ? UIColour.SQUARE_MARKED.toColor() : getColour(i)));
 			g2.fill(square);
 
-			Dimension dim = FontUtil.getFontSize(getFontMetrics(g2.getFont()), g2.getFont(), square.getNumber()+"", 0, 0);
-			int xp = (int) ((int) square.getX() + square.getWidth()/2-(dim.width/2));
-			int yp = (int) ((int) square.getY() + square.getHeight()/2+(dim.height/4));
+			Dimension dim = FontUtil.getFontSize(getFontMetrics(g2.getFont()), g2.getFont(), square.getNumber() + "", 0,
+					0);
+			int xp = (int) ((int) square.getX() + square.getWidth() / 2 - (dim.width / 2));
+			int yp = (int) ((int) square.getY() + square.getHeight() / 2 + (dim.height / 4));
 
 			g2.setColor(Color.WHITE);
 			if (!square.isEmpty())
@@ -102,14 +112,14 @@ public class BingoCard extends JComponent
 //			g2.setColor(Color.red);
 //			g2.drawLine(square.x, square.y+square.height/2, square.x+square.width, square.y+square.height/2);
 //			g2.drawLine(square.x+square.width/2, square.y, square.x+square.width/2, square.y+square.height);
-			
-			int radius = (square.height-5);
-			
+
+			int radius = (square.height - 5);
+
 			Color col = UIColour.FRAME_BINGO_BG_TOP.toColor();
 			g2.setColor(new Color(col.getRed(), col.getGreen(), col.getBlue(), 95));
 			if (square.isCalled())
-				g2.fillOval((int) (square.x + square.width / 2 - radius/2), (int) (square.y +square.height/2- radius/2),
-					radius, radius);
+				g2.fillOval((int) (square.x + square.width / 2 - radius / 2),
+						(int) (square.y + square.height / 2 - radius / 2), radius, radius);
 		}
 	}
 
@@ -215,4 +225,5 @@ public class BingoCard extends JComponent
 		setBounds(x, y, getWidth(), getHeight());
 		repaint();
 	}
+
 }
