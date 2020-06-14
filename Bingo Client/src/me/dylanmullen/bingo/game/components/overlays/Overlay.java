@@ -16,8 +16,8 @@ public abstract class Overlay extends JComponent
 
 	public Overlay(Color bgColour, int opacity, int x, int y, int width, int height)
 	{
-		this.backgroundColour = createTransparentBackground(bgColour);
 		this.opacityValue = opacity;
+		this.backgroundColour = createTransparentBackground(bgColour);
 		setBounds(x, y, width, height);
 		setLayout(null);
 	}

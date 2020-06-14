@@ -1,36 +1,29 @@
-package me.dylanmullen.bingo.game.components.overlays.winner;
+package me.dylanmullen.bingo.game.components.overlays;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import me.dylanmullen.bingo.window.ui.Panel;
 import me.dylanmullen.bingo.window.ui.TransparentLabel;
 import me.dylanmullen.bingo.window.ui.UIColour;
 
-public class WinnerPanel extends Panel
+public class WinnerOverlay extends Overlay
 {
-	private static final long serialVersionUID = -5054359118554243790L;
 
+	private static final long serialVersionUID = 5162085351393194993L;
 	private TransparentLabel header;
 	private JLabel winners;
 
-	public WinnerPanel(int x, int y, int width, int height)
+	public WinnerOverlay(int x, int y, int width, int height)
 	{
-		super(x, y, width, height);
+		super(UIColour.FRAME_BINGO_BG_TOP.toColor(), 200, x, y, width, height);
+		setup();
 	}
 
-	@Override
 	public void setup()
 	{
-		setBounds(x, y, width, height);
-		setBackground(UIColour.FRAME_BINGO_BG_TOP.toColor());
-		setOpaque(false);
-
 		Font font = new Font("Calibri", Font.PLAIN, 30);
 
 		this.header = new TransparentLabel(240);
@@ -48,31 +41,22 @@ public class WinnerPanel extends Panel
 		winners.setVerticalAlignment(SwingConstants.TOP);
 		winners.setFont(font);
 		winners.setForeground(Color.white);
-	}
-
-	@Override
-	public void create()
-	{
-		setup();
-
+		
 		add(header);
 		add(winners);
 	}
 
-	@Override
-	protected void paintComponent(Graphics g)
+	public void setWinners(String[] winners)
 	{
-		super.paintComponent(g);
-
-		Graphics2D g2 = (Graphics2D) g;
-		Color col = UIColour.FRAME_BINGO_BG_TOP.toColor();
-		g2.setColor(new Color(col.getRed(), col.getGreen(), col.getBlue(), 200));
-		g2.fillRect(0, 0, width, height);
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < winners.length; i++)
+			sb.append(winners[i] + (winners.length - 1 == i ? "" : "\n"));
+		setText(sb.toString());
+		repaint();
 	}
 
 	public void setText(String text)
 	{
 		winners.setText(text);
 	}
-
 }

@@ -3,7 +3,7 @@ package me.dylanmullen.bingo.game.components;
 import java.awt.Graphics;
 
 import me.dylanmullen.bingo.game.CardGroupComp;
-import me.dylanmullen.bingo.game.components.overlays.winner.WinnerOverlay;
+import me.dylanmullen.bingo.game.components.overlays.WinnerOverlay;
 import me.dylanmullen.bingo.window.ui.Panel;
 import me.dylanmullen.bingo.window.ui.UIColour;
 

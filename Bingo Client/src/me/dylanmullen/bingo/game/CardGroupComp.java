@@ -1,13 +1,10 @@
 package me.dylanmullen.bingo.game;
 
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import me.dylanmullen.bingo.game.callbacks.CardRequestCallback;
 import me.dylanmullen.bingo.game.components.listeners.BingoCardListener;
-import me.dylanmullen.bingo.game.components.overlays.PurchaseOverlay;
 import me.dylanmullen.bingo.net.PacketHandler;
 import me.dylanmullen.bingo.window.ui.Panel;
 
@@ -17,8 +14,6 @@ public class CardGroupComp extends Panel
 	private static final long serialVersionUID = -2951295854163796573L;
 
 	private BingoCard[] cards;
-
-	private List<PurchaseOverlay> overlays = new ArrayList<PurchaseOverlay>();
 
 	public CardGroupComp(int x, int y, int width, int height)
 	{
@@ -93,7 +88,7 @@ public class CardGroupComp extends Panel
 			if (!card.isPurchased())
 			{
 				card.setVisible(false);
-				card.setSelected(false);
+				card.hidePurchaseOverlay();
 			}
 
 		repaint();
@@ -133,34 +128,15 @@ public class CardGroupComp extends Panel
 		return false;
 	}
 
-	public PurchaseOverlay getOverlay(BingoCard card)
-	{
-		for (PurchaseOverlay overlay : overlays)
-			if (overlay.getCard().equals(card))
-			{
-				System.out.println("RET");
-				return overlay;
-			}
-
-		PurchaseOverlay overlay = new PurchaseOverlay(card, Color.red, 100, 0, card.BUFFER, card.getWidth(),
-				card.getHeight() - card.BUFFER);
-		overlays.add(overlay);
-		card.add(overlay);
-		card.repaint();
-		return overlay;
-	}
-
 	public void showSelector(BingoCard card)
 	{
-		getOverlay(card).setVisible(true);
-		card.setSelected(true);
+		card.showPurchaseOverlay();
 		repaint();
 	}
 
 	public void disableSelector(BingoCard card)
 	{
-//		getOverlay(card).setVisible(false);
-		card.setSelected(false);
+		card.hidePurchaseOverlay();
 		repaint();
 	}
 
@@ -168,8 +144,7 @@ public class CardGroupComp extends Panel
 	{
 		for (int i = 0; i < cards.length; i++)
 		{
-			getOverlay(cards[i]);
-			repaint();
+			cards[i].hidePurchaseOverlay();
 		}
 	}
 

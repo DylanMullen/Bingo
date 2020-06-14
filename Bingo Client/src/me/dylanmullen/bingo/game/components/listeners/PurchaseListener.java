@@ -3,8 +3,8 @@ package me.dylanmullen.bingo.game.components.listeners;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import me.dylanmullen.bingo.game.BingoCard;
 import me.dylanmullen.bingo.game.callbacks.PurchaseCallback;
+import me.dylanmullen.bingo.game.components.overlays.PurchaseOverlay;
 import me.dylanmullen.bingo.net.PacketHandler;
 
 public class PurchaseListener extends MouseAdapter
@@ -12,13 +12,12 @@ public class PurchaseListener extends MouseAdapter
 
 	private long SENT_DELAY = 2500;
 
-	private BingoCard card;
+	private PurchaseOverlay overlay;
 	private long lastSent;
 
-	public PurchaseListener(BingoCard card)
+	public PurchaseListener(PurchaseOverlay overlay)
 	{
-		this.card = card;
-		System.err.println("CARD IS NULL");
+		this.overlay = overlay;
 	}
 
 	@Override
@@ -26,9 +25,12 @@ public class PurchaseListener extends MouseAdapter
 	{
 		if (System.currentTimeMillis() - lastSent <= SENT_DELAY)
 			return;
-		if (card == null)
+		if (overlay == null)
 			return;
-		PacketHandler.sendPacket(PacketHandler.createPacket(8, card.getUUID().toString()), new PurchaseCallback(card));
+		if (overlay.getCard() == null)
+			return;
+		PacketHandler.sendPacket(PacketHandler.createPacket(8, overlay.getCard().getUUID().toString()),
+				new PurchaseCallback(overlay.getCard()));
 		lastSent = System.currentTimeMillis();
 	}
 }

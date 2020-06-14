@@ -195,6 +195,32 @@ public class BingoCard extends JComponent
 			}
 	}
 
+	public void showPurchaseOverlay()
+	{
+		if (!selected)
+		{
+			if (po == null)
+			{
+				this.po = new PurchaseOverlay(this, UIColour.FRAME_BINGO_BG_TOP.toColor(), 155, 0, BUFFER, getWidth(),
+						getHeight() - BUFFER);
+				po.setup();
+			}
+			add(po);
+			po.setVisible(true);
+			selected = true;
+		}
+	}
+
+	public void hidePurchaseOverlay()
+	{
+		if (selected)
+		{
+			po.setVisible(false);
+			remove(po);
+			selected = false;
+		}
+	}
+
 	public void setPurchased(boolean val)
 	{
 		this.purchased = val;

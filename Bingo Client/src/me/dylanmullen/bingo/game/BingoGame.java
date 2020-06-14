@@ -1,16 +1,11 @@
 package me.dylanmullen.bingo.game;
 
-import java.util.UUID;
-
-import me.dylanmullen.bingo.window.bingo.panels.sidemenu.SP_Bingo;
-
 public class BingoGame
 {
 
 	private static BingoGame instance;
 	private GamePanel gamePanel;
 
-	private UUID playerUUID;
 	private UserInformation userInformation;
 
 	private boolean gameJoined;

@@ -2,8 +2,13 @@ package me.dylanmullen.bingo.game.components.overlays;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import me.dylanmullen.bingo.game.BingoCard;
+import me.dylanmullen.bingo.game.callbacks.PurchaseCallback;
+import me.dylanmullen.bingo.game.components.listeners.PurchaseListener;
+import me.dylanmullen.bingo.net.PacketHandler;
 import me.dylanmullen.bingo.window.ui.RoundedButton;
 import me.dylanmullen.bingo.window.ui.UIColour;
 
@@ -18,7 +23,6 @@ public class PurchaseOverlay extends Overlay
 	{
 		super(bgColour, opacity, x, y, width, height);
 		this.card = card;
-		setup();
 	}
 
 	public void setup()
@@ -26,6 +30,16 @@ public class PurchaseOverlay extends Overlay
 		Font font = new Font("Calibri", Font.PLAIN, 35);
 		RoundedButton purchased = new RoundedButton("Purchase", font, UIColour.BTN_BINGO_ACTIVE);
 		RoundedButton cancel = new RoundedButton("Cancel", font, UIColour.BINGO_BALL_1);
+
+		purchased.addMouseListener(new PurchaseListener(this));
+		cancel.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				card.hidePurchaseOverlay();
+			}
+		});
 
 		int width = (getWidth() - (30 * 3)) / 2;
 		purchased.setBounds(30, 30, width, getHeight() - 60);
