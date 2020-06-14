@@ -20,7 +20,7 @@ public class MySQLController implements Runnable
 	private Thread thread;
 	private boolean running;
 	private boolean connected;
-	
+
 	private Config config;
 	private SQLDatabase database;
 
@@ -37,9 +37,9 @@ public class MySQLController implements Runnable
 			return;
 		thread = new Thread(this);
 		thread.start();
-		
+
 		// WAITING FOR A RESPONSE ON CONNECT
-		synchronized(thread)
+		synchronized (thread)
 		{
 			try
 			{
@@ -56,13 +56,13 @@ public class MySQLController implements Runnable
 	{
 		database = new SQLDatabase(config);
 		connected = database.connect();
-	
-		synchronized(this)
+
+		synchronized (this)
 		{
 			notify();
 		}
-		
-		if(!connected)
+
+		if (!connected)
 		{
 			System.out.println("Failed to connect!");
 			return;
@@ -85,15 +85,15 @@ public class MySQLController implements Runnable
 
 				if (!query.createStatement(database.getConnection()))
 					continue;
-				
-				if(query.getExecutionMethod()==null)
+
+				if (query.getExecutionMethod() == null)
 					continue;
-				
-				if(query.getExecutionMethod().equals(ExecutionType.QUERY))
+
+				if (query.getExecutionMethod().equals(ExecutionType.QUERY))
 					sendSQLQueryRequest(query.getStatement(), ticket.getCallback());
 				else
 					sendSQLDataManipRequest(query.getStatement(), ticket.getCallback());
-				
+
 				queue.remove(i);
 			}
 		}
@@ -112,14 +112,17 @@ public class MySQLController implements Runnable
 			System.err.println("Failed to execute query: " + e.getMessage());
 		}
 	}
-	
+
 	private void sendSQLDataManipRequest(PreparedStatement statement, SQLCallback callback)
 	{
 		try
 		{
-			callback.setTimeExecuted(System.currentTimeMillis());
+			if (callback != null)
+			{
+				callback.setTimeExecuted(System.currentTimeMillis());
+				callback.callback();
+			}
 			statement.execute();
-			callback.callback();
 		} catch (SQLException e)
 		{
 			System.err.println("Failed to execute query: " + e.getMessage());
@@ -128,7 +131,7 @@ public class MySQLController implements Runnable
 
 	public void submitTicket(SQLTicket ticket)
 	{
-		synchronized(queue)
+		synchronized (queue)
 		{
 			if (queue.contains(ticket))
 				return;
@@ -138,7 +141,7 @@ public class MySQLController implements Runnable
 
 	public synchronized void dispose()
 	{
-		if(!running)
+		if (!running)
 			return;
 		try
 		{
@@ -149,12 +152,12 @@ public class MySQLController implements Runnable
 			e.printStackTrace();
 		}
 	}
-	
+
 	public boolean isConnected()
 	{
 		return connected;
 	}
-	
+
 	public Thread getThread()
 	{
 		return thread;

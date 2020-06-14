@@ -12,17 +12,17 @@ public class UserInformation
 	private int credits;
 	private int wins;
 	private int loses;
-	
+
 	public UUID getUuid()
 	{
 		return uuid;
 	}
-	
+
 	public void setUuid(UUID uuid)
 	{
 		this.uuid = uuid;
 	}
-	
+
 	public String getDisplayName()
 	{
 		return displayName;
@@ -66,6 +66,13 @@ public class UserInformation
 	public UUID getUUID()
 	{
 		return uuid;
+	}
+
+	public void updateCredits(String data)
+	{
+		String credits = data.split("/m/|/m/")[1];
+		setCredits(Integer.parseInt(credits));
+		SP_Bingo.getInstance().getPanel().updateCredits(getCredits());
 	}
 
 }

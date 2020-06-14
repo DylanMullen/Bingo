@@ -3,6 +3,8 @@ package me.dylanmullen.bingo.game;
 import java.util.HashSet;
 import java.util.UUID;
 
+import me.dylanmullen.bingo.game.currency.CurrencyController;
+import me.dylanmullen.bingo.game.currency.InvalidAmountException;
 import me.dylanmullen.bingo.game.user.User;
 import me.dylanmullen.bingo.net.packet.PacketHandler;
 import me.dylanmullen.bingo.net.packet.packets.Packet_005_Response;
@@ -35,6 +37,16 @@ public class GameController
 
 	public void purchaseCard(User u, UUID uuid, UUID packetToRelay)
 	{
+		try
+		{
+			CurrencyController.getController().deduct(u, 15);
+		} catch (InvalidAmountException e)
+		{
+			System.err.println(e.getMessage());
+			// TODO sent back not enough money
+			return;
+		}
+
 		BingoGame game = u.getCurrentGame();
 		CardGroup cg = game.getCardGroup(u);
 		BingoCard card = cg.getCard(uuid);

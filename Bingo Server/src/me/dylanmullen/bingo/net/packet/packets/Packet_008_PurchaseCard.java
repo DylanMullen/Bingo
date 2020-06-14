@@ -3,7 +3,6 @@ package me.dylanmullen.bingo.net.packet.packets;
 import java.util.UUID;
 
 import me.dylanmullen.bingo.core.BingoServer;
-import me.dylanmullen.bingo.game.GameController;
 import me.dylanmullen.bingo.game.user.User;
 import me.dylanmullen.bingo.game.user.UserManager;
 import me.dylanmullen.bingo.net.Client;

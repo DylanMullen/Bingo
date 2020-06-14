@@ -102,4 +102,9 @@ public class ProfilePanel extends Panel
 		infoComp.get(2).getInfo().setText(BingoGame.getInstance().getUserInformation().getWins() + "");
 		infoComp.get(3).getInfo().setText("N/A");
 	}
+	
+	public void updateCredits(int credits)
+	{
+		infoComp.get(1).getInfo().setText(credits + "");
+	}
 }

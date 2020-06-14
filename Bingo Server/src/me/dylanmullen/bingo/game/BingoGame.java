@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.UUID;
 
+import me.dylanmullen.bingo.game.currency.CurrencyController;
 import me.dylanmullen.bingo.game.runnables.GameRunnable;
 import me.dylanmullen.bingo.game.runnables.LobbyRunnable;
 import me.dylanmullen.bingo.game.user.User;
@@ -216,6 +217,7 @@ public class BingoGame
 		{
 			User u = winners.get(i);
 			winnerNames.append(u.getUUID().toString() + (winners.size() - 1 == i ? "" : "/nl/"));
+			CurrencyController.getController().increment(u, 15 * (lineState.getState() + 1));
 		}
 		sendPacket(13, winnerNames.toString());
 		if (lineState != LineState.FULLHOUSE)

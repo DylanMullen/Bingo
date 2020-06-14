@@ -28,7 +28,7 @@ public class SQLFactory
 
 	public SQLFactory(MySQLController mySQL)
 	{
-		if(mysql ==null)
+		if (mysql == null)
 			mysql = mySQL;
 	}
 
@@ -36,7 +36,7 @@ public class SQLFactory
 	{
 		mysql.submitTicket(ticket);
 	}
-	
+
 	// columnName;type;length
 	public static SQLTicket createTable(String tableName, String[] columns, SQLCallback callback)
 	{

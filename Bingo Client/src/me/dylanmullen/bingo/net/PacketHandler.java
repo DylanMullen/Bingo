@@ -45,6 +45,8 @@ public class PacketHandler
 			case 14:
 				BingoGame.getInstance().restart(data);
 				break;
+			case 15:
+				BingoGame.getInstance().getUserInformation().updateCredits(data);
 			default:
 				return;
 		}
