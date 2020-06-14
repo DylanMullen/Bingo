@@ -8,10 +8,10 @@ public class InvalidAmountException extends Exception
 	private static final long serialVersionUID = 8731969259917943606L;
 
 	private User user;
-	private int currentAmount;
-	private int amount;
+	private double currentAmount;
+	private double amount;
 
-	public InvalidAmountException(User u, int current, int amount)
+	public InvalidAmountException(User u, double current, double amount)
 	{
 		super("");
 		this.user = u;

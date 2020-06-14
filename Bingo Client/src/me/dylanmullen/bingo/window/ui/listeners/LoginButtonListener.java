@@ -36,6 +36,7 @@ public class LoginButtonListener extends MouseAdapter
 				LoginHandler.getHandler().handleLoginRequest(login);
 				break;
 			case "Register":
+				LoginHandler.getHandler().handleRegisterRequest(login);
 				break;
 			default:
 				break;

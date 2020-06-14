@@ -68,6 +68,8 @@ public class MySQLController implements Runnable
 			return;
 		}
 
+		database.createTables();
+
 		while (database.isConnected())
 		{
 			handleRequests();
@@ -161,5 +163,10 @@ public class MySQLController implements Runnable
 	public Thread getThread()
 	{
 		return thread;
+	}
+	
+	public SQLDatabase getDatabase()
+	{
+		return database;
 	}
 }

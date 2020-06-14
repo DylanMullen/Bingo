@@ -5,23 +5,28 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import me.dylanmullen.bingo.configs.Config;
+import me.dylanmullen.bingo.mysql.SQLFactory;
 
 public class SQLDatabase
 {
 
+	private Config config;
+
 	private String databaseName;
-
 	private String address;
-	private int port;
-
 	private String username;
 	private String password;
+	private int port;
+
+	private String loginTable;
+	private String userInfoTable;
 
 	private Connection connection;
 	private boolean connected;
 
 	public SQLDatabase(Config config)
 	{
+		this.config = config;
 		this.databaseName = (String) config.getValue("database", "databaseName");
 		this.address = (String) config.getValue("hostAddress", "ip");
 		this.port = ((Long) config.getValue("hostAddress", "port")).intValue();
@@ -50,6 +55,17 @@ public class SQLDatabase
 		}
 	}
 
+	public void createTables()
+	{
+		this.loginTable = (String) config.getValue("database.tables", "loginTable");
+		this.userInfoTable = (String) config.getValue("database.tables", "userInfo");
+		
+		SQLFactory.sendTicket(SQLFactory.createTable(loginTable,
+				new String[] { "uuid;varchar;32", "email;varchar;40", "password;varchar;36" }, "uuid", null));
+		SQLFactory.sendTicket(SQLFactory.createTable(userInfoTable, new String[] { "uuid;varchar;32",
+				"username;varchar;16", "credits;double;-1", "wins;int;-1", "losses;int;-1" }, "uuid", null));
+	}
+
 	public Connection getConnection()
 	{
 		return connection;
@@ -69,6 +85,16 @@ public class SQLDatabase
 	public boolean isConnected()
 	{
 		return connected;
+	}
+	
+	public String getLoginTableName()
+	{
+		return loginTable;
+	}
+	
+	public String getUserInfoTableName()
+	{
+		return userInfoTable;
 	}
 
 }

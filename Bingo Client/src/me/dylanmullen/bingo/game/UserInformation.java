@@ -9,7 +9,7 @@ public class UserInformation
 
 	private UUID uuid;
 	private String displayName;
-	private int credits;
+	private double credits;
 	private int wins;
 	private int loses;
 
@@ -33,12 +33,12 @@ public class UserInformation
 		this.displayName = displayName;
 	}
 
-	public int getCredits()
+	public double getCredits()
 	{
 		return credits;
 	}
 
-	public void setCredits(int credits)
+	public void setCredits(double credits)
 	{
 		this.credits = credits;
 	}

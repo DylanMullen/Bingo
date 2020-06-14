@@ -24,7 +24,7 @@ public class LoginHandler
 		UITextField username = login.getLoginInfoComponent().getUsername();
 		UIPasswordField password = login.getLoginInfoComponent().getPassword();
 
-		if (!checkLoginFields(login, username, password))
+		if (!checkFields(login, username, password))
 			return;
 
 		String data = username.getText() + "/nl/" + new String(password.getPassword());
@@ -32,7 +32,7 @@ public class LoginHandler
 				new LoginCallback(login.getWarningInfoComponent()));
 	}
 
-	private boolean checkLoginFields(LoginPanel login, UITextField user, UIPasswordField pw)
+	private boolean checkFields(LoginPanel login, UITextField user, UIPasswordField pw)
 	{
 		boolean valid = true;
 		valid = checkUsername(login.getWarningInfoComponent(), user);
@@ -77,5 +77,16 @@ public class LoginHandler
 			valid = false;
 		}
 		return valid;
+	}
+
+	public void handleRegisterRequest(LoginPanel login)
+	{
+		UITextField username = login.getLoginInfoComponent().getUsername();
+		UIPasswordField password = login.getLoginInfoComponent().getPassword();
+
+		if (!checkFields(login, username, password))
+			return;
+		String data = username.getText() + "/nl/" + new String(password.getPassword());
+		PacketHandler.sendPacket(PacketHandler.createPacket(002, data), null);
 	}
 }

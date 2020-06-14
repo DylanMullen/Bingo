@@ -21,7 +21,7 @@ public class CurrencyController
 		return instance;
 	}
 
-	public void increment(User u, int credits)
+	public void increment(User u, double credits)
 	{
 		u.getUserInformation().setCredits(u.getUserInformation().getCredits() + credits);
 		sendPacket(u.getClient(), u.getUserInformation().getCredits());
@@ -30,7 +30,7 @@ public class CurrencyController
 
 	public void deduct(User u, int credits) throws InvalidAmountException
 	{
-		int userCredits = u.getUserInformation().getCredits() - credits;
+		double userCredits = u.getUserInformation().getCredits() - credits;
 		if (userCredits < 0)
 			throw new InvalidAmountException(u, u.getUserInformation().getCredits(), credits);
 
@@ -39,15 +39,15 @@ public class CurrencyController
 		updateMySQL(u.getUUID(), userCredits);
 	}
 
-	public void sendPacket(Client client, int credits)
+	public void sendPacket(Client client, double credits)
 	{
 		Packet packet = PacketHandler.createPacket(client, 15, "" + credits);
 		PacketHandler.sendPacket(packet, null);
 	}
 
-	private void updateMySQL(UUID uuid, int credits)
+	private void updateMySQL(UUID uuid, double credits)
 	{
-		SQLTicket ticket = SQLFactory.updateData("b_userinfo", "uuid=?", new String[] { "credit" },
+		SQLTicket ticket = SQLFactory.updateData(SQLFactory.getController().getDatabase().getUserInfoTableName(), "uuid=?", new String[] { "credit" },
 				new String[] { credits + "", uuid.toString().replace("-", "") }, null);
 		SQLFactory.sendTicket(ticket);
 	}

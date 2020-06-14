@@ -1,10 +1,8 @@
 package me.dylanmullen.bingo.net.packet.packets;
 
-import java.util.UUID;
-
+import me.dylanmullen.bingo.game.user.UserManager;
 import me.dylanmullen.bingo.net.Client;
 import me.dylanmullen.bingo.net.packet.Packet;
-import me.dylanmullen.bingo.net.packet.PacketHandler;
 
 public class Packet_002_Register extends Packet
 {
@@ -18,20 +16,12 @@ public class Packet_002_Register extends Packet
 	@Override
 	public void handle()
 	{
-		String[] message = getMessage().split(";");
-		UUID uuid = getUUID();
-		
+		String[] message = getMessage().split("/nl/");
+
 		String username = message[0];
 		String password = message[1];
-		String email = message[2];
-		
-		// Auth
-		
-		String response = "ACCEPTED;"+uuid;
-		PacketHandler.createPacket(getClient(), 005, response);
-		
+
+		UserManager.getInstance().register(getClient(), getUUID(), username, password);
 	}
-	
-	
 
 }

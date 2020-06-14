@@ -5,6 +5,7 @@ import me.dylanmullen.bingo.game.user.UserManager;
 import me.dylanmullen.bingo.net.Client;
 import me.dylanmullen.bingo.net.handlers.ServerHandler;
 import me.dylanmullen.bingo.net.packet.packets.Packet_001_Login;
+import me.dylanmullen.bingo.net.packet.packets.Packet_002_Register;
 import me.dylanmullen.bingo.net.packet.packets.Packet_004_Ping;
 import me.dylanmullen.bingo.net.packet.packets.Packet_005_Response;
 import me.dylanmullen.bingo.net.packet.packets.Packet_006_JoinGame;
@@ -37,6 +38,8 @@ public class PacketHandler
 		{
 			case LOGIN:
 				return new Packet_001_Login(c, message);
+			case REGISTER:
+				return new Packet_002_Register(002, c, message);
 			case PING:
 				return new Packet_004_Ping(004, c, message);
 			case RESPONSE:

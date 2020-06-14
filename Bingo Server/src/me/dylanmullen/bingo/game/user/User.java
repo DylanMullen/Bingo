@@ -26,6 +26,12 @@ public class User
 		userInformation = new UserInformation(uuid);
 		userInformation.load(client, packetUUID);
 	}
+	
+	public void createUserInformation()
+	{
+		userInformation = new UserInformation(uuid);
+		userInformation.populateInformation("");
+	}
 
 	public void setCurrentGame(BingoGame currentGame)
 	{

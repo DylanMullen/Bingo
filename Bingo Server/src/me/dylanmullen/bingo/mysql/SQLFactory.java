@@ -32,13 +32,18 @@ public class SQLFactory
 			mysql = mySQL;
 	}
 
+	public static MySQLController getController()
+	{
+		return mysql;
+	}
+
 	public static void sendTicket(SQLTicket ticket)
 	{
 		mysql.submitTicket(ticket);
 	}
 
 	// columnName;type;length
-	public static SQLTicket createTable(String tableName, String[] columns, SQLCallback callback)
+	public static SQLTicket createTable(String tableName, String[] columns, String primaryKey, SQLCallback callback)
 	{
 		StringBuilder sb = new StringBuilder();
 		sb.append("CREATE TABLE IF NOT EXISTS " + tableName + " (");
@@ -47,11 +52,14 @@ public class SQLFactory
 			String[] data = columns[i].split(";");
 			String name = data[0];
 			String type = data[1];
-			String length = data[2];
+			String length = "";
+			if (!data[2].equals("-1"))
+				length = "(" + data[2] + ")";
 
-			sb.append(name + " " + type + "(" + length + ")" + (i == columns.length - 1 ? ")" : ", "));
+			sb.append(name + " " + type + length + ",");
 		}
 
+		sb.append("PRIMARY KEY (" + primaryKey + "))");
 		return new SQLTicket(new SQLQuery(sb.toString()), callback);
 	}
 
@@ -66,7 +74,7 @@ public class SQLFactory
 		{
 			sb.append(conditions[i] + " = ?" + (i == conditions.length - 1 ? "" : " AND "));
 		}
-
+		
 		return new SQLTicket(new SQLQuery(sb.toString(), placeHolders), callback);
 	}
 

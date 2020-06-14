@@ -1,6 +1,8 @@
 package me.dylanmullen.bingo.window.login.comp;
 
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,10 +55,10 @@ public class LoginInfoComponent extends Panel implements IGridItem
 		grid.addGridItem(new GridItem(login, 1, 1), 2, false);
 
 		RoundedButton register = new RoundedButton("Register", font, UIColour.BTN_REGISTER);
+		register.addMouseListener(new LoginButtonListener(panel));
+		
 		grid.addGridItem(new GridItem(register, 1, 1), 2, true);
 		buttons.add(register);
-
-//		grid.updateItems();
 
 		setOpaque(false);
 	}

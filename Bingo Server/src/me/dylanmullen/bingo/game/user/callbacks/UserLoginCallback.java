@@ -41,7 +41,10 @@ public class UserLoginCallback extends SQLCallback
 				return;
 			}
 			result.next();
-			UUID uuid = UUID.fromString(result.getString(1));
+			String temp = result.getString(1);
+			temp = temp.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})", "$1-$2-$3-$4-$5");
+			
+			UUID uuid = UUID.fromString(temp);
 			UserManager.getInstance().addUser(client, uuid);
 			UserManager.getInstance().getUser(uuid).loadInformation(packetToRelay);
 		} catch (SQLException e)

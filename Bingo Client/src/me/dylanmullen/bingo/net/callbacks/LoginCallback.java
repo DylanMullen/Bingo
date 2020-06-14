@@ -33,7 +33,7 @@ public class LoginCallback extends PacketCallback
 		UserInformation ui = new UserInformation();
 		ui.setUuid(UUID.fromString(data[2]));
 		ui.setDisplayName(data[3]);
-		ui.setCredits(Integer.parseInt(data[4]));
+		ui.setCredits(Double.parseDouble(data[4]));
 		ui.setWins(Integer.parseInt(data[5]));
 		ui.setLoses(Integer.parseInt(data[6]));
 		

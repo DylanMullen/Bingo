@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.UUID;
 
 import me.dylanmullen.bingo.game.user.callbacks.UserLoginCallback;
+import me.dylanmullen.bingo.game.user.callbacks.UserRegisterCallback;
 import me.dylanmullen.bingo.mysql.SQLFactory;
 import me.dylanmullen.bingo.mysql.sql_util.SQLTicket;
 import me.dylanmullen.bingo.net.Client;
@@ -25,8 +26,16 @@ public class UserManager
 	public void login(Client client, UUID packetUUID, String username, String password)
 	{
 		UserLoginCallback callback = new UserLoginCallback(client, packetUUID);
-		SQLTicket ticket = SQLFactory.selectData("b_userlogin", "uuid", new String[] { "username", "password" },
-				new String[] { username, password }, callback);
+		SQLTicket ticket = SQLFactory.selectData(SQLFactory.getController().getDatabase().getLoginTableName(), "uuid",
+				new String[] { "email", "password" }, new String[] { username, password }, callback);
+		SQLFactory.sendTicket(ticket);
+	}
+
+	public void register(Client client, UUID packetUUID, String username, String password)
+	{
+		UserRegisterCallback callback = new UserRegisterCallback(client, packetUUID, username, password);
+		SQLTicket ticket = SQLFactory.selectData(SQLFactory.getController().getDatabase().getLoginTableName(), "uuid",
+				new String[] { "email" }, new String[] { username }, callback);
 		SQLFactory.sendTicket(ticket);
 	}
 
@@ -37,9 +46,9 @@ public class UserManager
 
 	public void addUser(Client client, UUID uuid)
 	{
-		synchronized(users)
+		synchronized (users)
 		{
-			if(getUser(uuid)!=null)
+			if (getUser(uuid) != null)
 				users.remove(getUser(uuid));
 
 			User u = new User(client, uuid);
@@ -58,7 +67,7 @@ public class UserManager
 
 	public User getUser(Client client)
 	{
-		synchronized(users)
+		synchronized (users)
 		{
 			for (User u : users)
 				if (u.getClient().equals(client))
@@ -66,7 +75,7 @@ public class UserManager
 			return null;
 		}
 	}
-	
+
 	public HashSet<User> getUsers()
 	{
 		return users;

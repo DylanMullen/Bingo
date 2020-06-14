@@ -103,7 +103,7 @@ public class ProfilePanel extends Panel
 		infoComp.get(3).getInfo().setText("N/A");
 	}
 	
-	public void updateCredits(int credits)
+	public void updateCredits(double credits)
 	{
 		infoComp.get(1).getInfo().setText(credits + "");
 	}
