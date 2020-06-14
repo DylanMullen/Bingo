@@ -19,7 +19,8 @@ public class FontUtil
 		Dimension size = new Dimension(adv + LR, hgt + TB);
 		return size;
 	}
-
+	
+	@Deprecated
 	public static Font getFont(Component comp, String text, int paddingLR, int paddingTB)
 	{
 		Font font = new Font("Calibri", Font.PLAIN, 0);
@@ -36,6 +37,7 @@ public class FontUtil
 		return font;
 	}
 
+	@Deprecated
 	public static Font getFont(Component comp, String text, int paddingLR, int paddingTB, int minimum)
 	{
 		Font font = new Font("Calibri", Font.PLAIN, 0);

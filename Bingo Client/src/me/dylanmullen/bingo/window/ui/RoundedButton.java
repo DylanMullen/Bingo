@@ -1,5 +1,6 @@
 package me.dylanmullen.bingo.window.ui;
 
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -11,45 +12,47 @@ import java.awt.event.MouseEvent;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import me.dylanmullen.bingo.util.FontUtil;
-
 public class RoundedButton extends UIButton
 {
 
 	private static final long serialVersionUID = 2732058454408689154L;
 
 	private JLabel text;
+	private Font font;
 	private UIColour colour, hover;
 	private boolean hovered;
 
-	public RoundedButton(String text, int x, int y, int width, int height, UIColour colour)
+	public RoundedButton(String text, Font font, int x, int y, int width, int height, UIColour colour)
 	{
 		super(text, x, y, width, height);
 		this.colour = colour;
+		this.font = font;
 	}
 
-	public RoundedButton(String text, UIColour colour)
+	public RoundedButton(String text, Font font, UIColour colour)
 	{
 		super(text);
 		this.colour = colour;
+		this.font = font;
 	}
 
 	@Override
 	protected void setup()
 	{
-		init();
 		setOpaque(false);
 		text = new JLabel();
 		text.setText(getText());
 		text.setForeground(colour.getTextColour());
 		text.setBounds(0, 0, getWidth(), getHeight());
 		text.setHorizontalAlignment(SwingConstants.CENTER);
-		text.setFont(FontUtil.getFont(text, getText(), 0, 0));
+		if (font != null)
+			text.setFont(font);
 
 		hover = UIColour.STATUS_CONNECTED;
 
 		addMouseListener(new MouseAdapter()
 		{
+
 			@Override
 			public void mouseExited(MouseEvent e)
 			{
@@ -69,25 +72,26 @@ public class RoundedButton extends UIButton
 			{
 				setActive(true);
 				repaint();
-			}	
+			}
 		});
 		addFocusListener(new FocusListener()
 		{
-			
+
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				hovered=false;
+				hovered = false;
 				repaint();
 			}
-			
+
 			@Override
 			public void focusGained(FocusEvent e)
 			{
-				hovered=true;
+				hovered = true;
 				repaint();
 			}
 		});
+
 	}
 
 	@Override

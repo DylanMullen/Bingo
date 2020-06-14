@@ -1,6 +1,7 @@
 package me.dylanmullen.bingo.game.components.overlays;
 
 import java.awt.Color;
+import java.awt.Font;
 
 import me.dylanmullen.bingo.game.BingoCard;
 import me.dylanmullen.bingo.window.ui.RoundedButton;
@@ -22,10 +23,9 @@ public class PurchaseOverlay extends Overlay
 
 	public void setup()
 	{
-		long now = System.currentTimeMillis();
-		RoundedButton purchased = new RoundedButton("Purchase", UIColour.BTN_BINGO_ACTIVE);
-		RoundedButton cancel = new RoundedButton("Cancel", UIColour.BINGO_BALL_1);
-		System.out.println(System.currentTimeMillis() - now);
+		Font font = new Font("Calibri", Font.PLAIN, 35);
+		RoundedButton purchased = new RoundedButton("Purchase", font, UIColour.BTN_BINGO_ACTIVE);
+		RoundedButton cancel = new RoundedButton("Cancel", font, UIColour.BINGO_BALL_1);
 
 		int width = (getWidth() - (30 * 3)) / 2;
 		purchased.setBounds(30, 30, width, getHeight() - 60);
@@ -33,12 +33,11 @@ public class PurchaseOverlay extends Overlay
 
 		purchased.create();
 		cancel.create();
-		
+
 		add(purchased);
 		add(cancel);
 	}
 
-	
 	public BingoCard getCard()
 	{
 		return card;

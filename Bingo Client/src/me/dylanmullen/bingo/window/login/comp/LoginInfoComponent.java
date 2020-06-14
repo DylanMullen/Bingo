@@ -1,5 +1,6 @@
 package me.dylanmullen.bingo.window.login.comp;
 
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,12 +46,13 @@ public class LoginInfoComponent extends Panel implements IGridItem
 		password = new UIPasswordField("Password");
 		grid.addGridItem(new GridItem(password, 1, 2), 1, true);
 
-		RoundedButton login = new RoundedButton("Login", UIColour.BTN_LOGIN);
+		Font font = new Font("Calibri", Font.PLAIN, 25);
+		RoundedButton login = new RoundedButton("Login", font, UIColour.BTN_LOGIN);
 		login.addMouseListener(new LoginButtonListener(panel));
 		buttons.add(login);
 		grid.addGridItem(new GridItem(login, 1, 1), 2, false);
 
-		RoundedButton register = new RoundedButton("Register", UIColour.BTN_REGISTER);
+		RoundedButton register = new RoundedButton("Register", font, UIColour.BTN_REGISTER);
 		grid.addGridItem(new GridItem(register, 1, 1), 2, true);
 		buttons.add(register);
 
