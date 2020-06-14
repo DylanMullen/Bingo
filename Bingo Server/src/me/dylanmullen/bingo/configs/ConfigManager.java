@@ -1,8 +1,9 @@
 package me.dylanmullen.bingo.configs;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import me.dylanmullen.bingo.configs.Config.ConfigType;
 
 public class ConfigManager
 {
@@ -36,7 +37,7 @@ public class ConfigManager
 	 */
 	private void load()
 	{
-		configs.add(new Config("mysql", new File("res/mysql.json")));
+		configs.add(new Config("mysql.json", ConfigType.CONFIG, getClass().getClassLoader().getResourceAsStream("mysql.json")));
 	}
 
 	/**
@@ -50,4 +51,5 @@ public class ConfigManager
 				return cfg;
 		return null;
 	}
+
 }

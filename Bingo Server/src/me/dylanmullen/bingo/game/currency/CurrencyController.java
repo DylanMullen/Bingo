@@ -47,7 +47,7 @@ public class CurrencyController
 
 	private void updateMySQL(UUID uuid, double credits)
 	{
-		SQLTicket ticket = SQLFactory.updateData(SQLFactory.getController().getDatabase().getUserInfoTableName(), "uuid=?", new String[] { "credit" },
+		SQLTicket ticket = SQLFactory.updateData(SQLFactory.getController().getDatabase().getUserInfoTableName(), "uuid=?", new String[] { "credits" },
 				new String[] { credits + "", uuid.toString().replace("-", "") }, null);
 		SQLFactory.sendTicket(ticket);
 	}

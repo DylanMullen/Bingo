@@ -71,7 +71,7 @@ public class UserInformation
 	public void updateCredits(String data)
 	{
 		String credits = data.split("/m/|/m/")[1];
-		setCredits(Integer.parseInt(credits));
+		setCredits(Double.parseDouble(credits));
 		SP_Bingo.getInstance().getPanel().updateCredits(getCredits());
 	}
 

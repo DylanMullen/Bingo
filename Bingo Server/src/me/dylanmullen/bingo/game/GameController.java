@@ -81,7 +81,7 @@ public class GameController
 
 	private BingoGame createNewGame()
 	{
-		BingoGame game = new BingoGame(playerCap);
+		BingoGame game = new BingoGame();
 		games.add(game);
 		return game;
 	}

@@ -23,7 +23,6 @@ public class BingoGame
 	private ArrayList<Integer> numbers;
 	private ArrayList<Integer> numbersCalled;
 
-	private int maxPlayers;
 	private static GameState state = GameState.LOBBY;
 	private static LineState lineState = LineState.ONE;
 
@@ -61,14 +60,13 @@ public class BingoGame
 		}
 	}
 
-	public BingoGame(int playerCap)
+	public BingoGame()
 	{
 		this.gameUUID = UUID.randomUUID();
 		this.usersConnected = new HashSet<User>();
 		this.potentialCards = new HashSet<CardGroup>();
 		this.cardsInPlay = new HashMap<User, CardGroup>();
 
-		this.maxPlayers = playerCap;
 
 		this.numbers = new ArrayList<Integer>();
 		this.numbersCalled = new ArrayList<Integer>();

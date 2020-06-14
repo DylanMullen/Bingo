@@ -1,8 +1,11 @@
 package me.dylanmullen.bingo.configs;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,8 +16,15 @@ import org.json.simple.parser.ParseException;
 public class Config
 {
 
+	public enum ConfigType
+	{
+		CONFIG, BINGO;
+	}
+
 	private String name;
-	private File sourceFile;
+	private ConfigType type;
+	private File file;
+	private InputStream stream;
 	private boolean loaded;
 
 	private Map<String, JSONObject> objects;
@@ -23,14 +33,75 @@ public class Config
 	 * Config file parsed from a JSON file
 	 * 
 	 * @param name Config name
+	 * @param type The type of Config
 	 * @param file JSON file
 	 */
-	public Config(String name, File file)
+	public Config(String name, ConfigType type, InputStream stream)
 	{
 		this.name = name;
-		this.sourceFile = file;
+		this.type = type;
+		this.stream = stream;
 		this.objects = new HashMap<String, JSONObject>();
 		this.loaded = load();
+	}
+
+	/**
+	 * Copies the resource from inside the JAR file to the local directory
+	 */
+	public void copyResource()
+	{
+		File temp = null;
+
+		switch (type)
+		{
+			case BINGO:
+				temp = new File(
+						IOController.getController().getBingoFolder().getPath() + IOController.SEPERATOR + name);
+				break;
+			case CONFIG:
+				temp = new File(IOController.getController().getConfigFolder().getPath() + IOController.SEPERATOR
+						+ name);
+				break;
+			default:
+				temp = new File(IOController.getController().getConfigFolder().getPath() + IOController.SEPERATOR
+						+ name);
+				break;
+		}
+
+		if (!temp.exists())
+		{
+			InputStream input = null;
+			FileOutputStream output = null;
+			try
+			{
+				temp.createNewFile();
+
+				input = stream;
+				
+				int bytes;
+				byte[] buffer = new byte[4096];
+				output = new FileOutputStream(temp);
+				while ((bytes = input.read(buffer)) > 0)
+					output.write(buffer, 0, bytes);
+			} catch (Exception e)
+			{
+				e.printStackTrace();
+			} finally
+			{
+				try
+				{
+					if (input != null)
+						input.close();
+					if (output != null)
+						output.close();
+				} catch (IOException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
+
+		this.file = temp;
 	}
 
 	/**
@@ -40,11 +111,13 @@ public class Config
 	 */
 	private boolean load()
 	{
+		copyResource();
+
 		JSONParser parser = new JSONParser();
 		FileReader fileReader = null;
 		try
 		{
-			fileReader = new FileReader(sourceFile);
+			fileReader = new FileReader(file);
 			JSONObject jsonObject = (JSONObject) parser.parse(fileReader);
 
 			for (Object obj : jsonObject.keySet())
