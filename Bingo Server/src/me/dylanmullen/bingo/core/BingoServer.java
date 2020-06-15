@@ -1,10 +1,5 @@
 package me.dylanmullen.bingo.core;
 
-import java.io.File;
-import java.io.InputStreamReader;
-import java.net.URISyntaxException;
-
-import me.dylanmullen.bingo.configs.Config;
 import me.dylanmullen.bingo.configs.ConfigManager;
 import me.dylanmullen.bingo.configs.IOController;
 import me.dylanmullen.bingo.game.GameController;

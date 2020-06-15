@@ -1,6 +1,7 @@
 package me.dylanmullen.bingo.core;
 
 import java.awt.EventQueue;
+import java.util.UUID;
 
 import me.dylanmullen.bingo.game.UserInformation;
 import me.dylanmullen.bingo.net.handlers.ClientHandler;
@@ -23,8 +24,8 @@ public class BingoApp
 		if (instance == null)
 			instance = this;
 		init();
-		openLoginWindow();
-//		openBingoWindow(UUID.randomUUID());
+//		openLoginWindow();
+		openBingoWindow(null);
 	}
 
 	public static BingoApp getInstance()
@@ -53,7 +54,7 @@ public class BingoApp
 	public void openBingoWindow(UserInformation ui)
 	{
 		System.out.println(2);
-		login.dispose();
+//		login.dispose();
 		EventQueue.invokeLater(new Runnable()
 		{
 			@Override

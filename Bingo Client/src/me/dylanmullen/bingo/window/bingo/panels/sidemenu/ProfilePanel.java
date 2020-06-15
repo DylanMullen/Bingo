@@ -97,12 +97,15 @@ public class ProfilePanel extends Panel
 
 	public void updateItems()
 	{
-		infoComp.get(0).getInfo().setText(BingoGame.getInstance().getUserInformation().getDisplayName());
-		infoComp.get(1).getInfo().setText(BingoGame.getInstance().getUserInformation().getCredits() + "");
-		infoComp.get(2).getInfo().setText(BingoGame.getInstance().getUserInformation().getWins() + "");
-		infoComp.get(3).getInfo().setText("N/A");
+		if (BingoGame.getInstance() != null)
+		{
+			infoComp.get(0).getInfo().setText(BingoGame.getInstance().getUserInformation().getDisplayName());
+			infoComp.get(1).getInfo().setText(BingoGame.getInstance().getUserInformation().getCredits() + "");
+			infoComp.get(2).getInfo().setText(BingoGame.getInstance().getUserInformation().getWins() + "");
+			infoComp.get(3).getInfo().setText("N/A");
+		}
 	}
-	
+
 	public void updateCredits(double credits)
 	{
 		infoComp.get(1).getInfo().setText(credits + "");
