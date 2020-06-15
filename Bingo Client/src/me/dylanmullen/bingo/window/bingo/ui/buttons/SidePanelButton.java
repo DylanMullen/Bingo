@@ -1,6 +1,5 @@
 package me.dylanmullen.bingo.window.bingo.ui.buttons;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 
@@ -93,11 +92,12 @@ public class SidePanelButton extends UIButton
 		return x;
 	}
 
-	public UIButton setActive()
+	public UIButton setActive(boolean active)
 	{
-		super.setActive(!isActive());
-		selected.setVisible(isActive());
-		setBackground((isActive() ? UIColour.BTN_BINGO_SIDE_HOVER : UIColour.FRAME_BINGO_BG_SIDE).toColor());
+		super.setActive(active);
+		selected.setVisible(active);
+		setBackground((active ? UIColour.BTN_BINGO_SIDE_HOVER : UIColour.FRAME_BINGO_BG_SIDE).toColor());
+		repaint();
 		return this;
 	}
 

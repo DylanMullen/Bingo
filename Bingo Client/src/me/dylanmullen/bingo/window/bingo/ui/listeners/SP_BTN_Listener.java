@@ -1,20 +1,13 @@
 package me.dylanmullen.bingo.window.bingo.ui.listeners;
 
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import me.dylanmullen.bingo.window.bingo.ui.buttons.SidePanelButton;
 import me.dylanmullen.bingo.window.ui.UIColour;
 
-public class SP_BTN_Listener implements MouseListener
+public class SP_BTN_Listener extends MouseAdapter
 {
-
-	@Override
-	public void mouseClicked(MouseEvent e)
-	{
-		SidePanelButton spb = (SidePanelButton) e.getComponent();
-		spb.setActive();
-	}
 
 	@Override
 	public void mouseEntered(MouseEvent e)
@@ -33,18 +26,6 @@ public class SP_BTN_Listener implements MouseListener
 			return;
 		
 		spb.setBackground(UIColour.FRAME_BINGO_BG_SIDE.toColor());
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e)
-	{
-
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e)
-	{
-
 	}
 
 }

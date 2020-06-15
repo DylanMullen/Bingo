@@ -7,8 +7,9 @@ import javax.swing.border.EmptyBorder;
 import me.dylanmullen.bingo.game.BingoGame;
 import me.dylanmullen.bingo.game.UserInformation;
 import me.dylanmullen.bingo.game.home.HomePanel;
-import me.dylanmullen.bingo.window.bingo.panels.sidemenu.SP_Bingo;
+import me.dylanmullen.bingo.window.bingo.panels.sidemenu.SideMenu;
 import me.dylanmullen.bingo.window.login.panels.TopMenu;
+import me.dylanmullen.bingo.window.ui.Panel;
 
 public class BingoWindow extends JFrame
 {
@@ -17,11 +18,23 @@ public class BingoWindow extends JFrame
 
 	private JPanel contentPane;
 
+	private TopMenu topMenu;
+	private SideMenu sideBar;
+
+	private Panel currentPanel;
+
+	private BingoGame bingoGame;
+	private HomePanel home;
+
+	private UserInformation userInfo;
+
 	/**
 	 * Create the frame.
 	 */
 	public BingoWindow(UserInformation ui)
 	{
+		this.userInfo = ui;
+
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1280, 720);
@@ -30,32 +43,77 @@ public class BingoWindow extends JFrame
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
+		showEssentials();
+		showHomePanel();
 
-		TopMenu topMenu_1 = new TopMenu(this, getWidth() / 4, 0, getWidth() / 4 * 3, getHeight() / 10);
-		topMenu_1.setup();
-		topMenu_1.create();
-		contentPane.add(topMenu_1);
-		
-		if(ui != null)
-		{
-			BingoGame game = new BingoGame();
-			game.createPanel(getWidth() / 4, getHeight() / 10, getWidth() / 4 * 3, getHeight() / 10 * 9);
-			game.getGamePanel().setup();
-			game.getGamePanel().create();
-			game.setUserInformation(ui);
-//		contentPane.add(game.getGamePanel());
-		}
-			
-
-		HomePanel home = new HomePanel(getWidth() / 4, getHeight() / 10, getWidth() / 4 * 3, getHeight() / 10 * 9);
-		home.setup();
-		
-		contentPane.add(home);
-		
-		SP_Bingo sidePanel_1 = new SP_Bingo(0, 0, getWidth() / 4, getHeight());
-		sidePanel_1.setup();
-		sidePanel_1.create();
-		contentPane.add(sidePanel_1);
 		setLocationRelativeTo(null);
+	}
+
+	public void showEssentials()
+	{
+		sideBar = new SideMenu(this, 0, 0, getWidth() / 4, getHeight());
+		sideBar.setup();
+		sideBar.create();
+		contentPane.add(sideBar);
+
+		topMenu = new TopMenu(this, getWidth() / 4, 0, getWidth() / 4 * 3, getHeight() / 10);
+		topMenu.setup();
+		topMenu.create();
+		contentPane.add(topMenu);
+	}
+
+	public void showHomePanel()
+	{
+		hideCurrentPanel();
+		if (home == null)
+		{
+			home = new HomePanel(getWidth() / 4, getHeight() / 10, getWidth() / 4 * 3, getHeight() / 10 * 9);
+			home.setup();
+		}
+		sideBar.getHomeButton().setActive(true);
+		currentPanel = home;
+		contentPane.add(home);
+	}
+
+	public void hideHomePanel()
+	{
+		contentPane.remove(home);
+		home = null;
+		sideBar.getHomeButton().setActive(false);
+	}
+
+	public void hideCurrentPanel()
+	{
+		if (currentPanel == null)
+			return;
+
+		if (currentPanel instanceof HomePanel)
+			hideHomePanel();
+		else
+			hideBingoPanel();
+		contentPane.repaint();
+	}
+
+	public void showBingoPanel()
+	{
+		hideCurrentPanel();
+		if (bingoGame == null)
+		{
+			bingoGame = new BingoGame();
+			bingoGame.createPanel(getWidth() / 4, getHeight() / 10, getWidth() / 4 * 3, getHeight() / 10 * 9);
+			bingoGame.getGamePanel().setup();
+		}
+		bingoGame.getGamePanel().create();
+		bingoGame.setUserInformation(userInfo);
+		sideBar.getPlayButton().setActive(true);
+		currentPanel = bingoGame.getGamePanel();
+
+		contentPane.add(bingoGame.getGamePanel());
+	}
+
+	public void hideBingoPanel()
+	{
+		contentPane.remove(bingoGame.getGamePanel());
+		sideBar.getPlayButton().setActive(false);
 	}
 }

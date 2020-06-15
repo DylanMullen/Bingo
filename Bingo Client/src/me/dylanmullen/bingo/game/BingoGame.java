@@ -57,7 +57,8 @@ public class BingoGame
 
 	public GamePanel createPanel(int x, int y, int w, int h)
 	{
-		gamePanel = new GamePanel(x, y, w, h);
+		if(gamePanel == null)
+			gamePanel = new GamePanel(x, y, w, h);
 		return gamePanel;
 	}
 

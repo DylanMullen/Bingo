@@ -2,7 +2,7 @@ package me.dylanmullen.bingo.game;
 
 import java.util.UUID;
 
-import me.dylanmullen.bingo.window.bingo.panels.sidemenu.SP_Bingo;
+import me.dylanmullen.bingo.window.bingo.panels.sidemenu.SideMenu;
 
 public class UserInformation
 {
@@ -72,7 +72,7 @@ public class UserInformation
 	{
 		String credits = data.split("/m/|/m/")[1];
 		setCredits(Double.parseDouble(credits));
-		SP_Bingo.getInstance().getPanel().updateCredits(getCredits());
+		SideMenu.getInstance().getPanel().updateCredits(getCredits());
 	}
 
 }

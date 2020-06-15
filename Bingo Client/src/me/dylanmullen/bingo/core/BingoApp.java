@@ -24,8 +24,8 @@ public class BingoApp
 		if (instance == null)
 			instance = this;
 		init();
-//		openLoginWindow();
-		openBingoWindow(null);
+		openLoginWindow();
+//		openBingoWindow(null);
 	}
 
 	public static BingoApp getInstance()

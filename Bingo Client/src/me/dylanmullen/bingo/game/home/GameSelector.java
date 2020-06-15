@@ -8,6 +8,7 @@ import java.awt.RenderingHints;
 
 import javax.swing.JComponent;
 
+import me.dylanmullen.bingo.game.components.listeners.JoinButtonListener;
 import me.dylanmullen.bingo.window.ui.RoundedButton;
 import me.dylanmullen.bingo.window.ui.UIColour;
 
@@ -38,8 +39,10 @@ public class GameSelector extends JComponent
 	public void create()
 	{
 		joinButton = new RoundedButton("Click to Join!", new Font("Calbiri", Font.PLAIN, 20), UIColour.BINGO_BALL_4);
-		joinButton.setBounds(getHeight(), getHeight() - 15 - ((getHeight() + 15)/4), getWidth() - getHeight() - 15, (getHeight() + 15)/4);
+		joinButton.setBounds(getHeight(), getHeight() - 15 - ((getHeight() + 15) / 4), getWidth() - getHeight() - 15,
+				(getHeight() + 15) / 4);
 		joinButton.create();
+		joinButton.addMouseListener(new JoinButtonListener());
 		add(joinButton);
 	}
 
