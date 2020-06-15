@@ -3,6 +3,7 @@ package me.dylanmullen.bingo.game;
 import java.util.HashSet;
 import java.util.UUID;
 
+import me.dylanmullen.bingo.configs.ConfigManager;
 import me.dylanmullen.bingo.game.currency.CurrencyController;
 import me.dylanmullen.bingo.game.currency.InvalidAmountException;
 import me.dylanmullen.bingo.game.user.User;
@@ -23,6 +24,7 @@ public class GameController
 	{
 		if (instance == null)
 			instance = this;
+		ConfigManager.getInstance().loadBingoFiles();
 		games = new HashSet<BingoGame>();
 	}
 
@@ -37,9 +39,10 @@ public class GameController
 
 	public void purchaseCard(User u, UUID uuid, UUID packetToRelay)
 	{
+		BingoGame game = u.getCurrentGame();
 		try
 		{
-			CurrencyController.getController().deduct(u, 15);
+			CurrencyController.getController().deduct(u, game.getSettings().getTicketPrice());
 		} catch (InvalidAmountException e)
 		{
 			System.err.println(e.getMessage());
@@ -47,10 +50,10 @@ public class GameController
 			return;
 		}
 
-		BingoGame game = u.getCurrentGame();
 		CardGroup cg = game.getCardGroup(u);
 		BingoCard card = cg.getCard(uuid);
 		game.addCard(u, card);
+		game.getSettings().incrementPot();
 		if (cg.remove(card))
 			game.removeCardGroup(cg);
 
@@ -81,7 +84,7 @@ public class GameController
 
 	private BingoGame createNewGame()
 	{
-		BingoGame game = new BingoGame();
+		BingoGame game = new BingoGame(new GameSettings(ConfigManager.getInstance().getBingoConfig(0)));
 		games.add(game);
 		return game;
 	}

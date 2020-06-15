@@ -1,5 +1,6 @@
 package me.dylanmullen.bingo.configs;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,7 @@ public class ConfigManager
 	private static ConfigManager instance;
 
 	private List<Config> configs;
+	private List<Config> bingoConfigs;
 
 	/**
 	 * @return Returns an instance of the Config Manager
@@ -29,6 +31,7 @@ public class ConfigManager
 	public ConfigManager()
 	{
 		this.configs = new ArrayList<Config>();
+		this.bingoConfigs = new ArrayList<Config>();
 		load();
 	}
 
@@ -37,7 +40,20 @@ public class ConfigManager
 	 */
 	private void load()
 	{
-		configs.add(new Config("mysql.json", ConfigType.CONFIG, getClass().getClassLoader().getResourceAsStream("mysql.json")));
+		configs.add(new Config("mysql.json", ConfigType.CONFIG,
+				getClass().getClassLoader().getResourceAsStream("mysql.json")));
+
+	}
+
+	public void loadBingoFiles()
+	{
+		for (File file : IOController.getController().getBingoFolder().listFiles())
+		{
+			if (!file.getName().endsWith(".json"))
+				continue;
+
+			bingoConfigs.add(new Config(file.getName(), ConfigType.BINGO, file));
+		}
 	}
 
 	/**
@@ -50,6 +66,11 @@ public class ConfigManager
 			if (cfg.getName().equals(name))
 				return cfg;
 		return null;
+	}
+
+	public Config getBingoConfig(int i)
+	{
+		return bingoConfigs.get(i);
 	}
 
 }

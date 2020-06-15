@@ -28,7 +28,7 @@ public class CurrencyController
 		updateMySQL(u.getUUID(), u.getUserInformation().getCredits());
 	}
 
-	public void deduct(User u, int credits) throws InvalidAmountException
+	public void deduct(User u, double credits) throws InvalidAmountException
 	{
 		double userCredits = u.getUserInformation().getCredits() - credits;
 		if (userCredits < 0)

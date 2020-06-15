@@ -8,7 +8,7 @@ public class LobbyRunnable implements Runnable
 	private int COUNTER = 5;
 
 	private BingoGame game;
-	private boolean finished=false;
+	private boolean finished = false;
 	private long start = -1;
 
 	public LobbyRunnable(BingoGame game)
@@ -19,13 +19,14 @@ public class LobbyRunnable implements Runnable
 	@Override
 	public void run()
 	{
+		game.getSettings().setupPot();
 		while (!finished)
 		{
 			setStart();
 			long now = System.currentTimeMillis();
 			if (now - start >= COUNTER * 1000)
 			{
-				if (game.getPlayersPlayingSize() >= 1)
+				if (game.getPlayersPlayingSize() >= game.getSettings().getMinPlayers())
 					finished = true;
 				else
 				{

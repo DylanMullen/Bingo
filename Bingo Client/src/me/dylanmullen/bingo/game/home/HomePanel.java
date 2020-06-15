@@ -1,12 +1,11 @@
 package me.dylanmullen.bingo.game.home;
 
-import java.awt.Color;
-import java.awt.Graphics;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.JComponent;
 
-import me.dylanmullen.bingo.gfx.ImageAtlas;
+import me.dylanmullen.bingo.window.bingo.BingoWindow;
 import me.dylanmullen.bingo.window.ui.ImageComponent;
 import me.dylanmullen.bingo.window.ui.Panel;
 import me.dylanmullen.bingo.window.ui.UIColour;
@@ -19,9 +18,21 @@ public class HomePanel extends Panel
 
 	private static final long serialVersionUID = 1L;
 
-	public HomePanel(int x, int y, int width, int height)
+	private BingoWindow window;
+
+	private static HomePanel instance;
+
+	public HomePanel(BingoWindow window, int x, int y, int width, int height)
 	{
 		super(x, y, width, height);
+		if (instance == null)
+			instance = this;
+		this.window = window;
+	}
+
+	public static HomePanel getInstance()
+	{
+		return instance;
 	}
 
 	@Override
@@ -56,4 +67,10 @@ public class HomePanel extends Panel
 	{
 
 	}
+
+	public BingoWindow getWindow()
+	{
+		return window;
+	}
+
 }

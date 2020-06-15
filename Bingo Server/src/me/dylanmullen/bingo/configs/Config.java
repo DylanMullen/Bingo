@@ -1,9 +1,9 @@
 package me.dylanmullen.bingo.configs;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -45,6 +45,15 @@ public class Config
 		this.loaded = load();
 	}
 
+	public Config(String name, ConfigType type, File file)
+	{
+		this.name = name;
+		this.type = type;
+		this.file = file;
+		this.objects = new HashMap<String, JSONObject>();
+		this.loaded = load();
+	}
+
 	/**
 	 * Copies the resource from inside the JAR file to the local directory
 	 */
@@ -59,12 +68,12 @@ public class Config
 						IOController.getController().getBingoFolder().getPath() + IOController.SEPERATOR + name);
 				break;
 			case CONFIG:
-				temp = new File(IOController.getController().getConfigFolder().getPath() + IOController.SEPERATOR
-						+ name);
+				temp = new File(
+						IOController.getController().getConfigFolder().getPath() + IOController.SEPERATOR + name);
 				break;
 			default:
-				temp = new File(IOController.getController().getConfigFolder().getPath() + IOController.SEPERATOR
-						+ name);
+				temp = new File(
+						IOController.getController().getConfigFolder().getPath() + IOController.SEPERATOR + name);
 				break;
 		}
 
@@ -77,7 +86,7 @@ public class Config
 				temp.createNewFile();
 
 				input = stream;
-				
+
 				int bytes;
 				byte[] buffer = new byte[4096];
 				output = new FileOutputStream(temp);
@@ -111,7 +120,8 @@ public class Config
 	 */
 	private boolean load()
 	{
-		copyResource();
+		if (file == null)
+			copyResource();
 
 		JSONParser parser = new JSONParser();
 		FileReader fileReader = null;
@@ -123,6 +133,7 @@ public class Config
 			for (Object obj : jsonObject.keySet())
 			{
 				objects.put((String) obj, (JSONObject) jsonObject.get(obj));
+				System.out.println(obj);
 				JSONObject j = (JSONObject) jsonObject.get(obj);
 				storeObject(obj, j);
 			}
@@ -154,14 +165,19 @@ public class Config
 	 */
 	public void storeObject(Object parentKey, JSONObject object)
 	{
+		if (!(parentKey instanceof String))
+		{
+			return;
+		}
 		for (Object key : object.keySet())
 		{
+			if (!(key instanceof String))
+				continue;
 			Object jo = object.get(key);
-
 			if (jo instanceof JSONObject)
 			{
 				objects.put(parentKey + "." + (String) key, (JSONObject) jo);
-				storeObject(jo, (JSONObject) jo);
+				storeObject(parentKey + "." + (String) key, (JSONObject) jo);
 			}
 		}
 	}
@@ -184,6 +200,25 @@ public class Config
 		if (obj == null)
 			return null;
 		return obj.get(valueKey);
+	}
+
+	@SuppressWarnings("unchecked")
+	public void write(String objectKey, String valueKey, Object object)
+	{
+		JSONObject json = getJSONObject(objectKey);
+		if (json == null)
+		{
+			return;
+		}
+		json.put(valueKey, object);
+		try (FileWriter writer = new FileWriter(file))
+		{
+			writer.append(json.toJSONString());
+			writer.flush();
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	public boolean isLoaded()

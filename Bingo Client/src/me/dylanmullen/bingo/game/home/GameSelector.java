@@ -42,7 +42,7 @@ public class GameSelector extends JComponent
 		joinButton.setBounds(getHeight(), getHeight() - 15 - ((getHeight() + 15) / 4), getWidth() - getHeight() - 15,
 				(getHeight() + 15) / 4);
 		joinButton.create();
-		joinButton.addMouseListener(new JoinButtonListener());
+		joinButton.addMouseListener(new JoinButtonListener(joinButton));
 		add(joinButton);
 	}
 

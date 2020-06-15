@@ -16,6 +16,8 @@ public class BingoGame
 {
 
 	private UUID gameUUID;
+	private GameSettings settings;
+
 	private HashSet<User> usersConnected;
 	private HashMap<User, CardGroup> cardsInPlay;
 	private HashSet<CardGroup> potentialCards;
@@ -60,13 +62,18 @@ public class BingoGame
 		}
 	}
 
-	public BingoGame()
+	public BingoGame(GameSettings settings)
+	{
+		this.settings = settings;
+		setup();
+	}
+
+	public void setup()
 	{
 		this.gameUUID = UUID.randomUUID();
 		this.usersConnected = new HashSet<User>();
 		this.potentialCards = new HashSet<CardGroup>();
 		this.cardsInPlay = new HashMap<User, CardGroup>();
-
 
 		this.numbers = new ArrayList<Integer>();
 		this.numbersCalled = new ArrayList<Integer>();
@@ -136,7 +143,9 @@ public class BingoGame
 			CardGroup cg = cardsInPlay.get(u);
 			PacketHandler.sendPacket(PacketHandler.createPacket(u.getClient(), 11, cg.getCardUUIDs()), null);
 		}
-		rig();
+
+		if (settings.isDebugMode())
+			rig();
 	}
 
 	public void sendPotentialCards()
@@ -211,11 +220,13 @@ public class BingoGame
 		ArrayList<User> winners = getWinners();
 
 		StringBuilder winnerNames = new StringBuilder();
+
+		double prize = settings.getWinningPrize(lineState, winners.size());
 		for (int i = 0; i < winners.size(); i++)
 		{
 			User u = winners.get(i);
 			winnerNames.append(u.getUUID().toString() + (winners.size() - 1 == i ? "" : "/nl/"));
-			CurrencyController.getController().increment(u, 15 * (lineState.getState() + 1));
+			CurrencyController.getController().increment(u, prize);
 		}
 		sendPacket(13, winnerNames.toString());
 		if (lineState != LineState.FULLHOUSE)
@@ -334,4 +345,8 @@ public class BingoGame
 		return shouldRestart;
 	}
 
+	public GameSettings getSettings()
+	{
+		return settings;
+	}
 }

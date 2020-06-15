@@ -36,7 +36,7 @@ public class JoinButton extends UIButton
 		label.setFont(new Font("Calibri",Font.PLAIN,32));
 //		label.setForeground(Color.DARK_GRAY);
 		add(label);
-		addMouseListener(new JoinButtonListener());
+		addMouseListener(new JoinButtonListener(this));
 	}
 
 	@Override

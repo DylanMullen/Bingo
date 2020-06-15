@@ -1,0 +1,20 @@
+{
+  "properties": {
+    "name": "Example",
+    "chat": false,
+    "debug": true,
+    "numbers": 90,
+    "players": {
+      "min": 2,
+      "max": 25
+    },
+    "money": {
+      "basePrize": {
+        "min": 15,
+        "max": 25
+      }
+      "ticketPrice": 15,
+      "incrementMultiplier": 0.2,
+    }
+  }
+}

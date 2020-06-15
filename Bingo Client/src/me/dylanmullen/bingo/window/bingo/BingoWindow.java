@@ -67,7 +67,7 @@ public class BingoWindow extends JFrame
 		hideCurrentPanel();
 		if (home == null)
 		{
-			home = new HomePanel(getWidth() / 4, getHeight() / 10, getWidth() / 4 * 3, getHeight() / 10 * 9);
+			home = new HomePanel(this, getWidth() / 4, getHeight() / 10, getWidth() / 4 * 3, getHeight() / 10 * 9);
 			home.setup();
 		}
 		sideBar.getHomeButton().setActive(true);
@@ -78,7 +78,6 @@ public class BingoWindow extends JFrame
 	public void hideHomePanel()
 	{
 		contentPane.remove(home);
-		home = null;
 		sideBar.getHomeButton().setActive(false);
 	}
 
