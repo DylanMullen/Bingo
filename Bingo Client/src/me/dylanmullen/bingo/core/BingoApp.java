@@ -23,7 +23,8 @@ public class BingoApp
 		if (instance == null)
 			instance = this;
 		init();
-		openLoginWindow();
+//		openLoginWindow();
+		openBingoWindow(null);
 	}
 
 	public static BingoApp getInstance()
@@ -51,7 +52,8 @@ public class BingoApp
 
 	public void openBingoWindow(UserInformation ui)
 	{
-		login.dispose();
+		if(login != null)
+			login.dispose();
 		EventQueue.invokeLater(new Runnable()
 		{
 			@Override
