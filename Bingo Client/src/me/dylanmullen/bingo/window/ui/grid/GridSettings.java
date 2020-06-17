@@ -6,22 +6,26 @@ public class GridSettings
 	private int width, height;
 	private int rows, cols;
 	private int gap;
+	private int fixedRowHeight;
 
-	public GridSettings(int w, int h, int r, int c, int g)
+	public GridSettings(int width, int height, int row, int cols, int gap)
 	{
-		this.width = w;
-		this.height = h;
-		this.rows = r;
-		this.cols = c;
-		this.gap = g;
+		this.width = width;
+		this.height = height;
+		this.rows = row;
+		this.cols = cols;
+		this.gap = gap;
+		this.fixedRowHeight = -1;
 	}
 
 	/**
 	 * @return height without gaps
 	 */
-	public int getItemHeight()
+	public int getItemHeight(int size)
 	{
-		return height / rows;
+		if (fixedRowHeight != -1)
+			return fixedRowHeight;
+		return height / getRows(size);
 	}
 
 	/**
@@ -31,20 +35,30 @@ public class GridSettings
 	{
 		return width / cols;
 	}
-	
+
 	public int getGap()
 	{
 		return gap;
 	}
-	
-	public int getRows()
+
+	public int getRows(int size)
 	{
+		if (rows == -1 && size != -1)
+		{
+			rows = size / getCols();
+			rows = (rows == 0 ? 1 : rows);
+		}
 		return rows;
 	}
-	
+
 	public int getCols()
 	{
 		return cols;
+	}
+	
+	public void setFixedRowHeight(int fixedRowHeight)
+	{
+		this.fixedRowHeight = fixedRowHeight;
 	}
 
 }

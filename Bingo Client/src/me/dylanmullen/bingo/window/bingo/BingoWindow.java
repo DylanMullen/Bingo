@@ -1,7 +1,12 @@
 package me.dylanmullen.bingo.window.bingo;
 
+import java.awt.Dimension;
+
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import me.dylanmullen.bingo.game.BingoGame;
@@ -9,7 +14,6 @@ import me.dylanmullen.bingo.game.UserInformation;
 import me.dylanmullen.bingo.game.home.HomePanel;
 import me.dylanmullen.bingo.window.bingo.panels.sidemenu.SideMenu;
 import me.dylanmullen.bingo.window.login.panels.TopMenu;
-import me.dylanmullen.bingo.window.ui.Panel;
 
 public class BingoWindow extends JFrame
 {
@@ -21,9 +25,10 @@ public class BingoWindow extends JFrame
 	private TopMenu topMenu;
 	private SideMenu sideBar;
 
-	private Panel currentPanel;
+	private JComponent currentPanel;
 
 	private BingoGame bingoGame;
+	private JScrollPane scrollPanel;
 	private HomePanel home;
 
 	private UserInformation userInfo;
@@ -65,19 +70,32 @@ public class BingoWindow extends JFrame
 	public void showHomePanel()
 	{
 		hideCurrentPanel();
+
+		if (scrollPanel == null)
+		{
+			scrollPanel = new JScrollPane();
+			scrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+			scrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+			scrollPanel.setPreferredSize(new Dimension(getWidth() / 4 * 3, getHeight() / 10 * 9));
+			scrollPanel.setBounds(getWidth() / 4, getHeight() / 10, getWidth() / 4 * 3, getHeight() / 10 * 9);
+			scrollPanel.setBorder(null);
+		}
 		if (home == null)
 		{
-			home = new HomePanel(this, getWidth() / 4, getHeight() / 10, getWidth() / 4 * 3, getHeight() / 10 * 9);
+			home = new HomePanel(this, getWidth() / 4, getHeight() / 10,
+					(getWidth() / 4 * 3) - ((Integer) UIManager.get("ScrollBar.width")).intValue(), getHeight() + 200);
 			home.setup();
 		}
+
+		scrollPanel.setViewportView(home);
 		sideBar.getHomeButton().setActive(true);
-		currentPanel = home;
-		contentPane.add(home);
+		currentPanel = scrollPanel;
+		contentPane.add(scrollPanel);
 	}
 
 	public void hideHomePanel()
 	{
-		contentPane.remove(home);
+		contentPane.remove(scrollPanel);
 		sideBar.getHomeButton().setActive(false);
 	}
 
@@ -86,7 +104,7 @@ public class BingoWindow extends JFrame
 		if (currentPanel == null)
 			return;
 
-		if (currentPanel instanceof HomePanel)
+		if (currentPanel instanceof JScrollPane)
 			hideHomePanel();
 		else
 			hideBingoPanel();

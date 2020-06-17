@@ -94,6 +94,11 @@ public class RoundedButton extends UIButton
 
 	}
 
+	public void updateBounds()
+	{
+		text.setBounds(0, 0, getWidth(), getHeight());
+	}
+	
 	@Override
 	public UIButton create()
 	{
