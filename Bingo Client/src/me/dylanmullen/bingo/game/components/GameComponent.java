@@ -2,7 +2,7 @@ package me.dylanmullen.bingo.game.components;
 
 import java.awt.Graphics;
 
-import me.dylanmullen.bingo.game.CardGroupComp;
+import me.dylanmullen.bingo.game.BingoCardContainer;
 import me.dylanmullen.bingo.game.components.overlays.WinnerOverlay;
 import me.dylanmullen.bingo.window.ui.Panel;
 import me.dylanmullen.bingo.window.ui.UIColour;
@@ -13,7 +13,7 @@ public class GameComponent extends Panel
 	private static final long serialVersionUID = 6557409370693226153L;
 
 	private JoinComponent join;
-	private CardGroupComp comp;
+	private BingoCardContainer comp;
 	private WinnerOverlay winner;
 
 	public GameComponent(int x, int y, int width, int height)
@@ -59,12 +59,12 @@ public class GameComponent extends Panel
 
 	public void createCardGroup()
 	{
-		comp = new CardGroupComp(12, 12, getWidth() - 24, getHeight() - 24);
+		comp = new BingoCardContainer(12, 12, getWidth() - 24, getHeight() - 24);
 		comp.setup();
 		add(comp);
 		comp.setVisible(false);
 		comp.setVisible(true);
-		comp.requestNumbers();
+		comp.requestBingoCards();
 	}
 
 	public void createWinnerOverlay()
@@ -82,7 +82,7 @@ public class GameComponent extends Panel
 		return winner;
 	}
 
-	public CardGroupComp getCardGroup()
+	public BingoCardContainer getCardGroup()
 	{
 		return comp;
 	}

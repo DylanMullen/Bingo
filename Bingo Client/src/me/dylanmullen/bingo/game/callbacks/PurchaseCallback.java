@@ -19,7 +19,7 @@ public class PurchaseCallback extends PacketCallback
 	{
 		card.setPurchased(true);
 		card.repaint();
-		BingoGame.getInstance().getGamePanel().getGameComponent().getCardGroup().disableSelector(card);
+		BingoGame.getInstance().getGamePanel().getGameComponent().getCardGroup().deselectCard(card);
 		return false;
 	}
 

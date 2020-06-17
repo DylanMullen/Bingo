@@ -9,7 +9,7 @@ public class CardRequestCallback extends PacketCallback
 	@Override
 	public boolean callback()
 	{
-		BingoGame.getInstance().getGamePanel().getGameComponent().getCardGroup().setCardNumbers(getNumbers());
+		BingoGame.getInstance().getGamePanel().getGameComponent().getCardGroup().setCardInformation(getNumbers());
 		return false;
 	}
 

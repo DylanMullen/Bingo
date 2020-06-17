@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import me.dylanmullen.bingo.net.Client;
 import me.dylanmullen.bingo.net.packet.Packet;
 
+/**
+ * @author Dylan
+ * @date 18 Jun 2020
+ * @project Bingo Client
+ */
 public class ClientOutgoingHandler implements Runnable
 {
 
@@ -15,61 +20,83 @@ public class ClientOutgoingHandler implements Runnable
 
 	private Client client;
 
-	public ClientOutgoingHandler(Client c)
+	/**
+	 * This is the Client Outgoing Handler.<br>
+	 * This handles any packets that the Client will be sending to the server.
+	 * 
+	 * @param client The Client.
+	 */
+	public ClientOutgoingHandler(Client client)
 	{
-		this.client = c;
-		queue = new ArrayList<Packet>();
+		this.client = client;
+		this.queue = new ArrayList<Packet>();
 		start();
 	}
 
+	/**
+	 * Starts a new Thread to handle any outgoing traffic as long as it is not
+	 * already running.
+	 */
 	public synchronized void start()
 	{
-		if (running)
+		if (this.running)
 			return;
-		thread = new Thread(this);
-		thread.start();
+		this.thread = new Thread(this);
+		this.thread.start();
 	}
 
 	@Override
 	public void run()
 	{
-		running = true;
-		while (running)
+		this.running = true;
+		while (this.running)
 		{
 			process();
 		}
 	}
 
+	/**
+	 * Processes any tickets in the queue and sends the packet to the server.
+	 */
 	private void process()
 	{
-		synchronized (queue)
+		synchronized (this.queue)
 		{
-			for (int i = 0; i < queue.size(); i++)
+			for (int i = 0; i < this.queue.size(); i++)
 			{
-				sendPacket(queue.get(i));
-				queue.remove(i);
+				sendPacket(this.queue.get(i));
+				this.queue.remove(i);
 			}
 		}
 	}
 
+	/**
+	 * Sends a packet to the Bingo Server.
+	 * 
+	 * @param packet The packet to send.
+	 */
 	private void sendPacket(Packet packet)
 	{
 		try
 		{
 			packet.setTime();
-			client.getSocket().send(packet.convert(client));
+			this.client.getSocket().send(packet.createDatagramPacket(client));
 		} catch (Exception e)
 		{
-//			System.out.println("Failed to send packet: " + e.);
-			e.printStackTrace();
+			System.out.println("Failed to send packet: " + e.getMessage());
 		}
 	}
 
-	public void addPacket(Packet packet)
+	/**
+	 * Queues any packet that needs to be sent to the server.
+	 * 
+	 * @param packet
+	 */
+	public void enqueue(Packet packet)
 	{
-		synchronized(queue)
+		synchronized (this.queue)
 		{
-			queue.add(packet);
+			this.queue.add(packet);
 		}
 	}
 

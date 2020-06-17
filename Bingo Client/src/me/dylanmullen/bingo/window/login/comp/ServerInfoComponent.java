@@ -105,7 +105,7 @@ public class ServerInfoComponent extends Panel implements EventListener
 	}
 
 	@Override
-	public void fire(Event e)
+	public void receive(Event e)
 	{
 		if (e instanceof ServerStatusChangeEvent)
 		{

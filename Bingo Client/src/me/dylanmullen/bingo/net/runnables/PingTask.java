@@ -6,6 +6,11 @@ import me.dylanmullen.bingo.net.ServerStatusManager.ServerStatus;
 import me.dylanmullen.bingo.net.packet.PacketCallback;
 import me.dylanmullen.bingo.util.Task;
 
+/**
+ * @author Dylan
+ * @date 18 Jun 2020
+ * @project Bingo Client
+ */
 public class PingTask extends Task
 {
 
@@ -13,9 +18,10 @@ public class PingTask extends Task
 	private int counter;
 
 	/**
-	 * Used to make sure the server is still up
+	 * A task to ping the server every few seconds to make sure that the server is
+	 * still alive.
 	 * 
-	 * @param seconds
+	 * @param seconds The seconds of how often the task should be repeated.
 	 */
 	public PingTask(double seconds)
 	{
@@ -25,29 +31,41 @@ public class PingTask extends Task
 	@Override
 	public void task()
 	{
-		if (!response)
+		if (!this.response)
 		{
-			if (counter >= 2)
+			if (this.counter >= 2)
 			{
 				ServerStatusManager.getManager().setStatus(ServerStatus.DISCONNECTED);
 			}
-			counter++;
+			this.counter++;
 		} else
 		{
-			counter = 0;
-			response = false;
+			this.counter = 0;
+			this.response = false;
 		}
+		forcePing();
+	}
 
+	/**
+	 * Forces a ping to the server.
+	 */
+	public void forcePing()
+	{
 		PacketHandler.sendPacket(PacketHandler.createPacket(004, "Ping"), new PacketCallback()
 		{
 			@Override
 			public boolean callback()
 			{
 				ServerStatusManager.getManager().setStatus(ServerStatus.CONNECTED);
-				response = true;
+				setResponse(true);
 				return false;
 			}
 		});
+	}
+
+	public void setResponse(boolean response)
+	{
+		this.response = response;
 	}
 
 }

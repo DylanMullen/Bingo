@@ -4,14 +4,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import me.dylanmullen.bingo.game.BingoCard;
-import me.dylanmullen.bingo.game.CardGroupComp;
+import me.dylanmullen.bingo.game.BingoCardContainer;
 
 public class BingoCardListener extends MouseAdapter
 {
 
-	private CardGroupComp group;
+	private BingoCardContainer group;
 
-	public BingoCardListener(CardGroupComp group)
+	public BingoCardListener(BingoCardContainer group)
 	{
 		this.group = group;
 	}
@@ -22,7 +22,7 @@ public class BingoCardListener extends MouseAdapter
 		BingoCard card = (BingoCard) e.getComponent();
 		if(!card.isPurchased())
 		{
-			group.showSelector(card);
+			group.selectCard(card);
 		}
 	}
 }

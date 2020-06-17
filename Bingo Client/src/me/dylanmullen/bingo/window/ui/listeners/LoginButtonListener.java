@@ -33,10 +33,10 @@ public class LoginButtonListener extends MouseAdapter
 		switch (text)
 		{
 			case "Login":
-				LoginHandler.getHandler().handleLoginRequest(login);
+				LoginHandler.getHandlerInstance().handleLoginRequest(login);
 				break;
 			case "Register":
-				LoginHandler.getHandler().handleRegisterRequest(login);
+				LoginHandler.getHandlerInstance().handleRegisterRequest(login);
 				break;
 			default:
 				break;

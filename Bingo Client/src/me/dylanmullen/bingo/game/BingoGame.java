@@ -1,87 +1,178 @@
 package me.dylanmullen.bingo.game;
 
+/**
+ * @author Dylan
+ * @date 17 Jun 2020
+ * @project Bingo Client
+ */
 public class BingoGame
 {
 
-	private static BingoGame instance;
+	// TODO make this an object to allow multiple Bingo Games.
+
+	private static BingoGame gameInstance;
 	private GamePanel gamePanel;
 
 	private UserInformation userInformation;
 
 	private boolean gameJoined;
-	private GameState state;
+	private GameState gameState;
 	private LineState lineState;
 
 	public enum GameState
 	{
-		LOBBY, PLAYING, ENDING;
+		LOBBY(0), PLAYING(1), ENDING(2);
+
+		private int stateValue;
+
+		/**
+		 * The Game State of the Bingo Game.
+		 * 
+		 * @param stateValue The State Value.
+		 */
+		private GameState(int stateValue)
+		{
+			this.stateValue = stateValue;
+		}
+
+		/**
+		 * Returns the state value of the Game State.
+		 * 
+		 * @return {@link #stateValue}
+		 */
+		public int getStateValue()
+		{
+			return this.stateValue;
+		}
+
+		/**
+		 * Returns a Game State based on the state value.
+		 * 
+		 * @param stateValue State value to check for.
+		 * @return Returns a Game State. If it does not exist, returns null.
+		 */
+		public static GameState getGameState(int stateValue)
+		{
+			for (GameState states : values())
+				if (states.getStateValue() == stateValue)
+					return states;
+			return null;
+		}
 	}
 
 	public enum LineState
 	{
 		ONE(0), TWO(1), FULLHOUSE(2);
 
-		private int state;
+		private int lines;
 
-		private LineState(int state)
+		/**
+		 * The Line State of the current Bingo Game.
+		 * 
+		 * @param lines
+		 */
+		private LineState(int lines)
 		{
-			this.state = state;
+			this.lines = lines;
 		}
 
-		public int getState()
+		/**
+		 * Returns the lines of the Line State.
+		 * 
+		 * @return {@link #lines}
+		 */
+		public int getLines()
 		{
-			return state;
+			return this.lines;
 		}
 
-		public static LineState get(int state)
+		/**
+		 * Returns the LineState based on the lines.
+		 * 
+		 * @param lines Lines of the state you are looking for.
+		 * @return LineState
+		 */
+		public static LineState get(int lines)
 		{
-			for (LineState ls : values())
+			for (LineState lineState : values())
 			{
-				if (ls.getState() == state)
-					return ls;
+				if (lineState.getLines() == lines)
+					return lineState;
 			}
 			return null;
 		}
 	}
 
+	/**
+	 * Bingo Game main class. This handles the logic of the game.
+	 */
 	public BingoGame()
 	{
-		if (instance == null)
-			instance = this;
+		if (BingoGame.gameInstance == null)
+			BingoGame.gameInstance = this;
 	}
 
+	/**
+	 * Returns the instance of the Bingo Game
+	 * 
+	 * @return {@link #gameInstance}
+	 */
 	public static BingoGame getInstance()
 	{
-		return instance;
+		return BingoGame.gameInstance;
 	}
 
-	public GamePanel createPanel(int x, int y, int w, int h)
+	/**
+	 * Creates the Game Panel of the Bingo Game.
+	 * 
+	 * @param x      X-Position of the Panel.
+	 * @param y      Y-Position of the Panel.
+	 * @param width  Width of the Panel.
+	 * @param height Height of the Panel.
+	 * @return {@link #gamePanel}
+	 */
+	public GamePanel createPanel(int x, int y, int width, int height)
 	{
-		if(gamePanel == null)
-			gamePanel = new GamePanel(x, y, w, h);
-		return gamePanel;
+		if (this.gamePanel == null)
+			this.gamePanel = new GamePanel(x, y, width, height);
+		return this.gamePanel;
 	}
 
+	/**
+	 * Sets the Game Joined and updates the current state of the Bingo Game. <br>
+	 * This method also updates the Game Panel to update the header of the lobby
+	 * message.
+	 * 
+	 * @param gameJoined Whether or not the game has been joined.
+	 * @param state      The Game State.
+	 */
 	public void setGameJoined(boolean gameJoined, int state)
 	{
 		this.gameJoined = gameJoined;
-		setState(state);
-		gamePanel.getGameComponent().disableJoinButton();
+		setGameState(state);
+		this.gamePanel.getGameComponent().disableJoinButton();
 
-		if (this.state == GameState.LOBBY)
+		if (getGameState().equals(GameState.LOBBY))
 		{
-			gamePanel.getHeader().getInfo().setText("Currently in Lobby");
-			gamePanel.getGameComponent().createCardGroup();
+			this.gamePanel.getHeaderComponent().getInfo().setText("Currently in Lobby");
+			this.gamePanel.getGameComponent().createCardGroup();
 		} else
-			gamePanel.getHeader().getInfo().setText("Game in Progress. Please Wait...");
+			this.gamePanel.getHeaderComponent().getInfo().setText("Game in Progress. Please Wait...");
 
 	}
 
-	public void setNextNumber(String mes)
+	/**
+	 * Sets the next number of the current Bingo Game. <br>
+	 * This will then update the numbers being shown and mark off the number if the
+	 * player has it.
+	 * 
+	 * @param data The packet data to decode.
+	 */
+	public void setNextNumber(String data)
 	{
-		if (getGamePanel().getHeader().isShowingNumbers())
+		if (getGamePanel().getHeaderComponent().isShowingNumbers())
 		{
-			int number = Integer.parseInt(mes.split(";")[1].split("/m/|/m/")[1]);
+			int number = Integer.parseInt(data.split(";")[1].split("/m/|/m/")[1]);
 			if (getGamePanel().getGameComponent().getWinner().isVisible())
 			{
 				getGamePanel().getGameComponent().getWinner().setVisible(false);
@@ -89,70 +180,61 @@ public class BingoGame
 				getGamePanel().getGameComponent().repaint();
 			}
 
-			getGamePanel().getNumbersComp().update(number);
+			getGamePanel().getHeaderComponent().getNumbersComp().update(number);
 			getGamePanel().getGameComponent().getCardGroup().markNumber(number);
 		}
 	}
 
-	public GamePanel getGamePanel()
-	{
-		return gamePanel;
-	}
-
-	public boolean isJoined()
-	{
-		return gameJoined;
-	}
-
-	public void setState(int state)
-	{
-		switch (state)
-		{
-			case 0:
-				this.state = GameState.LOBBY;
-				return;
-			case 1:
-			{
-				this.state = GameState.PLAYING;
-				showNumberComp();
-				return;
-			}
-			case 2:
-				this.state = GameState.ENDING;
-				return;
-		}
-	}
-
-	public void showNumberComp()
+	/**
+	 * Shows the called numbers component.<br>
+	 * This will also disable any cards that are selected.
+	 */
+	public void showCalledNumberComponent()
 	{
 		if (getGamePanel().getGameComponent().getCardGroup() != null)
 		{
-			gamePanel.getGameComponent().getCardGroup().disableSelectors();
-			gamePanel.getHeader().showNumberComp();
+			getGamePanel().getGameComponent().getCardGroup().disableSelectors();
+			getGamePanel().getHeaderComponent().showNumberComp();
 		}
 	}
 
+	/**
+	 * Updates the Bingo Cards values based on the new data.
+	 * 
+	 * @param data The packet data to decode.
+	 */
 	public void updateCards(String data)
 	{
 		try
 		{
 			String mes = data.split(";")[1].split("/m/|/m/")[1];
 			String[] cards = mes.split("/nl/");
-			getGamePanel().getGameComponent().getCardGroup().updateCardNumbers(cards);
-			lineState = LineState.ONE;
+
+			getGamePanel().getGameComponent().getCardGroup().updatePurchasedCards(cards);
+			setLineState(LineState.ONE);
 		} catch (ArrayIndexOutOfBoundsException e)
 		{
-			getGamePanel().getGameComponent().getCardGroup().updateCardNumbers(null);
+			getGamePanel().getGameComponent().getCardGroup().updatePurchasedCards(null);
 		}
 	}
 
+	/**
+	 * Updates the line state after receiving the new state from the packet.
+	 * 
+	 * @param data The packet data to decode.
+	 */
 	public void updateLineState(String data)
 	{
 		String mes = data.split(";")[1].split("/m/|/m/")[1];
 		lineState = LineState.get(Integer.parseInt(mes));
-		System.out.println(lineState.state);
 	}
 
+	/**
+	 * Updates the Winners Panel with the list of Winners<br>
+	 * The Winner Panel is then shown.
+	 * 
+	 * @param data The packet data to decode.
+	 */
 	public void showWinners(String data)
 	{
 		if (getGamePanel().getGameComponent().getCardGroup() != null)
@@ -164,22 +246,98 @@ public class BingoGame
 		}
 	}
 
+	/**
+	 * Restart the Bingo Game and return the default values. <br>
+	 * This method will also set the new numbers of the potential cards.
+	 * 
+	 * @param data The packet data to decode
+	 */
 	public void restart(String data)
 	{
 		String[] numbers = data.split(";")[1].split("/m/|/m/")[1].split("/c/|/c/");
-		getGamePanel().getGameComponent().getCardGroup().setCardNumbers(numbers);
+		getGamePanel().getGameComponent().getCardGroup().setCardInformation(numbers);
 		getGamePanel().getGameComponent().getWinner().setVisible(false);
-		getGamePanel().getNumbersComp().restart();
+		getGamePanel().getHeaderComponent().getNumbersComp().restart();
 		getGamePanel().getGameComponent().repaint();
 	}
 
+	/**
+	 * Sets the Game State of the Bingo Game
+	 * 
+	 * @param stateValue The state value to check for.
+	 */
+	public void setGameState(int stateValue)
+	{
+		this.gameState = GameState.getGameState(stateValue);
+	}
+
+	/**
+	 * Sets the User Information retrieved from the server.
+	 * 
+	 * @param userInformation The User Information from the server.
+	 */
 	public void setUserInformation(UserInformation userInformation)
 	{
 		this.userInformation = userInformation;
 	}
-	
+
+	/**
+	 * Sets the new Line State of the game.
+	 * 
+	 * @param lineState The new Line State.
+	 */
+	public void setLineState(LineState lineState)
+	{
+		this.lineState = lineState;
+	}
+
+	/**
+	 * Returns the Game Panel for the Bingo Game.
+	 * 
+	 * @return {@link #gamePanel}
+	 */
+	public GamePanel getGamePanel()
+	{
+		return this.gamePanel;
+	}
+
+	/**
+	 * Returns if the player has joined a game.
+	 * 
+	 * @return {@link #gameJoined}
+	 */
+	public boolean hasJoined()
+	{
+		return this.gameJoined;
+	}
+
+	/**
+	 * Returns the User Information.
+	 * 
+	 * @return {@link #userInformation}
+	 */
 	public UserInformation getUserInformation()
 	{
-		return userInformation;
+		return this.userInformation;
+	}
+
+	/**
+	 * Returns the current Game State of the Bingo Game.
+	 * 
+	 * @return {@link #gameState}
+	 */
+	public GameState getGameState()
+	{
+		return this.gameState;
+	}
+
+	/**
+	 * Returns the current Line State of the Bingo Game.
+	 * 
+	 * @return {@link #lineState}
+	 */
+	public LineState getLineState()
+	{
+		return this.lineState;
 	}
 }

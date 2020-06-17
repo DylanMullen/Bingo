@@ -8,6 +8,11 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+/**
+ * @author Dylan
+ * @date 17 Jun 2020
+ * @project Bingo Client
+ */
 public class ImageAtlas
 {
 
@@ -16,6 +21,13 @@ public class ImageAtlas
 
 	private BufferedImage image;
 
+	/**
+	 * Creates an Image Atlas based on an image passed in by the path and the size
+	 * of each square in the atlas.
+	 * 
+	 * @param path The path of the image.
+	 * @param size The size of each square in the atlas.
+	 */
 	public ImageAtlas(String path, int size)
 	{
 		this.path = path;
@@ -23,48 +35,85 @@ public class ImageAtlas
 		load();
 	}
 
+	/**
+	 * Loads the image based on the path provided.<br>
+	 * This will throw an IOException if the path cannot provide an image. This will
+	 * make the image null.
+	 */
 	private void load()
 	{
 		try
 		{
-			image = ImageIO.read(getClass().getClassLoader().getResourceAsStream(path));
+			this.image = ImageIO.read(getClass().getClassLoader().getResourceAsStream(path));
 		} catch (IOException e)
 		{
 			e.printStackTrace();
 		}
 	}
 
-	public BufferedImage getImage(int x, int y)
+	/**
+	 * Returns a new Image based on the co-ordinates of the image in the atlas.
+	 * 
+	 * @param x X-Position of the sub-image.
+	 * @param y Y-Position of the sub-image.
+	 * @return Returns a new sub-image.
+	 */
+	public BufferedImage getSubImage(int x, int y)
 	{
-		return image.getSubimage(x * size, y * size, size, size);
+		return getImage().getSubimage(x * this.size, y * this.size, this.size, this.size);
 	}
 
-	public BufferedImage getImage(int x, int y, Color col)
+	/**
+	 * Returns a new Image based on the co-ordinates of the image in the atlas.<br>
+	 * The image returned will be recoloured with the colour provided.
+	 * 
+	 * @param x      X-Position of the sub-image.
+	 * @param y      Y-Position of the sub-image.
+	 * @param colour The colour to replace with.
+	 * @return Returns a new recoloured sub-image.
+	 */
+	public BufferedImage getImage(int x, int y, Color colour)
 	{
-		BufferedImage img = image.getSubimage(x * size, y * size, size, size);
-		BufferedImage temp = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage img = getSubImage(x, y);
+		BufferedImage temp = new BufferedImage(this.size, this.size, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2 = temp.createGraphics();
-		g2.drawImage(img, 0, 0, size, size, null);
+		g2.drawImage(img, 0, 0, this.size, this.size, null);
 		g2.dispose();
 
 		int[] initialBuf = ((DataBufferInt) temp.getRaster().getDataBuffer()).getData();
 
 		for (int i = 0; i < initialBuf.length; i++)
 		{
-			initialBuf[i] = replaceColour(initialBuf[i], col.getRGB());
+			initialBuf[i] = replaceColour(initialBuf[i], colour.getRGB());
 		}
-
 		return temp;
-
 	}
 
-	private int replaceColour(int col, int toReplace)
+	/**
+	 * Replaces a colour with another colour.
+	 * 
+	 * @param colour    The current colour of the pixel.
+	 * @param toReplace The colour to replace with.
+	 * @return Returns the RGB colour value of toReplace if the colour equals black.
+	 */
+	private int replaceColour(int colour, int toReplace)
 	{
-		if (col == Color.BLACK.getRGB())
+		// TODO make the colour be able to change.
+		if (colour == Color.BLACK.getRGB())
 		{
 			return toReplace;
 		}
-		return col;
+		return colour;
+	}
+
+	/**
+	 * Returns the Image Atlas.
+	 * 
+	 * @return {@link #image}
+	 */
+	public BufferedImage getImage()
+	{
+		return this.image;
 	}
 
 }

@@ -25,21 +25,38 @@ public class HomePanel extends Panel implements Scrollable, MouseMotionListener
 
 	private static final long serialVersionUID = 1L;
 
-	private BingoWindow window;
+	private BingoWindow bingoWindow;
 
 	private static HomePanel instance;
+	private int maxUnitIncrement = 20;
 
-	public HomePanel(BingoWindow window, int x, int y, int width, int height)
+	/**
+	 * This is the Home Panel for the Bingo Application.<br>
+	 * This panel contains all the possible games that a Player can join as well as
+	 * a banner for a company logo.
+	 * 
+	 * @param bingoWindow The Bingo Window of the Bingo Application.
+	 * @param x           X-Position of the Home Panel.
+	 * @param y           Y-Position of the Home Panel.
+	 * @param width       The width of the Home Panel.
+	 * @param height      The height of the Home Panel.
+	 */
+	public HomePanel(BingoWindow bingoWindow, int x, int y, int width, int height)
 	{
 		super(x, y, width, height);
-		if (instance == null)
-			instance = this;
-		this.window = window;
+		if (HomePanel.instance == null)
+			HomePanel.instance = this;
+		this.bingoWindow = bingoWindow;
 	}
 
+	/**
+	 * Returns the instance of the Home Panel
+	 * 
+	 * @return {@link #instance}
+	 */
 	public static HomePanel getInstance()
 	{
-		return instance;
+		return HomePanel.instance;
 	}
 
 	@Override
@@ -54,10 +71,10 @@ public class HomePanel extends Panel implements Scrollable, MouseMotionListener
 				repaint();
 			}
 		});
-		
+
 		int width = (getWidth() - (10 * 3)) / 2;
 
-		ImageComponent ic = new ImageComponent(15, 15, getWidth() - 30, (int) (height / 8) * 2);
+		ImageComponent ic = new ImageComponent(15, 15, getWidth() - 30, (int) (getHeight() / 8) * 2);
 		try
 		{
 			ic.setImage(ImageIO.read(getClass().getClassLoader().getResourceAsStream("placeholder.png")));
@@ -67,8 +84,8 @@ public class HomePanel extends Panel implements Scrollable, MouseMotionListener
 		}
 		add(ic);
 
-		Grid grid = new Grid(new GridSettings(getWidth() - 100, (int) (height / 8) * 6 - 50, -1, 3, 15), 50,
-				height + 25 - (int) (height / 8) * 6);
+		Grid grid = new Grid(new GridSettings(getWidth() - 100, (int) (getHeight() / 8) * 6 - 50, -1, 3, 15), 50,
+				getHeight() + 25 - (int) (getHeight() / 8) * 6);
 
 		grid.getSettings().setFixedRowHeight(290);
 
@@ -103,29 +120,32 @@ public class HomePanel extends Panel implements Scrollable, MouseMotionListener
 
 	}
 
+	/**
+	 * Returns the Bingo Window of the Bingo Application.
+	 * 
+	 * @return {@link #bingoWindow}
+	 */
 	public BingoWindow getWindow()
 	{
-		return window;
+		return this.bingoWindow;
 	}
 
-	// Methods required by the MouseMotionListener interface:
 	public void mouseMoved(MouseEvent e)
 	{
 	}
 
+	@Override
 	public void mouseDragged(MouseEvent e)
 	{
-		// The user is dragging us, so scroll!
 		Rectangle r = new Rectangle(e.getX(), e.getY(), 1, 1);
 		scrollRectToVisible(r);
 	}
 
+	@Override
 	public Dimension getPreferredSize()
 	{
 		return new Dimension(getWidth(), getHeight());
 	}
-
-	private int maxUnitIncrement = 20;
 
 	public Dimension getPreferredScrollableViewportSize()
 	{
@@ -134,7 +154,6 @@ public class HomePanel extends Panel implements Scrollable, MouseMotionListener
 
 	public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction)
 	{
-		// Get the current position.
 		int currentPosition = 0;
 		if (orientation == SwingConstants.HORIZONTAL)
 		{
@@ -143,16 +162,13 @@ public class HomePanel extends Panel implements Scrollable, MouseMotionListener
 		{
 			currentPosition = visibleRect.y;
 		}
-
-		// Return the number of pixels between currentPosition
-		// and the nearest tick mark in the indicated direction.
 		if (direction < 0)
 		{
-			int newPosition = currentPosition - (currentPosition / maxUnitIncrement) * maxUnitIncrement;
-			return (newPosition == 0) ? maxUnitIncrement : newPosition;
+			int newPosition = currentPosition - (currentPosition / this.maxUnitIncrement) * this.maxUnitIncrement;
+			return (newPosition == 0) ? this.maxUnitIncrement : newPosition;
 		} else
 		{
-			return ((currentPosition / maxUnitIncrement) + 1) * maxUnitIncrement - currentPosition;
+			return ((currentPosition / this.maxUnitIncrement) + 1) * this.maxUnitIncrement - currentPosition;
 		}
 	}
 
@@ -160,10 +176,10 @@ public class HomePanel extends Panel implements Scrollable, MouseMotionListener
 	{
 		if (orientation == SwingConstants.HORIZONTAL)
 		{
-			return visibleRect.width - maxUnitIncrement;
+			return visibleRect.width - this.maxUnitIncrement;
 		} else
 		{
-			return visibleRect.height - maxUnitIncrement;
+			return visibleRect.height - this.maxUnitIncrement;
 		}
 	}
 
@@ -179,6 +195,6 @@ public class HomePanel extends Panel implements Scrollable, MouseMotionListener
 
 	public void setMaxUnitIncrement(int pixels)
 	{
-		maxUnitIncrement = pixels;
+		this.maxUnitIncrement = pixels;
 	}
 }
