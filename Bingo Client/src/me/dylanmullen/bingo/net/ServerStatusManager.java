@@ -3,6 +3,11 @@ package me.dylanmullen.bingo.net;
 import me.dylanmullen.bingo.events.EventHandler;
 import me.dylanmullen.bingo.events.ServerStatusChangeEvent;
 
+/**
+ * @author Dylan
+ * @date 18 Jun 2020
+ * @project Bingo Client
+ */
 public class ServerStatusManager
 {
 
@@ -14,6 +19,11 @@ public class ServerStatusManager
 
 		private String messsage;
 
+		/**
+		 * The status of the server.
+		 * 
+		 * @param statusMessage The message for the status.
+		 */
 		ServerStatus(String statusMessage)
 		{
 			this.messsage = statusMessage;
@@ -21,25 +31,39 @@ public class ServerStatusManager
 
 		public String getMesssage()
 		{
-			return messsage;
+			return this.messsage;
 		}
 	}
 
 	private static ServerStatusManager instance;
 
+	/**
+	 * Returns the Server Status Manager instance.
+	 * 
+	 * @return {@link #instance}
+	 */
 	public static ServerStatusManager getManager()
 	{
-		if (instance == null)
-			instance = new ServerStatusManager();
-		return instance;
+		if (ServerStatusManager.instance == null)
+			ServerStatusManager.instance = new ServerStatusManager();
+		return ServerStatusManager.instance;
 	}
 
+	/**
+	 * Sets the new status of the server and fires the
+	 * {@link ServerStatusChangeEvent} event to all listeners listening for it.
+	 * 
+	 * @param status The new status of the server.
+	 */
 	public void setStatus(ServerStatus status)
 	{
 		ServerStatusManager.status = status;
 		EventHandler.fireEvent(new ServerStatusChangeEvent(status));
 	}
 
+	/**
+	 * @return Returns the current status of the server.
+	 */
 	public ServerStatus getStatus()
 	{
 		return status;

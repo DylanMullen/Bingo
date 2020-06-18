@@ -163,7 +163,7 @@ public class GameSelector extends JComponent
 		Font font = new Font("Calibri", Font.PLAIN, 20);
 		g2.setFont(font);
 		String string = (int) price + "";
-		Dimension dim = FontUtil.getFontSize(getFontMetrics(font), font, string, 0, 0);
+		Dimension dim = FontUtil.getFontSize(getFontMetrics(font), string, 0, 0);
 
 		int fontSize = getWidth() - (this.OFFSET + this.GAP) - (this.priceBubbleHeight / 2);
 		g2.drawString(string, fontSize - (dim.width / 2),
@@ -182,7 +182,7 @@ public class GameSelector extends JComponent
 		g2.fillRoundRect(this.OFFSET, this.OFFSET + this.bannerHeight - (int) ((this.bannerHeight / 4) * 1.15),
 				getWidth() - this.OFFSET * 2, (int) ((this.bannerHeight / 4) * 1.15), 15, 15);
 
-		Dimension dim = FontUtil.getFontSize(getFontMetrics(font), font, name, 0, 0);
+		Dimension dim = FontUtil.getFontSize(getFontMetrics(font), name, 0, 0);
 
 		g2.setColor(Color.WHITE);
 		g2.setFont(font);

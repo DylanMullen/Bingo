@@ -1,7 +1,5 @@
 package me.dylanmullen.bingo.window.ui;
 
-import java.awt.Font;
-
 import javax.swing.JPanel;
 
 public abstract class UIButton extends JPanel

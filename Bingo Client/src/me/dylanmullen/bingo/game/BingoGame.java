@@ -1,5 +1,7 @@
 package me.dylanmullen.bingo.game;
 
+import me.dylanmullen.bingo.window.bingo.BingoWindow;
+
 /**
  * @author Dylan
  * @date 17 Jun 2020
@@ -18,6 +20,8 @@ public class BingoGame
 	private boolean gameJoined;
 	private GameState gameState;
 	private LineState lineState;
+
+	private BingoWindow bingoWindow;
 
 	public enum GameState
 	{
@@ -292,6 +296,16 @@ public class BingoGame
 	}
 
 	/**
+	 * Sets the Bingo Window of the Bingo Game.
+	 * 
+	 * @param bingoWindow The Bingo Window of the application.
+	 */
+	public void setBingoWindow(BingoWindow bingoWindow)
+	{
+		this.bingoWindow = bingoWindow;
+	}
+
+	/**
 	 * Returns the Game Panel for the Bingo Game.
 	 * 
 	 * @return {@link #gamePanel}
@@ -339,5 +353,15 @@ public class BingoGame
 	public LineState getLineState()
 	{
 		return this.lineState;
+	}
+
+	/**
+	 * Returns the Bingo Window of the Bingo Application
+	 * 
+	 * @return {@link #bingoWindow}
+	 */
+	public BingoWindow getBingoWindow()
+	{
+		return this.bingoWindow;
 	}
 }

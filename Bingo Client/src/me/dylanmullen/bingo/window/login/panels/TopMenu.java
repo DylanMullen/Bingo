@@ -7,15 +7,19 @@ import java.awt.event.MouseMotionListener;
 
 import javax.swing.JFrame;
 
-import me.dylanmullen.bingo.window.bingo.ui.buttons.CloseButton;
+import me.dylanmullen.bingo.gfx.ImageAtlas;
 import me.dylanmullen.bingo.window.login.comp.ServerInfoComponent;
+import me.dylanmullen.bingo.window.ui.Button;
+import me.dylanmullen.bingo.window.ui.ImageComponent;
 import me.dylanmullen.bingo.window.ui.Panel;
+import me.dylanmullen.bingo.window.ui.UIButton;
 import me.dylanmullen.bingo.window.ui.UIColour;
 
 public class TopMenu extends Panel
 {
 
 	private TopMenuListener listener;
+	private final ImageAtlas ATLAS = new ImageAtlas("uiAtlas.png", 42);
 
 	public TopMenu(JFrame frame, int x, int y, int width, int height)
 	{
@@ -23,7 +27,7 @@ public class TopMenu extends Panel
 		listener = new TopMenuListener(frame);
 	}
 
-	private CloseButton close;
+	private UIButton close;
 
 	@Override
 	public void setup()
@@ -31,9 +35,23 @@ public class TopMenu extends Panel
 		setBounds(x, y, width, height);
 		setLayout(null);
 		setBackground(UIColour.FRAME_BINGO_BG_SIDE.toColor());
-		close = new CloseButton("", getWidth() - 100, 0, 100, getHeight());
+
+		close = new Button("", null, getWidth() - 100, 0, 100, getHeight(), UIColour.BTN_FAILURE);
+		ImageComponent icon = new ImageComponent((close.getWidth() / 2) - 21, (close.getHeight() / 2) - 21, 42, 42);
+		icon.setImage(ATLAS.getImage(3, 1, UIColour.BTN_BINGO_ACTIVE.toColor()));
 		close.create();
-		ServerInfoComponent si = new ServerInfoComponent((close.getX()-10)-(width/8), 10, width/8, height-20);
+		close.add(icon);
+
+		close.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				System.exit(0);
+			}
+		});
+
+		ServerInfoComponent si = new ServerInfoComponent((close.getX() - 10) - (width / 8), 10, width / 8, height - 20);
 		si.create();
 		add(si);
 		addMouseListener(listener);

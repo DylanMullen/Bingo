@@ -1,8 +1,6 @@
 package me.dylanmullen.bingo.window.bingo.panels.sidemenu;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -12,26 +10,39 @@ import me.dylanmullen.bingo.window.bingo.ui.buttons.SidePanelButton;
 import me.dylanmullen.bingo.window.ui.Panel;
 import me.dylanmullen.bingo.window.ui.UIColour;
 
+/**
+ * @author Dylan
+ * @date 18 Jun 2020
+ * @project Bingo Client
+ */
 public class SideMenu extends Panel
 {
 
 	private static final long serialVersionUID = 7856700131153385897L;
 
-	private static SideMenu instance;
+	private BingoWindow bingoWindow;
 
-	private BingoWindow window;
+	private ProfilePanel profilePanel;
+	private SidePanelButton homeButton;
+	private SidePanelButton playButton;
+	private SidePanelButton settingsButton;
 
-	private ProfilePanel panel;
-	private SidePanelButton home;
-	private SidePanelButton play;
-	private SidePanelButton settings;
-
-	public SideMenu(BingoWindow window, int x, int y, int width, int height)
+	/**
+	 * This the the side navigation bar for the application.<br>
+	 * This contains the profile panel which displays the information of the player
+	 * from the server.<br>
+	 * This also contains the buttons for the navigation of the application.
+	 * 
+	 * @param bingoWindow The Bingo Window of the Application.
+	 * @param x           X-Position of the Side Menu.
+	 * @param y           Y-Position of the Side Menu.
+	 * @param width       The width of the Side Menu.
+	 * @param height      The height of the Side Menu.
+	 */
+	public SideMenu(BingoWindow bingoWindow, int x, int y, int width, int height)
 	{
 		super(x, y, width, height);
-		this.window = window;
-		if (instance == null)
-			instance = this;
+		this.bingoWindow = bingoWindow;
 	}
 
 	@Override
@@ -45,92 +56,93 @@ public class SideMenu extends Panel
 	@Override
 	public void create()
 	{
-		panel = new ProfilePanel(30, 30, getWidth() - 60, (int) (getHeight() / 2.75));
-		panel.setup();
-		add(panel);
+		this.profilePanel = new ProfilePanel(30, 30, getWidth() - 60, (int) (getHeight() / 2.75));
+		getProfilePanel().setup();
+		add(getProfilePanel());
 		createButtons();
 	}
 
-	private boolean debug = false;
-
+	/**
+	 * Creates the side panel buttons and adds them to the Button Container.
+	 */
 	private void createButtons()
 	{
 		ButtonContainer buttons = new ButtonContainer(0, getHeight() / 2, getWidth(), getHeight() / 2)
 				.setButtonHeight(60);
 
-		home = new SidePanelButton("Home", new Dimension(1, 0));
-		home.addMouseListener(new MouseAdapter()
+		this.homeButton = new SidePanelButton("Home", new Dimension(1, 0));
+		getHomeButton().addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				if (!home.isActive())
+				if (!getHomeButton().isActive())
 				{
-					window.showHomePanel();
+					getBingoWindow().showHomePanel();
 				}
 			}
 		});
-		play = new SidePanelButton("Play", new Dimension(2, 0));
-		play.addMouseListener(new MouseAdapter()
+		this.playButton = new SidePanelButton("Play", new Dimension(2, 0));
+		getPlayButton().addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				if (!play.isActive())
+				if (!getPlayButton().isActive())
 				{
-					window.showBingoPanel();
+					getBingoWindow().showBingoPanel();
 				}
 			}
 		});
-		settings = new SidePanelButton("Settings", new Dimension(3, 0));
+		this.settingsButton = new SidePanelButton("Settings", new Dimension(3, 0));
 
-		buttons.addButton(home);
-		buttons.addButton(play);
-		buttons.addButton(settings);
+		buttons.addButton(getHomeButton());
+		buttons.addButton(getPlayButton());
+		buttons.addButton(getSettingsButton());
 
 		buttons.populate();
 		buttons.setBackground(UIColour.FRAME_BINGO_BG_SIDE.toColor());
 		add(buttons);
 	}
 
-	@Override
-	protected void paintComponent(Graphics g)
+	/**
+	 * @return Returns the Profile Panel of the Side Menu.
+	 */
+	public ProfilePanel getProfilePanel()
 	{
-		super.paintComponent(g);
-
-		if (debug)
-		{
-			g.setColor(Color.white);
-			g.drawLine(12, 0, 12, getHeight());
-			g.drawLine(getWidth() - 12, 0, getWidth() - 12, getHeight());
-			g.drawLine(0, 12, getWidth(), 12);
-			g.drawLine(0, (getHeight() / 2) - 12, getWidth(), (getHeight() / 2) - 12);
-		}
+		return this.profilePanel;
 	}
 
-	public ProfilePanel getPanel()
-	{
-		return panel;
-	}
-
-	public static SideMenu getInstance()
-	{
-		return instance;
-	}
-
+	/**
+	 * @return Returns the Home Button.
+	 */
 	public SidePanelButton getHomeButton()
 	{
-		return home;
+		return this.homeButton;
 	}
 
+	/**
+	 * @return Returns the Play Button.
+	 */
 	public SidePanelButton getPlayButton()
 	{
-		return play;
+		return this.playButton;
 	}
 
+	/**
+	 * @return Returns the Settings Button.
+	 */
 	public SidePanelButton getSettingsButton()
 	{
-		return settings;
+		return this.settingsButton;
+	}
+
+	/**
+	 * @return Returns the Bingo Window of the Application.
+	 */
+	public BingoWindow getBingoWindow()
+	{
+		return this.bingoWindow;
 	}
 
 }

@@ -5,12 +5,16 @@ import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import me.dylanmullen.bingo.util.FontUtil;
 import me.dylanmullen.bingo.window.ui.Panel;
 import me.dylanmullen.bingo.window.ui.grid.Grid;
 import me.dylanmullen.bingo.window.ui.grid.GridItem;
 import me.dylanmullen.bingo.window.ui.grid.GridSettings;
 
+/**
+ * @author Dylan
+ * @date 18 Jun 2020
+ * @project Bingo Client
+ */
 public class InfoComponent extends Panel
 {
 

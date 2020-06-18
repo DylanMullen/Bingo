@@ -18,14 +18,30 @@ import me.dylanmullen.bingo.window.ui.grid.Grid;
 import me.dylanmullen.bingo.window.ui.grid.GridItem;
 import me.dylanmullen.bingo.window.ui.grid.GridSettings;
 
+/**
+ * @author Dylan
+ * @date 18 Jun 2020
+ * @project Bingo Client
+ */
 public class ProfilePanel extends Panel
 {
 
 	private static final long serialVersionUID = 3952772083758555561L;
 
 	private Grid grid;
-	private List<InfoComponent> infoComp = new ArrayList<>();
+	private List<InfoComponent> infoComponents = new ArrayList<>();
 
+	/**
+	 * The profile panel of the Side Menu. <br>
+	 * This is the main source of information for the Player. This displays the
+	 * Players stats whilst playing bingo and is always shown to the Player during
+	 * their usage of the Application.
+	 * 
+	 * @param x      X-Position of the Profile Panel.
+	 * @param y      Y-Position of the Profile Panel.
+	 * @param width  The width of the Profile Panel.
+	 * @param height The height of the Profile Panel.
+	 */
 	public ProfilePanel(int x, int y, int width, int height)
 	{
 		super(x, y, width, height);
@@ -34,15 +50,15 @@ public class ProfilePanel extends Panel
 	@Override
 	public void setup()
 	{
-		setBounds(x, y, width, height);
+		setBounds(this.x, this.y, this.width, this.height);
 		setBorder(new EmptyBorder(12, 12, 12, 12));
 		setOpaque(false);
-		grid = new Grid(new GridSettings(width - 10, height - 110, 4, 1, 5), 5, 105);
+		this.grid = new Grid(new GridSettings(getWidth() - 10, getHeight() - 110, 4, 1, 5), 5, 105);
 
-		ImageComponent ic = new ImageComponent(10, 10, width - 20, 90);
+		ImageComponent imageComponent = new ImageComponent(10, 10, getWidth() - 20, 90);
 		try
 		{
-			ic.setImage(ImageIO.read(getClass().getClassLoader().getResourceAsStream("placeholder.png")));
+			imageComponent.setImage(ImageIO.read(getClass().getClassLoader().getResourceAsStream("placeholder.png")));
 		} catch (IOException e)
 		{
 			// TODO Auto-generated catch block
@@ -50,34 +66,38 @@ public class ProfilePanel extends Panel
 		}
 		setupFields();
 		create();
-		add(ic);
+		add(imageComponent);
 	}
 
+	/**
+	 * This setups the information components for the Profile Panel.
+	 */
 	private void setupFields()
 	{
 		InfoComponent username = new InfoComponent("Username", "Loading...", 0, 0, 0, 0);
 		InfoComponent money = new InfoComponent("Money", "Loading...", 0, 0, 0, 0);
 		InfoComponent wins = new InfoComponent("Wins", "Loading...", 0, 0, 0, 0);
 		InfoComponent ratio = new InfoComponent("Win/Lose %", "Loading...", 0, 0, 0, 0);
-		grid.addGridItem(new GridItem(username, 1, 1), 0);
-		grid.addGridItem(new GridItem(money, 1, 1), 1);
-		grid.addGridItem(new GridItem(wins, 1, 1), 2);
-		grid.addGridItem(new GridItem(ratio, 1, 1), 3);
+
+		getGrid().addGridItem(new GridItem(username, 1, 1), 0);
+		getGrid().addGridItem(new GridItem(money, 1, 1), 1);
+		getGrid().addGridItem(new GridItem(wins, 1, 1), 2);
+		getGrid().addGridItem(new GridItem(ratio, 1, 1), 3);
 		username.setup();
 		ratio.setup();
 		wins.setup();
 		money.setup();
-		infoComp.add(username);
-		infoComp.add(money);
-		infoComp.add(wins);
-		infoComp.add(ratio);
+		getInformationComponents().add(username);
+		getInformationComponents().add(money);
+		getInformationComponents().add(wins);
+		getInformationComponents().add(ratio);
 	}
 
 	@Override
 	public void create()
 	{
 		updateItems();
-		for (InfoComponent item : infoComp)
+		for (InfoComponent item : getInformationComponents())
 		{
 			add(item);
 		}
@@ -95,19 +115,51 @@ public class ProfilePanel extends Panel
 
 	}
 
+	/**
+	 * Updates the items of the Information Components to have the most up to date
+	 * information that was received from the server.
+	 */
 	public void updateItems()
 	{
 		if (BingoGame.getInstance() != null)
 		{
-			infoComp.get(0).getInfo().setText(BingoGame.getInstance().getUserInformation().getDisplayName());
-			infoComp.get(1).getInfo().setText(BingoGame.getInstance().getUserInformation().getCredits() + "");
-			infoComp.get(2).getInfo().setText(BingoGame.getInstance().getUserInformation().getWins() + "");
-			infoComp.get(3).getInfo().setText("N/A");
+			getInformationComponents().get(0).getInfo()
+					.setText(BingoGame.getInstance().getUserInformation().getDisplayName());
+			getInformationComponents().get(1).getInfo()
+					.setText(BingoGame.getInstance().getUserInformation().getCredits() + "");
+			getInformationComponents().get(2).getInfo()
+					.setText(BingoGame.getInstance().getUserInformation().getWins() + "");
+			getInformationComponents().get(3).getInfo().setText("N/A");
 		}
 	}
 
+	/**
+	 * Updates the credits information component.
+	 * 
+	 * @param credits The new credits value.
+	 */
 	public void updateCredits(double credits)
 	{
-		infoComp.get(1).getInfo().setText(credits + "");
+		getInformationComponents().get(1).getInfo().setText(credits + "");
+	}
+
+	/**
+	 * Returns the Grid being used to position the {@link #infoComponents}
+	 * 
+	 * @return {@link #grid}
+	 */
+	public Grid getGrid()
+	{
+		return this.grid;
+	}
+
+	/**
+	 * Returns the Information Components of the Profile Panel.
+	 * 
+	 * @return {@link #infoComponents}
+	 */
+	public List<InfoComponent> getInformationComponents()
+	{
+		return this.infoComponents;
 	}
 }

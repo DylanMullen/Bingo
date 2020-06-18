@@ -190,4 +190,28 @@ public class ClientHandler
 	{
 		return this.connected;
 	}
+
+	/**
+	 * @return Returns the incoming handler of the client.
+	 */
+	public ClientIncomingHandler getIncomingHandler()
+	{
+		return this.incoming;
+	}
+
+	/**
+	 * @return Returns the outgoing handler of the client.
+	 */
+	public ClientOutgoingHandler getOutgoingHandler()
+	{
+		return outgoing;
+	}
+
+	/**
+	 * @return Returns the ping task by the client.
+	 */
+	public PingTask getPingTask()
+	{
+		return pingTask;
+	}
 }

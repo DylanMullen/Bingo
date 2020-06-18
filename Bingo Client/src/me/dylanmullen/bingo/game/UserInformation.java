@@ -2,8 +2,6 @@ package me.dylanmullen.bingo.game;
 
 import java.util.UUID;
 
-import me.dylanmullen.bingo.window.bingo.panels.sidemenu.SideMenu;
-
 /**
  * @author Dylan
  * @date 17 Jun 2020
@@ -29,7 +27,7 @@ public class UserInformation
 	{
 		String credits = data.split("/m/|/m/")[1];
 		setCredits(Double.parseDouble(credits));
-		SideMenu.getInstance().getPanel().updateCredits(getCredits());
+		BingoGame.getInstance().getBingoWindow().getSideBar().getProfilePanel().updateCredits(getCredits());
 	}
 
 	/**

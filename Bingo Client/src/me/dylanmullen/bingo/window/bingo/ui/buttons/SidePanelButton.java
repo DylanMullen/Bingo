@@ -2,6 +2,8 @@ package me.dylanmullen.bingo.window.bingo.ui.buttons;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -12,8 +14,14 @@ import me.dylanmullen.bingo.window.ui.ImageComponent;
 import me.dylanmullen.bingo.window.ui.UIButton;
 import me.dylanmullen.bingo.window.ui.UIColour;
 
+/**
+ * @author Dylan
+ * @date 18 Jun 2020
+ * @project Bingo Client
+ */
 public class SidePanelButton extends UIButton
 {
+	//TODO
 
 	private static final long serialVersionUID = -1495099977168142089L;
 
@@ -67,6 +75,28 @@ public class SidePanelButton extends UIButton
 		chevron = new ImageComponent(indentX, indentY, getMaxHeight(getHeight(), indentY),
 				getMaxHeight(getHeight(), indentY));
 		chevron.setImage(ATLAS.getImage(0, 0, UIColour.BTN_BINGO_ACTIVE.toColor()));
+		
+		addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseEntered(MouseEvent e)
+			{
+				SidePanelButton spb = (SidePanelButton) e.getComponent();
+				if(spb.isActive())
+					return;
+				spb.setBackground(UIColour.BTN_BINGO_SIDE_HOVER.toColor());
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e)
+			{
+				SidePanelButton spb = (SidePanelButton) e.getComponent();
+				if(spb.isActive())
+					return;
+				
+				spb.setBackground(UIColour.FRAME_BINGO_BG_SIDE.toColor());
+			}
+		});
 	}
 
 	@Override
@@ -100,5 +130,5 @@ public class SidePanelButton extends UIButton
 		repaint();
 		return this;
 	}
-
+	
 }

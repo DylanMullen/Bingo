@@ -226,7 +226,7 @@ public class BingoCard extends JComponent
 		g2.setFont(font);
 		g2.setColor(Color.WHITE);
 
-		Dimension dim = FontUtil.getFontSize(getFontMetrics(font), font, getUUID().toString(), 0, 0);
+		Dimension dim = FontUtil.getFontSize(getFontMetrics(font), getUUID().toString(), 0, 0);
 		g2.drawString(getUUID().toString(), getWidth() / 2 - (dim.width / 2), this.BUFFER / 2 + dim.height / 4);
 	}
 
@@ -247,7 +247,7 @@ public class BingoCard extends JComponent
 			g2.setColor((square.isCalled() ? UIColour.SQUARE_MARKED.toColor() : getColour(i)));
 			g2.fill(square);
 
-			Dimension dim = FontUtil.getFontSize(getFontMetrics(g2.getFont()), g2.getFont(), square.getNumber() + "", 0,
+			Dimension dim = FontUtil.getFontSize(getFontMetrics(g2.getFont()), square.getNumber() + "", 0,
 					0);
 			int xp = (int) ((int) square.getX() + square.getWidth() / 2 - (dim.width / 2));
 			int yp = (int) ((int) square.getY() + square.getHeight() / 2 + (dim.height / 4));

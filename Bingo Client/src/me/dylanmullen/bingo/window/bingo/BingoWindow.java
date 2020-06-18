@@ -3,24 +3,25 @@ package me.dylanmullen.bingo.window.bingo;
 import java.awt.Dimension;
 
 import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
-import javax.swing.border.EmptyBorder;
 
 import me.dylanmullen.bingo.game.BingoGame;
 import me.dylanmullen.bingo.game.UserInformation;
 import me.dylanmullen.bingo.game.home.HomePanel;
+import me.dylanmullen.bingo.window.Window;
 import me.dylanmullen.bingo.window.bingo.panels.sidemenu.SideMenu;
 import me.dylanmullen.bingo.window.login.panels.TopMenu;
 
-public class BingoWindow extends JFrame
+/**
+ * @author Dylan
+ * @date 18 Jun 2020
+ * @project Bingo Client
+ */
+public class BingoWindow extends Window
 {
 
 	private static final long serialVersionUID = 2893540627273369010L;
-
-	private JPanel contentPane;
 
 	private TopMenu topMenu;
 	private SideMenu sideBar;
@@ -28,109 +29,201 @@ public class BingoWindow extends JFrame
 	private JComponent currentPanel;
 
 	private BingoGame bingoGame;
-	private JScrollPane scrollPanel;
+	private JScrollPane scrollHomePanel;
 	private HomePanel home;
 
 	private UserInformation userInfo;
 
 	/**
-	 * Create the frame.
+	 * Creates the Bingo Window using the default sizing inherited from
+	 * {@link Window}.
+	 * 
+	 * @param userInformation The user information received from the Bingo Server
+	 *                        during the login phase.
 	 */
-	public BingoWindow(UserInformation ui)
+	public BingoWindow(UserInformation userInformation)
 	{
-		this.userInfo = ui;
+		super("Bingo Window");
+		this.userInfo = userInformation;
 
 		setUndecorated(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1280, 720);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
 
 		showEssentials();
 		showHomePanel();
-
-		setLocationRelativeTo(null);
 	}
 
+	/**
+	 * Shows the essential components that are required to be shown. <br>
+	 * These components are:
+	 * <ul>
+	 * <li>The Sidebar navigation</li>
+	 * <li>The top menu</li>
+	 * </ul>
+	 */
 	public void showEssentials()
 	{
-		sideBar = new SideMenu(this, 0, 0, getWidth() / 4, getHeight());
-		sideBar.setup();
-		sideBar.create();
-		contentPane.add(sideBar);
+		this.sideBar = new SideMenu(this, 0, 0, getWidth() / 4, getHeight());
+		getSideBar().setup();
+		getSideBar().create();
+		getContentPanel().add(getSideBar());
 
-		topMenu = new TopMenu(this, getWidth() / 4, 0, getWidth() / 4 * 3, getHeight() / 10);
-		topMenu.setup();
-		topMenu.create();
-		contentPane.add(topMenu);
+		this.topMenu = new TopMenu(this, getWidth() / 4, 0, getWidth() / 4 * 3, getHeight() / 10);
+		getTopMenu().setup();
+		getTopMenu().create();
+		getContentPanel().add(getTopMenu());
 	}
 
+	/**
+	 * Sets the Home Panel as the current viewing pane and shows it to the Player.
+	 */
 	public void showHomePanel()
 	{
 		hideCurrentPanel();
 
-		if (scrollPanel == null)
+		if (getScrollHomePanel() == null)
 		{
-			scrollPanel = new JScrollPane();
-			scrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-			scrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-			scrollPanel.setPreferredSize(new Dimension(getWidth() / 4 * 3, getHeight() / 10 * 9));
-			scrollPanel.setBounds(getWidth() / 4, getHeight() / 10, getWidth() / 4 * 3, getHeight() / 10 * 9);
-			scrollPanel.setBorder(null);
+			this.scrollHomePanel = new JScrollPane();
+			getScrollHomePanel().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+			getScrollHomePanel().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+			getScrollHomePanel().setPreferredSize(new Dimension(getWidth() / 4 * 3, getHeight() / 10 * 9));
+			getScrollHomePanel().setBounds(getWidth() / 4, getHeight() / 10, getWidth() / 4 * 3, getHeight() / 10 * 9);
+			getScrollHomePanel().setBorder(null);
 		}
-		if (home == null)
+		if (getHomePanel() == null)
 		{
-			home = new HomePanel(this, getWidth() / 4, getHeight() / 10,
+			this.home = new HomePanel(this, getWidth() / 4, getHeight() / 10,
 					(getWidth() / 4 * 3) - ((Integer) UIManager.get("ScrollBar.width")).intValue(), getHeight() + 200);
-			home.setup();
+			getHomePanel().setup();
 		}
 
-		scrollPanel.setViewportView(home);
-		sideBar.getHomeButton().setActive(true);
-		currentPanel = scrollPanel;
-		contentPane.add(scrollPanel);
+		getScrollHomePanel().setViewportView(getHomePanel());
+		getSideBar().getHomeButton().setActive(true);
+
+		setCurrentViewPanel(getScrollHomePanel());
+		getContentPanel().add(getScrollHomePanel());
 	}
 
+	/**
+	 * Hides the Home Panel from view.
+	 */
 	public void hideHomePanel()
 	{
-		contentPane.remove(scrollPanel);
-		sideBar.getHomeButton().setActive(false);
+		getContentPanel().remove(getScrollHomePanel());
+		getSideBar().getHomeButton().setActive(false);
 	}
 
+	/**
+	 * Hides the current Panel being viewed.<br>
+	 * If this value is null, it returns and does nothing.
+	 */
 	public void hideCurrentPanel()
 	{
-		if (currentPanel == null)
+		if (getCurrentPanel() == null)
 			return;
 
-		if (currentPanel instanceof JScrollPane)
+		if (getCurrentPanel() instanceof JScrollPane)
 			hideHomePanel();
 		else
 			hideBingoPanel();
-		contentPane.repaint();
+		getContentPanel().repaint();
 	}
 
+	/**
+	 * Sets the Bingo Panel as the current viewing pane and shows it to the
+	 * Player.<br>
+	 * If the Bingo Panel is not created, this method will create one.
+	 */
 	public void showBingoPanel()
 	{
 		hideCurrentPanel();
-		if (bingoGame == null)
+		if (getBingoGame() == null)
 		{
-			bingoGame = new BingoGame();
-			bingoGame.createPanel(getWidth() / 4, getHeight() / 10, getWidth() / 4 * 3, getHeight() / 10 * 9);
-			bingoGame.getGamePanel().setup();
+			this.bingoGame = new BingoGame();
+			getBingoGame().createPanel(getWidth() / 4, getHeight() / 10, getWidth() / 4 * 3, getHeight() / 10 * 9);
+			getBingoGame().setBingoWindow(this);
+			getBingoGame().getGamePanel().setup();
 		}
-		bingoGame.getGamePanel().create();
-		bingoGame.setUserInformation(userInfo);
-		sideBar.getPlayButton().setActive(true);
-		currentPanel = bingoGame.getGamePanel();
+		getBingoGame().getGamePanel().create();
+		getBingoGame().setUserInformation(getUserInformation());
+		getSideBar().getPlayButton().setActive(true);
+		setCurrentViewPanel(getBingoGame().getGamePanel());
 
-		contentPane.add(bingoGame.getGamePanel());
+		getContentPanel().add(getBingoGame().getGamePanel());
 	}
 
+	/**
+	 * Hides the Bingo Panel from the viewing pane.
+	 */
 	public void hideBingoPanel()
 	{
-		contentPane.remove(bingoGame.getGamePanel());
-		sideBar.getPlayButton().setActive(false);
+		getContentPanel().remove(getBingoGame().getGamePanel());
+		getSideBar().getPlayButton().setActive(false);
+	}
+
+	/**
+	 * @return Returns the side navigation bar.
+	 */
+	public SideMenu getSideBar()
+	{
+		return this.sideBar;
+	}
+
+	/**
+	 * @return Returns the top menu bar.
+	 */
+	public TopMenu getTopMenu()
+	{
+		return this.topMenu;
+	}
+
+	/**
+	 * @return Returns the Home Panel.
+	 */
+	public HomePanel getHomePanel()
+	{
+		return this.home;
+	}
+
+	/**
+	 * @return Returns the Bingo Game.
+	 */
+	public BingoGame getBingoGame()
+	{
+		return this.bingoGame;
+	}
+
+	/**
+	 * @return Returns the scrolling pane for the Home Panel.
+	 */
+	public JScrollPane getScrollHomePanel()
+	{
+		return this.scrollHomePanel;
+	}
+
+	/**
+	 * @return Returns the current panel being viewed to the Player.
+	 */
+	public JComponent getCurrentPanel()
+	{
+		return this.currentPanel;
+	}
+
+	/**
+	 * @return Returns the User Information that was retrieved from the Bingo
+	 *         Server.
+	 */
+	public UserInformation getUserInformation()
+	{
+		return this.userInfo;
+	}
+
+	/**
+	 * Updates the current viewing panel to the latests one.
+	 * 
+	 * @param currentPanel The panel to show.
+	 */
+	public void setCurrentViewPanel(JComponent currentPanel)
+	{
+		this.currentPanel = currentPanel;
 	}
 }
