@@ -15,6 +15,8 @@ import javax.swing.SwingConstants;
 public class Button extends UIButton
 {
 
+	private static final long serialVersionUID = -7969327703350334469L;
+
 	private JLabel text;
 	private Font font;
 	private UIColour colour, hover;

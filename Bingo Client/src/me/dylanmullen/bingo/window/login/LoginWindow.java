@@ -1,59 +1,77 @@
 package me.dylanmullen.bingo.window.login;
 
-import java.awt.BorderLayout;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
+import me.dylanmullen.bingo.window.Window;
 import me.dylanmullen.bingo.window.login.panels.LoginPanel;
-import me.dylanmullen.bingo.window.login.panels.TopMenu;
+import me.dylanmullen.bingo.window.ui.TopMenu;
 
-public class LoginWindow extends JFrame
+/**
+ * @author Dylan
+ * @date 19 Jun 2020
+ * @project Bingo Client
+ */
+public class LoginWindow extends Window
 {
 
 	private static final long serialVersionUID = -4105651394392717980L;
-	
-	private JPanel contentPane;
+
+	private TopMenu topMenu;
+	private LoginPanel loginPanel;
 
 	/**
-	 * Create the frame.
+	 * Create the Login Window for the Bingo Application.<br>
+	 * This window is default set at 450x400 and should not be changed.
 	 */
 	public LoginWindow()
 	{
-		setup();
-		
-		setupComponents();
-		
-		contentPane.requestFocusInWindow();
-		
-	}
-	
-	public void setup()
-	{
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 400);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
-		setContentPane(contentPane);
-		setLocationRelativeTo(null);
+		super("Login Window", 450, 400);
 		setUndecorated(true);
-		setLayout(null);
+		createComponents();
 	}
-	
-	public void setupComponents()
-	{
-		TopMenu menu = new TopMenu(this, 0, 0, getWidth(), (int)((getHeight() / 10)*1.25));
-		menu.setup();
-		
-		LoginPanel comp = new LoginPanel(0, menu.getHeight(), getWidth(), getHeight()-menu.getHeight());
-		comp.setup();
-		
-		comp.create();
-		menu.create();
 
-		contentPane.add(comp);
-		contentPane.add(menu);
+	/**
+	 * This method setups the components being used inside of the Login Window and
+	 * adds them to the Window.<br>
+	 * <h1>Components</h1>
+	 * <ul>
+	 * <li>{@link #topMenu}</li>
+	 * <li>{@link #loginPanel}</li>
+	 * </ul>
+	 */
+	public void createComponents()
+	{
+		this.topMenu = new TopMenu(this, 0, 0, getWidth(), (int) ((getHeight() / 10) * 1.25));
+		getTopMenu().setup();
+		getTopMenu().create();
+
+		this.loginPanel = new LoginPanel(0, getTopMenu().getHeight(), getWidth(),
+				getHeight() - getTopMenu().getHeight());
+		getLoginPanel().setup();
+		getLoginPanel().create();
+
+		getContentPanel().add(getTopMenu());
+		getContentPanel().add(getLoginPanel());
+
+		getContentPanel().requestFocusInWindow();
+
+	}
+
+	/**
+	 * Returns the Top Menu of the Login Window.
+	 * 
+	 * @return {@link #topMenu}
+	 */
+	public TopMenu getTopMenu()
+	{
+		return this.topMenu;
+	}
+
+	/**
+	 * Returns the Login Panel of the Window.
+	 * 
+	 * @return {@link #loginPanel}
+	 */
+	public LoginPanel getLoginPanel()
+	{
+		return this.loginPanel;
 	}
 }

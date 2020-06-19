@@ -1,4 +1,4 @@
-package me.dylanmullen.bingo.window.login.panels;
+package me.dylanmullen.bingo.window.ui;
 
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
@@ -8,12 +8,7 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JFrame;
 
 import me.dylanmullen.bingo.gfx.ImageAtlas;
-import me.dylanmullen.bingo.window.login.comp.ServerInfoComponent;
-import me.dylanmullen.bingo.window.ui.Button;
-import me.dylanmullen.bingo.window.ui.ImageComponent;
-import me.dylanmullen.bingo.window.ui.Panel;
-import me.dylanmullen.bingo.window.ui.UIButton;
-import me.dylanmullen.bingo.window.ui.UIColour;
+import me.dylanmullen.bingo.window.login.comp.ServerInformationComponent;
 
 public class TopMenu extends Panel
 {
@@ -51,7 +46,7 @@ public class TopMenu extends Panel
 			}
 		});
 
-		ServerInfoComponent si = new ServerInfoComponent((close.getX() - 10) - (width / 8), 10, width / 8, height - 20);
+		ServerInformationComponent si = new ServerInformationComponent((close.getX() - 10) - (width / 8), 10, width / 8, height - 20);
 		si.create();
 		add(si);
 		addMouseListener(listener);

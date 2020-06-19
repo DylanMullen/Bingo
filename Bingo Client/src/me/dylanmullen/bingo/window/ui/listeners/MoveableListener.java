@@ -4,11 +4,10 @@ import java.awt.Container;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.JComponent;
 
-public class MoveableListener extends MouseAdapter implements MouseListener
+public class MoveableListener extends MouseAdapter
 {
 
 	private Point initialClick;

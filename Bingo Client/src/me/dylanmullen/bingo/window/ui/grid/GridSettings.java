@@ -1,5 +1,10 @@
 package me.dylanmullen.bingo.window.ui.grid;
 
+/**
+ * @author Dylan
+ * @date 19 Jun 2020
+ * @project Bingo Client
+ */
 public class GridSettings
 {
 

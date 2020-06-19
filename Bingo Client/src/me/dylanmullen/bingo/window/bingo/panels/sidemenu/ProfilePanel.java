@@ -29,7 +29,7 @@ public class ProfilePanel extends Panel
 	private static final long serialVersionUID = 3952772083758555561L;
 
 	private Grid grid;
-	private List<InfoComponent> infoComponents = new ArrayList<>();
+	private List<InformationComponent> infoComponents = new ArrayList<>();
 
 	/**
 	 * The profile panel of the Side Menu. <br>
@@ -61,7 +61,6 @@ public class ProfilePanel extends Panel
 			imageComponent.setImage(ImageIO.read(getClass().getClassLoader().getResourceAsStream("placeholder.png")));
 		} catch (IOException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		setupFields();
@@ -74,19 +73,20 @@ public class ProfilePanel extends Panel
 	 */
 	private void setupFields()
 	{
-		InfoComponent username = new InfoComponent("Username", "Loading...", 0, 0, 0, 0);
-		InfoComponent money = new InfoComponent("Money", "Loading...", 0, 0, 0, 0);
-		InfoComponent wins = new InfoComponent("Wins", "Loading...", 0, 0, 0, 0);
-		InfoComponent ratio = new InfoComponent("Win/Lose %", "Loading...", 0, 0, 0, 0);
+		InformationComponent username = new InformationComponent("Username", "Loading...", 0, 0, 0, 0);
+		InformationComponent money = new InformationComponent("Money", "Loading...", 0, 0, 0, 0);
+		InformationComponent wins = new InformationComponent("Wins", "Loading...", 0, 0, 0, 0);
+		InformationComponent ratio = new InformationComponent("Win/Lose %", "Loading...", 0, 0, 0, 0);
 
 		getGrid().addGridItem(new GridItem(username, 1, 1), 0);
 		getGrid().addGridItem(new GridItem(money, 1, 1), 1);
 		getGrid().addGridItem(new GridItem(wins, 1, 1), 2);
 		getGrid().addGridItem(new GridItem(ratio, 1, 1), 3);
-		username.setup();
-		ratio.setup();
-		wins.setup();
-		money.setup();
+		username.create();
+		ratio.create();
+		wins.create();
+		money.create();
+		
 		getInformationComponents().add(username);
 		getInformationComponents().add(money);
 		getInformationComponents().add(wins);
@@ -97,7 +97,7 @@ public class ProfilePanel extends Panel
 	public void create()
 	{
 		updateItems();
-		for (InfoComponent item : getInformationComponents())
+		for (InformationComponent item : getInformationComponents())
 		{
 			add(item);
 		}
@@ -123,13 +123,13 @@ public class ProfilePanel extends Panel
 	{
 		if (BingoGame.getInstance() != null)
 		{
-			getInformationComponents().get(0).getInfo()
+			getInformationComponents().get(0).getInformation()
 					.setText(BingoGame.getInstance().getUserInformation().getDisplayName());
-			getInformationComponents().get(1).getInfo()
+			getInformationComponents().get(1).getInformation()
 					.setText(BingoGame.getInstance().getUserInformation().getCredits() + "");
-			getInformationComponents().get(2).getInfo()
+			getInformationComponents().get(2).getInformation()
 					.setText(BingoGame.getInstance().getUserInformation().getWins() + "");
-			getInformationComponents().get(3).getInfo().setText("N/A");
+			getInformationComponents().get(3).getInformation().setText("N/A");
 		}
 	}
 
@@ -140,7 +140,7 @@ public class ProfilePanel extends Panel
 	 */
 	public void updateCredits(double credits)
 	{
-		getInformationComponents().get(1).getInfo().setText(credits + "");
+		getInformationComponents().get(1).getInformation().setText(credits + "");
 	}
 
 	/**
@@ -158,7 +158,7 @@ public class ProfilePanel extends Panel
 	 * 
 	 * @return {@link #infoComponents}
 	 */
-	public List<InfoComponent> getInformationComponents()
+	public List<InformationComponent> getInformationComponents()
 	{
 		return this.infoComponents;
 	}

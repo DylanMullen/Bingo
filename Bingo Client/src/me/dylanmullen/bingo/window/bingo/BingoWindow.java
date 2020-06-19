@@ -11,7 +11,7 @@ import me.dylanmullen.bingo.game.UserInformation;
 import me.dylanmullen.bingo.game.home.HomePanel;
 import me.dylanmullen.bingo.window.Window;
 import me.dylanmullen.bingo.window.bingo.panels.sidemenu.SideMenu;
-import me.dylanmullen.bingo.window.login.panels.TopMenu;
+import me.dylanmullen.bingo.window.ui.TopMenu;
 
 /**
  * @author Dylan

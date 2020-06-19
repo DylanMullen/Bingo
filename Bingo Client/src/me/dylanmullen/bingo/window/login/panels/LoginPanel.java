@@ -1,6 +1,6 @@
 package me.dylanmullen.bingo.window.login.panels;
 
-import me.dylanmullen.bingo.window.login.comp.LoginInfoComponent;
+import me.dylanmullen.bingo.window.login.comp.LoginInformationComponent;
 import me.dylanmullen.bingo.window.login.comp.WarningInfoComponent;
 import me.dylanmullen.bingo.window.ui.Panel;
 import me.dylanmullen.bingo.window.ui.UIColour;
@@ -8,6 +8,11 @@ import me.dylanmullen.bingo.window.ui.grid.Grid;
 import me.dylanmullen.bingo.window.ui.grid.GridItem;
 import me.dylanmullen.bingo.window.ui.grid.GridSettings;
 
+/**
+ * @author Dylan
+ * @date 19 Jun 2020
+ * @project Bingo Client
+ */
 public class LoginPanel extends Panel
 {
 
@@ -16,7 +21,7 @@ public class LoginPanel extends Panel
 	private Grid grid;
 
 	private WarningInfoComponent warningInfoComponent;
-	private LoginInfoComponent loginInfoComponent;
+	private LoginInformationComponent loginInfoComponent;
 
 	private int indent;
 
@@ -38,7 +43,7 @@ public class LoginPanel extends Panel
 		warningInfoComponent = new WarningInfoComponent();
 		grid.addGridItem(new GridItem(warningInfoComponent, 1, 1), 0, true);
 
-		loginInfoComponent = new LoginInfoComponent(this, indent, warningInfoComponent.getHeight() + (indent),
+		loginInfoComponent = new LoginInformationComponent(this, indent, warningInfoComponent.getHeight() + (indent),
 				getWidth() - (indent * 2), (height / 6 * 4) - (indent));
 		grid.addGridItem(new GridItem(loginInfoComponent, 2, 1), 1, true);
 
@@ -53,7 +58,7 @@ public class LoginPanel extends Panel
 		add(loginInfoComponent);
 	}
 
-	public LoginInfoComponent getLoginInfoComponent()
+	public LoginInformationComponent getLoginInfoComponent()
 	{
 		return loginInfoComponent;
 	}

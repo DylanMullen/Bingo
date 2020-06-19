@@ -87,7 +87,7 @@ public class HomePanel extends Panel implements Scrollable, MouseMotionListener
 		Grid grid = new Grid(new GridSettings(getWidth() - 100, (int) (getHeight() / 8) * 6 - 50, -1, 3, 15), 50,
 				getHeight() + 25 - (int) (getHeight() / 8) * 6);
 
-		grid.getSettings().setFixedRowHeight(290);
+		grid.getGridSettings().setFixedRowHeight(290);
 
 		for (int i = 0; i < 12; i++)
 		{
@@ -96,7 +96,7 @@ public class HomePanel extends Panel implements Scrollable, MouseMotionListener
 			int row = temp / 3;
 			if (temp % 3 == 0 && temp != 0)
 				row--;
-			grid.addGridItem(new GridItem(selector, 1, 1), row, false, true);
+			grid.addGridItem(new GridItem(selector, 1, 1), row, false);
 			add(selector);
 		}
 		grid.updatePositions();
