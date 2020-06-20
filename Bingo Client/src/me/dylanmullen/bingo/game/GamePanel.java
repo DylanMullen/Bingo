@@ -1,6 +1,6 @@
 package me.dylanmullen.bingo.game;
 
-import me.dylanmullen.bingo.game.components.ChatComponent;
+import me.dylanmullen.bingo.game.chat.ChatPanel;
 import me.dylanmullen.bingo.game.components.GameComponent;
 import me.dylanmullen.bingo.game.components.HeaderPanel;
 import me.dylanmullen.bingo.window.ui.Panel;
@@ -18,7 +18,7 @@ public class GamePanel extends Panel
 	private static final long serialVersionUID = 3683450078479151314L;
 
 	private HeaderPanel headerComponent;
-	private ChatComponent chatComponent;
+	private ChatPanel chatComponent;
 	private GameComponent gameComponent;
 
 	/**
@@ -52,7 +52,7 @@ public class GamePanel extends Panel
 		getGameComponent().setup();
 		getGameComponent().create();
 
-		this.chatComponent = new ChatComponent(gameComponent.getWidth(), headerComponent.getHeight(),
+		this.chatComponent = new ChatPanel(gameComponent.getWidth(), headerComponent.getHeight(),
 				getWidth() - gameComponent.getWidth(), getHeight() - headerComponent.getHeight());
 		getChatComponent().setup();
 		getChatComponent().create();
@@ -88,7 +88,7 @@ public class GamePanel extends Panel
 	 * Returns the Chat Component of the Panel
 	 * @return {@link #chatComponent}
 	 */
-	public ChatComponent getChatComponent()
+	public ChatPanel getChatComponent()
 	{
 		return this.chatComponent;
 	}
