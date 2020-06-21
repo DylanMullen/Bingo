@@ -1,9 +1,7 @@
 package me.dylanmullen.bingo.game.chat;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -17,7 +15,6 @@ import javax.swing.JScrollPane;
 import javax.swing.Scrollable;
 import javax.swing.SwingConstants;
 
-import me.dylanmullen.bingo.util.FontUtil;
 import me.dylanmullen.bingo.window.ui.UIColour;
 
 /**
@@ -31,51 +28,34 @@ public class ChatMessagesComponent extends JComponent implements Scrollable, Mou
 	private static final long serialVersionUID = 6717389248920350598L;
 
 	private JScrollPane scrollPanel;
-	private List<String> chatMessages;
+	private List<ChatMessage> chatMessages;
 
 	private boolean updateScrollbar;
 
 	private Font font = new Font("Calibri", Font.PLAIN, 15);
 	private int maxUnitIncrement = 20;
+	private int indentY;
 
 	public ChatMessagesComponent(JScrollPane scroll, int x, int y, int width, int height)
 	{
 		setBounds(x, y, width, height);
 		this.scrollPanel = scroll;
-		this.chatMessages = new ArrayList<String>();
+		this.chatMessages = new ArrayList<ChatMessage>();
 		this.updateScrollbar = false;
 	}
 
-	public void addMessage(String message)
+	public void addMessage(String mes)
 	{
-		if (getChatMessages().size() > 6)
-		{
-			getChatMessages().remove(0);
-		}
-		getChatMessages().add(construct(
-				"rpfoviblhpuxdmsavuiwbjzkpzjyklheyqhbvyjnfqzafnkvsijlizxrvnlfbxbhwgifspzmkzkyymhrjkrstzorviwlmojokaznrfzpnykqvxsjyurqijkkofmsxjyo"));
+		ChatMessage message = new ChatMessage(5, indentY, getWidth() - 10);
+		message.setMessage(mes);
+		message.setUsername("TwixDylan");
+		message.setUserGroup("Admin");
+		message.setFont(font);
+		message.setup();
+		indentY += message.getHeight();
+		chatMessages.add(message);
+		add(message);
 		repaint();
-	}
-
-	private String construct(String message)
-	{
-		StringBuilder sb = new StringBuilder();
-		StringBuilder lineBuilder = new StringBuilder();
-		int currentWidth = 0;
-		FontMetrics metrics = getFontMetrics(font);
-		for (int i = 0; i < message.length(); i++)
-		{
-			currentWidth = FontUtil.getFontSize(metrics, lineBuilder.toString(), 0, 0).width;
-			if (currentWidth >= getWidth() - 15)
-			{
-				currentWidth = 0;
-				lineBuilder = new StringBuilder();
-				sb.append("\n");
-			}
-			sb.append(message.charAt(i));
-			lineBuilder.append(message.charAt(i));
-		}
-		return sb.toString();
 	}
 
 	@Override
@@ -90,24 +70,11 @@ public class ChatMessagesComponent extends JComponent implements Scrollable, Mou
 	{
 		g2.setColor(UIColour.FRAME_BINGO_BG_TOP.toColor());
 		g2.fillRect(0, 0, getWidth(), getHeight());
-		for (int i = 0; i < getChatMessages().size(); i++)
-		{
-//			g2.setColor((i % 2 == 0 ? Color.WHITE : Color.black));
-			g2.setFont(font);
-			g2.setColor(Color.white);
-			for (int x = 0; x < getChatMessages().get(i).split("\n").length; x++)
-			{
-				String j = getChatMessages().get(i).split("\n")[x];
-
-				Dimension dim = FontUtil.getFontSize(getFontMetrics(font), j, 0, 0);
-				g2.drawString(j, 5, 50 * i + 1 * ((x + 1) * (5 + (dim.height / 2))));
-			}
-		}
 	}
 
 	private void handleSizingChanges()
 	{
-		int height = getChatMessages().size() * 50;
+		int height = getItemHeights();
 
 		if (getHeight() < height)
 		{
@@ -122,7 +89,15 @@ public class ChatMessagesComponent extends JComponent implements Scrollable, Mou
 		}
 	}
 
-	public List<String> getChatMessages()
+	private int getItemHeights()
+	{
+		int height = 0;
+		for (ChatMessage message : getChatMessages())
+			height += message.getHeight();
+		return height;
+	}
+
+	public List<ChatMessage> getChatMessages()
 	{
 		return this.chatMessages;
 	}
