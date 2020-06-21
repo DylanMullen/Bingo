@@ -49,7 +49,8 @@ public class BingoWindow extends Window
 		setUndecorated(true);
 
 		showEssentials();
-		showHomePanel();
+//		showHomePanel();
+		showBingoPanel();
 	}
 
 	/**
