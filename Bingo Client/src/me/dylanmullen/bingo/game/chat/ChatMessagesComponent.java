@@ -44,12 +44,12 @@ public class ChatMessagesComponent extends JComponent implements Scrollable, Mou
 		this.updateScrollbar = false;
 	}
 
-	public void addMessage(String mes)
+	public void addMessage(String displayName, String mes)
 	{
-		ChatMessage message = new ChatMessage(5, indentY, getWidth() - 10);
+		ChatMessage message = new ChatMessage(0, indentY, getWidth());
 		message.setMessage(mes);
-		message.setUsername("TwixDylan");
-		message.setUserGroup("Admin");
+		message.setUsername(displayName);
+		message.setUserGroup("User");
 		message.setFont(font);
 		message.setup();
 		indentY += message.getHeight();

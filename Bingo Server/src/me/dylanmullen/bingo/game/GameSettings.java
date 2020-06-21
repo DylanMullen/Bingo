@@ -124,7 +124,7 @@ public class GameSettings
 		return ticketPrice;
 	}
 
-	public boolean isChat()
+	public boolean hasChat()
 	{
 		return chat;
 	}

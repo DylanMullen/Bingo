@@ -16,9 +16,9 @@ import me.dylanmullen.bingo.window.ui.UIColour;
 
 public class ChatMessage extends JComponent
 {
-	
+
 	private static final long serialVersionUID = -6059262950079715491L;
-	
+
 	private final int OFFSET = 5;
 	private final int HEADER_HEIGHT = 30;
 
@@ -57,6 +57,9 @@ public class ChatMessage extends JComponent
 				lineBuilder = new StringBuilder();
 			}
 			lineBuilder.append(message.charAt(i));
+
+			if (message.length() - 1 == i)
+				lines.add(lineBuilder.toString());
 		}
 
 	}

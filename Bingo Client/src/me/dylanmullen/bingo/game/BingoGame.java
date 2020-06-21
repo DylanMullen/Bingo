@@ -174,6 +174,7 @@ public class BingoGame
 	 */
 	public void setNextNumber(String data)
 	{
+		System.out.println("reached here");
 		if (getGamePanel().getHeaderComponent().isShowingNumbers())
 		{
 			int number = Integer.parseInt(data.split(";")[1].split("/m/|/m/")[1]);
@@ -213,7 +214,6 @@ public class BingoGame
 		{
 			String mes = data.split(";")[1].split("/m/|/m/")[1];
 			String[] cards = mes.split("/nl/");
-
 			getGamePanel().getGameComponent().getCardGroup().updatePurchasedCards(cards);
 			setLineState(LineState.ONE);
 		} catch (ArrayIndexOutOfBoundsException e)
@@ -273,6 +273,8 @@ public class BingoGame
 	public void setGameState(int stateValue)
 	{
 		this.gameState = GameState.getGameState(stateValue);
+		if(gameState.equals(GameState.PLAYING))
+			showCalledNumberComponent();
 	}
 
 	/**

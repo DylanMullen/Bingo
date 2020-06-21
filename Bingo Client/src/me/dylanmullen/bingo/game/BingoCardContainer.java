@@ -111,7 +111,7 @@ public class BingoCardContainer extends Panel
 	{
 		if (cardUUIDs == null)
 			return;
-
+		
 		for (int i = 0; i < cardUUIDs.length; i++)
 		{
 			UUID uuid = UUID.fromString(cardUUIDs[i]);

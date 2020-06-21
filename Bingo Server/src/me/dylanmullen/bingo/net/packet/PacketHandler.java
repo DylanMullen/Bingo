@@ -14,6 +14,7 @@ import me.dylanmullen.bingo.net.packet.packets.Packet_008_PurchaseCard;
 import me.dylanmullen.bingo.net.packet.packets.Packet_009_SendNumber;
 import me.dylanmullen.bingo.net.packet.packets.Packet_010_GameStateChange;
 import me.dylanmullen.bingo.net.packet.packets.Packet_011_SendCards;
+import me.dylanmullen.bingo.net.packet.packets.Packet_Chat;
 import me.dylanmullen.bingo.net.packet.packets.Packet_Generic;
 
 public class PacketHandler
@@ -56,6 +57,8 @@ public class PacketHandler
 				return new Packet_010_GameStateChange(c, message);
 			case SEND_CARDS:
 				return new Packet_011_SendCards(c, message);
+			case CHAT_MESSAGE:
+				return new Packet_Chat(16, c, message);
 			default:
 				return new Packet_Generic(id, c, message);
 		}

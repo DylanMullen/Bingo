@@ -22,8 +22,6 @@ public class GameController
 
 	public GameController()
 	{
-		if (instance == null)
-			instance = this;
 		ConfigManager.getInstance().loadBingoFiles();
 		games = new HashSet<BingoGame>();
 	}
@@ -63,6 +61,12 @@ public class GameController
 
 	}
 
+	public void submitChatMessage(User u, String message)
+	{
+		BingoGame game = u.getCurrentGame();
+	}
+	
+	
 	public BingoGame placeUser(User u)
 	{
 		if (u.getCurrentGame() != null)

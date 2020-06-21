@@ -76,6 +76,10 @@ public class PacketHandler
 			case 15:
 				BingoGame.getInstance().getUserInformation().updateCredits(data);
 				break;
+			// Updates the chat with a new message.
+			case 16:
+				BingoGame.getInstance().getGamePanel().getChatComponent().recieveMessage(data.split("/m/|/m/")[1]);
+				break;
 			default:
 				return;
 		}

@@ -2,6 +2,7 @@ package me.dylanmullen.bingo.game.chat;
 
 import javax.swing.JScrollPane;
 
+import me.dylanmullen.bingo.net.PacketHandler;
 import me.dylanmullen.bingo.window.ui.Panel;
 import me.dylanmullen.bingo.window.ui.UIColour;
 
@@ -42,15 +43,17 @@ public class ChatPanel extends Panel
 		add(getChatInputComponent());
 	}
 
-	public void addMessage()
+	public void recieveMessage(String data)
 	{
-
+		String[] split = data.split("/nl/");
+		getChatMessagesComponent().addMessage(split[0], split[1]);
 	}
 
 	public void sendMessage(String message)
 	{
-		if (message.length() > 128)
+		if (message.length() > 128 || message.length() == 0)
 			return;
+		PacketHandler.sendPacket(PacketHandler.createPacket(16, message), null);
 	}
 
 	public ChatMessagesComponent getChatMessagesComponent()

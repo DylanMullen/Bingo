@@ -36,7 +36,8 @@ public class ChatInputComponent extends Panel
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				getChatPanel().getChatMessagesComponent().addMessage("rpfoviblhpuxdmsavuiwbjzkpzjyklheyqhbvyjnfqzafnkvsijlizxrvnlfbxbhwgifspzmkzkyymhrjkrstzorviwlmojokaznrfzpnykqvxsjyurqijkkofmsxjyo");
+//				getChatPanel().getChatMessagesComponent().addMessage("rpfoviblhpuxdmsavuiwbjzkpzjyklheyqhbvyjnfqzafnkvsijlizxrvnlfbxbhwgifspzmkzkyymhrjkrstzorviwlmojokaznrfzpnykqvxsjyurqijkkofmsxjyo");
+				getChatPanel().sendMessage(getTextArea().getText());
 			}
 		});
 	}

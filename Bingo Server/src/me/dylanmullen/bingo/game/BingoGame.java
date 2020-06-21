@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.UUID;
 
+import me.dylanmullen.bingo.game.chat.BingoChat;
 import me.dylanmullen.bingo.game.currency.CurrencyController;
 import me.dylanmullen.bingo.game.runnables.GameRunnable;
 import me.dylanmullen.bingo.game.runnables.LobbyRunnable;
@@ -17,6 +18,7 @@ public class BingoGame
 
 	private UUID gameUUID;
 	private GameSettings settings;
+	private BingoChat chat;
 
 	private HashSet<User> usersConnected;
 	private HashMap<User, CardGroup> cardsInPlay;
@@ -65,6 +67,7 @@ public class BingoGame
 	public BingoGame(GameSettings settings)
 	{
 		this.settings = settings;
+
 		setup();
 	}
 
@@ -77,6 +80,9 @@ public class BingoGame
 
 		this.numbers = new ArrayList<Integer>();
 		this.numbersCalled = new ArrayList<Integer>();
+
+		if (getSettings().hasChat())
+			chat = new BingoChat();
 
 		setupNumbers();
 		start();
@@ -284,6 +290,12 @@ public class BingoGame
 		}
 	}
 
+	public void submitChatMessage(User user, String message)
+	{
+		if (chat != null)
+			chat.sendMessage(usersConnected, chat.submitMessage(user, message));
+	}
+
 	public CardGroup getCardGroup(User u)
 	{
 		for (CardGroup cg : potentialCards)
@@ -329,12 +341,12 @@ public class BingoGame
 	{
 		switch (state)
 		{
-			case ENDING:
-				return "2";
 			case LOBBY:
 				return "0";
 			case PLAYING:
 				return "1";
+			case ENDING:
+				return "2";
 			default:
 				return "-1";
 		}
