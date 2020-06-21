@@ -49,7 +49,7 @@ public class ChatMessagesComponent extends JComponent implements Scrollable, Mou
 		ChatMessage message = new ChatMessage(0, indentY, getWidth());
 		message.setMessage(mes);
 		message.setUsername(displayName);
-		message.setUserGroup("User");
+//		message.setUserGroup("User");
 		message.setFont(font);
 		message.setup();
 		indentY += message.getHeight();
@@ -57,7 +57,7 @@ public class ChatMessagesComponent extends JComponent implements Scrollable, Mou
 		add(message);
 		repaint();
 	}
-
+	
 	@Override
 	protected void paintComponent(Graphics g)
 	{

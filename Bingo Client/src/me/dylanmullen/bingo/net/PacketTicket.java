@@ -30,8 +30,7 @@ public class PacketTicket
 		this.packetToSend = packet;
 		this.callback = callback;
 		this.uuid = UUID.randomUUID();
-
-		getPacketToSend().setPacketUUID(getUUID());
+		packet.setPacketUUID(getUUID());
 	}
 
 	/**

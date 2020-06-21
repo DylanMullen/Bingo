@@ -79,8 +79,8 @@ public class ClientOutgoingHandler implements Runnable
 	{
 		try
 		{
-			packet.setTime();
-			this.client.getSocket().send(packet.createDatagramPacket(client));
+			packet.setTimestamp();
+			this.client.getSocket().send(packet.constructDatagramPacket(this.client));
 		} catch (Exception e)
 		{
 			System.out.println("Failed to send packet: " + e.getMessage());

@@ -1,9 +1,9 @@
 package me.dylanmullen.bingo.net.packet;
 
 import java.net.DatagramPacket;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.UUID;
+
+import org.json.simple.JSONObject;
 
 import me.dylanmullen.bingo.net.Client;
 
@@ -15,121 +15,77 @@ import me.dylanmullen.bingo.net.Client;
 public class Packet
 {
 
-	private int id;
-	private String data;
-	private DateFormat formatter;
+	private JSONObject packet;
 
-	private final String format = "?id;/m/?message/m/;?pu;?time";
-
-	// <id>;/m<message>m/;<packetUUID>;<time>
-	/**
-	 * A packet that will be sent to the server. The packet format which is sent
-	 * will be:<br>
-	 * ?id;/m/?message/m/;?packetUUID;?time
-	 * 
-	 * @param id   Packet ID
-	 * @param data The data to send in the packet.
-	 */
-	public Packet(int id, String data)
+	public Packet(int packetID)
 	{
-		this.id = id;
-		setData(data);
-
-		this.formatter = new SimpleDateFormat("dd/MM/yyyy @ HH:mm:ss.SSS");
+		this.packet = new JSONObject();
+		constructPacketInformation(packetID);
+		addMainSection("packetMessage");
 	}
 
-	/**
-	 * Generates a Packet String using the packet {@link #format}.
-	 * 
-	 * @param message The message to be sent to the server.
-	 * @return Returns a Packet String using the packet {@link #format}.
-	 */
-	protected String generatePacketString(String message)
+	public void setMessage(JSONObject object)
 	{
-		String temp = this.format;
-		temp = temp.replace("?id", getID());
-		temp = temp.replace("?message", message);
-		return temp;
+		set(getPacketMessage(), "packetMessage", object);
 	}
 
-	/**
-	 * @return Returns the ID in String format with 3 digits.
-	 */
-	private String getID()
+	public void setTimestamp()
 	{
-		String s = this.id + "";
-		switch (s.length())
-		{
-			case 1:
-				s = "00" + this.id;
-				break;
-			case 2:
-				s = "0" + this.id;
-				break;
-		}
-		return s;
+		set((JSONObject) packet.get("packetInformation"), "timestamp", System.currentTimeMillis());
 	}
 
-	/**
-	 * @return Returns the data of the Packet.
-	 */
-	protected String getData()
-	{
-		return this.data;
-	}
-
-	/**
-	 * Sets the data of the Packet.
-	 * 
-	 * @param data The data of the packet.
-	 */
-	protected void setData(String data)
-	{
-		this.data = generatePacketString(data);
-	}
-
-	/**
-	 * @return Returns the date format.
-	 */
-	protected DateFormat getFormatter()
-	{
-		return this.formatter;
-	}
-
-	/**
-	 * @return Returns the data represented in bytes.
-	 */
-	public byte[] getDataByte()
-	{
-		return getData().getBytes();
-	}
-
-	/**
-	 * Sets the time of the packet.
-	 */
-	public void setTime()
-	{
-		this.data = this.data.replace("?time", System.currentTimeMillis() + "");
-	}
-
-	/**
-	 * Sets the packet UUID.
-	 * 
-	 * @param uuid The UUID of the packet.
-	 */
 	public void setPacketUUID(UUID uuid)
 	{
-		this.data = this.data.replace("?pu", uuid.toString());
+		set((JSONObject) ((JSONObject) getPacketMessage().get("packetInformation")).get("uuids"), "packetUUID",
+				uuid.toString());
 	}
 
-	/**
-	 * Creates a Datagram Packet of the packet.
-	 * 
-	 * @param client The client sending the packet.
-	 * @return Returns the Datagram Packet of the packet.
-	 */
-	public DatagramPacket createDatagramPacket(Client client)
+	public void setUserUUID(UUID uuid)
 	{
-		return new DatagramPacket(getDataByte(), getDataByte().length, client.getIP(), client.getPort());
+		set((JSONObject) ((JSONObject) getPacketMessage().get("packetInformation")).get("uuids"), "senderUUID",
+				uuid.toString());
 	}
+
+	private void constructPacketInformation(int packetID)
+	{
+		JSONObject packetInformation = addMainSection("packetInformation");
+		addSection(packetInformation, "uuids");
+		set(packetInformation, "packetID", packetID);
+	}
+
+	public DatagramPacket constructDatagramPacket(Client client)
+	{
+		return new DatagramPacket(toString().getBytes(), toString().getBytes().length, client.getIP(),
+				client.getPort());
+	}
+
+	private JSONObject addMainSection(String key)
+	{
+		return addSection(getPacketMessage(), key);
+	}
+
+	@SuppressWarnings("unchecked")
+	private void set(JSONObject object, String key, Object value)
+	{
+		object.put(key, value);
+	}
+
+	@SuppressWarnings("unchecked")
+	private JSONObject addSection(JSONObject object, String key)
+	{
+		object.put(key, new JSONObject());
+		return (JSONObject) object.get(key);
+	}
+
+	public JSONObject getPacketMessage()
+	{
+		return packet;
+	}
+
+	@Override
+	public String toString()
+	{
+		return packet.toJSONString();
+	}
+
 }

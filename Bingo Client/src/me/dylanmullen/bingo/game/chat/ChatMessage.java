@@ -95,8 +95,8 @@ public class ChatMessage extends JComponent
 		g2.fillRect(0, 0, getWidth(), HEADER_HEIGHT);
 		g2.setColor(Color.white);
 		int indent = HEADER_HEIGHT / 2
-				+ FontUtil.getFontSize(getFontMetrics(getFont()), "[" + userGroup + "] " + username, 0, 0).height / 4;
-		g2.drawString("[" + userGroup + "] " + username, OFFSET, indent);
+				+ FontUtil.getFontSize(getFontMetrics(getFont()), getHeaderString(), 0, 0).height / 4;
+		g2.drawString(getHeaderString(), OFFSET, indent);
 	}
 
 	private void drawMessages(Graphics2D g2)
@@ -112,6 +112,11 @@ public class ChatMessage extends JComponent
 			g2.drawString(string, OFFSET, indentY);
 			indentY += 5;
 		}
+	}
+
+	private String getHeaderString()
+	{
+		return (userGroup != null ? "[" + userGroup + "] " : "") + username;
 	}
 
 	public void setUsername(String username)

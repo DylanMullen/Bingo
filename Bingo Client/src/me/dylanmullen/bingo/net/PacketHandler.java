@@ -1,5 +1,7 @@
 package me.dylanmullen.bingo.net;
 
+import org.json.simple.JSONObject;
+
 import me.dylanmullen.bingo.game.BingoGame;
 import me.dylanmullen.bingo.net.handlers.ClientHandler;
 import me.dylanmullen.bingo.net.packet.Packet;
@@ -20,9 +22,17 @@ public class PacketHandler
 	 * @param data
 	 * @return
 	 */
+	@Deprecated
 	public static Packet createPacket(int id, String data)
 	{
-		Packet p = new Packet(id, data);
+		Packet p = new Packet(id);
+		return p;
+	}
+
+	public static Packet createPacket(int id, JSONObject data)
+	{
+		Packet p = new Packet(id);
+		p.setMessage(data);
 		return p;
 	}
 
