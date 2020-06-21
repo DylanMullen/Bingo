@@ -17,4 +17,6 @@ The Bingo Project has a range of plans for implementing new features as well as 
 - Allowing connecting to multiple bingo games.
 
 ## How can I get a release?
-Currently there are no public builds due to The Bingo Project still being in development. However, if you would like to try out a development build, you may clone this repository and compile the code yourself using whatever feels natural to you.
+Currently there are no public builds due to The Bingo Project still being in development. 
+
+However, if you would like to try out a development build, you may clone this repository and compile the code yourself using whatever feels natural to you.
