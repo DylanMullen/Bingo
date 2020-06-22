@@ -35,7 +35,7 @@ public class BingoChat
 	{
 		Packet packet = PacketHandler.createPacket(null, 16, null);
 		JSONObject messageData = new JSONObject();
-		messageData.put("user", message.getUser().getUserInformation().getDisplayName());
+		messageData.put("displayName", message.getUser().getUserInformation().getDisplayName());
 		messageData.put("message", message.getMessage());
 		messageData.put("timestamp", message.getTimeProduced());
 		packet.setMessageSection(messageData);

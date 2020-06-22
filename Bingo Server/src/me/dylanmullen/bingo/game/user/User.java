@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import me.dylanmullen.bingo.game.BingoGame;
 import me.dylanmullen.bingo.net.Client;
-import me.dylanmullen.bingo.net.packet.Packet;
 
 public class User
 {

@@ -355,6 +355,7 @@ public class BingoGame
 		return cardsInPlay.containsKey(u);
 	}
 
+	@SuppressWarnings("unchecked")
 	public Packet createGamestatePacket()
 	{
 		Packet packet = PacketHandler.createPacket(null, 10, null);

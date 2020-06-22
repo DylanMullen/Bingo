@@ -13,14 +13,9 @@ public class JoinCallback extends PacketCallback
 	@Override
 	public boolean callback()
 	{
-		String[] j = getMessage().split("/nl/");
-		try
-		{
-			int id = Integer.parseInt(j[3]);
-			BingoGame.getInstance().setGameJoined(true, id);
-		} catch (IllegalArgumentException e)
-		{
-		}
+		int state = ((Number)getMessage().get("gameState")).intValue();
+		
+		BingoGame.getInstance().setGameJoined(true, state);
 		return false;
 	}
 

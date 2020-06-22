@@ -9,13 +9,14 @@ public class CardRequestCallback extends PacketCallback
 	@Override
 	public boolean callback()
 	{
-		BingoGame.getInstance().getGamePanel().getGameComponent().getCardGroup().setCardInformation(getNumbers());
+		if(getResponseType()==200)
+			BingoGame.getInstance().getGamePanel().getGameComponent().getCardGroup().setCardInformation(getNumbers());
 		return false;
 	}
 
 	private String[] getNumbers()
 	{
-		return getMessage().split("/nl/")[2].split("/c/|/c/");
+		return ((String) getMessage().get("cards")).split("/c/|/c/");
 	}
 
 }

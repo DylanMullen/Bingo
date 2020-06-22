@@ -1,5 +1,7 @@
 package me.dylanmullen.bingo.net.packet;
 
+import org.json.simple.JSONObject;
+
 import me.dylanmullen.bingo.util.Callback;
 
 /**
@@ -10,7 +12,7 @@ import me.dylanmullen.bingo.util.Callback;
 public abstract class PacketCallback implements Callback
 {
 
-	private String data;
+	private JSONObject data;
 
 	/**
 	 * A callback being set off when a packet is received a response from the Bingo
@@ -25,7 +27,7 @@ public abstract class PacketCallback implements Callback
 	 * 
 	 * @param data
 	 */
-	public void setData(String data)
+	public void setData(JSONObject data)
 	{
 		this.data = data;
 	}
@@ -33,7 +35,7 @@ public abstract class PacketCallback implements Callback
 	/**
 	 * @return Returns the data of the Packet response.
 	 */
-	public String getData()
+	public JSONObject getData()
 	{
 		return this.data;
 	}
@@ -43,8 +45,13 @@ public abstract class PacketCallback implements Callback
 	 * 
 	 * @return Returns the message part of the packet.
 	 */
-	public String getMessage()
+	public JSONObject getMessage()
 	{
-		return data.split("/m/|/m/")[1];
+		return (JSONObject) data.get("packetMessage");
+	}
+
+	public int getResponseType()
+	{
+		return ((Number) getMessage().get("responseType")).intValue();
 	}
 }

@@ -14,7 +14,6 @@ public class UserInformation
 	private String displayName;
 	private double credits;
 	private int wins;
-	private int loses;
 
 	/**
 	 * Updates the credits of the Player.<br>
@@ -23,10 +22,9 @@ public class UserInformation
 	 * 
 	 * @param data The packet data to decode.
 	 */
-	public void updateCredits(String data)
+	public void updateCredits(double credits)
 	{
-		String credits = data.split("/m/|/m/")[1];
-		setCredits(Double.parseDouble(credits));
+		setCredits(credits);
 		BingoGame.getInstance().getBingoWindow().getSideBar().getProfilePanel().updateCredits(getCredits());
 	}
 
@@ -108,26 +106,6 @@ public class UserInformation
 	public void setWins(int wins)
 	{
 		this.wins = wins;
-	}
-
-	/**
-	 * Returns the Losses of the Player;
-	 * 
-	 * @return {@link #loses}
-	 */
-	public int getLosses()
-	{
-		return this.loses;
-	}
-
-	/**
-	 * Sets the Losses of the Player.
-	 * 
-	 * @param loses The losses of the Player.
-	 */
-	public void setLoses(int loses)
-	{
-		this.loses = loses;
 	}
 
 }

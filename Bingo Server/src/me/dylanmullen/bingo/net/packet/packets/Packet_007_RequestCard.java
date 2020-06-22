@@ -19,7 +19,7 @@ public class Packet_007_RequestCard extends Packet
 	@Override
 	public void handle()
 	{
-		User user = UserManager.getInstance().getUser(getSenderUUID());
+		User user = UserManager.getInstance().getUser(getSender());
 		BingoServer.getInstance().getGame().handleCardRequest(user, getPacketUUID());
 	}
 

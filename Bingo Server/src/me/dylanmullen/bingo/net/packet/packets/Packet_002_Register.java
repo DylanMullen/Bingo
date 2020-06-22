@@ -18,7 +18,7 @@ public class Packet_002_Register extends Packet
 	@Override
 	public void handle()
 	{
-		String username = (String) getMessageSection().get("username");
+		String username = (String) getMessageSection().get("email");
 		String password = (String) getMessageSection().get("password");
 
 		UserManager.getInstance().register(getSender(), getPacketUUID(), username, password);

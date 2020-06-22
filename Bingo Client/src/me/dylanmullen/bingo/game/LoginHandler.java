@@ -1,7 +1,10 @@
 package me.dylanmullen.bingo.game;
 
+import org.json.simple.JSONObject;
+
 import me.dylanmullen.bingo.net.PacketHandler;
 import me.dylanmullen.bingo.net.callbacks.LoginCallback;
+import me.dylanmullen.bingo.net.packet.Packet;
 import me.dylanmullen.bingo.window.login.comp.WarningInfoComponent;
 import me.dylanmullen.bingo.window.login.panels.LoginPanel;
 import me.dylanmullen.bingo.window.ui.UIPasswordField;
@@ -44,9 +47,19 @@ public class LoginHandler
 		if (!checkFields(loginPanel, username, password))
 			return;
 
-		String data = username.getText() + "/nl/" + new String(password.getPassword());
-		PacketHandler.sendPacket(PacketHandler.createPacket(001, data),
+		PacketHandler.sendPacket(constructPacket(1,username.getText(), new String(password.getPassword())),
 				new LoginCallback(loginPanel.getWarningInfoComponent()));
+	}
+
+	@SuppressWarnings("unchecked")
+	private Packet constructPacket(int id, String username, String password)
+	{
+		JSONObject message = new JSONObject();
+		message.put("email", username);
+		message.put("password", password);
+
+		Packet packet = PacketHandler.createPacket(id, message);
+		return packet;
 	}
 
 	/**
@@ -63,8 +76,7 @@ public class LoginHandler
 
 		if (!checkFields(loginPanel, username, password))
 			return;
-		String data = username.getText() + "/nl/" + new String(password.getPassword());
-		PacketHandler.sendPacket(PacketHandler.createPacket(002, data), null);
+		PacketHandler.sendPacket(constructPacket(2,username.getText(), new String(password.getPassword())), null);
 	}
 
 	/**

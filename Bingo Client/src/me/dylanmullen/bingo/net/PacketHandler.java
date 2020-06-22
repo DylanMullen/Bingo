@@ -1,5 +1,6 @@
 package me.dylanmullen.bingo.net;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import me.dylanmullen.bingo.game.BingoGame;
@@ -22,13 +23,6 @@ public class PacketHandler
 	 * @param data
 	 * @return
 	 */
-	@Deprecated
-	public static Packet createPacket(int id, String data)
-	{
-		Packet p = new Packet(id);
-		return p;
-	}
-
 	public static Packet createPacket(int id, JSONObject data)
 	{
 		Packet p = new Packet(id);
@@ -53,42 +47,43 @@ public class PacketHandler
 	 * 
 	 * @param data The data of a packet.
 	 */
-	public static void handlePacket(String data)
+	public static void handlePacket(int id, JSONObject data)
 	{
-		int id = (Integer.parseInt(data.split(";", 2)[0]));
+		JSONObject message = (JSONObject) data.get("packetMessage");
 		switch (id)
 		{
 			// Sets the next number of the game.
 			case 9:
-				BingoGame.getInstance().setNextNumber(data);
+				BingoGame.getInstance().setNextNumber(message);
 				break;
 			// Sets the new game state of the game.
 			case 10:
-				BingoGame.getInstance().setGameState(Integer.parseInt(data.split(";")[1].split("/m/|/m/")[1]));
+				BingoGame.getInstance().setGameState(((Number) message.get("gameState")).intValue());
 				break;
 			// Updates the cards when the game begins.
 			case 11:
-				BingoGame.getInstance().updateCards(data);
+				BingoGame.getInstance().updateCards(message);
 				break;
 			// Updates the line state of the game.
 			case 12:
-				BingoGame.getInstance().updateLineState(data);
+				BingoGame.getInstance().updateLineState(((Number) message.get("linestate")).intValue());
 				break;
 			// Shows the winners of a line state.
 			case 13:
-				BingoGame.getInstance().showWinners(data);
+				BingoGame.getInstance().showWinners((JSONArray) message.get("winners"));
 				break;
 			// Restarts the game after the game is finished.
 			case 14:
-				BingoGame.getInstance().restart(data);
+				BingoGame.getInstance().restart(message);
 				break;
 			// Updates the credits of the player after it changes on the server.
 			case 15:
-				BingoGame.getInstance().getUserInformation().updateCredits(data);
+				BingoGame.getInstance().getUserInformation()
+						.updateCredits(((Number) message.get("credits")).doubleValue());
 				break;
 			// Updates the chat with a new message.
 			case 16:
-				BingoGame.getInstance().getGamePanel().getChatComponent().recieveMessage(data.split("/m/|/m/")[1]);
+				BingoGame.getInstance().getGamePanel().getChatComponent().recieveMessage(message);
 				break;
 			default:
 				return;

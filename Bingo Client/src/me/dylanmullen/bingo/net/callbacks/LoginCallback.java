@@ -32,35 +32,46 @@ public class LoginCallback extends PacketCallback
 	@Override
 	public boolean callback()
 	{
-		if (getReponseValue() == -1)
+		if (getResponseType() != 200)
 		{
 			synchronized (this.warningComponent)
 			{
-				this.warningComponent.updateText(getMessage().split("/nl/")[2]);
+				this.warningComponent.updateText(getErrorMessage());
 			}
 			return false;
 		}
-		String[] data = getMessage().split("/nl/");
-
 		UserInformation ui = new UserInformation();
-		ui.setUUID(UUID.fromString(data[2]));
-		ui.setDisplayName(data[3]);
-		ui.setCredits(Double.parseDouble(data[4]));
-		ui.setWins(Integer.parseInt(data[5]));
-		ui.setLoses(Integer.parseInt(data[6]));
+		ui.setUUID(UUID.fromString(getString("userUUID")));
+		ui.setDisplayName(getString("userDisplayName"));
+		ui.setCredits(getDouble("userCredits"));
+		ui.setWins(getInteger("userWins"));
 
 		BingoApp.getInstance().openBingoWindow(ui);
 		return true;
 	}
 
-	/**
-	 * Returns the response value of the response packet.
-	 * 
-	 * @return Response value of the response packet.
-	 */
-	private int getReponseValue()
+//	message.put("userUUID", uuid.toString());
+//	message.put("userDisplayName", getDisplayName());
+//	message.put("userCredits", getCredits());
+//	message.put("userWins", getWins());
+
+	private String getErrorMessage()
 	{
-		return Integer.parseInt(getMessage().split("/nl/")[0]);
+		return getString("errorMessage");
+	}
+
+	private String getString(String key)
+	{
+		return (String) getMessage().get(key);
+	}
+
+	private double getDouble(String key)
+	{
+		return ((Number) getMessage().get(key)).doubleValue();
+	}
+	private int getInteger(String key)
+	{
+		return ((Number) getMessage().get(key)).intValue();
 	}
 
 }

@@ -3,6 +3,8 @@ package me.dylanmullen.bingo.game;
 import java.awt.Color;
 import java.util.UUID;
 
+import org.json.simple.JSONObject;
+
 import me.dylanmullen.bingo.game.callbacks.CardRequestCallback;
 import me.dylanmullen.bingo.game.components.listeners.BingoCardListener;
 import me.dylanmullen.bingo.net.PacketHandler;
@@ -107,10 +109,15 @@ public class BingoCardContainer extends Panel
 	 * 
 	 * @param cardUUIDs UUIDs of the cards that were purchased.
 	 */
-	public void updatePurchasedCards(String[] cardUUIDs)
+//	public void updatePurchasedCards(String[] cardUUIDs)
 	{
 		if (cardUUIDs == null)
 			return;
+		
+		for(String s : cardUUIDs)
+		{
+			System.out.println(s);
+		}
 		
 		for (int i = 0; i < cardUUIDs.length; i++)
 		{
@@ -205,7 +212,7 @@ public class BingoCardContainer extends Panel
 	 */
 	public void requestBingoCards()
 	{
-		PacketHandler.sendPacket(PacketHandler.createPacket(007, ""), new CardRequestCallback());
+		PacketHandler.sendPacket(PacketHandler.createPacket(7, new JSONObject()), new CardRequestCallback());
 	}
 
 	/**

@@ -2,10 +2,14 @@ package me.dylanmullen.bingo.game.components.listeners;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.UUID;
+
+import org.json.simple.JSONObject;
 
 import me.dylanmullen.bingo.game.callbacks.PurchaseCallback;
 import me.dylanmullen.bingo.game.components.overlays.PurchaseOverlay;
 import me.dylanmullen.bingo.net.PacketHandler;
+import me.dylanmullen.bingo.net.packet.Packet;
 
 public class PurchaseListener extends MouseAdapter
 {
@@ -29,8 +33,14 @@ public class PurchaseListener extends MouseAdapter
 			return;
 		if (overlay.getCard() == null)
 			return;
-		PacketHandler.sendPacket(PacketHandler.createPacket(8, overlay.getCard().getUUID().toString()),
-				new PurchaseCallback(overlay.getCard()));
+		PacketHandler.sendPacket(constructPacket(overlay.getCard().getUUID()), new PurchaseCallback(overlay.getCard()));
 		lastSent = System.currentTimeMillis();
+	}
+
+	private Packet constructPacket(UUID uuid)
+	{
+		JSONObject message = new JSONObject();
+		message.put("cardUUID", uuid.toString());
+		return PacketHandler.createPacket(8, message);
 	}
 }

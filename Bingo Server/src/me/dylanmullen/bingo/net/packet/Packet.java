@@ -53,8 +53,8 @@ public abstract class Packet
 
 	public void setPacketUUID(UUID uuid)
 	{
-		if (getPacketUUID() != null)
-			set(getUUIDSection(), "packetUUID", uuid);
+		if (getPacketUUID() == null)
+			set(getUUIDSection(), "packetUUID", uuid.toString());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -114,7 +114,7 @@ public abstract class Packet
 
 	public DatagramPacket constructDatagramPacket()
 	{
-		return new DatagramPacket(toString().getBytes(), toString().getBytes().length, client.getAddress(),
+		return new DatagramPacket(data.toJSONString().getBytes(), data.toJSONString().getBytes().length, client.getAddress(),
 				client.getPort());
 	}
 

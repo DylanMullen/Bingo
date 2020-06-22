@@ -6,9 +6,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import me.dylanmullen.bingo.game.BingoCard;
-import me.dylanmullen.bingo.game.callbacks.PurchaseCallback;
 import me.dylanmullen.bingo.game.components.listeners.PurchaseListener;
-import me.dylanmullen.bingo.net.PacketHandler;
 import me.dylanmullen.bingo.window.ui.RoundedButton;
 import me.dylanmullen.bingo.window.ui.UIColour;
 

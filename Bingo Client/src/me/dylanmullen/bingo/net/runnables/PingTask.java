@@ -1,5 +1,7 @@
 package me.dylanmullen.bingo.net.runnables;
 
+import org.json.simple.JSONObject;
+
 import me.dylanmullen.bingo.net.PacketHandler;
 import me.dylanmullen.bingo.net.ServerStatusManager;
 import me.dylanmullen.bingo.net.ServerStatusManager.ServerStatus;
@@ -51,7 +53,7 @@ public class PingTask extends Task
 	 */
 	public void forcePing()
 	{
-		PacketHandler.sendPacket(PacketHandler.createPacket(004, "Ping"), new PacketCallback()
+		PacketHandler.sendPacket(PacketHandler.createPacket(004, new JSONObject()), new PacketCallback()
 		{
 			@Override
 			public boolean callback()

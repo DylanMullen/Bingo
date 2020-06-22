@@ -2,7 +2,10 @@ package me.dylanmullen.bingo.game.chat;
 
 import javax.swing.JScrollPane;
 
+import org.json.simple.JSONObject;
+
 import me.dylanmullen.bingo.net.PacketHandler;
+import me.dylanmullen.bingo.net.packet.Packet;
 import me.dylanmullen.bingo.window.ui.Panel;
 import me.dylanmullen.bingo.window.ui.UIColour;
 
@@ -43,17 +46,23 @@ public class ChatPanel extends Panel
 		add(getChatInputComponent());
 	}
 
-	public void recieveMessage(String data)
+	public void recieveMessage(JSONObject data)
 	{
-		String[] split = data.split("/nl/");
-		getChatMessagesComponent().addMessage(split[0], split[1]);
+		getChatMessagesComponent().addMessage((String) data.get("displayName"), (String) data.get("message"));
 	}
 
 	public void sendMessage(String message)
 	{
 		if (message.length() > 128 || message.length() == 0)
 			return;
-		PacketHandler.sendPacket(PacketHandler.createPacket(16, message), null);
+		PacketHandler.sendPacket(constructPacket(message), null);
+	}
+
+	private Packet constructPacket(String mes)
+	{
+		JSONObject message = new JSONObject();
+		message.put("chatMessage", mes);
+		return PacketHandler.createPacket(16, message);
 	}
 
 	public ChatMessagesComponent getChatMessagesComponent()

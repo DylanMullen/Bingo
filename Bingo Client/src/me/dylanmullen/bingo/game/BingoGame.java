@@ -1,5 +1,8 @@
 package me.dylanmullen.bingo.game;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import me.dylanmullen.bingo.window.bingo.BingoWindow;
 
 /**
@@ -172,12 +175,11 @@ public class BingoGame
 	 * 
 	 * @param data The packet data to decode.
 	 */
-	public void setNextNumber(String data)
+	public void setNextNumber(JSONObject data)
 	{
-		System.out.println("reached here");
 		if (getGamePanel().getHeaderComponent().isShowingNumbers())
 		{
-			int number = Integer.parseInt(data.split(";")[1].split("/m/|/m/")[1]);
+			int number = ((Number) data.get("number")).intValue();
 			if (getGamePanel().getGameComponent().getWinner().isVisible())
 			{
 				getGamePanel().getGameComponent().getWinner().setVisible(false);
@@ -208,11 +210,11 @@ public class BingoGame
 	 * 
 	 * @param data The packet data to decode.
 	 */
-	public void updateCards(String data)
+	public void updateCards(JSONObject data)
 	{
 		try
 		{
-			String mes = data.split(";")[1].split("/m/|/m/")[1];
+			String mes = (String) data.get("cards");
 			String[] cards = mes.split("/nl/");
 			getGamePanel().getGameComponent().getCardGroup().updatePurchasedCards(cards);
 			setLineState(LineState.ONE);
@@ -227,10 +229,9 @@ public class BingoGame
 	 * 
 	 * @param data The packet data to decode.
 	 */
-	public void updateLineState(String data)
+	public void updateLineState(int state)
 	{
-		String mes = data.split(";")[1].split("/m/|/m/")[1];
-		lineState = LineState.get(Integer.parseInt(mes));
+		lineState = LineState.get(state);
 	}
 
 	/**
@@ -239,12 +240,11 @@ public class BingoGame
 	 * 
 	 * @param data The packet data to decode.
 	 */
-	public void showWinners(String data)
+	public void showWinners(JSONArray data)
 	{
 		if (getGamePanel().getGameComponent().getCardGroup() != null)
 		{
-			String[] winners = data.split(";")[1].split("/m/|/m/");
-			getGamePanel().getGameComponent().getWinner().setWinners(winners);
+			getGamePanel().getGameComponent().getWinner().setWinners(data);
 			getGamePanel().getGameComponent().getWinner().setVisible(true);
 			getGamePanel().getGameComponent().repaint();
 		}
@@ -256,9 +256,9 @@ public class BingoGame
 	 * 
 	 * @param data The packet data to decode
 	 */
-	public void restart(String data)
+	public void restart(JSONObject data)
 	{
-		String[] numbers = data.split(";")[1].split("/m/|/m/")[1].split("/c/|/c/");
+		String[] numbers = ((String)data.get("cards")).split("/c/|/c/");
 		getGamePanel().getGameComponent().getCardGroup().setCardInformation(numbers);
 		getGamePanel().getGameComponent().getWinner().setVisible(false);
 		getGamePanel().getHeaderComponent().getNumbersComp().restart();
@@ -273,7 +273,8 @@ public class BingoGame
 	public void setGameState(int stateValue)
 	{
 		this.gameState = GameState.getGameState(stateValue);
-		if(gameState.equals(GameState.PLAYING))
+		System.out.println(gameState);
+		if (gameState.equals(GameState.PLAYING))
 			showCalledNumberComponent();
 	}
 

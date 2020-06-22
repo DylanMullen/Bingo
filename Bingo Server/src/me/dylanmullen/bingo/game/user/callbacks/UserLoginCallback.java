@@ -42,6 +42,7 @@ public class UserLoginCallback extends SQLCallback
 				PacketHandler.sendPacket(packet);
 				return;
 			}
+			
 			result.next();
 			String temp = result.getString(1);
 			temp = temp.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})", "$1-$2-$3-$4-$5");

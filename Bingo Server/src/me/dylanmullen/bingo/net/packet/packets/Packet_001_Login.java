@@ -21,7 +21,7 @@ public class Packet_001_Login extends Packet
 	{
 		UUID uuid = getPacketUUID();
 
-		String username = (String) getMessageSection().get("username");
+		String username = (String) getMessageSection().get("email");
 		String password = (String) getMessageSection().get("password");
 
 		// Auth

@@ -6,6 +6,8 @@ import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+import org.json.simple.JSONArray;
+
 import me.dylanmullen.bingo.window.ui.TransparentLabel;
 import me.dylanmullen.bingo.window.ui.UIColour;
 
@@ -46,11 +48,13 @@ public class WinnerOverlay extends Overlay
 		add(winners);
 	}
 
-	public void setWinners(String[] winners)
+	public void setWinners(JSONArray winners)
 	{
 		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < winners.length; i++)
-			sb.append(winners[i] + (winners.length - 1 == i ? "" : "\n"));
+		for (int i = 0; i < winners.size(); i++)
+		{
+			sb.append((String)winners.get(i) + (winners.size() - 1 == i ? "" : "\n"));
+		}
 		setText(sb.toString());
 		repaint();
 	}

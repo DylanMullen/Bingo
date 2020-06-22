@@ -4,6 +4,10 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.util.UUID;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import me.dylanmullen.bingo.net.Client;
 
 /**
@@ -66,13 +70,13 @@ public class ClientIncomingHandler implements Runnable
 		{
 			DatagramPacket dp = new DatagramPacket(receive, receive.length);
 			this.client.getSocket().receive(dp);
-			String decode = decodeData(dp.getData());
-			int id = Integer.parseInt(decode.split(";")[0]);
+			JSONObject decode = decodeData(dp.getData());
 
-			if (id == 5)
-				ClientHandler.getInstance().handleIncoming(getUUID(decode), decode);
-			else
-				ClientHandler.getInstance().handleIncoming(null, decode);
+			if (decode == null)
+				return;
+			int id = getID(decode);
+
+			ClientHandler.getInstance().handleIncoming(id, getPacketUUID(decode), decode);
 		} catch (IOException e)
 		{
 			System.err.println("Error recieving a packet!");
@@ -83,11 +87,19 @@ public class ClientIncomingHandler implements Runnable
 	 * Returns the String of the bytes from the packet.
 	 * 
 	 * @param data The packet data.
-	 * @return Returns the String of the bytes from the packet.
+	 * @return Returns the JSONObject of the bytes from the packet.
 	 */
-	private String decodeData(byte[] data)
+	private JSONObject decodeData(byte[] data)
 	{
-		return new String(data).trim();
+		String jsonString = new String(data).trim();
+		JSONParser parser = new JSONParser();
+		try
+		{
+			return (JSONObject) parser.parse(jsonString);
+		} catch (ParseException e)
+		{
+			return null;
+		}
 	}
 
 	/**
@@ -97,15 +109,22 @@ public class ClientIncomingHandler implements Runnable
 	 * @param data Packet data.
 	 * @return Returns either a {@link UUID} or null.
 	 */
-	private UUID getUUID(String data)
+	private UUID getPacketUUID(JSONObject object)
 	{
-		String[] j = data.split("/m/|/m/");
 		try
 		{
-			return UUID.fromString(j[1].split("/nl/")[1]);
-		} catch (IllegalArgumentException e)
+			JSONObject uuids = (JSONObject) (((JSONObject) object.get("packetInformation")).get("uuids"));
+			return UUID.fromString((String) uuids.get("packetUUID"));
+		} catch (NullPointerException | IllegalArgumentException e)
 		{
 			return null;
 		}
 	}
+
+	private int getID(JSONObject object)
+	{
+		JSONObject packetInformation = (JSONObject) object.get("packetInformation");
+		return ((Number) packetInformation.get("packetID")).intValue();
+	}
+
 }

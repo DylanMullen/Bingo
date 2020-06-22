@@ -21,7 +21,7 @@ public class Packet_006_JoinGame extends Packet
 	@Override
 	public void handle()
 	{
-		User u = UserManager.getInstance().getUser(getSenderUUID());
+		User u = UserManager.getInstance().getUser(getSender());
 		Packet packet = PacketHandler.createPacket(getSender(), 5, null);
 
 		if (u.getCurrentGame() != null)
