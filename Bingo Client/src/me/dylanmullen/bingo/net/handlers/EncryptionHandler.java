@@ -1,6 +1,5 @@
-package me.dylanmullen.bingo.net;
+package me.dylanmullen.bingo.net.handlers;
 
-import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
@@ -8,10 +7,7 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Base64;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
@@ -41,7 +37,7 @@ public class EncryptionHandler
 		}
 	}
 
-	public String decyrpt(String input)
+	public String decyrptRSA(String input)
 	{
 		try
 		{
@@ -50,10 +46,24 @@ public class EncryptionHandler
 
 			byte[] data = cipher.doFinal(DatatypeConverter.parseBase64Binary(input));
 			return new String(data);
-		} catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException
-				| BadPaddingException e)
+		} catch (Exception e)
 		{
 			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public String decyrptAES(String input)
+	{
+		try
+		{
+			Cipher cipher = Cipher.getInstance("AES");
+			cipher.init(Cipher.DECRYPT_MODE, getAESKey());
+
+			byte[] data = cipher.doFinal(DatatypeConverter.parseBase64Binary(input));
+			return new String(data);
+		} catch (Exception e)
+		{
 			return null;
 		}
 	}
@@ -64,6 +74,20 @@ public class EncryptionHandler
 		{
 			Cipher cipher = Cipher.getInstance("AES");
 			cipher.init(Cipher.ENCRYPT_MODE, getAESKey());
+			byte[] encrypted = cipher.doFinal(input.getBytes());
+			return DatatypeConverter.printBase64Binary(encrypted);
+		} catch (Exception e)
+		{
+			return null;
+		}
+	}
+
+	public String encryptRSA(String input)
+	{
+		try
+		{
+			Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding");
+			cipher.init(Cipher.ENCRYPT_MODE, getPublicKey());
 			byte[] encrypted = cipher.doFinal(input.getBytes());
 			return DatatypeConverter.printBase64Binary(encrypted);
 		} catch (Exception e)

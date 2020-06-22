@@ -14,6 +14,8 @@ public abstract class Packet
 	private Client client;
 	private JSONObject data;
 
+	private String encrypted;
+
 	public Packet(int id, Client client, JSONObject object)
 	{
 		this.id = id;
@@ -112,14 +114,25 @@ public abstract class Packet
 		return client;
 	}
 
+	public void setEncrypted(String data)
+	{
+		this.encrypted = data;
+	}
+
 	public DatagramPacket constructDatagramPacket()
 	{
-		return new DatagramPacket(data.toJSONString().getBytes(), data.toJSONString().getBytes().length, client.getAddress(),
+		return new DatagramPacket(encrypted.getBytes(), encrypted.getBytes().length, client.getAddress(),
 				client.getPort());
 	}
 
 	public void setClient(Client client)
 	{
 		this.client = client;
+	}
+
+	@Override
+	public String toString()
+	{
+		return data.toJSONString();
 	}
 }

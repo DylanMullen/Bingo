@@ -1,7 +1,11 @@
 package me.dylanmullen.bingo.net;
 
 import java.net.InetAddress;
+import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
+import java.security.interfaces.RSAPublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -41,15 +45,24 @@ public class Client
 	{
 		return DatatypeConverter.printBase64Binary(aesKey.getEncoded());
 	}
-	
+
 	public SecretKey getAESKey()
 	{
 		return aesKey;
 	}
-	
-	public String getRsaPublicKey()
+
+	public RSAPublicKey getRsaPublicKey()
 	{
-		return rsaPublicKey;
+		try
+		{
+			X509EncodedKeySpec spec = new X509EncodedKeySpec(DatatypeConverter.parseBase64Binary(rsaPublicKey));
+			KeyFactory factory = KeyFactory.getInstance("RSA");
+			return (RSAPublicKey) factory.generatePublic(spec);
+		} catch (InvalidKeySpecException | NoSuchAlgorithmException e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	public InetAddress getAddress()

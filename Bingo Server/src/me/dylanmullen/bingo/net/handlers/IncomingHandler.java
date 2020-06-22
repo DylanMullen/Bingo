@@ -54,6 +54,8 @@ public class IncomingHandler implements Runnable
 		{
 			DatagramPacket dp = new DatagramPacket(recieve, recieve.length);
 			server.getServer().receive(dp);
+			
+			System.out.println(new String(dp.getData()));
 
 			Client client = null;
 			synchronized (server.getClients())
@@ -102,8 +104,8 @@ public class IncomingHandler implements Runnable
 	{
 		String publicKey = (String) ((JSONObject) data.get("packetMessage")).get("publicKey");
 		Client client = server.createClient(publicKey, address, port);
-		
-		PacketHandler.sendPacket(constructReponsePacket(client, getPacketUUID(data)));
+
+		PacketHandler.sendPacketRSA(constructReponsePacket(client, getPacketUUID(data)));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -111,7 +113,6 @@ public class IncomingHandler implements Runnable
 	{
 		Packet packet = PacketHandler.createPacket(client, 5, null);
 		JSONObject message = new JSONObject();
-		message.put("responseType", 200);
 		message.put("aesKey", client.getBase64AESKey());
 		packet.setMessageSection(message);
 		packet.setPacketUUID(packetRelay);

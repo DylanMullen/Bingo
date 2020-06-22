@@ -6,7 +6,6 @@ import java.util.UUID;
 import org.json.simple.JSONObject;
 
 import me.dylanmullen.bingo.net.Client;
-import me.dylanmullen.bingo.net.EncryptionHandler;
 import me.dylanmullen.bingo.net.PacketHandler;
 import me.dylanmullen.bingo.net.PacketTicket;
 import me.dylanmullen.bingo.net.packet.Packet;
@@ -89,6 +88,7 @@ public class ClientHandler
 			public boolean callback()
 			{
 				encryption.setAesKey((String) getMessage().get("aesKey"));
+				getPingTask().forcePing();
 				return false;
 			}
 		}));

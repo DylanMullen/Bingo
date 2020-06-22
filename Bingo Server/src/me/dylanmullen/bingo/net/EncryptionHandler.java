@@ -20,4 +20,33 @@ public class EncryptionHandler
 		}
 	}
 
+	public static String encryptAES(Client client, String input)
+	{
+		try
+		{
+			Cipher cipher = Cipher.getInstance("AES");
+			cipher.init(Cipher.ENCRYPT_MODE, client.getAESKey());
+			byte[] encrypted = cipher.doFinal(input.getBytes());
+			return DatatypeConverter.printBase64Binary(encrypted);
+		} catch (Exception e)
+		{
+			return null;
+		}
+	}
+
+	public static String encryptRSA(Client client, String input)
+	{
+		try
+		{
+			Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding");
+			cipher.init(Cipher.ENCRYPT_MODE, client.getRsaPublicKey());
+			byte[] encrypted = cipher.doFinal(input.getBytes());
+			return DatatypeConverter.printBase64Binary(encrypted);
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 }

@@ -54,13 +54,19 @@ public class PacketHandler
 
 	public static void sendPacket(Packet packet, PacketCallback callback)
 	{
-		PacketTicket ticket = new PacketTicket(packet, callback);
+		PacketTicket ticket = new PacketTicket(packet, false, callback);
 		ServerHandler.getHandler().submitTicket(ticket);
 	}
 
 	public static void sendPacket(Packet packet)
 	{
-		PacketTicket ticket = new PacketTicket(packet, null);
+		PacketTicket ticket = new PacketTicket(packet, false, null);
+		ServerHandler.getHandler().submitTicket(ticket);
+	}
+	
+	public static void sendPacketRSA(Packet packet)
+	{
+		PacketTicket ticket = new PacketTicket(packet, true, null);
 		ServerHandler.getHandler().submitTicket(ticket);
 	}
 

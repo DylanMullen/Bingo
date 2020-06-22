@@ -70,8 +70,9 @@ public class ClientIncomingHandler implements Runnable
 		{
 			DatagramPacket dp = new DatagramPacket(receive, receive.length);
 			this.client.getSocket().receive(dp);
-			JSONObject decode = decodeData(dp.getData());
 
+			JSONObject decode = decodeData(dp.getData());
+			
 			if (decode == null)
 				return;
 			int id = getID(decode);
@@ -92,7 +93,13 @@ public class ClientIncomingHandler implements Runnable
 	private JSONObject decodeData(byte[] data)
 	{
 		String jsonString = new String(data).trim();
+
+		jsonString = ClientHandler.getInstance().getEncryption().decyrptAES(jsonString);
+		if (jsonString == null)
+			jsonString = ClientHandler.getInstance().getEncryption().decyrptRSA(new String(data).trim());
+
 		JSONParser parser = new JSONParser();
+		System.out.println(jsonString);
 		try
 		{
 			return (JSONObject) parser.parse(jsonString);

@@ -133,7 +133,6 @@ public class Config
 			for (Object obj : jsonObject.keySet())
 			{
 				objects.put((String) obj, (JSONObject) jsonObject.get(obj));
-				System.out.println(obj);
 				JSONObject j = (JSONObject) jsonObject.get(obj);
 				storeObject(obj, j);
 			}
