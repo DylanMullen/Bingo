@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.json.simple.JSONObject;
 
 import me.dylanmullen.bingo.net.Client;
+import me.dylanmullen.bingo.net.handlers.ClientHandler;
 
 /**
  * @author Dylan
@@ -15,10 +16,12 @@ import me.dylanmullen.bingo.net.Client;
 public class Packet
 {
 
+	private int id;
 	private JSONObject packet;
 
 	public Packet(int packetID)
 	{
+		this.id=packetID;
 		this.packet = new JSONObject();
 		constructPacketInformation(packetID);
 		addMainSection("packetMessage");
@@ -53,9 +56,16 @@ public class Packet
 		set(packetInformation, "packetID", packetID);
 	}
 
-	public DatagramPacket constructDatagramPacket(Client client)
+	public DatagramPacket constructDatagramPacket(Client client, boolean encrypt)
 	{
-		return new DatagramPacket(toString().getBytes(), toString().getBytes().length, client.getIP(),
+		String data = toString();
+
+		if (encrypt)
+			data = ClientHandler.getInstance().getEncryption().encrypt(data);
+		if (data == null)
+			return null;
+
+		return new DatagramPacket(data.getBytes(), data.getBytes().length, client.getIP(),
 				client.getPort());
 	}
 
@@ -86,6 +96,11 @@ public class Packet
 	public String toString()
 	{
 		return packet.toJSONString();
+	}
+	
+	public int getID()
+	{
+		return id;
 	}
 
 }

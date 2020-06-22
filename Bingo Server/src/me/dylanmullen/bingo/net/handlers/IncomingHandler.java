@@ -2,6 +2,7 @@ package me.dylanmullen.bingo.net.handlers;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
+import java.net.InetAddress;
 import java.util.UUID;
 
 import org.json.simple.JSONObject;
@@ -9,7 +10,10 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import me.dylanmullen.bingo.net.Client;
+import me.dylanmullen.bingo.net.EncryptionHandler;
 import me.dylanmullen.bingo.net.Server;
+import me.dylanmullen.bingo.net.packet.Packet;
+import me.dylanmullen.bingo.net.packet.PacketHandler;
 
 public class IncomingHandler implements Runnable
 {
@@ -57,13 +61,19 @@ public class IncomingHandler implements Runnable
 				client = server.getClient(dp.getAddress(), dp.getPort());
 			}
 
-			if (client == null)
-				return;
-
-			JSONObject decode = decodeData(dp.getData());
+			JSONObject decode = decodeData(client, dp.getData());
 			if (decode == null)
 				return;
-			
+
+			if (client == null)
+			{
+				if (getID(decode) == 0)
+				{
+					handleNewClient(decode, dp.getAddress(), dp.getPort());
+				}
+				return;
+			}
+
 			ServerHandler.getHandler().handleIncoming(getPacketUUID(decode), client, decode);
 		} catch (IOException e)
 		{
@@ -71,18 +81,46 @@ public class IncomingHandler implements Runnable
 		}
 	}
 
-	private JSONObject decodeData(byte[] data)
+	private JSONObject decodeData(Client client, byte[] data)
 	{
-		String jsonString = new String(data).trim();
+		String packetData = new String(data).trim();
+		if (client != null)
+			packetData = EncryptionHandler.decrypt(client, packetData);
+
 		JSONParser parser = new JSONParser();
 		try
 		{
-			return (JSONObject) parser.parse(jsonString);
+			return (JSONObject) parser.parse(packetData);
 		} catch (ParseException e)
 		{
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	private void handleNewClient(JSONObject data, InetAddress address, int port)
+	{
+		String publicKey = (String) ((JSONObject) data.get("packetMessage")).get("publicKey");
+		Client client = server.createClient(publicKey, address, port);
+		
+		PacketHandler.sendPacket(constructReponsePacket(client, getPacketUUID(data)));
+	}
+
+	@SuppressWarnings("unchecked")
+	private Packet constructReponsePacket(Client client, UUID packetRelay)
+	{
+		Packet packet = PacketHandler.createPacket(client, 5, null);
+		JSONObject message = new JSONObject();
+		message.put("responseType", 200);
+		message.put("aesKey", client.getBase64AESKey());
+		packet.setMessageSection(message);
+		packet.setPacketUUID(packetRelay);
+		return packet;
+	}
+
+	private int getID(JSONObject jsonData)
+	{
+		return ((Number) ((JSONObject) jsonData.get("packetInformation")).get("packetID")).intValue();
 	}
 
 	private UUID getPacketUUID(JSONObject object)

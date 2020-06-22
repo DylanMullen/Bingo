@@ -6,9 +6,11 @@ import java.util.UUID;
 import org.json.simple.JSONObject;
 
 import me.dylanmullen.bingo.net.Client;
+import me.dylanmullen.bingo.net.EncryptionHandler;
 import me.dylanmullen.bingo.net.PacketHandler;
 import me.dylanmullen.bingo.net.PacketTicket;
 import me.dylanmullen.bingo.net.packet.Packet;
+import me.dylanmullen.bingo.net.packet.PacketCallback;
 import me.dylanmullen.bingo.net.runnables.PingTask;
 
 /**
@@ -24,6 +26,7 @@ public class ClientHandler
 
 	private ClientIncomingHandler incoming;
 	private ClientOutgoingHandler outgoing;
+	private EncryptionHandler encryption;
 
 	private PingTask pingTask;
 
@@ -49,7 +52,7 @@ public class ClientHandler
 
 		createClient(address, port);
 		createHandlers();
-
+		sendIdentityPacket();
 		createRunnables();
 	}
 
@@ -69,6 +72,26 @@ public class ClientHandler
 	{
 		this.incoming = new ClientIncomingHandler(getClient());
 		this.outgoing = new ClientOutgoingHandler(client);
+		this.encryption = new EncryptionHandler();
+	}
+
+	@SuppressWarnings("unchecked")
+	private void sendIdentityPacket()
+	{
+		Packet packet = new Packet(0);
+		JSONObject message = new JSONObject();
+		message.put("publicKey", encryption.getBase64PublicKey());
+		packet.setMessage(message);
+		submitTicket(new PacketTicket(packet, new PacketCallback()
+		{
+
+			@Override
+			public boolean callback()
+			{
+				encryption.setAesKey((String) getMessage().get("aesKey"));
+				return false;
+			}
+		}));
 	}
 
 	/**
@@ -216,5 +239,10 @@ public class ClientHandler
 	public PingTask getPingTask()
 	{
 		return pingTask;
+	}
+
+	public EncryptionHandler getEncryption()
+	{
+		return this.encryption;
 	}
 }

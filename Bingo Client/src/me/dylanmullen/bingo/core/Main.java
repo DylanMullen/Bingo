@@ -1,7 +1,5 @@
 package me.dylanmullen.bingo.core;
 
-import me.dylanmullen.bingo.net.handlers.ClientHandler;
-
 /**
  * @author Dylan
  * @date 17 Jun 2020
@@ -18,5 +16,6 @@ public class Main
 	public static void main(String[] args)
 	{
 		new BingoApp();
+		
 	}
 }
