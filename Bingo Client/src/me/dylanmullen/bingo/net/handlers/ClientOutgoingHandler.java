@@ -85,7 +85,6 @@ public class ClientOutgoingHandler implements Runnable
 			if (dp == null)
 				return;
 			this.client.getSocket().send(dp);
-			System.out.println("sending");
 		} catch (Exception e)
 		{
 			System.out.println("Failed to send packet: " + e.getMessage());

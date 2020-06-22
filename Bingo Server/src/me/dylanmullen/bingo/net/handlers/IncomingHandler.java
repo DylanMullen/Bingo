@@ -54,8 +54,6 @@ public class IncomingHandler implements Runnable
 		{
 			DatagramPacket dp = new DatagramPacket(recieve, recieve.length);
 			server.getServer().receive(dp);
-			
-			System.out.println(new String(dp.getData()));
 
 			Client client = null;
 			synchronized (server.getClients())

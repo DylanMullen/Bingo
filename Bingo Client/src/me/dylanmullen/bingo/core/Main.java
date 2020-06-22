@@ -18,10 +18,5 @@ public class Main
 	public static void main(String[] args)
 	{
 		new BingoApp();
-		EncryptionHandler en = new EncryptionHandler();
-
-		System.out.println(
-				"{\"packetInformation\":{\"packetID\":5,\"uuids\":{\"packetUUID\":\"a423947b-2332-45b3-b32c-c4a28892ace7\"}},\"packetMessage\":{\"responseType\":200,\"aesKey\":\"p6bKI\\/cI2kHa25MFcGxI8OI6v7+01TkBTtxDdc+O3E4=\"}}"
-						.length());
 	}
 }

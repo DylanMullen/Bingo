@@ -99,7 +99,6 @@ public class ClientIncomingHandler implements Runnable
 			jsonString = ClientHandler.getInstance().getEncryption().decyrptRSA(new String(data).trim());
 
 		JSONParser parser = new JSONParser();
-		System.out.println(jsonString);
 		try
 		{
 			return (JSONObject) parser.parse(jsonString);
