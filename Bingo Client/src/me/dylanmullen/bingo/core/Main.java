@@ -1,7 +1,5 @@
 package me.dylanmullen.bingo.core;
 
-import me.dylanmullen.bingo.net.handlers.EncryptionHandler;
-
 /**
  * @author Dylan
  * @date 17 Jun 2020
@@ -17,6 +15,13 @@ public class Main
 	 */
 	public static void main(String[] args)
 	{
-		new BingoApp();
+//		new BingoApp();
+		int number = 75;
+		int numbers = 75;
+		int cols = 5;
+
+		int column = number / (numbers / cols);
+		column -= (number == numbers ? 1 : 0);
+		System.out.println(column);
 	}
 }

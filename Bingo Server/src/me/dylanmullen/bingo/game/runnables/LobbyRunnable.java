@@ -1,17 +1,18 @@
 package me.dylanmullen.bingo.game.runnables;
 
-import me.dylanmullen.bingo.game.BingoGame;
+import me.dylanmullen.bingo.game.droplet.BingoDroplet;
+import me.dylanmullen.bingo.game.droplet.BingoGame;
 
 public class LobbyRunnable implements Runnable
 {
 
 	private int COUNTER = 5;
 
-	private BingoGame game;
+	private BingoDroplet game;
 	private boolean finished = false;
 	private long start = -1;
 
-	public LobbyRunnable(BingoGame game)
+	public LobbyRunnable(BingoDroplet game)
 	{
 		this.game = game;
 	}
@@ -26,7 +27,7 @@ public class LobbyRunnable implements Runnable
 			long now = System.currentTimeMillis();
 			if (now - start >= COUNTER * 1000)
 			{
-				if (game.getPlayersPlayingSize() >= game.getSettings().getMinPlayers())
+				if (game.getPlayingUsers().size() >= game.getSettings().getMinPlayers())
 					finished = true;
 				else
 				{
@@ -34,7 +35,7 @@ public class LobbyRunnable implements Runnable
 				}
 			}
 		}
-		game.sendUserCards();
+		game.sendPurchasedCards();
 	}
 
 	public void setStart()

@@ -1,8 +1,10 @@
 package me.dylanmullen.bingo.game.user;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
-import me.dylanmullen.bingo.game.BingoGame;
+import me.dylanmullen.bingo.game.droplet.BingoDroplet;
 import me.dylanmullen.bingo.net.Client;
 
 public class User
@@ -12,12 +14,13 @@ public class User
 	private UUID uuid;
 	private UserInformation userInformation;
 
-	private BingoGame currentGame;
+	private Set<BingoDroplet> bingoDroplets;
 
 	public User(Client c, UUID uuid)
 	{
 		this.client = c;
 		this.uuid = uuid;
+		this.bingoDroplets = new HashSet<>();
 	}
 
 	public void loadInformation(UUID packetUUID)
@@ -25,21 +28,24 @@ public class User
 		userInformation = new UserInformation(uuid);
 		userInformation.load(client, packetUUID);
 	}
-	
+
 	public void createUserInformation()
 	{
 		userInformation = new UserInformation(uuid);
 		userInformation.populateInformation("");
 	}
 
-	public void setCurrentGame(BingoGame currentGame)
+	public Set<BingoDroplet> getBingoDroplets()
 	{
-		this.currentGame = currentGame;
+		return bingoDroplets;
 	}
 
-	public BingoGame getCurrentGame()
+	public BingoDroplet getDropletByUUID(UUID uuid)
 	{
-		return currentGame;
+		for (BingoDroplet droplet : bingoDroplets)
+			if (droplet.getUUID().toString().equalsIgnoreCase(uuid.toString()))
+				return droplet;
+		return null;
 	}
 
 	public UUID getUUID()
@@ -51,7 +57,7 @@ public class User
 	{
 		return client;
 	}
-	
+
 	public UserInformation getUserInformation()
 	{
 		return userInformation;

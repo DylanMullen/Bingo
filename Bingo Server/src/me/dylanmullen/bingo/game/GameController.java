@@ -8,6 +8,7 @@ import org.json.simple.JSONObject;
 import me.dylanmullen.bingo.configs.ConfigManager;
 import me.dylanmullen.bingo.game.currency.CurrencyController;
 import me.dylanmullen.bingo.game.currency.InvalidAmountException;
+import me.dylanmullen.bingo.game.droplet.BingoGame;
 import me.dylanmullen.bingo.game.user.User;
 import me.dylanmullen.bingo.net.packet.Packet;
 import me.dylanmullen.bingo.net.packet.PacketHandler;
@@ -54,7 +55,7 @@ public class GameController
 		}
 
 		CardGroup cg = game.getCardGroup(u);
-		BingoCard card = cg.getCard(uuid);
+		BingoCards card = cg.getCard(uuid);
 		game.addCard(u, card);
 		game.getSettings().incrementPot();
 		if (cg.remove(card))

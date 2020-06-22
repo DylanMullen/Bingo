@@ -3,7 +3,7 @@ package me.dylanmullen.bingo.net.packet.packets;
 import org.json.simple.JSONObject;
 
 import me.dylanmullen.bingo.core.BingoServer;
-import me.dylanmullen.bingo.game.BingoGame;
+import me.dylanmullen.bingo.game.droplet.BingoGame;
 import me.dylanmullen.bingo.game.user.User;
 import me.dylanmullen.bingo.game.user.UserManager;
 import me.dylanmullen.bingo.net.Client;

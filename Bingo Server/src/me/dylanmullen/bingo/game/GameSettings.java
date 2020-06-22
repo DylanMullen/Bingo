@@ -3,7 +3,7 @@ package me.dylanmullen.bingo.game;
 import java.util.Random;
 
 import me.dylanmullen.bingo.configs.Config;
-import me.dylanmullen.bingo.game.BingoGame.LineState;
+import me.dylanmullen.bingo.game.droplet.BingoDroplet.LineState;
 
 public class GameSettings
 {

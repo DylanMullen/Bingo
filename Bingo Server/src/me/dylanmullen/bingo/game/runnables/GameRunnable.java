@@ -1,16 +1,17 @@
 package me.dylanmullen.bingo.game.runnables;
 
-import me.dylanmullen.bingo.game.BingoGame;
+import me.dylanmullen.bingo.game.droplet.BingoDroplet;
+import me.dylanmullen.bingo.game.droplet.BingoGame;
 
 public class GameRunnable implements Runnable
 {
 
-	private BingoGame game;
+	private BingoDroplet game;
 
 	private boolean playing;
 	private boolean paused;
 
-	public GameRunnable(BingoGame game)
+	public GameRunnable(BingoDroplet game)
 	{
 		this.game = game;
 		this.playing = true;
@@ -19,7 +20,6 @@ public class GameRunnable implements Runnable
 	@Override
 	public void run()
 	{
-		game.sendPacket(game.createGamestatePacket());
 		long then = 0;
 		while (playing)
 		{
@@ -48,7 +48,7 @@ public class GameRunnable implements Runnable
 				playing = false;
 				continue;
 			}
-			game.sendPacket(game.createNextNumberPacket(num));
+			game.sendNextNumber(num);
 
 			paused = true;
 			if (game.checkWinners())
@@ -56,7 +56,6 @@ public class GameRunnable implements Runnable
 				game.handleWinning();
 			}
 			then = System.currentTimeMillis();
-
 		}
 		System.out.println("Game finished");
 	}
