@@ -153,7 +153,7 @@ public class BingoGame
 		for (User u : cardsInPlay.keySet())
 		{
 			CardGroup cg = cardsInPlay.get(u);
-			PacketHandler.sendPacket(getUsercards(11, u.getClient(), cg));
+			PacketHandler.sendPacket(getUsercardsUUID(11, u.getClient(), cg));
 		}
 
 		if (settings.isDebugMode())
@@ -168,6 +168,16 @@ public class BingoGame
 		message.put("cards", cards.toString());
 		packet.setMessageSection(message);
 
+		return packet;
+	}
+	
+	private Packet getUsercardsUUID(int id, Client client, CardGroup cards)
+	{
+		Packet packet = PacketHandler.createPacket(client, id, null);
+		JSONObject message = new JSONObject();
+		message.put("cards", cards.getCardUUIDs());
+		packet.setMessageSection(message);
+		
 		return packet;
 	}
 

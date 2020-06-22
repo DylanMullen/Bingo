@@ -109,7 +109,7 @@ public class BingoCardContainer extends Panel
 	 * 
 	 * @param cardUUIDs UUIDs of the cards that were purchased.
 	 */
-//	public void updatePurchasedCards(String[] cardUUIDs)
+	public void updatePurchasedCards(String[] cardUUIDs)
 	{
 		if (cardUUIDs == null)
 			return;

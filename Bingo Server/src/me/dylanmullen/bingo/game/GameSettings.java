@@ -50,7 +50,6 @@ public class GameSettings
 	public void setupPot()
 	{
 		this.prize = getBasePrizePool();
-		System.out.println(prize);
 	}
 
 	public void incrementPot()
