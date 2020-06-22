@@ -1,5 +1,7 @@
 package me.dylanmullen.bingo.net.packet.packets;
 
+import org.json.simple.JSONObject;
+
 import me.dylanmullen.bingo.game.user.UserManager;
 import me.dylanmullen.bingo.net.Client;
 import me.dylanmullen.bingo.net.packet.Packet;
@@ -8,20 +10,18 @@ public class Packet_002_Register extends Packet
 {
 
 	// username/nl/password/nl/email
-	public Packet_002_Register(int id, Client c, String message)
+	public Packet_002_Register(Client c, JSONObject packetData)
 	{
-		super(id, c, message, false);
+		super(2, c, packetData);
 	}
 
 	@Override
 	public void handle()
 	{
-		String[] message = getMessage().split("/nl/");
+		String username = (String) getMessageSection().get("username");
+		String password = (String) getMessageSection().get("password");
 
-		String username = message[0];
-		String password = message[1];
-
-		UserManager.getInstance().register(getClient(), getUUID(), username, password);
+		UserManager.getInstance().register(getSender(), getPacketUUID(), username, password);
 	}
 
 }

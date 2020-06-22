@@ -4,13 +4,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.UUID;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import me.dylanmullen.bingo.game.chat.BingoChat;
 import me.dylanmullen.bingo.game.currency.CurrencyController;
 import me.dylanmullen.bingo.game.runnables.GameRunnable;
 import me.dylanmullen.bingo.game.runnables.LobbyRunnable;
 import me.dylanmullen.bingo.game.user.User;
+import me.dylanmullen.bingo.net.Client;
+import me.dylanmullen.bingo.net.packet.Packet;
 import me.dylanmullen.bingo.net.packet.PacketHandler;
 
 public class BingoGame
@@ -147,11 +153,22 @@ public class BingoGame
 		for (User u : cardsInPlay.keySet())
 		{
 			CardGroup cg = cardsInPlay.get(u);
-			PacketHandler.sendPacket(PacketHandler.createPacket(u.getClient(), 11, cg.getCardUUIDs()), null);
+			PacketHandler.sendPacket(getUsercards(11, u.getClient(), cg));
 		}
 
 		if (settings.isDebugMode())
 			rig();
+	}
+
+	@SuppressWarnings("unchecked")
+	private Packet getUsercards(int id, Client client, CardGroup cards)
+	{
+		Packet packet = PacketHandler.createPacket(client, id, null);
+		JSONObject message = new JSONObject();
+		message.put("cards", cards.toString());
+		packet.setMessageSection(message);
+
+		return packet;
 	}
 
 	public void sendPotentialCards()
@@ -159,7 +176,7 @@ public class BingoGame
 		for (User u : usersConnected)
 		{
 			CardGroup cg = generateCardGroup(u);
-			PacketHandler.sendPacket(PacketHandler.createPacket(u.getClient(), 14, cg.toString()), null);
+			PacketHandler.sendPacket(getUsercards(14, u.getClient(), cg));
 		}
 	}
 
@@ -221,28 +238,47 @@ public class BingoGame
 		return cardsInPlay.get(u).getWinningCards(lineState, numbersCalled);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void handleWinning()
 	{
-		ArrayList<User> winners = getWinners();
-
-		StringBuilder winnerNames = new StringBuilder();
+		List<User> winners = getWinners();
 
 		double prize = settings.getWinningPrize(lineState, winners.size());
-		for (int i = 0; i < winners.size(); i++)
+		JSONArray winnerData = new JSONArray();
+		for (User user : winners)
 		{
-			User u = winners.get(i);
-			winnerNames.append(u.getUUID().toString() + (winners.size() - 1 == i ? "" : "/nl/"));
-			CurrencyController.getController().increment(u, prize);
+			winnerData.add(user.getUserInformation().getDisplayName());
+			CurrencyController.getController().increment(user, prize);
 		}
-		sendPacket(13, winnerNames.toString());
+
+		sendPacket(createWinningPacket(winnerData));
 		if (lineState != LineState.FULLHOUSE)
 		{
-			sendPacket(12, lineState.state + "");
+			sendPacket(createLinestatePacket());
 			updateLineState();
 		} else
 		{
 			shouldRestart = true;
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private Packet createWinningPacket(JSONArray winnerData)
+	{
+		Packet packet = PacketHandler.createPacket(null, 13, null);
+		JSONObject message = new JSONObject();
+		message.put("winners", winnerData);
+		packet.setMessageSection(message);
+		return packet;
+	}
+
+	private Packet createLinestatePacket()
+	{
+		Packet packet = PacketHandler.createPacket(null, 12, null);
+		JSONObject message = new JSONObject();
+		message.put("linestate", lineState.state);
+		packet.setMessageSection(message);
+		return packet;
 	}
 
 	private void updateLineState()
@@ -319,11 +355,32 @@ public class BingoGame
 		return cardsInPlay.containsKey(u);
 	}
 
-	public void sendPacket(int id, String mes)
+	public Packet createGamestatePacket()
+	{
+		Packet packet = PacketHandler.createPacket(null, 10, null);
+		JSONObject message = new JSONObject();
+		message.put("gameState", getGameState());
+		packet.setMessageSection(message);
+		return packet;
+	}
+
+	// TODO send previous numbers.
+	public Packet createNextNumberPacket(int num)
+	{
+		Packet packet = PacketHandler.createPacket(null, 9, null);
+		JSONObject message = new JSONObject();
+		message.put("number", num);
+		message.put("previousNumbers", new JSONArray());
+		packet.setMessageSection(message);
+		return packet;
+	}
+
+	public void sendPacket(Packet packet)
 	{
 		for (User user : usersConnected)
 		{
-			PacketHandler.sendPacket(PacketHandler.createPacket(user.getClient(), id, mes), null);
+			packet.setClient(user.getClient());
+			PacketHandler.sendPacket(packet);
 		}
 	}
 
@@ -337,18 +394,18 @@ public class BingoGame
 		return usersConnected;
 	}
 
-	public String getGameState()
+	public int getGameState()
 	{
 		switch (state)
 		{
 			case LOBBY:
-				return "0";
+				return 0;
 			case PLAYING:
-				return "1";
+				return 1;
 			case ENDING:
-				return "2";
+				return 2;
 			default:
-				return "-1";
+				return -1;
 		}
 	}
 

@@ -3,6 +3,8 @@ package me.dylanmullen.bingo.net.handlers;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import org.json.simple.JSONObject;
+
 import me.dylanmullen.bingo.net.Client;
 import me.dylanmullen.bingo.net.Server;
 import me.dylanmullen.bingo.net.packet.PacketHandler;
@@ -69,12 +71,12 @@ public class ServerHandler
 		handleOutgoing(ticket);
 	}
 
-	public void handleIncoming(UUID uuid, Client client, String data)
+	public void handleIncoming(UUID uuid, Client client, JSONObject data)
 	{
 		if (uuid != null)
 		{
 			PacketTicket ticket = getTicket(uuid);
-			if (ticket != null )
+			if (ticket != null)
 			{
 				if(ticket.getCallback()!=null)
 					ticket.getCallback().callback();

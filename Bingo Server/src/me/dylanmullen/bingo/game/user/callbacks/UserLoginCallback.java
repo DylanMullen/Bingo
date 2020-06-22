@@ -3,12 +3,13 @@ package me.dylanmullen.bingo.game.user.callbacks;
 import java.sql.SQLException;
 import java.util.UUID;
 
+import org.json.simple.JSONObject;
+
 import me.dylanmullen.bingo.game.user.UserManager;
 import me.dylanmullen.bingo.mysql.callbacks.SQLCallback;
 import me.dylanmullen.bingo.net.Client;
+import me.dylanmullen.bingo.net.packet.Packet;
 import me.dylanmullen.bingo.net.packet.PacketHandler;
-import me.dylanmullen.bingo.net.packet.packets.Packet_005_Response;
-import me.dylanmullen.bingo.net.packet.packets.Packet_005_Response.ResponseType;
 
 public class UserLoginCallback extends SQLCallback
 {
@@ -35,9 +36,10 @@ public class UserLoginCallback extends SQLCallback
 		{
 			if (!result.isBeforeFirst())
 			{
-				Packet_005_Response res = (Packet_005_Response) PacketHandler.createPacket(client, 005, "");
-				res.constructMessage(ResponseType.FAILURE, "Invalid Username/Password", packetToRelay);
-				PacketHandler.sendPacket(res, null);
+				Packet packet = PacketHandler.createPacket(client, 5, null);
+				packet.setMessageSection(createInvalidMessage());
+				packet.setPacketUUID(packetToRelay);
+				PacketHandler.sendPacket(packet);
 				return;
 			}
 			result.next();
@@ -51,5 +53,14 @@ public class UserLoginCallback extends SQLCallback
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	private JSONObject createInvalidMessage()
+	{
+		JSONObject message = new JSONObject();
+		message.put("responseType", 500);
+		message.put("errorMessage", "Invalid Username/Password");
+		return message;
 	}
 }

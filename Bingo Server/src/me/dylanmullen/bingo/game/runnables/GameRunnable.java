@@ -19,7 +19,7 @@ public class GameRunnable implements Runnable
 	@Override
 	public void run()
 	{
-		game.sendPacket(10, game.getGameState());
+		game.sendPacket(game.createGamestatePacket());
 		long then = 0;
 		while (playing)
 		{
@@ -48,7 +48,7 @@ public class GameRunnable implements Runnable
 				playing = false;
 				continue;
 			}
-			game.sendPacket(9, num + "");
+			game.sendPacket(game.createNextNumberPacket(num));
 
 			paused = true;
 			if (game.checkWinners())

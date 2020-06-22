@@ -3,13 +3,14 @@ package me.dylanmullen.bingo.game.user;
 import java.sql.SQLException;
 import java.util.UUID;
 
+import org.json.simple.JSONObject;
+
 import me.dylanmullen.bingo.mysql.SQLFactory;
 import me.dylanmullen.bingo.mysql.callbacks.SQLCallback;
 import me.dylanmullen.bingo.mysql.sql_util.SQLTicket;
 import me.dylanmullen.bingo.net.Client;
+import me.dylanmullen.bingo.net.packet.Packet;
 import me.dylanmullen.bingo.net.packet.PacketHandler;
-import me.dylanmullen.bingo.net.packet.packets.Packet_005_Response;
-import me.dylanmullen.bingo.net.packet.packets.Packet_005_Response.ResponseType;
 
 public class UserInformation
 {
@@ -70,11 +71,24 @@ public class UserInformation
 
 	private void sendLoginPackets(Client client, UUID packetUUID)
 	{
-		Packet_005_Response res = (Packet_005_Response) PacketHandler.createPacket(client, 005, "");
-		String mes = uuid.toString() + "/nl/" + getDisplayName() + "/nl/" + getCredits() + "/nl/" + getWins() + "/nl/"
-				+ getLoses();
-		res.constructMessage(ResponseType.SUCCESS, mes, packetUUID);
-		PacketHandler.sendPacket(res, null);
+		Packet packet = PacketHandler.createPacket(client, 5, null);
+		
+		packet.setMessageSection(constructLoginMessage());
+		packet.setPacketUUID(packetUUID);
+		
+		PacketHandler.sendPacket(packet);
+	}
+	
+	@SuppressWarnings("unchecked")
+	private JSONObject constructLoginMessage()
+	{
+		JSONObject message = new JSONObject();
+		message.put("responseType", 200);
+		message.put("userUUID", uuid.toString());
+		message.put("userDisplayName", getDisplayName());
+		message.put("userCredits", getCredits());
+		message.put("userWins", getWins());
+		return message;
 	}
 
 	public String getDisplayName()

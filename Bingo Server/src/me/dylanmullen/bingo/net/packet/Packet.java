@@ -1,8 +1,9 @@
 package me.dylanmullen.bingo.net.packet;
 
 import java.net.DatagramPacket;
-import java.net.InetAddress;
 import java.util.UUID;
+
+import org.json.simple.JSONObject;
 
 import me.dylanmullen.bingo.net.Client;
 
@@ -11,86 +12,114 @@ public abstract class Packet
 
 	private int id;
 	private Client client;
-	private String data;
+	private JSONObject data;
 
-	private InetAddress address;
-	private int port;
-
-	public Packet(int id, Client c, String message, boolean format)
+	public Packet(int id, Client client, JSONObject object)
 	{
 		this.id = id;
-		this.client = c;
-		if(format)
-			setDataFormat(message);
+		this.client = client;
+		if (object != null)
+			this.data = object;
 		else
-			this.data=message;
+		{
+			this.data = constructDefaultPacket();
+		}
 	}
-	
+
 	public abstract void handle();
 
-	protected String getMessage()
+	protected JSONObject constructDefaultPacket()
 	{
-		String[] dataSplit = data.split(";");
-		return dataSplit[1].split("/m/|/m/")[1];
-	}
-	
-	protected UUID getUUID()
-	{
-		String[] dataSplit = data.split(";");
-		return UUID.fromString(dataSplit[2]);
-	}
-	
-	public DatagramPacket convert()
-	{
-		return new DatagramPacket(getDataAsByteArr(), getDataAsByteArr().length, client.getAddress(), client.getPort());
-	}
-	
-	public void setDataFormat(String message)
-	{
-		String temp = PacketHandler.PACKET_FORMAT;
-		temp = temp.replace("?id", getID());
-		temp = temp.replace("?message", message);
-		this.data = temp;
+		JSONObject information = new JSONObject();
+		set(information, "packetID", this.id);
+		set(information, "uuids", new JSONObject());
+
+		JSONObject data = new JSONObject();
+		set(data, "packetInformation", information);
+		set(data, "packetMessage", new JSONObject());
+		return data;
 	}
 
-	private String getID()
+	@SuppressWarnings("unchecked")
+	public void setMessageSection(JSONObject object)
 	{
-		String s = id + "";
-		switch (s.length())
-		{
-			case 1:
-				s = "00" + id;
-				break;
-			case 2:
-				s = "0" + id;
-				break;
-		}
-		return s;
+		data.put("packetMessage", object);
 	}
 
-	public void setTime()
+	public void setTimestamp()
 	{
-		data = data.replace("?time", System.currentTimeMillis() + "");
+		set(getSection(data, "packetInformation"), "timestamp", System.currentTimeMillis());
 	}
 
 	public void setPacketUUID(UUID uuid)
 	{
-		data = data.replace("?pu", uuid.toString());
+		if (getPacketUUID() != null)
+			set(getUUIDSection(), "packetUUID", uuid);
 	}
 
-	public String getData()
+	@SuppressWarnings("unchecked")
+	private void set(JSONObject object, String key, Object value)
 	{
-		return data;
+		object.put(key, value);
 	}
 
-	public byte[] getDataAsByteArr()
+	protected JSONObject getMessageSection()
 	{
-		return data.getBytes();
+		return (JSONObject) data.get("packetMessage");
 	}
 
-	public Client getClient()
+	protected JSONObject getUUIDSection()
+	{
+		return getSection(getSection(data, "packetInformation"), "uuids");
+	}
+
+	protected UUID getPacketUUID()
+	{
+		try
+		{
+			return UUID.fromString((String) getUUIDSection().get("packetUUID"));
+		} catch (NullPointerException e)
+		{
+			return null;
+		}
+	}
+
+	protected UUID getSenderUUID()
+	{
+		String uuid = (String) getUUIDSection().get("senderUUID");
+		if (uuid == null)
+			return null;
+		return UUID.fromString((String) getUUIDSection().get("senderUUID"));
+	}
+
+	protected long getTimestamp()
+	{
+		return (long) getSection(data, "packetInformation").get("timestamp");
+	}
+
+	protected JSONObject getSection(JSONObject object, String key)
+	{
+		return (JSONObject) object.get(key);
+	}
+
+	public int getID()
+	{
+		return id;
+	}
+
+	public Client getSender()
 	{
 		return client;
 	}
 
+	public DatagramPacket constructDatagramPacket()
+	{
+		return new DatagramPacket(toString().getBytes(), toString().getBytes().length, client.getAddress(),
+				client.getPort());
+	}
+
+	public void setClient(Client client)
+	{
+		this.client = client;
+	}
 }

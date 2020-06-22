@@ -26,10 +26,9 @@ public class ChatMessage
 		return message;
 	}
 
-	@Override
-	public String toString()
+	public long getTimeProduced()
 	{
-		return user.getUserInformation().getDisplayName() + "/nl/" + message;
+		return timeProduced;
 	}
 
 }

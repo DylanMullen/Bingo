@@ -1,8 +1,10 @@
 package me.dylanmullen.bingo.net.handlers;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import me.dylanmullen.bingo.net.Client;
+import me.dylanmullen.bingo.net.PacketTicket;
 import me.dylanmullen.bingo.net.packet.Packet;
 
 /**
@@ -81,6 +83,7 @@ public class ClientOutgoingHandler implements Runnable
 		{
 			packet.setTimestamp();
 			this.client.getSocket().send(packet.constructDatagramPacket(this.client));
+			System.out.println("sending");
 		} catch (Exception e)
 		{
 			System.out.println("Failed to send packet: " + e.getMessage());

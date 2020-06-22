@@ -1,8 +1,6 @@
 package me.dylanmullen.bingo.core;
 
-import java.util.UUID;
-
-import me.dylanmullen.bingo.net.packet.Packet;
+import me.dylanmullen.bingo.net.handlers.ClientHandler;
 
 /**
  * @author Dylan
@@ -19,9 +17,6 @@ public class Main
 	 */
 	public static void main(String[] args)
 	{
-		Packet packet = new Packet(1);
-		packet.setUserUUID(UUID.randomUUID());
-		packet.setTimestamp();
-		System.out.println(packet.toString());
+		new BingoApp();
 	}
 }

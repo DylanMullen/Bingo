@@ -3,20 +3,17 @@ package me.dylanmullen.bingo.game;
 import java.util.HashSet;
 import java.util.UUID;
 
+import org.json.simple.JSONObject;
+
 import me.dylanmullen.bingo.configs.ConfigManager;
 import me.dylanmullen.bingo.game.currency.CurrencyController;
 import me.dylanmullen.bingo.game.currency.InvalidAmountException;
 import me.dylanmullen.bingo.game.user.User;
+import me.dylanmullen.bingo.net.packet.Packet;
 import me.dylanmullen.bingo.net.packet.PacketHandler;
-import me.dylanmullen.bingo.net.packet.packets.Packet_005_Response;
-import me.dylanmullen.bingo.net.packet.packets.Packet_005_Response.ResponseType;
 
 public class GameController
 {
-
-	private static GameController instance;
-
-	private final int playerCap = 10;
 
 	private HashSet<BingoGame> games;
 
@@ -26,25 +23,33 @@ public class GameController
 		games = new HashSet<BingoGame>();
 	}
 
+	@SuppressWarnings("unchecked")
 	public void handleCardRequest(User u, UUID packetToRelay)
 	{
 		BingoGame game = u.getCurrentGame();
 		CardGroup cg = game.generateCardGroup(u);
-		Packet_005_Response res = (Packet_005_Response) PacketHandler.createPacket(u.getClient(), 005, "");
-		res.constructMessage(ResponseType.SUCCESS, cg.toString(), packetToRelay);
-		PacketHandler.sendPacket(res, null);
+		
+		Packet packet = PacketHandler.createPacket(u.getClient(), 5, null);
+		packet.setPacketUUID(packetToRelay);
+		JSONObject message = new JSONObject();
+		message.put("responseType", 200);
+		message.put("cards", cg.toString());
+		packet.setMessageSection(message);
+		PacketHandler.sendPacket(packet);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void purchaseCard(User u, UUID uuid, UUID packetToRelay)
 	{
 		BingoGame game = u.getCurrentGame();
+		Packet packet = PacketHandler.createPacket(u.getClient(), 5, null);
+		
 		try
 		{
 			CurrencyController.getController().deduct(u, game.getSettings().getTicketPrice());
 		} catch (InvalidAmountException e)
 		{
 			System.err.println(e.getMessage());
-			// TODO sent back not enough money
 			return;
 		}
 
@@ -54,10 +59,14 @@ public class GameController
 		game.getSettings().incrementPot();
 		if (cg.remove(card))
 			game.removeCardGroup(cg);
+		
+		JSONObject data = new JSONObject();
+		data.put("responseType", 200);
+		data.put("purchasedCard", uuid.toString());
+		packet.setMessageSection(data);
+		packet.setPacketUUID(packetToRelay);
 
-		Packet_005_Response res = (Packet_005_Response) PacketHandler.createPacket(u.getClient(), 005, "");
-		res.constructMessage(ResponseType.SUCCESS, uuid.toString(), packetToRelay);
-		PacketHandler.sendPacket(res, null);
+		PacketHandler.sendPacket(packet);
 
 	}
 
@@ -80,7 +89,7 @@ public class GameController
 	{
 		for (BingoGame game : games)
 		{
-			if (game.getPlayers().size() < playerCap)
+			if (game.getPlayers().size() < game.getSettings().getMaxPlayers())
 				return game;
 		}
 		return createNewGame();

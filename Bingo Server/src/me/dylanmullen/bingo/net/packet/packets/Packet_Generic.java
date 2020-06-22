@@ -6,13 +6,9 @@ import me.dylanmullen.bingo.net.packet.Packet;
 public class Packet_Generic extends Packet
 {
 
-	/*
-	 * 12 = LineStateChange
-	 * 13 = Send Winners
-	 */
-	public Packet_Generic(int id, Client c, String message)
+	public Packet_Generic(int id, Client c)
 	{
-		super(id, c, message, true);
+		super(id, c, null);
 	}
 
 	@Override

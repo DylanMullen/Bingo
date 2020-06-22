@@ -6,6 +6,7 @@ import java.util.UUID;
 import me.dylanmullen.bingo.net.Client;
 import me.dylanmullen.bingo.net.PacketHandler;
 import me.dylanmullen.bingo.net.PacketTicket;
+import me.dylanmullen.bingo.net.packet.Packet;
 import me.dylanmullen.bingo.net.runnables.PingTask;
 
 /**
@@ -46,6 +47,7 @@ public class ClientHandler
 
 		createClient(address, port);
 		createHandlers();
+		
 		createRunnables();
 	}
 

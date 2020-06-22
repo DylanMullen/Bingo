@@ -4,9 +4,12 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.util.UUID;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import me.dylanmullen.bingo.net.Client;
 import me.dylanmullen.bingo.net.Server;
-import me.dylanmullen.bingo.util.DebugUtils;
 
 public class IncomingHandler implements Runnable
 {
@@ -57,7 +60,10 @@ public class IncomingHandler implements Runnable
 			if (client == null)
 				return;
 
-			String decode = decodeData(dp.getData());
+			JSONObject decode = decodeData(dp.getData());
+			if (decode == null)
+				return;
+			
 			ServerHandler.getHandler().handleIncoming(getPacketUUID(decode), client, decode);
 		} catch (IOException e)
 		{
@@ -65,14 +71,30 @@ public class IncomingHandler implements Runnable
 		}
 	}
 
-	private String decodeData(byte[] data)
+	private JSONObject decodeData(byte[] data)
 	{
-		return new String(data);
+		String jsonString = new String(data).trim();
+		JSONParser parser = new JSONParser();
+		try
+		{
+			return (JSONObject) parser.parse(jsonString);
+		} catch (ParseException e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 
-	private UUID getPacketUUID(String s)
+	private UUID getPacketUUID(JSONObject object)
 	{
-		return UUID.fromString(s.split(";")[2]);
+		try
+		{
+			JSONObject uuids = (JSONObject) (((JSONObject) object.get("packetInformation")).get("uuids"));
+			return UUID.fromString((String) uuids.get("packetUUID"));
+		} catch (NullPointerException | IllegalArgumentException e)
+		{
+			return null;
+		}
 	}
 
 	public void end()

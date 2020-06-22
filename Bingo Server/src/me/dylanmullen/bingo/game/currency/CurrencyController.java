@@ -2,6 +2,8 @@ package me.dylanmullen.bingo.game.currency;
 
 import java.util.UUID;
 
+import org.json.simple.JSONObject;
+
 import me.dylanmullen.bingo.game.user.User;
 import me.dylanmullen.bingo.mysql.SQLFactory;
 import me.dylanmullen.bingo.mysql.sql_util.SQLTicket;
@@ -39,10 +41,16 @@ public class CurrencyController
 		updateMySQL(u.getUUID(), userCredits);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void sendPacket(Client client, double credits)
 	{
-		Packet packet = PacketHandler.createPacket(client, 15, "" + credits);
-		PacketHandler.sendPacket(packet, null);
+		Packet packet = PacketHandler.createPacket(client, 15, null);
+		
+		JSONObject message = new JSONObject();
+		message.put("credits", credits);
+		packet.setMessageSection(message);
+		
+		PacketHandler.sendPacket(packet);
 	}
 
 	private void updateMySQL(UUID uuid, double credits)

@@ -1,24 +1,34 @@
 package me.dylanmullen.bingo.net.packet.packets;
 
+import org.json.simple.JSONObject;
+
 import me.dylanmullen.bingo.net.Client;
 import me.dylanmullen.bingo.net.packet.Packet;
 import me.dylanmullen.bingo.net.packet.PacketHandler;
-import me.dylanmullen.bingo.net.packet.packets.Packet_005_Response.ResponseType;
 
 public class Packet_004_Ping extends Packet
 {
 
-	public Packet_004_Ping(int id, Client c, String message)
+	public Packet_004_Ping(Client c, JSONObject message)
 	{
-		super(id, c, message, false);
+		super(4, c, message);
 	}
 
 	@Override
 	public void handle()
 	{
-		Packet_005_Response res = (Packet_005_Response) PacketHandler.createPacket(getClient(), 5, "PONG");
-		res.constructMessage(ResponseType.SUCCESS, "Pong", getUUID());
-		PacketHandler.sendPacket(res, null);
+		Packet packet = PacketHandler.createPacket(getSender(), 5, null);
+		packet.setMessageSection(constructMessage());
+		packet.setPacketUUID(getPacketUUID());
+		PacketHandler.sendPacket(packet);
+	}
+
+	@SuppressWarnings("unchecked")
+	private JSONObject constructMessage()
+	{
+		JSONObject message = new JSONObject();
+		message.put("responseType", 200);
+		return message;
 	}
 
 }

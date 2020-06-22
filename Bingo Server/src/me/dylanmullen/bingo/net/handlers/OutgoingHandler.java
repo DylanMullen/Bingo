@@ -65,8 +65,8 @@ public class OutgoingHandler implements Runnable
 	{
 		try
 		{
-			packet.setTime();
-			server.getServer().send(packet.convert());
+			packet.setTimestamp();
+			server.getServer().send(packet.constructDatagramPacket());
 		} catch (IOException e)
 		{
 			System.err.println("Failed to send packet: " + e.getMessage());
