@@ -5,10 +5,13 @@ import java.util.UUID;
 
 import org.json.simple.JSONObject;
 
+import me.dylanmullen.bingo.configs.Config;
 import me.dylanmullen.bingo.configs.ConfigManager;
+import me.dylanmullen.bingo.game.cards.BingoCardGroup;
 import me.dylanmullen.bingo.game.currency.CurrencyController;
 import me.dylanmullen.bingo.game.currency.InvalidAmountException;
-import me.dylanmullen.bingo.game.droplet.BingoGame;
+import me.dylanmullen.bingo.game.droplet.BingoCloud;
+import me.dylanmullen.bingo.game.droplet.BingoDroplet;
 import me.dylanmullen.bingo.game.user.User;
 import me.dylanmullen.bingo.net.packet.Packet;
 import me.dylanmullen.bingo.net.packet.PacketHandler;
@@ -16,91 +19,101 @@ import me.dylanmullen.bingo.net.packet.PacketHandler;
 public class GameController
 {
 
-	private HashSet<BingoGame> games;
+	private HashSet<BingoCloud> bingoGames;
 
 	public GameController()
 	{
 		ConfigManager.getInstance().loadBingoFiles();
-		games = new HashSet<BingoGame>();
+		bingoGames = new HashSet<>();
+		setup();
 	}
 
-	@SuppressWarnings("unchecked")
-	public void handleCardRequest(User u, UUID packetToRelay)
+	private void setup()
 	{
-		BingoGame game = u.getCurrentGame();
-		CardGroup cg = game.generateCardGroup(u);
-		
-		Packet packet = PacketHandler.createPacket(u.getClient(), 5, null);
-		packet.setPacketUUID(packetToRelay);
+		for (Config cfg : ConfigManager.getInstance().getBingoConfigs())
+		{
+			BingoCloud cloud = new BingoCloud(new GameSettings(cfg));
+			bingoGames.add(cloud);
+		}
+	}
+
+	public void connectUser(User user, UUID cloudUUID, UUID packetToRelay)
+	{
+		BingoCloud cloud = getBingoCloud(cloudUUID);
+		Packet packet = PacketHandler.createPacket(user.getClient(), 5, null);
 		JSONObject message = new JSONObject();
-		message.put("responseType", 200);
-		message.put("cards", cg.toString());
 		packet.setMessageSection(message);
+		packet.setPacketUUID(packetToRelay);
+		if (cloud == null)
+			return;
+
+		BingoDroplet droplet = cloud.placeUser(user);
+		if (droplet == null)
+			return; // TODO already connected to that cloud.
+
+		message.put("dropletUUID", droplet.getUUID().toString());
+		message.put("gameState", droplet.getGameState().getStateCode());
+
 		PacketHandler.sendPacket(packet);
 	}
 
-	@SuppressWarnings("unchecked")
-	public void purchaseCard(User u, UUID uuid, UUID packetToRelay)
+	public void handleCardRequest(User user, UUID dropletUUID, UUID packetToRelay)
 	{
-		BingoGame game = u.getCurrentGame();
-		Packet packet = PacketHandler.createPacket(u.getClient(), 5, null);
-		
+		BingoDroplet droplet = user.getDropletByUUID(dropletUUID);
+		if (droplet == null)
+			return; // TODO not in droplet;
+
+		BingoCardGroup cardGroup = droplet.generateCards(user);
+		JSONObject message = new JSONObject();
+		message.put("responseType", 200);
+		message.put("cards", cardGroup.getCardsJSON());
+
+		Packet packet = PacketHandler.createPacket(user.getClient(), 5, null);
+		packet.setMessageSection(message);
+		packet.setPacketUUID(packetToRelay);
+		PacketHandler.sendPacket(packet);
+	}
+
+	public void handlePurchaseCardRequest(User user, UUID dropletUUID, UUID card, UUID packetToRelay)
+	{
+		BingoDroplet droplet = user.getDropletByUUID(dropletUUID);
+		Packet packet = PacketHandler.createPacket(user.getClient(), 5, null);
+		JSONObject message = new JSONObject();
+		packet.setMessageSection(message);
+		packet.setPacketUUID(packetToRelay);
+
+		if (droplet == null)
+			return; // TODO not in droplet;
+
 		try
 		{
-			CurrencyController.getController().deduct(u, game.getSettings().getTicketPrice());
+			CurrencyController.getController().deduct(user, droplet.getSettings().getTicketPrice());
 		} catch (InvalidAmountException e)
 		{
 			System.err.println(e.getMessage());
 			return;
 		}
 
-		CardGroup cg = game.getCardGroup(u);
-		BingoCards card = cg.getCard(uuid);
-		game.addCard(u, card);
-		game.getSettings().incrementPot();
-		if (cg.remove(card))
-			game.removeCardGroup(cg);
-		
-		JSONObject data = new JSONObject();
-		data.put("responseType", 200);
-		data.put("purchasedCard", uuid.toString());
-		packet.setMessageSection(data);
-		packet.setPacketUUID(packetToRelay);
+		BingoCardGroup cards = droplet.getCards(user);
+		cards.getCard(card).setPurchased(true);
+		droplet.getSettings().incrementPot();
 
+		message.put("responseType", 200);
+		message.put("purchasedCard", cards.getCard(card).getUUID().toString());
 		PacketHandler.sendPacket(packet);
-
 	}
 
-	public void submitChatMessage(User u, String message)
+	public void handleChatMessage(User user, UUID dropletUUID, String message)
 	{
-		BingoGame game = u.getCurrentGame();
-	}
-	
-	
-	public BingoGame placeUser(User u)
-	{
-		if (u.getCurrentGame() != null)
-			return null;
-		BingoGame game = getGame();
-		game.addPlayer(u);
-		return game;
+		// TODO
 	}
 
-	private BingoGame getGame()
+	public BingoCloud getBingoCloud(UUID cloudUUID)
 	{
-		for (BingoGame game : games)
-		{
-			if (game.getPlayers().size() < game.getSettings().getMaxPlayers())
-				return game;
-		}
-		return createNewGame();
-	}
-
-	private BingoGame createNewGame()
-	{
-		BingoGame game = new BingoGame(new GameSettings(ConfigManager.getInstance().getBingoConfig(0)));
-		games.add(game);
-		return game;
+		for (BingoCloud cloud : bingoGames)
+			if (cloud.getUUID().toString().equalsIgnoreCase(cloudUUID.toString()))
+				return cloud;
+		return null;
 	}
 
 }

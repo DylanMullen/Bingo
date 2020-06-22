@@ -435,5 +435,10 @@ public class BingoDroplet
 	{
 		return uuid;
 	}
+	
+	public GameState getGameState()
+	{
+		return dropletState;
+	}
 
 }

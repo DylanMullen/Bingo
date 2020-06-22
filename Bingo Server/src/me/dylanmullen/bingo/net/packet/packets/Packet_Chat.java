@@ -1,7 +1,10 @@
 package me.dylanmullen.bingo.net.packet.packets;
 
+import java.util.UUID;
+
 import org.json.simple.JSONObject;
 
+import me.dylanmullen.bingo.core.BingoServer;
 import me.dylanmullen.bingo.game.user.User;
 import me.dylanmullen.bingo.game.user.UserManager;
 import me.dylanmullen.bingo.net.Client;
@@ -18,11 +21,11 @@ public class Packet_Chat extends Packet
 	@Override
 	public void handle()
 	{
-		User user = UserManager.getInstance().getUser(getSender());
-		String message = (String) getMessageSection().get("chatMessage");
+		User user = UserManager.getInstance().getUser(getSenderUUID());
 		
-		if (user.getCurrentGame() != null)
-			user.getCurrentGame().submitChatMessage(user, message);
+		UUID dropletUUID = UUID.fromString((String) getMessageSection().get("dropletUUID"));
+		String message = (String) getMessageSection().get("chatMessage");
+		BingoServer.getInstance().getGame().handleChatMessage(user, dropletUUID, message);
 	}
 
 }

@@ -57,20 +57,24 @@ public class UserManager
 		}
 	}
 
-	public User getUser(UUID uuid)
-	{
-		for (User u : users)
-			if (u.getUUID().equals(uuid))
-				return u;
-		return null;
-	}
-
+	@Deprecated
 	public User getUser(Client client)
 	{
 		synchronized (users)
 		{
 			for (User u : users)
 				if (u.getClient().equals(client))
+					return u;
+			return null;
+		}
+	}
+
+	public User getUser(UUID client)
+	{
+		synchronized (users)
+		{
+			for (User u : users)
+				if (u.getUUID().toString().equalsIgnoreCase(client.toString()))
 					return u;
 			return null;
 		}

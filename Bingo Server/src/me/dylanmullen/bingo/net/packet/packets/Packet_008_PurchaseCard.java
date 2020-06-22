@@ -22,10 +22,12 @@ public class Packet_008_PurchaseCard extends Packet
 	@Override
 	public void handle()
 	{
-		User u = UserManager.getInstance().getUser(getSender());
+		User u = UserManager.getInstance().getUser(getSenderUUID());
 
+		UUID dropletUUID = UUID.fromString((String) getMessageSection().get("dropletUUID"));
 		UUID uuid = UUID.fromString((String) getMessageSection().get("cardUUID"));
-		BingoServer.getInstance().getGame().purchaseCard(u, uuid, getPacketUUID());
+		
+		BingoServer.getInstance().getGame().handlePurchaseCardRequest(u, dropletUUID, uuid, getPacketUUID());
 	}
 
 }

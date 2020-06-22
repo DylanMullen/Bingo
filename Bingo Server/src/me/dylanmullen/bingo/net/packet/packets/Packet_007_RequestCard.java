@@ -1,5 +1,7 @@
 package me.dylanmullen.bingo.net.packet.packets;
 
+import java.util.UUID;
+
 import org.json.simple.JSONObject;
 
 import me.dylanmullen.bingo.core.BingoServer;
@@ -19,8 +21,9 @@ public class Packet_007_RequestCard extends Packet
 	@Override
 	public void handle()
 	{
-		User user = UserManager.getInstance().getUser(getSender());
-		BingoServer.getInstance().getGame().handleCardRequest(user, getPacketUUID());
+		User user = UserManager.getInstance().getUser(getSenderUUID());
+		UUID dropletUUID = UUID.fromString((String) getMessageSection().get("dropletUUID"));
+		BingoServer.getInstance().getGame().handleCardRequest(user, dropletUUID, getPacketUUID());
 	}
 
 }

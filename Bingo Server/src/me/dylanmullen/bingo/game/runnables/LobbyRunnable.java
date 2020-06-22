@@ -1,7 +1,6 @@
 package me.dylanmullen.bingo.game.runnables;
 
 import me.dylanmullen.bingo.game.droplet.BingoDroplet;
-import me.dylanmullen.bingo.game.droplet.BingoGame;
 
 public class LobbyRunnable implements Runnable
 {

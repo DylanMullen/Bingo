@@ -55,7 +55,7 @@ public class ConfigManager
 			bingoConfigs.add(new Config(file.getName(), ConfigType.BINGO, file));
 		}
 	}
-
+	
 	/**
 	 * @param name Config File Name
 	 * @return Returns the config file identified by the name
@@ -71,6 +71,11 @@ public class ConfigManager
 	public Config getBingoConfig(int i)
 	{
 		return bingoConfigs.get(i);
+	}
+	
+	public List<Config> getBingoConfigs()
+	{
+		return bingoConfigs;
 	}
 
 }
