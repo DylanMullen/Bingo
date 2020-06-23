@@ -26,9 +26,9 @@ public class GamePanel extends Panel
 	 * This panel is the container for all the components to visually show the Bingo
 	 * Game.
 	 * 
-	 * @param x X-Position of the Panel.
-	 * @param y Y-Position of the Panel.
-	 * @param width The width of the Panel.
+	 * @param x      X-Position of the Panel.
+	 * @param y      Y-Position of the Panel.
+	 * @param width  The width of the Panel.
 	 * @param height The height of the Panel.
 	 */
 	public GamePanel(int x, int y, int width, int height)
@@ -68,24 +68,27 @@ public class GamePanel extends Panel
 
 	/**
 	 * Returns the Game Component of the Panel.
+	 * 
 	 * @return {@link #gameComponent}
 	 */
 	public GameComponent getGameComponent()
 	{
 		return this.gameComponent;
 	}
-	
+
 	/**
 	 * Returns the Header Component of the Panel.
+	 * 
 	 * @return {@link #headerComponent}
 	 */
 	public HeaderPanel getHeaderComponent()
 	{
 		return this.headerComponent;
 	}
-	
+
 	/**
 	 * Returns the Chat Component of the Panel
+	 * 
 	 * @return {@link #chatComponent}
 	 */
 	public ChatPanel getChatComponent()

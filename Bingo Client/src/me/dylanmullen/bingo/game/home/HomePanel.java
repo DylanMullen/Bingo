@@ -28,7 +28,7 @@ public class HomePanel extends Panel
 	private BingoWindow bingoWindow;
 
 	private static HomePanel instance;
-	private List<GameSelector> gameSelectors;
+	private List<CloudSelector> gameSelectors;
 	private Grid grid;
 
 	private int minHeight;
@@ -51,7 +51,7 @@ public class HomePanel extends Panel
 			HomePanel.instance = this;
 		this.bingoWindow = bingoWindow;
 		setup();
-//		sendCloudRetrivalPacket();
+		sendCloudRetrivalPacket();
 	}
 
 	private void sendCloudRetrivalPacket()
@@ -64,7 +64,7 @@ public class HomePanel extends Panel
 			{
 				for (Object key : getMessage().keySet())
 				{
-					GameSelector selector = new GameSelector(0, 0, width, 0);
+					CloudSelector selector = new CloudSelector(0, 0, width, 0);
 					selector.setupInformation(UUID.fromString((String) key), (JSONObject) getMessage().get(key));
 					gameSelectors.add(selector);
 				}
@@ -110,7 +110,7 @@ public class HomePanel extends Panel
 	{
 		for (int i = 0; i < gameSelectors.size(); i++)
 		{
-			GameSelector selector = gameSelectors.get(i);
+			CloudSelector selector = gameSelectors.get(i);
 			int temp = i + 1;
 			int row = temp / 3;
 			if (temp % 3 == 0 && temp != 0)
@@ -122,7 +122,7 @@ public class HomePanel extends Panel
 		int yPos = -1;
 		for (int i = 0; i < gameSelectors.size(); i++)
 		{
-			GameSelector gs = gameSelectors.get(i);
+			CloudSelector gs = gameSelectors.get(i);
 			gs.create();
 			if (i == gameSelectors.size() - 1)
 				yPos = gs.getY() + gs.getHeight() + 25;

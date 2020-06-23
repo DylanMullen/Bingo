@@ -10,7 +10,8 @@ public class CardRequestCallback extends PacketCallback
 	@Override
 	public boolean callback()
 	{
-		if(getResponseType()==200)
+		System.out.println("Recieved a callback");
+		if (getResponseType() == 200)
 			EventHandler.getHandler().fire(new CardsRecievedEvent(getDropletUUID(), getMessage()));
 		return false;
 	}

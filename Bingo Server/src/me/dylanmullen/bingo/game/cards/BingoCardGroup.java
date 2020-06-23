@@ -53,6 +53,7 @@ public class BingoCardGroup
 		{
 			BingoCard card = new BingoCard(owner, generator.getType());
 			card.generate(generator);
+			cards.add(card);
 		}
 	}
 

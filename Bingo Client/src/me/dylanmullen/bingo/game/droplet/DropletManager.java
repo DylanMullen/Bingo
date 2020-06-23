@@ -1,6 +1,7 @@
 package me.dylanmullen.bingo.game.droplet;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -13,6 +14,7 @@ import me.dylanmullen.bingo.events.events.droplet.ChatMessageEvent;
 import me.dylanmullen.bingo.events.events.droplet.DropletJoinEvent;
 import me.dylanmullen.bingo.events.events.droplet.DropletRestartEvent;
 import me.dylanmullen.bingo.events.events.droplet.DropletStartingEvent;
+import me.dylanmullen.bingo.events.events.droplet.DropletsRetrievedEvent;
 import me.dylanmullen.bingo.events.events.droplet.GameStateChangeEvent;
 import me.dylanmullen.bingo.events.events.droplet.LineStateChangeEvent;
 import me.dylanmullen.bingo.events.events.droplet.NextNumberChangeEvent;
@@ -20,6 +22,7 @@ import me.dylanmullen.bingo.events.events.droplet.RecieveWinnerEvent;
 import me.dylanmullen.bingo.events.events.droplet.cardevents.CardPurchasedEvent;
 import me.dylanmullen.bingo.events.events.droplet.cardevents.CardsRecievedEvent;
 import me.dylanmullen.bingo.game.GamePanel;
+import me.dylanmullen.bingo.window.bingo.BingoWindow;
 
 public class DropletManager implements EventListener
 {
@@ -27,8 +30,18 @@ public class DropletManager implements EventListener
 	private BingoDroplet activeDroplet;
 	private Set<BingoDroplet> droplets;
 
+	private static DropletManager manager;
+
+	public static DropletManager getManager()
+	{
+		if (manager == null)
+			manager = new DropletManager();
+		return manager;
+	}
+
 	public DropletManager()
 	{
+		this.droplets = new HashSet<BingoDroplet>();
 		registerListener();
 	}
 
@@ -45,6 +58,7 @@ public class DropletManager implements EventListener
 		events.add(DropletJoinEvent.class);
 		events.add(CardPurchasedEvent.class);
 		events.add(CardsRecievedEvent.class);
+		events.add(DropletsRetrievedEvent.class);
 		EventHandler.getHandler().registerListener(this, events);
 	}
 
@@ -55,8 +69,16 @@ public class DropletManager implements EventListener
 			return;
 
 		BingoDroplet droplet = getDroplet(((DropletEvent) event).getDropletUUID());
+
 		if (droplet == null)
+		{
+			if (event instanceof DropletJoinEvent)
+			{
+				joinDroplet(((DropletJoinEvent) event).getDropletUUID(), ((DropletJoinEvent) event).getNewState());
+			}
+			System.out.println("Droplet null");
 			return;
+		}
 
 		if (event instanceof NextNumberChangeEvent)
 		{
@@ -85,16 +107,15 @@ public class DropletManager implements EventListener
 		} else if (event instanceof ChatMessageEvent)
 		{
 
-		} else if (event instanceof DropletJoinEvent)
-		{
-
 		} else if (event instanceof CardPurchasedEvent)
 		{
 			droplet.setCardPuchased(((CardPurchasedEvent) event).getCardUUID());
 			return;
 		} else if (event instanceof CardsRecievedEvent)
 		{
-
+			System.out.println("reached here");
+			droplet.getGamePanel().getGameComponent().createCardGroup(((CardsRecievedEvent) event).getCards());
+			return;
 		}
 	}
 
@@ -104,6 +125,10 @@ public class DropletManager implements EventListener
 		setActiveDroplet(droplet);
 		this.droplets.add(droplet);
 		// TODO set the droplet in the container
+		BingoWindow.getWindow().showDroplet(droplet);
+
+		if (droplet.getGameState() == GameState.LOBBY)
+			droplet.requestCards();
 	}
 
 	public void switchDroplet(UUID uuid)

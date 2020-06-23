@@ -23,7 +23,8 @@ public class Packet_006_JoinGame extends Packet
 	{
 		User user = UserManager.getInstance().getUser(getSenderUUID());
 		UUID cloudUUID = UUID.fromString((String) getMessageSection().get("cloudUUID"));
-		
-		BingoServer.getInstance().getGame().connectUser(user, cloudUUID, getPacketUUID());
+		UUID dropletUUID = UUID.fromString((String) getMessageSection().get("dropletUUID"));
+
+		BingoServer.getInstance().getGame().connectUser(user, cloudUUID, dropletUUID, getPacketUUID());
 	}
 }

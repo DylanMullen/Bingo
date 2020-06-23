@@ -15,7 +15,7 @@ import javax.swing.JComponent;
 
 import org.json.simple.JSONObject;
 
-import me.dylanmullen.bingo.game.components.listeners.JoinButtonListener;
+import me.dylanmullen.bingo.game.components.listeners.JoinCloudListener;
 import me.dylanmullen.bingo.util.FontUtil;
 import me.dylanmullen.bingo.window.ui.RoundedButton;
 import me.dylanmullen.bingo.window.ui.UIColour;
@@ -25,7 +25,7 @@ import me.dylanmullen.bingo.window.ui.UIColour;
  * @date 17 Jun 2020
  * @project Bingo Client
  */
-public class GameSelector extends JComponent
+public class CloudSelector extends JComponent
 {
 
 	private static final long serialVersionUID = 8498585054592414908L;
@@ -56,7 +56,7 @@ public class GameSelector extends JComponent
 	 * @param width  The width of the Game Selector.
 	 * @param height The height of the Game Selector.
 	 */
-	public GameSelector(int x, int y, int width, int height)
+	public CloudSelector(int x, int y, int width, int height)
 	{
 		setBounds(x, y, width, height);
 		setLayout(null);
@@ -91,7 +91,7 @@ public class GameSelector extends JComponent
 				UIColour.BINGO_BALL_4);
 		getJoinButton().setBounds(this.OFFSET * 2, this.OFFSET + this.GAP * 2 + this.bannerHeight,
 				getWidth() - (this.OFFSET * 4), this.buttonHeight);
-		getJoinButton().addMouseListener(new JoinButtonListener(this.uuid));
+		getJoinButton().addMouseListener(new JoinCloudListener(this.uuid));
 	}
 
 	/**

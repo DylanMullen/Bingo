@@ -13,6 +13,7 @@ import me.dylanmullen.bingo.net.packet.packets.Packet_008_PurchaseCard;
 import me.dylanmullen.bingo.net.packet.packets.Packet_Chat;
 import me.dylanmullen.bingo.net.packet.packets.Packet_Generic;
 import me.dylanmullen.bingo.net.packet.packets.Packet_RetrieveClouds;
+import me.dylanmullen.bingo.net.packet.packets.Packet_RetrieveDroplets;
 
 public class PacketHandler
 {
@@ -50,6 +51,8 @@ public class PacketHandler
 				return new Packet_Chat(c, packetData);
 			case RETRIEVE_CLOUDS:
 				return new Packet_RetrieveClouds(c, packetData);
+			case RETRIEVE_DROPLETS:
+				return new Packet_RetrieveDroplets(c, packetData);
 			default:
 				return new Packet_Generic(id, c);
 		}

@@ -1,15 +1,18 @@
 package me.dylanmullen.bingo.window.bingo;
 
-import java.awt.Dimension;
+import java.util.UUID;
 
-import javax.swing.JComponent;
-import javax.swing.JScrollPane;
 import javax.swing.UIManager;
+
+import org.json.simple.JSONObject;
 
 import me.dylanmullen.bingo.events.EventHandler;
 import me.dylanmullen.bingo.events.events.user.UserInformationChangeEvent;
+import me.dylanmullen.bingo.game.GamePanel;
 import me.dylanmullen.bingo.game.UserInformation;
 import me.dylanmullen.bingo.game.droplet.BingoCloud;
+import me.dylanmullen.bingo.game.droplet.BingoDroplet;
+import me.dylanmullen.bingo.game.droplet.DropletManager;
 import me.dylanmullen.bingo.game.home.HomePanel;
 import me.dylanmullen.bingo.window.Window;
 import me.dylanmullen.bingo.window.bingo.panels.sidemenu.SideMenu;
@@ -25,14 +28,19 @@ public class BingoWindow extends Window
 
 	private static final long serialVersionUID = 2893540627273369010L;
 
+	private static BingoWindow window;
+
+	public static BingoWindow getWindow()
+	{
+		return window;
+	}
+
 	private TopMenu topMenu;
 	private SideMenu sideBar;
 
-	private JComponent currentPanel;
+	private Container container;
 
-	private JScrollPane scrollHomePanel;
 	private HomePanel home;
-
 	private UserInformation userInfo;
 
 	/**
@@ -45,13 +53,19 @@ public class BingoWindow extends Window
 	public BingoWindow(UserInformationChangeEvent infoEvent)
 	{
 		super("Bingo Window");
+		DropletManager.getManager();
+		if (window == null)
+			window = this;
 		this.userInfo = new UserInformation();
 		setUndecorated(true);
 		showEssentials();
 		if (infoEvent != null)
 			EventHandler.getHandler().fire(infoEvent);
-//		showHomePanel();
-		showBingoCloud();
+		this.container = new Container(getSideBar().getWidth(), getTopMenu().getHeight(),
+				getWidth() - getSideBar().getWidth(), getHeight() - getTopMenu().getHeight());
+		add(container);
+		showHomePanel();
+//		showBingoCloud();
 	}
 
 	/**
@@ -80,17 +94,6 @@ public class BingoWindow extends Window
 	 */
 	public void showHomePanel()
 	{
-		hideCurrentPanel();
-
-		if (getScrollHomePanel() == null)
-		{
-			this.scrollHomePanel = new JScrollPane();
-			getScrollHomePanel().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-			getScrollHomePanel().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-			getScrollHomePanel().setPreferredSize(new Dimension(getWidth() / 4 * 3, getHeight() / 10 * 9));
-			getScrollHomePanel().setBounds(getWidth() / 4, getHeight() / 10, getWidth() / 4 * 3, getHeight() / 10 * 9);
-			getScrollHomePanel().setBorder(null);
-		}
 		if (getHomePanel() == null)
 		{
 			this.home = new HomePanel(this, getWidth() / 4, getHeight() / 10,
@@ -98,31 +101,24 @@ public class BingoWindow extends Window
 					getHeight() - topMenu.getHeight());
 		}
 
-		getScrollHomePanel().setViewportView(getHomePanel());
 		getSideBar().getHomeButton().setActive(true);
-
-		setCurrentViewPanel(getScrollHomePanel());
-		getContentPanel().add(getScrollHomePanel());
+		container.setScrollCurrentPanel(getHomePanel());
 	}
 
-	public void showBingoCloud()
+	public void showBingoCloud(UUID cloudUUID, JSONObject object)
 	{
-		if (getScrollHomePanel() == null)
-		{
-			this.scrollHomePanel = new JScrollPane();
-			getScrollHomePanel().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-			getScrollHomePanel().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-			getScrollHomePanel().setPreferredSize(new Dimension(getWidth() / 4 * 3, getHeight() / 10 * 9));
-			getScrollHomePanel().setBounds(getWidth() / 4, getHeight() / 10, getWidth() / 4 * 3, getHeight() / 10 * 9);
-			getScrollHomePanel().setBorder(null);
-		}
+		BingoCloud cloud = new BingoCloud(cloudUUID, object, container.getWidth(), container.getHeight());
+		container.setScrollCurrentPanel(cloud);
+	}
 
-		BingoCloud cloud = new BingoCloud(getWidth() / 4, getHeight() / 10,
-				(getWidth() / 4 * 3) - ((Integer) UIManager.get("ScrollBar.width")).intValue(),
-				getHeight() - topMenu.getHeight());
-		cloud.repaint();
-		this.scrollHomePanel.setViewportView(cloud);
-		add(getScrollHomePanel());
+	public void showDroplet(BingoDroplet droplet)
+	{
+		GamePanel panel = droplet.getGamePanel();
+		panel.setBounds(0, 0, container.getWidth(), container.getHeight());
+		panel.setup();
+		panel.create();
+		panel.repaint();
+		container.setCurrentPanel(panel);
 	}
 
 	/**
@@ -130,22 +126,8 @@ public class BingoWindow extends Window
 	 */
 	public void hideHomePanel()
 	{
-		getContentPanel().remove(getScrollHomePanel());
 		getSideBar().getHomeButton().setActive(false);
-	}
-
-	/**
-	 * Hides the current Panel being viewed.<br>
-	 * If this value is null, it returns and does nothing.
-	 */
-	public void hideCurrentPanel()
-	{
-		if (getCurrentPanel() == null)
-			return;
-
-		if (getCurrentPanel() instanceof JScrollPane)
-			hideHomePanel();
-		getContentPanel().repaint();
+		container.removeCurrent();
 	}
 
 	/**
@@ -173,22 +155,6 @@ public class BingoWindow extends Window
 	}
 
 	/**
-	 * @return Returns the scrolling pane for the Home Panel.
-	 */
-	public JScrollPane getScrollHomePanel()
-	{
-		return this.scrollHomePanel;
-	}
-
-	/**
-	 * @return Returns the current panel being viewed to the Player.
-	 */
-	public JComponent getCurrentPanel()
-	{
-		return this.currentPanel;
-	}
-
-	/**
 	 * @return Returns the User Information that was retrieved from the Bingo
 	 *         Server.
 	 */
@@ -197,13 +163,4 @@ public class BingoWindow extends Window
 		return this.userInfo;
 	}
 
-	/**
-	 * Updates the current viewing panel to the latests one.
-	 * 
-	 * @param currentPanel The panel to show.
-	 */
-	public void setCurrentViewPanel(JComponent currentPanel)
-	{
-		this.currentPanel = currentPanel;
-	}
 }

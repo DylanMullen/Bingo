@@ -1,16 +1,11 @@
 package me.dylanmullen.bingo.game.cards;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
-import me.dylanmullen.bingo.game.callbacks.CardRequestCallback;
 import me.dylanmullen.bingo.game.components.listeners.BingoCardListener;
-import me.dylanmullen.bingo.net.PacketHandler;
 import me.dylanmullen.bingo.window.ui.Panel;
 
 /**
@@ -23,7 +18,7 @@ public class BingoCardContainer extends Panel
 
 	private static final long serialVersionUID = -2951295854163796573L;
 
-	private BingoCard[] cards;
+	private List<BingoCard> cards;
 
 	/**
 	 * This is the Bingo Card Container.<br>
@@ -38,8 +33,22 @@ public class BingoCardContainer extends Panel
 	public BingoCardContainer(int x, int y, int width, int height)
 	{
 		super(x, y, width, height);
-		this.cards = new BingoCard[3];
-		setOpaque(false);
+	}
+
+	public void createCards(List<CardInformation> information)
+	{
+		System.out.println("adding cards: " + information.size());
+		for (int i = 0; i < information.size(); i++)
+		{
+			CardInformation info = information.get(i);
+			BingoCard card = new BingoCard(25, getCardIndentY(i), (getWidth() - 50), getCardHeight(), info);
+			card.addMouseListener(new BingoCardListener(this));
+			cards.add(card);
+			card.repaint();
+			add(card);
+			System.out.println("adding cards");
+		}
+		repaint();
 	}
 
 	@Override
@@ -49,12 +58,8 @@ public class BingoCardContainer extends Panel
 		setLayout(null);
 		setBackground(Color.WHITE);
 
-		for (int i = 0; i < getCards().length; i++)
-		{
-			getCards()[i] = new BingoCard(25, getCardIndentY(i), (getWidth() - 50), getCardHeight());
-			getCards()[i].addMouseListener(new BingoCardListener(this));
-			add(getCards()[i]);
-		}
+		this.cards = new ArrayList<BingoCard>();
+		setOpaque(false);
 	}
 
 	/**
@@ -89,15 +94,12 @@ public class BingoCardContainer extends Panel
 		int index = 0;
 		for (int i = 1; i < newCards.size(); i++)
 		{
-			if (index > getCards().length)
+			if (index > getCards().size())
 				break;
-			if (getCards()[index] == null)
-				break;
-
-			getCards()[index].updateCardInformation(newCards.get(i));
-			getCards()[index].setVisible(true);
-			getCards()[index].setY(getCardIndentY(index));
-			getCards()[index].repaint();
+			getCards().get(index).updateCardInformation(newCards.get(i));
+			getCards().get(index).setVisible(true);
+			getCards().get(index).setY(getCardIndentY(index));
+			getCards().get(index).repaint();
 			index++;
 		}
 	}
@@ -112,7 +114,7 @@ public class BingoCardContainer extends Panel
 	{
 		if (purchasedCards == null)
 			return;
-		
+
 		for (int i = 0; i < purchasedCards.size(); i++)
 		{
 			UUID uuid = purchasedCards.get(i);
@@ -195,18 +197,8 @@ public class BingoCardContainer extends Panel
 	 */
 	public void disableSelectors()
 	{
-		for (int i = 0; i < getCards().length; i++)
-		{
-			getCards()[i].hidePurchaseOverlay();
-		}
-	}
-
-	/**
-	 * Request Bingo Cards from the server.
-	 */
-	public void requestBingoCards()
-	{
-		PacketHandler.sendPacket(PacketHandler.createPacket(7, new JSONObject()), new CardRequestCallback());
+		for (BingoCard card : cards)
+			card.hidePurchaseOverlay();
 	}
 
 	/**
@@ -214,7 +206,7 @@ public class BingoCardContainer extends Panel
 	 * 
 	 * @return {@link #cards}
 	 */
-	public BingoCard[] getCards()
+	public List<BingoCard> getCards()
 	{
 		return this.cards;
 	}

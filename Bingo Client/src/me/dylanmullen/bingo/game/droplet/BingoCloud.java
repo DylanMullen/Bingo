@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.json.simple.JSONObject;
+
 import me.dylanmullen.bingo.game.home.DropletSelector;
 import me.dylanmullen.bingo.window.ui.Panel;
 import me.dylanmullen.bingo.window.ui.UIColour;
@@ -19,23 +21,59 @@ public class BingoCloud extends Panel
 
 	private static final long serialVersionUID = 8868641235552384755L;
 
+	private UUID uuid;
+
 	private List<DropletSelector> dropletSelectors;
 	private Grid grid;
 	private int indentY, minHeight;
 
-	public BingoCloud(int width, int height)
+	public BingoCloud(UUID uuid, JSONObject droplets, int width, int height)
 	{
 		super(0, 0, width, height);
+		this.uuid = uuid;
 		this.indentY = height / 4;
+		this.minHeight = height;
+		setup();
+		setupDropletSelectors(droplets);
 	}
 
-	public BingoCloud(int x, int y, int width, int height)
+	private void setupDropletSelectors(JSONObject droplets)
 	{
-		super(x, y, width, height);
-		this.indentY = (int) (height / 2.5);
-		this.minHeight = height;
-		setOpaque(true);
-		setup();
+		int index = 1;
+		for (Object key : droplets.keySet())
+		{
+			DropletSelector selector = new DropletSelector(0, 0, width, 0);
+			selector.setupInformation(uuid, UUID.fromString((String) key), index,
+					((Number) droplets.get(key)).intValue(), 0);
+			dropletSelectors.add(selector);
+			index++;
+		}
+		updateAllSelectors();
+	}
+
+	private void updateAllSelectors()
+	{
+		for (int i = 0; i < dropletSelectors.size(); i++)
+		{
+			DropletSelector selector = dropletSelectors.get(i);
+			int temp = i + 1;
+			int row = temp / 3;
+			if (temp % 3 == 0 && temp != 0)
+				row--;
+			grid.addGridItem(new GridItem(selector, 1, 1), row, false);
+			add(selector);
+		}
+		grid.updatePositions();
+		int yPos = -1;
+		for (int i = 0; i < dropletSelectors.size(); i++)
+		{
+			DropletSelector gs = dropletSelectors.get(i);
+			gs.setup();
+			if (i == dropletSelectors.size() - 1)
+				yPos = gs.getY() + gs.getHeight() + 25;
+		}
+		if (yPos != -1 && yPos >= minHeight)
+			setBounds(0, 0, getWidth(), yPos);
 	}
 
 	@Override
@@ -45,35 +83,6 @@ public class BingoCloud extends Panel
 		setBackground(UIColour.FRAME_BINGO_BG.toColor());
 		this.grid = new Grid(new GridSettings(getWidth() - 50, getHeight() - indentY - 30, -1, 2, 5), 25, indentY + 15);
 		grid.getGridSettings().setFixedRowHeight(50);
-
-		for (int i = 0; i < 10; i++)
-		{
-			DropletSelector selector = new DropletSelector(0, 0, 0, 0);
-			int temp = i + 1;
-			int row = temp / grid.getGridSettings().getCols();
-			if (temp % grid.getGridSettings().getCols() == 0 && temp != 0)
-				row--;
-			grid.addGridItem(new GridItem(selector, 1, 1), row, false);
-			dropletSelectors.add(selector);
-			add(selector);
-		}
-
-		grid.updatePositions();
-
-		int yPos = -1;
-		for (int i = 0; i < dropletSelectors.size(); i++)
-		{
-			DropletSelector gs = dropletSelectors.get(i);
-			gs.setupInformation(UUID.randomUUID(), 10, 10, 100);
-			if (i == dropletSelectors.size() - 1)
-				yPos = gs.getY() + gs.getHeight() + 25;
-		}
-		
-		if (yPos != -1 && yPos >= minHeight)
-		{
-			setBounds(0, 0, getWidth(), yPos);
-		}
-
 	}
 
 	@Override

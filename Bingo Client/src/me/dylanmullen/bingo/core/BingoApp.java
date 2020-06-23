@@ -3,7 +3,6 @@ package me.dylanmullen.bingo.core;
 import java.awt.EventQueue;
 
 import me.dylanmullen.bingo.events.events.user.UserInformationChangeEvent;
-import me.dylanmullen.bingo.game.UserInformation;
 import me.dylanmullen.bingo.net.handlers.ClientHandler;
 import me.dylanmullen.bingo.window.bingo.BingoWindow;
 import me.dylanmullen.bingo.window.login.LoginWindow;
@@ -35,8 +34,8 @@ public class BingoApp
 		if (instance == null)
 			instance = this;
 		init();
-//		openLoginWindow();
-		openBingoWindow(null);
+		openLoginWindow();
+//		openBingoWindow(null);
 	}
 
 	/**

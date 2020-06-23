@@ -20,13 +20,10 @@ public class CardsRecievedEvent extends DropletEvent
 		super(dropletUUID);
 		this.cards = new ArrayList<>();
 
-		for (Object obj : message.keySet())
+		for (Object obj : ((JSONObject) message.get("cards")).keySet())
 		{
-			if (((String) obj).equalsIgnoreCase("dropletUUID"))
-				continue;
-
 			UUID uuid = UUID.fromString((String) obj);
-			JSONArray cardNumbers = (JSONArray) message.get(obj);
+			JSONArray cardNumbers = (JSONArray) ((JSONObject) message.get("cards")).get(obj);
 			cards.add(new CardInformation(uuid, cardNumbers));
 		}
 	}

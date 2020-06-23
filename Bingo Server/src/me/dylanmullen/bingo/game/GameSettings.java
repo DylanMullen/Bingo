@@ -8,6 +8,7 @@ import me.dylanmullen.bingo.game.droplet.BingoDroplet.LineState;
 public class GameSettings
 {
 
+	private Config properties;
 	private String name;
 
 	private int maxNumbers;
@@ -26,6 +27,7 @@ public class GameSettings
 
 	public GameSettings(Config properties)
 	{
+		this.properties = properties;
 		this.name = (String) properties.getValue("properties", "name");
 
 		this.chat = (boolean) properties.getValue("properties", "chat");
@@ -94,6 +96,11 @@ public class GameSettings
 	{
 		Random random = new Random();
 		return Math.round((minPrize + (maxPrize - minPrize) * random.nextDouble()) * 100) / 100;
+	}
+
+	public GameSettings clone()
+	{
+		return new GameSettings(properties);
 	}
 
 	/* Getters */

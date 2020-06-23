@@ -38,7 +38,7 @@ public class GameController
 		}
 	}
 
-	public void connectUser(User user, UUID cloudUUID, UUID packetToRelay)
+	public void connectUser(User user, UUID cloudUUID, UUID dropletUUID, UUID packetToRelay)
 	{
 		BingoCloud cloud = getBingoCloud(cloudUUID);
 		Packet packet = PacketHandler.createPacket(user.getClient(), 5, null);
@@ -48,9 +48,11 @@ public class GameController
 		if (cloud == null)
 			return;
 
-		BingoDroplet droplet = cloud.placeUser(user);
+		BingoDroplet droplet = cloud.placeUser(dropletUUID, user);
 		if (droplet == null)
 			return; // TODO already connected to that cloud.
+
+		user.addDroplet(droplet);
 
 		message.put("dropletUUID", droplet.getUUID().toString());
 		message.put("gameState", droplet.getGameState().getStateCode());
@@ -68,7 +70,18 @@ public class GameController
 		Packet packet = PacketHandler.createPacket(user, 5, null);
 		packet.setMessageSection(message);
 		packet.setPacketUUID(packetToRelay);
-		
+
+		PacketHandler.sendPacket(packet);
+	}
+
+	public void handleDropletRetrieval(Client user, UUID cloudUUID, UUID packetToRelay)
+	{
+		BingoCloud cloud = getBingoCloud(cloudUUID);
+		if (cloud == null)
+			return;
+		Packet packet = PacketHandler.createPacket(user, 5, null);
+		packet.setMessageSection(cloud.getDropletInformation());
+		packet.setPacketUUID(packetToRelay);
 		PacketHandler.sendPacket(packet);
 	}
 
@@ -76,16 +89,21 @@ public class GameController
 	{
 		BingoDroplet droplet = user.getDropletByUUID(dropletUUID);
 		if (droplet == null)
+		{
+			System.out.println("droplet not found");
 			return; // TODO not in droplet;
+		}
 
 		BingoCardGroup cardGroup = droplet.generateCards(user);
 		JSONObject message = new JSONObject();
 		message.put("responseType", 200);
+		message.put("dropletUUID", dropletUUID.toString());
 		message.put("cards", cardGroup.getCardsJSON());
 
 		Packet packet = PacketHandler.createPacket(user.getClient(), 5, null);
 		packet.setMessageSection(message);
 		packet.setPacketUUID(packetToRelay);
+		System.out.println(message);
 		PacketHandler.sendPacket(packet);
 	}
 
@@ -114,6 +132,7 @@ public class GameController
 		droplet.getSettings().incrementPot();
 
 		message.put("responseType", 200);
+		message.put("dropletUUID", dropletUUID.toString());
 		message.put("purchasedCard", cards.getCard(card).getUUID().toString());
 		PacketHandler.sendPacket(packet);
 	}

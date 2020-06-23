@@ -34,7 +34,6 @@ public class BingoCard
 		{
 			BingoRow row = new BingoRow(generator.generateRow());
 			rows[i] = row;
-			System.out.println(row.toString());
 		}
 	}
 
@@ -59,7 +58,9 @@ public class BingoCard
 	{
 		JSONArray array = new JSONArray();
 		for (BingoRow row : rows)
-			array.add(row.getNumbers());
+			for (int i = 0; i < row.getNumbers().length; i++)
+				array.add(row.getNumbers()[i]);
+
 		return array;
 	}
 
@@ -77,7 +78,7 @@ public class BingoCard
 	{
 		return uuid;
 	}
-	
+
 	public User getOwner()
 	{
 		return user;

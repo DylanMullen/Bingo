@@ -6,7 +6,9 @@ import java.util.UUID;
 import org.json.simple.JSONObject;
 
 import me.dylanmullen.bingo.game.GamePanel;
+import me.dylanmullen.bingo.game.callbacks.CardRequestCallback;
 import me.dylanmullen.bingo.game.cards.CardInformation;
+import me.dylanmullen.bingo.net.PacketHandler;
 
 public class BingoDroplet
 {
@@ -28,6 +30,14 @@ public class BingoDroplet
 		deselectCards();
 		showCalledNumberComponent();
 		getGamePanel().getGameComponent().getCardGroup().updatePurchasedCards(purchasedCards);
+	}
+
+	public void requestCards()
+	{
+		JSONObject message = new JSONObject();
+		message.put("dropletUUID", uuid.toString());
+		System.out.println("Rquesting cards");
+		PacketHandler.sendPacket(PacketHandler.createPacket(7, message), new CardRequestCallback());
 	}
 
 	public void restartDropletGame(List<CardInformation> newCards)
@@ -131,6 +141,11 @@ public class BingoDroplet
 	public void setCardPuchased(UUID cardUUID)
 	{
 		getGamePanel().getGameComponent().getCardGroup().setCardPurchased(cardUUID);
+	}
+
+	public GameState getGameState()
+	{
+		return gameState;
 	}
 
 }

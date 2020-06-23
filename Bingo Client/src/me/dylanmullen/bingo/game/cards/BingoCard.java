@@ -43,10 +43,11 @@ public class BingoCard extends JComponent
 	 * @param width  The width of the Bingo Card.
 	 * @param height The height of the Bingo Card.
 	 */
-	public BingoCard(int x, int y, int width, int height)
+	public BingoCard(int x, int y, int width, int height, CardInformation info)
 	{
 		this.x = x;
 		this.y = y;
+		this.cardInfo = info;
 		createSquares(width, height);
 	}
 
@@ -120,12 +121,6 @@ public class BingoCard extends JComponent
 	 */
 	public void markNumber(int number)
 	{
-//		for (BingoSquare square : squares)
-//			if (square.getNumber() == number)
-//			{
-//				square.setCalled(true);
-//				repaint();
-//			}
 		int column = getColumnOfNumber(number);
 		for (int row = 0; row < 3; row++)
 		{

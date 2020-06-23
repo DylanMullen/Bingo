@@ -21,6 +21,7 @@ public class BingoCloud
 		this.uuid = UUID.randomUUID();
 		this.settings = settings;
 		this.droplets = new ArrayList<>();
+		droplets.add(createDroplet());
 	}
 
 	public BingoDroplet createDroplet()
@@ -29,30 +30,21 @@ public class BingoCloud
 		return droplet;
 	}
 
-	public BingoDroplet getAvailableDroplet()
+	public BingoDroplet placeUser(UUID dropletUUID, User user)
 	{
-		for (BingoDroplet droplet : droplets)
-			if (droplet.hasSpace())
-				return droplet;
-		return createDroplet();
-	}
-
-	public BingoDroplet placeUser(User user)
-	{
-		if (isUserInCloud(user))
+		BingoDroplet droplet = getDroplet(dropletUUID);
+		if (droplet == null)
 			return null;
-
-		BingoDroplet droplet = getAvailableDroplet();
 		droplet.addUser(user);
 		return droplet;
 	}
 
-	public boolean isUserInCloud(User user)
+	public BingoDroplet getDroplet(UUID uuid)
 	{
 		for (BingoDroplet droplet : droplets)
-			if (droplet.hasPlayer(user))
-				return true;
-		return false;
+			if (droplet.getUUID().toString().equalsIgnoreCase(uuid.toString()))
+				return droplet;
+		return null;
 	}
 
 	public int getTotalPlayers()
@@ -68,6 +60,17 @@ public class BingoCloud
 	public UUID getUUID()
 	{
 		return uuid;
+	}
+
+	public JSONObject getDropletInformation()
+	{
+		JSONObject object = new JSONObject();
+
+		for (BingoDroplet droplet : droplets)
+		{
+			object.put(droplet.getUUID().toString(), droplet.getConnectedPlayersSize());
+		}
+		return object;
 	}
 
 	public JSONObject getCloudJSON()

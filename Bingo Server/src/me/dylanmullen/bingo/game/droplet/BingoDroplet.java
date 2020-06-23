@@ -83,7 +83,7 @@ public class BingoDroplet
 	public BingoDroplet(GameSettings settings)
 	{
 		this.uuid = UUID.randomUUID();
-		this.settings = settings;
+		this.settings = settings.clone();
 		setupDroplet();
 	}
 
@@ -318,6 +318,7 @@ public class BingoDroplet
 	public BingoCardGroup generateCards(User user)
 	{
 		BingoCardGroup group = new BingoCardGroup(user, 3, settings.getMaxNumbers());
+		group.generateCards();
 		cards.add(group);
 		return group;
 	}
@@ -407,6 +408,13 @@ public class BingoDroplet
 		}
 	}
 
+	public JSONObject toJSON()
+	{
+		JSONObject object = new JSONObject();
+		object.put("players", getConnectedPlayersSize());
+		return object;
+	}
+
 	public boolean hasPlayer(User user)
 	{
 		return usersConnected.contains(user);
@@ -436,7 +444,7 @@ public class BingoDroplet
 	{
 		return usersConnected.size();
 	}
-	
+
 	public GameSettings getSettings()
 	{
 		return settings;
@@ -446,7 +454,7 @@ public class BingoDroplet
 	{
 		return uuid;
 	}
-	
+
 	public GameState getGameState()
 	{
 		return dropletState;

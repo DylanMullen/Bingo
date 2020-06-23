@@ -35,6 +35,11 @@ public class User
 		userInformation.populateInformation("");
 	}
 
+	public void addDroplet(BingoDroplet droplet)
+	{
+		getBingoDroplets().add(droplet);
+	}
+
 	public Set<BingoDroplet> getBingoDroplets()
 	{
 		return bingoDroplets;

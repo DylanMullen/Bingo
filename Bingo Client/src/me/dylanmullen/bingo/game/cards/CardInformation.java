@@ -25,6 +25,12 @@ public class CardInformation
 		}
 	}
 
+	public CardInformation()
+	{
+		this.purchased = false;
+		this.selected = false;
+	}
+
 	public UUID getUUID()
 	{
 		return uuid;
@@ -54,7 +60,7 @@ public class CardInformation
 	{
 		this.purchased = purchased;
 	}
-	
+
 	public void setUUID(UUID uuid)
 	{
 		this.uuid = uuid;
