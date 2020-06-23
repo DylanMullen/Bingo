@@ -90,7 +90,7 @@ public class SideMenu extends Panel
 			{
 				if (!getPlayButton().isActive())
 				{
-					getBingoWindow().showBingoPanel();
+//					getBingoWindow().showBingoPanel();
 				}
 			}
 		});

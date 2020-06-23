@@ -11,6 +11,7 @@ import me.dylanmullen.bingo.events.Event;
 import me.dylanmullen.bingo.events.EventHandler;
 import me.dylanmullen.bingo.events.EventListener;
 import me.dylanmullen.bingo.events.events.ServerStatusChangeEvent;
+import me.dylanmullen.bingo.net.ServerStatusManager;
 import me.dylanmullen.bingo.net.ServerStatusManager.ServerStatus;
 import me.dylanmullen.bingo.util.FontUtil;
 import me.dylanmullen.bingo.window.ui.Panel;
@@ -73,7 +74,7 @@ public class ServerInformationComponent extends Panel implements EventListener
 		setBackground(UIColour.STATUS_UNDEFINED.toColor());
 
 		this.statusText = new JLabel();
-		getStatusText().setText("Please wait...");
+		updateStatus(ServerStatusManager.getManager().getStatus());
 		getStatusText().setBounds(5, 0, getWidth() - 10, getHeight());
 		getStatusText().setFont(FontUtil.getFont(getStatusText(), getStatusText().getText(), 0, 0));
 		getStatusText().setForeground(UIColour.STATUS_UNDEFINED.getTextColour());
@@ -125,6 +126,12 @@ public class ServerInformationComponent extends Panel implements EventListener
 	@SuppressWarnings("deprecation")
 	public void updateStatus(ServerStatus status)
 	{
+		if (status == null)
+		{
+			getStatusText().setText("Please wait...");
+			return;
+		}
+
 		getStatusText().setText(status.getMesssage());
 		getStatusText().setFont(FontUtil.getFont(getStatusText(), getStatusText().getText(), 10, 0));
 

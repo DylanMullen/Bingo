@@ -43,10 +43,9 @@ public class LoginCallback extends PacketCallback
 			return false;
 		}
 
-		BingoApp.getInstance().openBingoWindow(new UserInformation());
 		UserInformationChangeEvent userInformation = new UserInformationChangeEvent(UUID.fromString(getString("userUUID")),
-				getString("displayName"), getDouble("userCredits"), getInteger("userWins"));
-		EventHandler.getHandler().fire(userInformation);
+				getString("userDisplayName"), getDouble("userCredits"), getInteger("userWins"));
+		BingoApp.getInstance().openBingoWindow(userInformation);
 		return true;
 	}
 

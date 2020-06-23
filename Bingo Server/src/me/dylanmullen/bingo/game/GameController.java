@@ -13,6 +13,7 @@ import me.dylanmullen.bingo.game.currency.InvalidAmountException;
 import me.dylanmullen.bingo.game.droplet.BingoCloud;
 import me.dylanmullen.bingo.game.droplet.BingoDroplet;
 import me.dylanmullen.bingo.game.user.User;
+import me.dylanmullen.bingo.net.Client;
 import me.dylanmullen.bingo.net.packet.Packet;
 import me.dylanmullen.bingo.net.packet.PacketHandler;
 
@@ -54,6 +55,20 @@ public class GameController
 		message.put("dropletUUID", droplet.getUUID().toString());
 		message.put("gameState", droplet.getGameState().getStateCode());
 
+		PacketHandler.sendPacket(packet);
+	}
+
+	public void handleCloudRetrieval(Client user, UUID packetToRelay)
+	{
+		JSONObject message = new JSONObject();
+
+		for (BingoCloud cloud : bingoGames)
+			message.put(cloud.getUUID().toString(), cloud.getCloudJSON());
+
+		Packet packet = PacketHandler.createPacket(user, 5, null);
+		packet.setMessageSection(message);
+		packet.setPacketUUID(packetToRelay);
+		
 		PacketHandler.sendPacket(packet);
 	}
 

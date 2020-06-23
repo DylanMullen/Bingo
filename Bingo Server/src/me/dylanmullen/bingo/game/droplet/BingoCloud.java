@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.json.simple.JSONObject;
+
 import me.dylanmullen.bingo.game.GameSettings;
 import me.dylanmullen.bingo.game.user.User;
 
@@ -52,10 +54,30 @@ public class BingoCloud
 				return true;
 		return false;
 	}
-	
+
+	public int getTotalPlayers()
+	{
+		int players = 0;
+		for (BingoDroplet droplet : droplets)
+		{
+			players += droplet.getConnectedPlayersSize();
+		}
+		return players;
+	}
+
 	public UUID getUUID()
 	{
 		return uuid;
+	}
+
+	public JSONObject getCloudJSON()
+	{
+		JSONObject contents = new JSONObject();
+		contents.put("cloudName", settings.getName());
+		contents.put("dropletInstances", droplets.size());
+		contents.put("totalPlayers", getTotalPlayers());
+		contents.put("ticketPrice", settings.getTicketPrice());
+		return contents;
 	}
 
 }

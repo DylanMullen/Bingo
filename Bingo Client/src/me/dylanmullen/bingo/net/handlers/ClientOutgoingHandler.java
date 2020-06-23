@@ -3,6 +3,7 @@ package me.dylanmullen.bingo.net.handlers;
 import java.net.DatagramPacket;
 import java.util.ArrayList;
 
+import me.dylanmullen.bingo.game.UserInformation;
 import me.dylanmullen.bingo.net.Client;
 import me.dylanmullen.bingo.net.packet.Packet;
 
@@ -17,6 +18,7 @@ public class ClientOutgoingHandler implements Runnable
 	private Thread thread;
 	private boolean running;
 
+	private UserInformation userInfo;
 	public ArrayList<Packet> queue;
 
 	private Client client;
@@ -30,6 +32,7 @@ public class ClientOutgoingHandler implements Runnable
 	public ClientOutgoingHandler(Client client)
 	{
 		this.client = client;
+		this.userInfo = new UserInformation();
 		this.queue = new ArrayList<Packet>();
 		start();
 	}
@@ -80,6 +83,9 @@ public class ClientOutgoingHandler implements Runnable
 	{
 		try
 		{
+			if (userInfo.getUUID() != null)
+				packet.setUserUUID(userInfo.getUUID());
+			
 			packet.setTimestamp();
 			DatagramPacket dp = packet.constructDatagramPacket(this.client, packet.getID() != 0);
 			if (dp == null)

@@ -1,6 +1,7 @@
 package me.dylanmullen.bingo.events;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,11 @@ public class EventHandler
 	private static EventHandler handler;
 
 	private Map<Class<? extends Event>, List<EventListener>> registeredListeners;
+
+	public EventHandler()
+	{
+		registeredListeners = new HashMap<Class<? extends Event>, List<EventListener>>();
+	}
 
 	public static EventHandler getHandler()
 	{

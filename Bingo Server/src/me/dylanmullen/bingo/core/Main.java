@@ -5,7 +5,7 @@ public class Main
 
 	public static void main(String[] args)
 	{
-//		new BingoServer(4585);
+		new BingoServer(4585);
 	}
 
 }

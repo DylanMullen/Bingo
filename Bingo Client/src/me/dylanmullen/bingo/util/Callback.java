@@ -5,6 +5,7 @@ package me.dylanmullen.bingo.util;
  * @date 18 Jun 2020
  * @project Bingo Client
  */
+@FunctionalInterface
 public interface Callback
 {
 

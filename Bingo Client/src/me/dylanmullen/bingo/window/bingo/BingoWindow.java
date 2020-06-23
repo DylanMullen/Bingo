@@ -6,7 +6,8 @@ import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 
-import me.dylanmullen.bingo.game.BingoGame;
+import me.dylanmullen.bingo.events.EventHandler;
+import me.dylanmullen.bingo.events.events.user.UserInformationChangeEvent;
 import me.dylanmullen.bingo.game.UserInformation;
 import me.dylanmullen.bingo.game.home.HomePanel;
 import me.dylanmullen.bingo.window.Window;
@@ -40,16 +41,14 @@ public class BingoWindow extends Window
 	 * @param userInformation The user information received from the Bingo Server
 	 *                        during the login phase.
 	 */
-	public BingoWindow(UserInformation userInformation)
+	public BingoWindow(UserInformationChangeEvent infoEvent)
 	{
 		super("Bingo Window");
-		this.userInfo = userInformation;
-
+		this.userInfo = new UserInformation();
 		setUndecorated(true);
-
 		showEssentials();
-//		showHomePanel();
-		showBingoPanel();
+		EventHandler.getHandler().fire(infoEvent);
+		showHomePanel();
 	}
 
 	/**
@@ -92,8 +91,8 @@ public class BingoWindow extends Window
 		if (getHomePanel() == null)
 		{
 			this.home = new HomePanel(this, getWidth() / 4, getHeight() / 10,
-					(getWidth() / 4 * 3) - ((Integer) UIManager.get("ScrollBar.width")).intValue(), getHeight() + 200);
-			getHomePanel().setup();
+					(getWidth() / 4 * 3) - ((Integer) UIManager.get("ScrollBar.width")).intValue(),
+					getHeight() - topMenu.getHeight());
 		}
 
 		getScrollHomePanel().setViewportView(getHomePanel());
@@ -123,41 +122,7 @@ public class BingoWindow extends Window
 
 		if (getCurrentPanel() instanceof JScrollPane)
 			hideHomePanel();
-		else
-			hideBingoPanel();
 		getContentPanel().repaint();
-	}
-
-	/**
-	 * Sets the Bingo Panel as the current viewing pane and shows it to the
-	 * Player.<br>
-	 * If the Bingo Panel is not created, this method will create one.
-	 */
-	public void showBingoPanel()
-	{
-		hideCurrentPanel();
-		if (getBingoGame() == null)
-		{
-			this.bingoGame = new BingoGame();
-			getBingoGame().createPanel(getWidth() / 4, getHeight() / 10, getWidth() / 4 * 3, getHeight() / 10 * 9);
-			getBingoGame().setBingoWindow(this);
-			getBingoGame().getGamePanel().setup();
-		}
-		getBingoGame().getGamePanel().create();
-		getBingoGame().setUserInformation(getUserInformation());
-		getSideBar().getPlayButton().setActive(true);
-		setCurrentViewPanel(getBingoGame().getGamePanel());
-
-		getContentPanel().add(getBingoGame().getGamePanel());
-	}
-
-	/**
-	 * Hides the Bingo Panel from the viewing pane.
-	 */
-	public void hideBingoPanel()
-	{
-		getContentPanel().remove(getBingoGame().getGamePanel());
-		getSideBar().getPlayButton().setActive(false);
 	}
 
 	/**
@@ -182,14 +147,6 @@ public class BingoWindow extends Window
 	public HomePanel getHomePanel()
 	{
 		return this.home;
-	}
-
-	/**
-	 * @return Returns the Bingo Game.
-	 */
-	public BingoGame getBingoGame()
-	{
-		return this.bingoGame;
 	}
 
 	/**

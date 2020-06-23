@@ -8,9 +8,12 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.RoundRectangle2D;
 import java.io.IOException;
+import java.util.UUID;
 
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
+
+import org.json.simple.JSONObject;
 
 import me.dylanmullen.bingo.game.components.listeners.JoinButtonListener;
 import me.dylanmullen.bingo.util.FontUtil;
@@ -29,12 +32,12 @@ public class GameSelector extends JComponent
 	private final int OFFSET = 10;
 	private final int GAP = 5;
 
-	private RoundedButton joinButton;
-
+	private UUID uuid;
 	private String name;
-	private int players;
+	private int players, instances;
 	private double price;
 
+	private RoundedButton joinButton;
 	Font font = new Font("Calibri", Font.PLAIN, 25);
 
 	private int bannerHeight;
@@ -56,7 +59,6 @@ public class GameSelector extends JComponent
 	{
 		setBounds(x, y, width, height);
 		setLayout(null);
-		setupInformation("Charlies Angels", 15, 15);
 	}
 
 	/**
@@ -66,11 +68,13 @@ public class GameSelector extends JComponent
 	 * @param players The players currently playing.
 	 * @param price   The price of each ticket.
 	 */
-	public void setupInformation(String name, int players, double price)
+	public void setupInformation(UUID uuid, JSONObject object)
 	{
-		this.name = name;
-		this.players = players;
-		this.price = price;
+		this.uuid = uuid;
+		this.name = (String) object.get("cloudName");
+		this.instances = ((Number) object.get("dropletInstances")).intValue();
+		this.players = ((Number) object.get("totalPlayers")).intValue();
+		this.price = ((Number) object.get("ticketPrice")).doubleValue();
 	}
 
 	/**

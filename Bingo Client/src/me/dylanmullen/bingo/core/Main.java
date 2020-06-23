@@ -24,23 +24,6 @@ public class Main
 	 */
 	public static void main(String[] args)
 	{
-//		new BingoApp();
-		Map<? super Event, EventListener> test = new HashMap<>();
-		UserInformationChangeEvent event = new UserInformationChangeEvent("", 0, 0);
-		EventListener listener = new EventListener()
-		{
-
-			@Override
-			public void receive(Event event)
-			{
-				// TODO Auto-generated method stub
-
-			}
-		};
-		test.put(event, listener);
-		for (Object bj : test.keySet())
-		{
-			System.out.println(bj.getClass().getName());
-		}
+		new BingoApp();
 	}
 }

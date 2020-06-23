@@ -432,6 +432,11 @@ public class BingoDroplet
 		return usersConnected.size() < getSettings().getMaxPlayers();
 	}
 
+	public int getConnectedPlayersSize()
+	{
+		return usersConnected.size();
+	}
+	
 	public GameSettings getSettings()
 	{
 		return settings;

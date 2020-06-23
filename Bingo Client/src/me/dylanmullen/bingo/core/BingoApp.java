@@ -2,6 +2,7 @@ package me.dylanmullen.bingo.core;
 
 import java.awt.EventQueue;
 
+import me.dylanmullen.bingo.events.events.user.UserInformationChangeEvent;
 import me.dylanmullen.bingo.game.UserInformation;
 import me.dylanmullen.bingo.net.handlers.ClientHandler;
 import me.dylanmullen.bingo.window.bingo.BingoWindow;
@@ -78,7 +79,7 @@ public class BingoApp
 	 * 
 	 * @param ui The User Information retrieved from the server.
 	 */
-	public void openBingoWindow(UserInformation ui)
+	public void openBingoWindow(UserInformationChangeEvent event)
 	{
 		if (this.loginWindow != null)
 			this.loginWindow.dispose();
@@ -88,7 +89,7 @@ public class BingoApp
 			@Override
 			public void run()
 			{
-				bingoWindow = new BingoWindow(ui);
+				bingoWindow = new BingoWindow(event);
 				bingoWindow.setVisible(true);
 			}
 		});

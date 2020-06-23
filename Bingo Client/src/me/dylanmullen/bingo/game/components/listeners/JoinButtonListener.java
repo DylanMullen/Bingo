@@ -30,9 +30,9 @@ public class JoinButtonListener extends MouseAdapter
 		if (clicked)
 			return;
 
-		if (component.getParent() instanceof GameSelector)
-			HomePanel.getInstance().getWindow().showBingoPanel();
-		
+//		if (component.getParent() instanceof GameSelector)
+//			HomePanel.getInstance().getWindow().showBingoPanel();
+//		
 		PacketHandler.sendPacket(PacketHandler.createPacket(6, new JSONObject()), new JoinCallback());
 	}
 
