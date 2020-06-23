@@ -21,7 +21,7 @@ public class Packet
 
 	public Packet(int packetID)
 	{
-		this.id=packetID;
+		this.id = packetID;
 		this.packet = new JSONObject();
 		constructPacketInformation(packetID);
 		addMainSection("packetMessage");
@@ -65,8 +65,7 @@ public class Packet
 		if (data == null)
 			return null;
 
-		return new DatagramPacket(data.getBytes(), data.getBytes().length, client.getIP(),
-				client.getPort());
+		return new DatagramPacket(data.getBytes(), data.getBytes().length, client.getIP(), client.getPort());
 	}
 
 	private JSONObject addMainSection(String key)
@@ -97,7 +96,7 @@ public class Packet
 	{
 		return packet.toJSONString();
 	}
-	
+
 	public int getID()
 	{
 		return id;

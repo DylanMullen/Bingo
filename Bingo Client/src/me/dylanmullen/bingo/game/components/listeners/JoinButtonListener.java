@@ -2,26 +2,25 @@ package me.dylanmullen.bingo.game.components.listeners;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import javax.swing.JComponent;
+import java.util.UUID;
 
 import org.json.simple.JSONObject;
 
 import me.dylanmullen.bingo.game.callbacks.JoinCallback;
-import me.dylanmullen.bingo.game.home.GameSelector;
-import me.dylanmullen.bingo.game.home.HomePanel;
 import me.dylanmullen.bingo.net.PacketHandler;
+import me.dylanmullen.bingo.net.packet.Packet;
 
 public class JoinButtonListener extends MouseAdapter
 {
 
 	private boolean clicked;
+	private Packet packet;
 
-	private JComponent component;
-
-	public JoinButtonListener(JComponent component)
+	public JoinButtonListener(UUID bingoCloudUUID)
 	{
-		this.component = component;
+		JSONObject message = new JSONObject();
+		message.put("cloudUUID", bingoCloudUUID.toString());
+		packet = PacketHandler.createPacket(6, message);
 	}
 
 	@Override
@@ -30,10 +29,7 @@ public class JoinButtonListener extends MouseAdapter
 		if (clicked)
 			return;
 
-//		if (component.getParent() instanceof GameSelector)
-//			HomePanel.getInstance().getWindow().showBingoPanel();
-//		
-		PacketHandler.sendPacket(PacketHandler.createPacket(6, new JSONObject()), new JoinCallback());
+		PacketHandler.sendPacket(packet, new JoinCallback());
 	}
 
 }

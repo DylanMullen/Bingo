@@ -12,7 +12,6 @@ public class GameComponent extends Panel
 
 	private static final long serialVersionUID = 6557409370693226153L;
 
-	private JoinComponent join;
 	private BingoCardContainer comp;
 	private WinnerOverlay winner;
 
@@ -27,11 +26,6 @@ public class GameComponent extends Panel
 		setBounds(x, y, width, height);
 		setLayout(null);
 		setBackground(UIColour.FRAME_BINGO_BG.toColor());
-
-		join = new JoinComponent(getWidth() / 10, (int) ((getHeight() / 10) * 1.5), (getWidth() / 10) * 8,
-				(getHeight() / 10) * 5, 25);
-		join.create();
-		add(join);
 	}
 
 	@Override
@@ -44,11 +38,6 @@ public class GameComponent extends Panel
 	protected void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
-	}
-
-	public void disableJoinButton()
-	{
-		join.setVisible(false);
 	}
 
 	public void restart()

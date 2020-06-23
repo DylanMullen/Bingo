@@ -90,7 +90,7 @@ public class GameSelector extends JComponent
 				UIColour.BINGO_BALL_4);
 		getJoinButton().setBounds(this.OFFSET * 2, this.OFFSET + this.GAP * 2 + this.bannerHeight,
 				getWidth() - (this.OFFSET * 4), this.buttonHeight);
-		getJoinButton().addMouseListener(new JoinButtonListener(getJoinButton()));
+		getJoinButton().addMouseListener(new JoinButtonListener(this.uuid));
 	}
 
 	/**
@@ -99,7 +99,6 @@ public class GameSelector extends JComponent
 	public void create()
 	{
 		setup();
-
 		getJoinButton().create();
 		add(getJoinButton());
 	}
