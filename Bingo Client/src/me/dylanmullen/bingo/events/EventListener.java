@@ -7,9 +7,10 @@ package me.dylanmullen.bingo.events;
  */
 public interface EventListener
 {
-	
+
 	/**
 	 * Receives an event fired to the Listener.
+	 * 
 	 * @param event The event that was fired to the listener
 	 */
 	void receive(Event event);

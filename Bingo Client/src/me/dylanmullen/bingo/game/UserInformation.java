@@ -3,8 +3,10 @@ package me.dylanmullen.bingo.game;
 import java.util.UUID;
 
 import me.dylanmullen.bingo.events.Event;
+import me.dylanmullen.bingo.events.EventHandler;
 import me.dylanmullen.bingo.events.EventListener;
-import me.dylanmullen.bingo.events.events.droplet.CurrencyChangeEvent;
+import me.dylanmullen.bingo.events.events.user.CurrencyChangeEvent;
+import me.dylanmullen.bingo.events.events.user.UserInformationChangeEvent;
 
 /**
  * @author Dylan
@@ -19,6 +21,12 @@ public class UserInformation implements EventListener
 	private double credits;
 	private int wins;
 
+	public UserInformation()
+	{
+		EventHandler.getHandler().registerListener(UserInformationChangeEvent.class, this);
+		EventHandler.getHandler().registerListener(CurrencyChangeEvent.class, this);
+	}
+
 	/**
 	 * Updates the credits of the Player.<br>
 	 * This is called every time the client purchases or wins a game and receives
@@ -29,7 +37,14 @@ public class UserInformation implements EventListener
 	public void updateCredits(double credits)
 	{
 		setCredits(credits);
-//		BingoGame.getInstance().getBingoWindow().getSideBar().getProfilePanel().updateCredits(getCredits());
+	}
+
+	public void updateInformation(UserInformationChangeEvent event)
+	{
+		setUUID(event.getUUID());
+		setDisplayName(event.getUsername());
+		setCredits(event.getCredits());
+		setWins(event.getWins());
 	}
 
 	/**
@@ -115,10 +130,10 @@ public class UserInformation implements EventListener
 	@Override
 	public void receive(Event event)
 	{
-		if (event instanceof CurrencyChangeEvent)
-		{
+		if (event instanceof UserInformationChangeEvent)
+			updateInformation((UserInformationChangeEvent) event);
+		else if (event instanceof CurrencyChangeEvent)
 			updateCredits(((CurrencyChangeEvent) event).getCredits());
-		}
 	}
 
 }

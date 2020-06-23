@@ -10,7 +10,7 @@ public class JoinCallback extends PacketCallback
 	@Override
 	public boolean callback()
 	{
-		EventHandler.fireEvent(new DropletJoinEvent(getDropletUUID(), getMessage()));
+		EventHandler.getHandler().fire(new DropletJoinEvent(getDropletUUID(), getMessage()));
 		return false;
 	}
 

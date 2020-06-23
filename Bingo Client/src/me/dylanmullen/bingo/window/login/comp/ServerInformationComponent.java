@@ -68,7 +68,7 @@ public class ServerInformationComponent extends Panel implements EventListener
 	{
 		setLayout(null);
 		setOpaque(false);
-		EventHandler.registerListener(this);
+		EventHandler.getHandler().registerListener(ServerStatusChangeEvent.class, this);
 
 		setBackground(UIColour.STATUS_UNDEFINED.toColor());
 

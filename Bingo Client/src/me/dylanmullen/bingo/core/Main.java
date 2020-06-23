@@ -1,5 +1,14 @@
 package me.dylanmullen.bingo.core;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import me.dylanmullen.bingo.events.DropletEvent;
+import me.dylanmullen.bingo.events.Event;
+import me.dylanmullen.bingo.events.EventListener;
+import me.dylanmullen.bingo.events.events.user.CurrencyChangeEvent;
+import me.dylanmullen.bingo.events.events.user.UserInformationChangeEvent;
+
 /**
  * @author Dylan
  * @date 17 Jun 2020
@@ -16,12 +25,22 @@ public class Main
 	public static void main(String[] args)
 	{
 //		new BingoApp();
-		int number = 75;
-		int numbers = 75;
-		int cols = 5;
+		Map<? super Event, EventListener> test = new HashMap<>();
+		UserInformationChangeEvent event = new UserInformationChangeEvent("", 0, 0);
+		EventListener listener = new EventListener()
+		{
 
-		int column = number / (numbers / cols);
-		column -= (number == numbers ? 1 : 0);
-		System.out.println(column);
+			@Override
+			public void receive(Event event)
+			{
+				// TODO Auto-generated method stub
+
+			}
+		};
+		test.put(event, listener);
+		for (Object bj : test.keySet())
+		{
+			System.out.println(bj.getClass().getName());
+		}
 	}
 }

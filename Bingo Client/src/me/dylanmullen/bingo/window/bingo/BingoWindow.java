@@ -28,7 +28,6 @@ public class BingoWindow extends Window
 
 	private JComponent currentPanel;
 
-	private BingoGame bingoGame;
 	private JScrollPane scrollHomePanel;
 	private HomePanel home;
 

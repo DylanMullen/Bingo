@@ -10,7 +10,11 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.border.EmptyBorder;
 
-import me.dylanmullen.bingo.game.BingoGame;
+import me.dylanmullen.bingo.events.Event;
+import me.dylanmullen.bingo.events.EventHandler;
+import me.dylanmullen.bingo.events.EventListener;
+import me.dylanmullen.bingo.events.events.user.CurrencyChangeEvent;
+import me.dylanmullen.bingo.events.events.user.UserInformationChangeEvent;
 import me.dylanmullen.bingo.window.ui.ImageComponent;
 import me.dylanmullen.bingo.window.ui.Panel;
 import me.dylanmullen.bingo.window.ui.UIColour;
@@ -23,7 +27,7 @@ import me.dylanmullen.bingo.window.ui.grid.GridSettings;
  * @date 18 Jun 2020
  * @project Bingo Client
  */
-public class ProfilePanel extends Panel
+public class ProfilePanel extends Panel implements EventListener
 {
 
 	private static final long serialVersionUID = 3952772083758555561L;
@@ -45,6 +49,8 @@ public class ProfilePanel extends Panel
 	public ProfilePanel(int x, int y, int width, int height)
 	{
 		super(x, y, width, height);
+		EventHandler.getHandler().registerListener(UserInformationChangeEvent.class, this);
+		EventHandler.getHandler().registerListener(CurrencyChangeEvent.class, this);
 	}
 
 	@Override
@@ -76,27 +82,22 @@ public class ProfilePanel extends Panel
 		InformationComponent username = new InformationComponent("Username", "Loading...", 0, 0, 0, 0);
 		InformationComponent money = new InformationComponent("Money", "Loading...", 0, 0, 0, 0);
 		InformationComponent wins = new InformationComponent("Wins", "Loading...", 0, 0, 0, 0);
-		InformationComponent ratio = new InformationComponent("Win/Lose %", "Loading...", 0, 0, 0, 0);
 
 		getGrid().addGridItem(new GridItem(username, 1, 1), 0);
 		getGrid().addGridItem(new GridItem(money, 1, 1), 1);
 		getGrid().addGridItem(new GridItem(wins, 1, 1), 2);
-		getGrid().addGridItem(new GridItem(ratio, 1, 1), 3);
 		username.create();
-		ratio.create();
 		wins.create();
 		money.create();
-		
+
 		getInformationComponents().add(username);
 		getInformationComponents().add(money);
 		getInformationComponents().add(wins);
-		getInformationComponents().add(ratio);
 	}
 
 	@Override
 	public void create()
 	{
-		updateItems();
 		for (InformationComponent item : getInformationComponents())
 		{
 			add(item);
@@ -119,18 +120,11 @@ public class ProfilePanel extends Panel
 	 * Updates the items of the Information Components to have the most up to date
 	 * information that was received from the server.
 	 */
-	public void updateItems()
+	public void updateItems(UserInformationChangeEvent event)
 	{
-		if (BingoGame.getInstance() != null)
-		{
-			getInformationComponents().get(0).getInformation()
-					.setText(BingoGame.getInstance().getUserInformation().getDisplayName());
-			getInformationComponents().get(1).getInformation()
-					.setText(BingoGame.getInstance().getUserInformation().getCredits() + "");
-			getInformationComponents().get(2).getInformation()
-					.setText(BingoGame.getInstance().getUserInformation().getWins() + "");
-			getInformationComponents().get(3).getInformation().setText("N/A");
-		}
+		getInformationComponents().get(0).getInformation().setText(event.getUsername());
+		getInformationComponents().get(1).getInformation().setText(event.getCredits() + "");
+		getInformationComponents().get(2).getInformation().setText(event.getWins() + "");
 	}
 
 	/**
@@ -161,5 +155,14 @@ public class ProfilePanel extends Panel
 	public List<InformationComponent> getInformationComponents()
 	{
 		return this.infoComponents;
+	}
+
+	@Override
+	public void receive(Event event)
+	{
+		if (event instanceof UserInformationChangeEvent)
+			updateItems((UserInformationChangeEvent) event);
+		else if (event instanceof CurrencyChangeEvent)
+			updateCredits(((CurrencyChangeEvent) event).getCredits());
 	}
 }

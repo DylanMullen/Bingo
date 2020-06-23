@@ -2,6 +2,7 @@ package me.dylanmullen.bingo.events;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Dylan
@@ -11,53 +12,43 @@ import java.util.List;
 public class EventHandler
 {
 
-	/*
-	 * TO-DO Make each event have their own set of listeners. Speeds up the firing
-	 * of an event
-	 */
-	
-	private static List<EventListener> listeners = new ArrayList<>();
+	private static EventHandler handler;
 
-	/**
-	 * Registers an Event Listener to listen for events.<br>
-	 * If the Event Listener already exists and is in the cache, it will not be
-	 * registered.
-	 * 
-	 * @param listener The listener to be registered.
-	 */
-	public static void registerListener(EventListener listener)
+	private Map<Class<? extends Event>, List<EventListener>> registeredListeners;
+
+	public static EventHandler getHandler()
 	{
-		if (listeners.contains(listener))
-			return;
+		if (handler == null)
+			handler = new EventHandler();
+		return handler;
+	}
+
+	public void registerListener(Class<? extends Event> toListen, EventListener listener)
+	{
+		List<EventListener> listeners = getListeners(toListen);
 		listeners.add(listener);
 	}
 
-	/**
-	 * Unregisters an Event Listener that current listens for Events. <br>
-	 * If the Event Listener does not exist, it cannot be unregistered and will not
-	 * be unregistered.
-	 * 
-	 * @param listener The listener to be unregistered
-	 */
-	public static void unregisterListener(EventListener listener)
+	public void registerListener(EventListener listener, List<Class<? extends Event>> events)
 	{
-		if (!listeners.contains(listener))
-			return;
-		listeners.remove(listener);
+		for (Class<? extends Event> event : events)
+			registerListener(event, listener);
 	}
 
-	/**
-	 * Fires an event to all the listeners currently registered to listening to
-	 * events.
-	 * 
-	 * @param event The event that is to be fired.
-	 */
-	public static void fireEvent(Event event)
+	public void fire(Event event)
 	{
-		for (int i = 0; i < listeners.size(); i++)
-		{
-			EventListener listener = listeners.get(i);
+		List<EventListener> listeners = getListeners(event.getClass());
+		for (EventListener listener : listeners)
 			listener.receive(event);
-		}
 	}
+
+	public List<EventListener> getListeners(Class<? extends Event> event)
+	{
+		if (registeredListeners.get(event) == null)
+		{
+			registeredListeners.put(event, new ArrayList<EventListener>());
+		}
+		return registeredListeners.get(event);
+	}
+
 }

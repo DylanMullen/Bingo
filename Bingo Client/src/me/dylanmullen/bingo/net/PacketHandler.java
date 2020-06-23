@@ -6,13 +6,13 @@ import org.json.simple.JSONObject;
 
 import me.dylanmullen.bingo.events.EventHandler;
 import me.dylanmullen.bingo.events.events.droplet.ChatMessageEvent;
-import me.dylanmullen.bingo.events.events.droplet.CurrencyChangeEvent;
 import me.dylanmullen.bingo.events.events.droplet.DropletRestartEvent;
 import me.dylanmullen.bingo.events.events.droplet.DropletStartingEvent;
 import me.dylanmullen.bingo.events.events.droplet.GameStateChangeEvent;
 import me.dylanmullen.bingo.events.events.droplet.LineStateChangeEvent;
 import me.dylanmullen.bingo.events.events.droplet.NextNumberChangeEvent;
 import me.dylanmullen.bingo.events.events.droplet.RecieveWinnerEvent;
+import me.dylanmullen.bingo.events.events.user.CurrencyChangeEvent;
 import me.dylanmullen.bingo.net.handlers.ClientHandler;
 import me.dylanmullen.bingo.net.packet.Packet;
 import me.dylanmullen.bingo.net.packet.PacketCallback;
@@ -64,35 +64,35 @@ public class PacketHandler
 		{
 			// Sets the next number of the game.
 			case 9:
-				EventHandler.fireEvent(new NextNumberChangeEvent(dropletUUID, message));
+				EventHandler.getHandler().fire(new NextNumberChangeEvent(dropletUUID, message));
 				break;
 			// Sets the new game state of the game.
 			case 10:
-				EventHandler.fireEvent(new GameStateChangeEvent(dropletUUID, message));
+				EventHandler.getHandler().fire(new GameStateChangeEvent(dropletUUID, message));
 				break;
 			// Updates the cards when the game begins.
 			case 11:
-				EventHandler.fireEvent(new DropletStartingEvent(dropletUUID, message));
+				EventHandler.getHandler().fire(new DropletStartingEvent(dropletUUID, message));
 				break;
 			// Updates the line state of the game.
 			case 12:
-				EventHandler.fireEvent(new LineStateChangeEvent(dropletUUID, message));
+				EventHandler.getHandler().fire(new LineStateChangeEvent(dropletUUID, message));
 				break;
 			// Shows the winners of a line state.
 			case 13:
-				EventHandler.fireEvent(new RecieveWinnerEvent(dropletUUID, message));
+				EventHandler.getHandler().fire(new RecieveWinnerEvent(dropletUUID, message));
 				break;
 			// Restarts the game after the game is finished.
 			case 14:
-				EventHandler.fireEvent(new DropletRestartEvent(dropletUUID, message));
+				EventHandler.getHandler().fire(new DropletRestartEvent(dropletUUID, message));
 				break;
 			// Updates the credits of the player after it changes on the server.
 			case 15:
-				EventHandler.fireEvent(new CurrencyChangeEvent(dropletUUID, message));
+				EventHandler.getHandler().fire(new CurrencyChangeEvent(dropletUUID, message));
 				break;
 			// Updates the chat with a new message.
 			case 16:
-				EventHandler.fireEvent(new ChatMessageEvent(dropletUUID, message));
+				EventHandler.getHandler().fire(new ChatMessageEvent(dropletUUID, message));
 				break;
 			default:
 				return;

@@ -58,7 +58,7 @@ public class ServerStatusManager
 	public void setStatus(ServerStatus status)
 	{
 		ServerStatusManager.status = status;
-		EventHandler.fireEvent(new ServerStatusChangeEvent(status));
+		EventHandler.getHandler().fire(new ServerStatusChangeEvent(status));
 	}
 
 	/**

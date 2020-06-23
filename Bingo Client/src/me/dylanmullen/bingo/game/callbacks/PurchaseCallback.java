@@ -10,7 +10,7 @@ public class PurchaseCallback extends PacketCallback
 	@Override
 	public boolean callback()
 	{
-		EventHandler.fireEvent(new CardPurchasedEvent(getDropletUUID(), getMessage()));
+		EventHandler.getHandler().fire(new CardPurchasedEvent(getDropletUUID(), getMessage()));
 		return false;
 	}
 

@@ -1,4 +1,4 @@
-package me.dylanmullen.bingo.events.events.droplet;
+package me.dylanmullen.bingo.events.events.user;
 
 import java.util.UUID;
 

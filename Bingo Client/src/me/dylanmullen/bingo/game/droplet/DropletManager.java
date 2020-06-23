@@ -1,13 +1,15 @@
 package me.dylanmullen.bingo.game.droplet;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 import me.dylanmullen.bingo.events.DropletEvent;
 import me.dylanmullen.bingo.events.Event;
+import me.dylanmullen.bingo.events.EventHandler;
 import me.dylanmullen.bingo.events.EventListener;
 import me.dylanmullen.bingo.events.events.droplet.ChatMessageEvent;
-import me.dylanmullen.bingo.events.events.droplet.CurrencyChangeEvent;
 import me.dylanmullen.bingo.events.events.droplet.DropletJoinEvent;
 import me.dylanmullen.bingo.events.events.droplet.DropletRestartEvent;
 import me.dylanmullen.bingo.events.events.droplet.DropletStartingEvent;
@@ -24,6 +26,27 @@ public class DropletManager implements EventListener
 
 	private BingoDroplet activeDroplet;
 	private Set<BingoDroplet> droplets;
+
+	public DropletManager()
+	{
+		registerListener();
+	}
+
+	private void registerListener()
+	{
+		List<Class<? extends Event>> events = new ArrayList<>();
+		events.add(NextNumberChangeEvent.class);
+		events.add(GameStateChangeEvent.class);
+		events.add(LineStateChangeEvent.class);
+		events.add(DropletStartingEvent.class);
+		events.add(RecieveWinnerEvent.class);
+		events.add(DropletRestartEvent.class);
+		events.add(ChatMessageEvent.class);
+		events.add(DropletJoinEvent.class);
+		events.add(CardPurchasedEvent.class);
+		events.add(CardsRecievedEvent.class);
+		EventHandler.getHandler().registerListener(this, events);
+	}
 
 	@Override
 	public void receive(Event event)
