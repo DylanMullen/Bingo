@@ -1,5 +1,6 @@
-package me.dylanmullen.bingo.events;
+package me.dylanmullen.bingo.events.events;
 
+import me.dylanmullen.bingo.events.Event;
 import me.dylanmullen.bingo.net.ServerStatusManager.ServerStatus;
 
 /**

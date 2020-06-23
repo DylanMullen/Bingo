@@ -15,7 +15,7 @@ public class EventHandler
 	 * TO-DO Make each event have their own set of listeners. Speeds up the firing
 	 * of an event
 	 */
-
+	
 	private static List<EventListener> listeners = new ArrayList<>();
 
 	/**

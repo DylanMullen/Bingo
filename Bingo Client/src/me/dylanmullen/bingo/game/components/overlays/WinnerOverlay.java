@@ -2,11 +2,10 @@ package me.dylanmullen.bingo.game.components.overlays;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-
-import org.json.simple.JSONArray;
 
 import me.dylanmullen.bingo.window.ui.TransparentLabel;
 import me.dylanmullen.bingo.window.ui.UIColour;
@@ -43,20 +42,28 @@ public class WinnerOverlay extends Overlay
 		winners.setVerticalAlignment(SwingConstants.TOP);
 		winners.setFont(font);
 		winners.setForeground(Color.white);
-		
+
 		add(header);
 		add(winners);
 	}
 
-	public void setWinners(JSONArray winners)
+	public void setWinners(List<String> winners)
 	{
+		if (winners == null)
+		{
+			setText("");
+			return;
+		}
+
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < winners.size(); i++)
 		{
-			sb.append((String)winners.get(i) + (winners.size() - 1 == i ? "" : "\n"));
+			sb.append(winners.get(i) + (winners.size() - 1 == i ? "" : "\n"));
 		}
 		setText(sb.toString());
+		setVisible(true);
 		repaint();
+
 	}
 
 	public void setText(String text)

@@ -2,7 +2,7 @@ package me.dylanmullen.bingo.game.components;
 
 import java.awt.Graphics;
 
-import me.dylanmullen.bingo.game.BingoCardContainer;
+import me.dylanmullen.bingo.game.cards.BingoCardContainer;
 import me.dylanmullen.bingo.game.components.overlays.WinnerOverlay;
 import me.dylanmullen.bingo.window.ui.Panel;
 import me.dylanmullen.bingo.window.ui.UIColour;
@@ -66,13 +66,19 @@ public class GameComponent extends Panel
 		comp.setVisible(true);
 		comp.requestBingoCards();
 	}
-
+	
 	public void createWinnerOverlay()
 	{
 		winner = new WinnerOverlay(0, 0, width, height);
 		winner.setVisible(false);
 		add(winner);
 		setComponentZOrder(winner, 1);
+	}
+	
+	public void hideWinnerOverlay()
+	{
+		winner.setVisible(false);
+		winner.setWinners(null);
 	}
 
 	public WinnerOverlay getWinner()

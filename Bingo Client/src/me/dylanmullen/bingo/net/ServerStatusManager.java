@@ -1,7 +1,7 @@
 package me.dylanmullen.bingo.net;
 
 import me.dylanmullen.bingo.events.EventHandler;
-import me.dylanmullen.bingo.events.ServerStatusChangeEvent;
+import me.dylanmullen.bingo.events.events.ServerStatusChangeEvent;
 
 /**
  * @author Dylan

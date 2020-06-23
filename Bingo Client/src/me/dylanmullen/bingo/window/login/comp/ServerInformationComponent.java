@@ -10,7 +10,7 @@ import javax.swing.SwingConstants;
 import me.dylanmullen.bingo.events.Event;
 import me.dylanmullen.bingo.events.EventHandler;
 import me.dylanmullen.bingo.events.EventListener;
-import me.dylanmullen.bingo.events.ServerStatusChangeEvent;
+import me.dylanmullen.bingo.events.events.ServerStatusChangeEvent;
 import me.dylanmullen.bingo.net.ServerStatusManager.ServerStatus;
 import me.dylanmullen.bingo.util.FontUtil;
 import me.dylanmullen.bingo.window.ui.Panel;

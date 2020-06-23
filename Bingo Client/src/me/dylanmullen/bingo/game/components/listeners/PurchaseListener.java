@@ -33,7 +33,7 @@ public class PurchaseListener extends MouseAdapter
 			return;
 		if (overlay.getCard() == null)
 			return;
-		PacketHandler.sendPacket(constructPacket(overlay.getCard().getUUID()), new PurchaseCallback(overlay.getCard()));
+		PacketHandler.sendPacket(constructPacket(overlay.getCard().getUUID()), new PurchaseCallback());
 		lastSent = System.currentTimeMillis();
 	}
 

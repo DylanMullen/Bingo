@@ -1,8 +1,11 @@
-package me.dylanmullen.bingo.game;
+package me.dylanmullen.bingo.game.cards;
 
 import java.awt.Color;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import me.dylanmullen.bingo.game.callbacks.CardRequestCallback;
@@ -81,24 +84,20 @@ public class BingoCardContainer extends Panel
 	 * 
 	 * @param numbersData
 	 */
-	public void setCardInformation(String[] numbersData)
+	public void setCardInformation(List<CardInformation> newCards)
 	{
 		int index = 0;
-		for (int i = 1; i < numbersData.length; i++)
+		for (int i = 1; i < newCards.size(); i++)
 		{
 			if (index > getCards().length)
 				break;
 			if (getCards()[index] == null)
 				break;
 
-			String[] temp = numbersData[i].split("/u/");
-			UUID uuid = UUID.fromString(temp[1]);
-
-			getCards()[index].updateCardInformation(temp[0], uuid);
+			getCards()[index].updateCardInformation(newCards.get(i));
 			getCards()[index].setVisible(true);
 			getCards()[index].setY(getCardIndentY(index));
 			getCards()[index].repaint();
-
 			index++;
 		}
 	}
@@ -107,21 +106,16 @@ public class BingoCardContainer extends Panel
 	 * Updates the cards based on if they were purchased or not. If the cards are
 	 * purchased they are set visible and moved to the top of the container.
 	 * 
-	 * @param cardUUIDs UUIDs of the cards that were purchased.
+	 * @param purchasedCards UUIDs of the cards that were purchased.
 	 */
-	public void updatePurchasedCards(String[] cardUUIDs)
+	public void updatePurchasedCards(List<UUID> purchasedCards)
 	{
-		if (cardUUIDs == null)
+		if (purchasedCards == null)
 			return;
 		
-		for(String s : cardUUIDs)
+		for (int i = 0; i < purchasedCards.size(); i++)
 		{
-			System.out.println(s);
-		}
-		
-		for (int i = 0; i < cardUUIDs.length; i++)
-		{
-			UUID uuid = UUID.fromString(cardUUIDs[i]);
+			UUID uuid = purchasedCards.get(i);
 			BingoCard card = getCard(uuid);
 
 			card.setPurchased(true);
@@ -223,5 +217,11 @@ public class BingoCardContainer extends Panel
 	public BingoCard[] getCards()
 	{
 		return this.cards;
+	}
+
+	public void setCardPurchased(UUID cardUUID)
+	{
+		getCard(cardUUID).setPurchased(true);
+		repaint();
 	}
 }

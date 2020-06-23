@@ -1,4 +1,4 @@
-package me.dylanmullen.bingo.game;
+package me.dylanmullen.bingo.game.cards;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -30,10 +30,7 @@ public class BingoCard extends JComponent
 	private BingoSquare[] squares;
 	public final int BUFFER = 36;
 
-	private boolean purchased = false;
-	private boolean selected = false;
-
-	private UUID uuid;
+	private CardInformation cardInfo;
 
 	private int x, y;
 
@@ -98,12 +95,9 @@ public class BingoCard extends JComponent
 	 * @param numbersData Number data from the Packet
 	 * @param uuid        UUID of the Bingo Card.
 	 */
-	public void updateCardInformation(String numbersData, UUID uuid)
+	public void updateCardInformation(CardInformation info)
 	{
-		String[] temp = numbersData.split("/");
-
-		setUUID(uuid);
-		setPurchased(false);
+		this.cardInfo = info;
 
 		for (int i = 0; i < this.squares.length; i++)
 		{
@@ -112,14 +106,10 @@ public class BingoCard extends JComponent
 			square.setCalled(false);
 		}
 
-		for (int i = 0; i < temp.length; i++)
+		for (int i = 0; i < info.getNumbers().length; i++)
 		{
-			String[] numbers = temp[i].split("\\.");
-			setNumber(i, Integer.parseInt(numbers[0]));
-			setNumber(i, Integer.parseInt(numbers[1]));
-			setNumber(i, Integer.parseInt(numbers[2]));
-			setNumber(i, Integer.parseInt(numbers[3]));
-			setNumber(i, Integer.parseInt(numbers[4]));
+			int row = i % 5 - (i % 5 == 0 ? 1 : 0);
+			setNumber(row, info.getNumbers()[i]);
 		}
 	}
 
@@ -155,7 +145,7 @@ public class BingoCard extends JComponent
 	 */
 	public void showPurchaseOverlay()
 	{
-		if (!this.selected)
+		if (!this.cardInfo.isSelected())
 		{
 			if (this.purchaseOverlay == null)
 			{
@@ -165,7 +155,7 @@ public class BingoCard extends JComponent
 			}
 
 			this.purchaseOverlay.setVisible(true);
-			this.selected = true;
+			this.cardInfo.setSelected(true);
 
 			add(this.purchaseOverlay);
 		}
@@ -177,10 +167,10 @@ public class BingoCard extends JComponent
 	 */
 	public void hidePurchaseOverlay()
 	{
-		if (this.selected)
+		if (this.cardInfo.isSelected())
 		{
 			this.purchaseOverlay.setVisible(false);
-			this.selected = false;
+			this.cardInfo.setSelected(false);
 
 			remove(this.purchaseOverlay);
 		}
@@ -247,8 +237,7 @@ public class BingoCard extends JComponent
 			g2.setColor((square.isCalled() ? UIColour.SQUARE_MARKED.toColor() : getColour(i)));
 			g2.fill(square);
 
-			Dimension dim = FontUtil.getFontSize(getFontMetrics(g2.getFont()), square.getNumber() + "", 0,
-					0);
+			Dimension dim = FontUtil.getFontSize(getFontMetrics(g2.getFont()), square.getNumber() + "", 0, 0);
 			int xp = (int) ((int) square.getX() + square.getWidth() / 2 - (dim.width / 2));
 			int yp = (int) ((int) square.getY() + square.getHeight() / 2 + (dim.height / 4));
 
@@ -260,7 +249,7 @@ public class BingoCard extends JComponent
 
 			Color col = UIColour.FRAME_BINGO_BG_TOP.toColor();
 			g2.setColor(new Color(col.getRed(), col.getGreen(), col.getBlue(), 95));
-			
+
 			if (square.isCalled())
 				g2.fillOval((int) (square.x + square.width / 2 - radius / 2),
 						(int) (square.y + square.height / 2 - radius / 2), radius, radius);
@@ -323,7 +312,7 @@ public class BingoCard extends JComponent
 	 */
 	public boolean isPurchased()
 	{
-		return this.purchased;
+		return this.cardInfo.isPurchased();
 	}
 
 	/**
@@ -333,7 +322,7 @@ public class BingoCard extends JComponent
 	 */
 	public boolean isSelected()
 	{
-		return selected;
+		return this.cardInfo.isSelected();
 	}
 
 	/**
@@ -343,7 +332,7 @@ public class BingoCard extends JComponent
 	 */
 	public void setPurchased(boolean purchased)
 	{
-		this.purchased = purchased;
+		this.cardInfo.setPurchased(purchased);
 	}
 
 	/**
@@ -353,7 +342,7 @@ public class BingoCard extends JComponent
 	 */
 	public void setSelected(boolean selected)
 	{
-		this.selected = selected;
+		this.cardInfo.setSelected(selected);
 	}
 
 	/**
@@ -363,7 +352,7 @@ public class BingoCard extends JComponent
 	 */
 	public void setUUID(UUID uuid)
 	{
-		this.uuid = uuid;
+		this.cardInfo.setUUID(uuid);
 	}
 
 	/**
@@ -384,7 +373,7 @@ public class BingoCard extends JComponent
 	 */
 	public UUID getUUID()
 	{
-		return this.uuid;
+		return this.cardInfo.getUUID();
 	}
 
 }

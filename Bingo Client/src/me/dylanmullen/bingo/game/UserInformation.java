@@ -2,12 +2,16 @@ package me.dylanmullen.bingo.game;
 
 import java.util.UUID;
 
+import me.dylanmullen.bingo.events.Event;
+import me.dylanmullen.bingo.events.EventListener;
+import me.dylanmullen.bingo.events.events.droplet.CurrencyChangeEvent;
+
 /**
  * @author Dylan
  * @date 17 Jun 2020
  * @project Bingo Client
  */
-public class UserInformation
+public class UserInformation implements EventListener
 {
 
 	private UUID uuid;
@@ -25,7 +29,7 @@ public class UserInformation
 	public void updateCredits(double credits)
 	{
 		setCredits(credits);
-		BingoGame.getInstance().getBingoWindow().getSideBar().getProfilePanel().updateCredits(getCredits());
+//		BingoGame.getInstance().getBingoWindow().getSideBar().getProfilePanel().updateCredits(getCredits());
 	}
 
 	/**
@@ -106,6 +110,15 @@ public class UserInformation
 	public void setWins(int wins)
 	{
 		this.wins = wins;
+	}
+
+	@Override
+	public void receive(Event event)
+	{
+		if (event instanceof CurrencyChangeEvent)
+		{
+			updateCredits(((CurrencyChangeEvent) event).getCredits());
+		}
 	}
 
 }

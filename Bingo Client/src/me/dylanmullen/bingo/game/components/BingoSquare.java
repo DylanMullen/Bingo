@@ -13,6 +13,8 @@ public class BingoSquare extends Rectangle
 	public BingoSquare(int x, int y, int width, int height)
 	{
 		super(x, y, width, height);
+		setNumber(-1);
+		setCalled(false);
 	}
 
 	public int getNumber()

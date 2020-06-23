@@ -1,5 +1,7 @@
 package me.dylanmullen.bingo.net.packet;
 
+import java.util.UUID;
+
 import org.json.simple.JSONObject;
 
 import me.dylanmullen.bingo.util.Callback;
@@ -53,5 +55,10 @@ public abstract class PacketCallback implements Callback
 	public int getResponseType()
 	{
 		return ((Number) getMessage().get("responseType")).intValue();
+	}
+	
+	public UUID getDropletUUID()
+	{
+		return UUID.fromString((String)getMessage().get("dropletUUID"));
 	}
 }

@@ -1,9 +1,18 @@
 package me.dylanmullen.bingo.net;
 
-import org.json.simple.JSONArray;
+import java.util.UUID;
+
 import org.json.simple.JSONObject;
 
-import me.dylanmullen.bingo.game.BingoGame;
+import me.dylanmullen.bingo.events.EventHandler;
+import me.dylanmullen.bingo.events.events.droplet.ChatMessageEvent;
+import me.dylanmullen.bingo.events.events.droplet.CurrencyChangeEvent;
+import me.dylanmullen.bingo.events.events.droplet.DropletRestartEvent;
+import me.dylanmullen.bingo.events.events.droplet.DropletStartingEvent;
+import me.dylanmullen.bingo.events.events.droplet.GameStateChangeEvent;
+import me.dylanmullen.bingo.events.events.droplet.LineStateChangeEvent;
+import me.dylanmullen.bingo.events.events.droplet.NextNumberChangeEvent;
+import me.dylanmullen.bingo.events.events.droplet.RecieveWinnerEvent;
 import me.dylanmullen.bingo.net.handlers.ClientHandler;
 import me.dylanmullen.bingo.net.packet.Packet;
 import me.dylanmullen.bingo.net.packet.PacketCallback;
@@ -50,43 +59,44 @@ public class PacketHandler
 	public static void handlePacket(int id, JSONObject data)
 	{
 		JSONObject message = (JSONObject) data.get("packetMessage");
+		UUID dropletUUID = UUID.fromString((String) message.get("dropletUUID"));
 		switch (id)
 		{
 			// Sets the next number of the game.
 			case 9:
-				BingoGame.getInstance().setNextNumber(message);
+				EventHandler.fireEvent(new NextNumberChangeEvent(dropletUUID, message));
 				break;
 			// Sets the new game state of the game.
 			case 10:
-				BingoGame.getInstance().setGameState(((Number) message.get("gameState")).intValue());
+				EventHandler.fireEvent(new GameStateChangeEvent(dropletUUID, message));
 				break;
 			// Updates the cards when the game begins.
 			case 11:
-				BingoGame.getInstance().updateCards(message);
+				EventHandler.fireEvent(new DropletStartingEvent(dropletUUID, message));
 				break;
 			// Updates the line state of the game.
 			case 12:
-				BingoGame.getInstance().updateLineState(((Number) message.get("linestate")).intValue());
+				EventHandler.fireEvent(new LineStateChangeEvent(dropletUUID, message));
 				break;
 			// Shows the winners of a line state.
 			case 13:
-				BingoGame.getInstance().showWinners((JSONArray) message.get("winners"));
+				EventHandler.fireEvent(new RecieveWinnerEvent(dropletUUID, message));
 				break;
 			// Restarts the game after the game is finished.
 			case 14:
-				BingoGame.getInstance().restart(message);
+				EventHandler.fireEvent(new DropletRestartEvent(dropletUUID, message));
 				break;
 			// Updates the credits of the player after it changes on the server.
 			case 15:
-				BingoGame.getInstance().getUserInformation()
-						.updateCredits(((Number) message.get("credits")).doubleValue());
+				EventHandler.fireEvent(new CurrencyChangeEvent(dropletUUID, message));
 				break;
 			// Updates the chat with a new message.
 			case 16:
-				BingoGame.getInstance().getGamePanel().getChatComponent().recieveMessage(message);
+				EventHandler.fireEvent(new ChatMessageEvent(dropletUUID, message));
 				break;
 			default:
 				return;
 		}
 	}
+
 }

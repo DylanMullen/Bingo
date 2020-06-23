@@ -1,6 +1,7 @@
 package me.dylanmullen.bingo.game.callbacks;
 
-import me.dylanmullen.bingo.game.BingoGame;
+import me.dylanmullen.bingo.events.EventHandler;
+import me.dylanmullen.bingo.events.events.droplet.cardevents.CardsRecievedEvent;
 import me.dylanmullen.bingo.net.packet.PacketCallback;
 
 public class CardRequestCallback extends PacketCallback
@@ -10,13 +11,8 @@ public class CardRequestCallback extends PacketCallback
 	public boolean callback()
 	{
 		if(getResponseType()==200)
-			BingoGame.getInstance().getGamePanel().getGameComponent().getCardGroup().setCardInformation(getNumbers());
+			EventHandler.fireEvent(new CardsRecievedEvent(getDropletUUID(), getMessage()));
 		return false;
-	}
-
-	private String[] getNumbers()
-	{
-		return ((String) getMessage().get("cards")).split("/c/|/c/");
 	}
 
 }

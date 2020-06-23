@@ -329,6 +329,7 @@ public class BingoDroplet
 	{
 		Packet packet = PacketHandler.createPacket(client, id, null);
 		JSONObject message = new JSONObject();
+		message.put("dropletUUID", uuid.toString());
 		message.put("cards", cards.getCardsJSON());
 		packet.setMessageSection(message);
 		return packet;
@@ -339,6 +340,7 @@ public class BingoDroplet
 	{
 		Packet packet = PacketHandler.createPacket(client, 11, null);
 		JSONObject message = new JSONObject();
+		message.put("dropletUUID", uuid.toString());
 		message.put("purchasedCards", cards.getPurchasedCardsArray());
 		packet.setMessageSection(message);
 		return packet;
@@ -349,6 +351,7 @@ public class BingoDroplet
 	{
 		Packet packet = PacketHandler.createPacket(null, 13, null);
 		JSONObject message = new JSONObject();
+		message.put("dropletUUID", uuid.toString());
 		message.put("winners", winners);
 		return packet;
 	}
@@ -357,7 +360,8 @@ public class BingoDroplet
 	{
 		Packet packet = PacketHandler.createPacket(null, 12, null);
 		JSONObject message = new JSONObject();
-		message.put("linestate", lineState.getLinesRequired());
+		message.put("dropletUUID", uuid.toString());
+		message.put("lineState", lineState.getLinesRequired());
 		packet.setMessageSection(message);
 		return packet;
 	}
@@ -366,6 +370,7 @@ public class BingoDroplet
 	{
 		Packet packet = PacketHandler.createPacket(null, 12, null);
 		JSONObject message = new JSONObject();
+		message.put("dropletUUID", uuid.toString());
 		message.put("gameState", dropletState.getStateCode());
 		packet.setMessageSection(message);
 		return packet;
@@ -376,6 +381,7 @@ public class BingoDroplet
 	{
 		Packet packet = PacketHandler.createPacket(null, 9, null);
 		JSONObject message = new JSONObject();
+		message.put("dropletUUID", uuid.toString());
 		message.put("number", num);
 		message.put("previousNumbers", new JSONArray());
 		packet.setMessageSection(message);
