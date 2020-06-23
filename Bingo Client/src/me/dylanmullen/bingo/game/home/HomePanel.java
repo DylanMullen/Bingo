@@ -1,17 +1,11 @@
 package me.dylanmullen.bingo.game.home;
 
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import javax.imageio.ImageIO;
-import javax.swing.Scrollable;
-import javax.swing.SwingConstants;
 
 import org.json.simple.JSONObject;
 
@@ -26,7 +20,7 @@ import me.dylanmullen.bingo.window.ui.grid.Grid;
 import me.dylanmullen.bingo.window.ui.grid.GridItem;
 import me.dylanmullen.bingo.window.ui.grid.GridSettings;
 
-public class HomePanel extends Panel implements Scrollable, MouseMotionListener
+public class HomePanel extends Panel
 {
 
 	private static final long serialVersionUID = 1L;
@@ -38,8 +32,6 @@ public class HomePanel extends Panel implements Scrollable, MouseMotionListener
 	private Grid grid;
 
 	private int minHeight;
-	private int maxUnitIncrement = 20;
-
 	/**
 	 * This is the Home Panel for the Bingo Application.<br>
 	 * This panel contains all the possible games that a Player can join as well as
@@ -59,7 +51,7 @@ public class HomePanel extends Panel implements Scrollable, MouseMotionListener
 			HomePanel.instance = this;
 		this.bingoWindow = bingoWindow;
 		setup();
-		sendCloudRetrivalPacket();
+//		sendCloudRetrivalPacket();
 	}
 
 	private void sendCloudRetrivalPacket()
@@ -153,73 +145,5 @@ public class HomePanel extends Panel implements Scrollable, MouseMotionListener
 	public BingoWindow getWindow()
 	{
 		return this.bingoWindow;
-	}
-
-	public void mouseMoved(MouseEvent e)
-	{
-	}
-
-	@Override
-	public void mouseDragged(MouseEvent e)
-	{
-		Rectangle r = new Rectangle(e.getX(), e.getY(), 1, 1);
-		scrollRectToVisible(r);
-	}
-
-	@Override
-	public Dimension getPreferredSize()
-	{
-		return new Dimension(getWidth(), getHeight());
-	}
-
-	public Dimension getPreferredScrollableViewportSize()
-	{
-		return getPreferredSize();
-	}
-
-	public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction)
-	{
-		int currentPosition = 0;
-		if (orientation == SwingConstants.HORIZONTAL)
-		{
-			currentPosition = visibleRect.x;
-		} else
-		{
-			currentPosition = visibleRect.y;
-		}
-		if (direction < 0)
-		{
-			int newPosition = currentPosition - (currentPosition / this.maxUnitIncrement) * this.maxUnitIncrement;
-			return (newPosition == 0) ? this.maxUnitIncrement : newPosition;
-		} else
-		{
-			return ((currentPosition / this.maxUnitIncrement) + 1) * this.maxUnitIncrement - currentPosition;
-		}
-	}
-
-	public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction)
-	{
-		if (orientation == SwingConstants.HORIZONTAL)
-		{
-			return visibleRect.width - this.maxUnitIncrement;
-		} else
-		{
-			return visibleRect.height - this.maxUnitIncrement;
-		}
-	}
-
-	public boolean getScrollableTracksViewportWidth()
-	{
-		return false;
-	}
-
-	public boolean getScrollableTracksViewportHeight()
-	{
-		return false;
-	}
-
-	public void setMaxUnitIncrement(int pixels)
-	{
-		this.maxUnitIncrement = pixels;
 	}
 }

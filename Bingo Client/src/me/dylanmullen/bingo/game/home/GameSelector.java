@@ -34,7 +34,8 @@ public class GameSelector extends JComponent
 
 	private UUID uuid;
 	private String name;
-	private int players, instances;
+	private int players;
+	private int instances;
 	private double price;
 
 	private RoundedButton joinButton;
