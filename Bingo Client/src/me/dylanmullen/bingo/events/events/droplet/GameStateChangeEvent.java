@@ -16,6 +16,7 @@ public class GameStateChangeEvent extends DropletEvent
 	{
 		super(uuid);
 		this.newState = GameState.getGameState(((Number) message.get("gameState")).intValue());
+		System.out.println("gamestate change");
 	}
 
 	public GameState getNewState()

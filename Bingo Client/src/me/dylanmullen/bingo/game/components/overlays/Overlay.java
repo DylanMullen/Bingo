@@ -32,11 +32,11 @@ public abstract class Overlay extends JComponent
 	@Override
 	protected void paintComponent(Graphics g)
 	{
+		super.paintComponent(g);
+
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setColor(backgroundColour);
 		g2.fillRect(0, 0, getWidth(), getHeight());
-
-		super.paintComponent(g);
 	}
 
 }

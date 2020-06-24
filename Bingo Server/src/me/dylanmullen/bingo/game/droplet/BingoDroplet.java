@@ -94,12 +94,15 @@ public class BingoDroplet
 		this.numbers = new ArrayList<Integer>();
 		this.dropletState = GameState.LOBBY;
 		this.lineState = LineState.ONE;
+		setupNumbers();
+		start();
 	}
 
 	public synchronized void start()
 	{
 		if (isPlaying())
 			return;
+
 		Thread thread = new Thread(() ->
 		{
 			playing = true;
@@ -108,6 +111,7 @@ public class BingoDroplet
 				updateGameState(GameState.LOBBY);
 				new LobbyRunnable(this).run();
 				updateGameState(GameState.PLAYING);
+				rig();
 				new GameRunnable(this).run();
 				restart();
 			} while (isPlaying());
@@ -144,6 +148,18 @@ public class BingoDroplet
 			numbers.add(i);
 
 		Collections.shuffle(numbers);
+
+	}
+
+	private void rig()
+	{
+		BingoCardGroup group = cards.iterator().next();
+		this.numbers.clear();
+		List<Integer> numbers = group.getCard().getNumbers();
+		for (int i = 0; i < numbers.size(); i++)
+		{
+			this.numbers.add(numbers.get(i));
+		}
 	}
 
 	private void restart()
@@ -167,6 +183,14 @@ public class BingoDroplet
 		int number = numbers.get(0);
 		numbers.remove(0);
 		return number;
+	}
+
+	private void markNumber(int number)
+	{
+		for (BingoCardGroup card : getCardsInPlay())
+		{
+			card.markNumber(number);
+		}
 	}
 
 	public void handleWinning()
@@ -198,9 +222,10 @@ public class BingoDroplet
 		sendGameState();
 	}
 
-	public boolean checkWinners()
+	public boolean checkWinners(int number)
 	{
 		boolean status = false;
+		markNumber(number);
 
 		Set<BingoCardGroup> cardsInPlay = getCardsInPlay();
 		for (BingoCardGroup card : cardsInPlay)
@@ -285,7 +310,9 @@ public class BingoDroplet
 		}
 
 		for (User user : getPlayingUsers())
+		{
 			PacketHandler.sendPacket(getWinnerInformationPacket(user.getClient(), array));
+		}
 	}
 
 	private void sendLineState()
@@ -306,7 +333,10 @@ public class BingoDroplet
 
 	public void sendNextNumber(int number)
 	{
-
+		for (User user : usersConnected)
+		{
+			PacketHandler.sendPacket(getNextNumberPacket(user.getClient(), number));
+		}
 	}
 
 	/**
@@ -350,16 +380,17 @@ public class BingoDroplet
 	@SuppressWarnings("unchecked")
 	private Packet getWinnerInformationPacket(Client client, JSONArray winners)
 	{
-		Packet packet = PacketHandler.createPacket(null, 13, null);
+		Packet packet = PacketHandler.createPacket(client, 13, null);
 		JSONObject message = new JSONObject();
 		message.put("dropletUUID", uuid.toString());
 		message.put("winners", winners);
+		packet.setMessageSection(message);
 		return packet;
 	}
 
 	private Packet getLineStatePacket(Client client)
 	{
-		Packet packet = PacketHandler.createPacket(null, 12, null);
+		Packet packet = PacketHandler.createPacket(client, 12, null);
 		JSONObject message = new JSONObject();
 		message.put("dropletUUID", uuid.toString());
 		message.put("lineState", lineState.getLinesRequired());
@@ -369,7 +400,7 @@ public class BingoDroplet
 
 	private Packet getGameStatePacket(Client client)
 	{
-		Packet packet = PacketHandler.createPacket(null, 12, null);
+		Packet packet = PacketHandler.createPacket(client, 10, null);
 		JSONObject message = new JSONObject();
 		message.put("dropletUUID", uuid.toString());
 		message.put("gameState", dropletState.getStateCode());
@@ -378,9 +409,9 @@ public class BingoDroplet
 	}
 
 	// TODO send previous numbers.
-	public Packet getNextNumberPacket(int num)
+	public Packet getNextNumberPacket(Client client, int num)
 	{
-		Packet packet = PacketHandler.createPacket(null, 9, null);
+		Packet packet = PacketHandler.createPacket(client, 9, null);
 		JSONObject message = new JSONObject();
 		message.put("dropletUUID", uuid.toString());
 		message.put("number", num);

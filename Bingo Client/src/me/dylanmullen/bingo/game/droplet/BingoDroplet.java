@@ -57,7 +57,7 @@ public class BingoDroplet
 	public void showWinners(List<String> list)
 	{
 		getGamePanel().getGameComponent().getWinner().setWinners(list);
-		getGamePanel().getGameComponent().repaint();
+//		getGamePanel().getGameComponent().repaint();
 	}
 
 	/**
@@ -94,6 +94,9 @@ public class BingoDroplet
 	 */
 	public void setNextNumber(int number)
 	{
+		if (getGamePanel().getGameComponent().getWinner().isVisible())
+			getGamePanel().getGameComponent().hideWinnerOverlay();
+		
 		getGamePanel().getHeaderComponent().getNumbersComp().update(number);
 		getGamePanel().getGameComponent().getCardGroup().markNumber(number);
 	}
@@ -106,6 +109,10 @@ public class BingoDroplet
 	public void setGameState(GameState state)
 	{
 		this.gameState = state;
+		if (gameState.equals(GameState.PLAYING))
+		{
+			showCalledNumberComponent();
+		}
 	}
 
 	/**

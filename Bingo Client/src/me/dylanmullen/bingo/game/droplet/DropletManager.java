@@ -76,7 +76,6 @@ public class DropletManager implements EventListener
 			{
 				joinDroplet(((DropletJoinEvent) event).getDropletUUID(), ((DropletJoinEvent) event).getNewState());
 			}
-			System.out.println("Droplet null");
 			return;
 		}
 
@@ -113,8 +112,8 @@ public class DropletManager implements EventListener
 			return;
 		} else if (event instanceof CardsRecievedEvent)
 		{
-			System.out.println("reached here");
-			droplet.getGamePanel().getGameComponent().createCardGroup(((CardsRecievedEvent) event).getCards());
+			droplet.getGamePanel().getGameComponent().createCardGroup(droplet.getUUID(),
+					((CardsRecievedEvent) event).getCards());
 			return;
 		}
 	}

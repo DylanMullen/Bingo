@@ -18,7 +18,7 @@ public class RecieveWinnerEvent extends DropletEvent
 	{
 		super(dropletUUID);
 		this.winners = new ArrayList<>();
-
+		System.out.println("winners recieved");
 		JSONArray data = ((JSONArray) packetMessage.get("winners"));
 		for (int i = 0; i < data.size(); i++)
 		{

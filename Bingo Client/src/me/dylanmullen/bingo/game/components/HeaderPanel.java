@@ -44,7 +44,6 @@ public class HeaderPanel extends Panel
 		info.setVisible(false);
 		info.repaint();
 		remove(info);
-		
 		numbersComp.setVisible(true);
 		numbersComp.repaint();
 		numbersComp.setDisplaying(true);

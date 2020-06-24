@@ -10,11 +10,12 @@ public class BingoRow
 		setNumbers(numbers);
 	}
 
-	public void markNumber(int number)
+	public boolean markNumber(int number)
 	{
 		if (!hasNumber(number))
-			return;
+			return false;
 		numbers[getIndex(number)] = -1;
+		return true;
 	}
 
 	private boolean hasNumber(int number)
@@ -54,9 +55,10 @@ public class BingoRow
 
 	public boolean isComplete()
 	{
+		boolean status = true;
 		for (int i = 0; i < getNumbers().length; i++)
-			if (getNumbers()[i] == -1)
-				return true;
-		return false;
+			if (getNumbers()[i] != -1)
+				status = false;
+		return status;
 	}
 }

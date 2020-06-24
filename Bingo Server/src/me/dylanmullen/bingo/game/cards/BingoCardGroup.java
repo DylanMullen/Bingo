@@ -57,6 +57,14 @@ public class BingoCardGroup
 		}
 	}
 
+	public void markNumber(int number)
+	{
+		for (BingoCard card : getPurchasedCards())
+		{
+			card.markNumber(number);
+		}
+	}
+
 	public BingoCard getCard(UUID uuid)
 	{
 		for (BingoCard card : cards)
@@ -65,10 +73,15 @@ public class BingoCardGroup
 		return null;
 	}
 
+	public BingoCard getCard()
+	{
+		return getPurchasedCards().get(0);
+	}
+
 	public Set<BingoCard> getWinningCards()
 	{
 		Set<BingoCard> winners = new HashSet<BingoCard>();
-		for (BingoCard cards : cards)
+		for (BingoCard cards : getPurchasedCards())
 			if (cards.hasWon())
 				winners.add(cards);
 		return winners;
@@ -89,12 +102,22 @@ public class BingoCardGroup
 	public JSONArray getPurchasedCardsArray()
 	{
 		JSONArray object = new JSONArray();
+		for (BingoCard card : getPurchasedCards())
+		{
+			object.add(card.getUUID().toString());
+		}
+		return object;
+	}
+
+	public List<BingoCard> getPurchasedCards()
+	{
+		List<BingoCard> purchased = new ArrayList<BingoCard>();
 		for (BingoCard card : cards)
 		{
 			if (card.isPurchased())
-				object.add(card.getUUID().toString());
+				purchased.add(card);
 		}
-		return object;
+		return purchased;
 	}
 
 	public boolean hasPurchasedCards()
@@ -109,7 +132,7 @@ public class BingoCardGroup
 
 	public boolean hasWinners(LineState state)
 	{
-		for (BingoCard card : cards)
+		for (BingoCard card : getPurchasedCards())
 			if (card.isWinner(state))
 				return true;
 		return false;

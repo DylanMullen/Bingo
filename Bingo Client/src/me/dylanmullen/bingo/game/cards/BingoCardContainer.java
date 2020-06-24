@@ -18,6 +18,7 @@ public class BingoCardContainer extends Panel
 
 	private static final long serialVersionUID = -2951295854163796573L;
 
+	private UUID dropletUUID;
 	private List<BingoCard> cards;
 
 	/**
@@ -30,23 +31,23 @@ public class BingoCardContainer extends Panel
 	 * @param width  The width of the container
 	 * @param height The height of the container
 	 */
-	public BingoCardContainer(int x, int y, int width, int height)
+	public BingoCardContainer(UUID dropletUUID, int x, int y, int width, int height)
 	{
 		super(x, y, width, height);
+		this.dropletUUID = dropletUUID;
 	}
 
 	public void createCards(List<CardInformation> information)
 	{
-		System.out.println("adding cards: " + information.size());
 		for (int i = 0; i < information.size(); i++)
 		{
 			CardInformation info = information.get(i);
-			BingoCard card = new BingoCard(25, getCardIndentY(i), (getWidth() - 50), getCardHeight(), info);
+			BingoCard card = new BingoCard(dropletUUID, 25, getCardIndentY(i), (getWidth() - 50), getCardHeight(),
+					info);
 			card.addMouseListener(new BingoCardListener(this));
 			cards.add(card);
 			card.repaint();
 			add(card);
-			System.out.println("adding cards");
 		}
 		repaint();
 	}
@@ -214,6 +215,7 @@ public class BingoCardContainer extends Panel
 	public void setCardPurchased(UUID cardUUID)
 	{
 		getCard(cardUUID).setPurchased(true);
+		getCard(cardUUID).hidePurchaseOverlay();
 		repaint();
 	}
 }

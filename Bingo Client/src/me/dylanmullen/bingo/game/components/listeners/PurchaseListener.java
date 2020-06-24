@@ -40,6 +40,7 @@ public class PurchaseListener extends MouseAdapter
 	private Packet constructPacket(UUID uuid)
 	{
 		JSONObject message = new JSONObject();
+		message.put("dropletUUID", overlay.getCard().getDropletUUID().toString());
 		message.put("cardUUID", uuid.toString());
 		return PacketHandler.createPacket(8, message);
 	}

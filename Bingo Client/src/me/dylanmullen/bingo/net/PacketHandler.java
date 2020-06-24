@@ -59,7 +59,25 @@ public class PacketHandler
 	public static void handlePacket(int id, JSONObject data)
 	{
 		JSONObject message = (JSONObject) data.get("packetMessage");
-		UUID dropletUUID = UUID.fromString((String) message.get("dropletUUID"));
+		System.out.println(id);
+		try
+		{
+			UUID dropletUUID = UUID.fromString((String) message.get("dropletUUID"));
+			handleDropletPackets(id, dropletUUID, message);
+		} catch (Exception e)
+		{
+			switch (id)
+			{
+				// Updates the credits of the player after it changes on the server.
+				case 15:
+					EventHandler.getHandler().fire(new CurrencyChangeEvent(message));
+					break;
+			}
+		}
+	}
+
+	private static void handleDropletPackets(int id, UUID dropletUUID, JSONObject message)
+	{
 		switch (id)
 		{
 			// Sets the next number of the game.
@@ -85,10 +103,6 @@ public class PacketHandler
 			// Restarts the game after the game is finished.
 			case 14:
 				EventHandler.getHandler().fire(new DropletRestartEvent(dropletUUID, message));
-				break;
-			// Updates the credits of the player after it changes on the server.
-			case 15:
-				EventHandler.getHandler().fire(new CurrencyChangeEvent(dropletUUID, message));
 				break;
 			// Updates the chat with a new message.
 			case 16:

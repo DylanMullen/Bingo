@@ -25,6 +25,7 @@ public class BingoCard extends JComponent
 
 	private static final long serialVersionUID = -1646554212523678637L;
 
+	private UUID dropletUUID;
 	private PurchaseOverlay purchaseOverlay;
 
 	private BingoSquare[] squares;
@@ -43,12 +44,14 @@ public class BingoCard extends JComponent
 	 * @param width  The width of the Bingo Card.
 	 * @param height The height of the Bingo Card.
 	 */
-	public BingoCard(int x, int y, int width, int height, CardInformation info)
+	public BingoCard(UUID dropletUUID, int x, int y, int width, int height, CardInformation info)
 	{
+		this.dropletUUID = dropletUUID;
 		this.x = x;
 		this.y = y;
 		this.cardInfo = info;
 		createSquares(width, height);
+		updateCardInformation(cardInfo);
 	}
 
 	/**
@@ -109,7 +112,10 @@ public class BingoCard extends JComponent
 
 		for (int i = 0; i < info.getNumbers().length; i++)
 		{
-			int row = i % 5 - (i % 5 == 0 ? 1 : 0);
+			int temp = i + 1;
+			int row = temp / 5;
+			if (temp % 5 == 0 && temp != 0)
+				row--;
 			setNumber(row, info.getNumbers()[i]);
 		}
 	}
@@ -191,6 +197,7 @@ public class BingoCard extends JComponent
 
 		paintTop(g2);
 		paintGrid(g2);
+		super.paintComponent(g);
 	}
 
 	/**
@@ -371,4 +378,8 @@ public class BingoCard extends JComponent
 		return this.cardInfo.getUUID();
 	}
 
+	public UUID getDropletUUID()
+	{
+		return dropletUUID;
+	}
 }

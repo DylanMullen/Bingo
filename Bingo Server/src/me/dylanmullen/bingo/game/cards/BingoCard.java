@@ -1,5 +1,7 @@
 package me.dylanmullen.bingo.game.cards;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.json.simple.JSONArray;
@@ -37,6 +39,15 @@ public class BingoCard
 		}
 	}
 
+	public void markNumber(int number)
+	{
+		for (BingoRow row : rows)
+		{
+			if (row.markNumber(number))
+				return;
+		}
+	}
+
 	public boolean isWinner(LineState state)
 	{
 		int temp = 0;
@@ -52,6 +63,17 @@ public class BingoCard
 	public boolean hasWon()
 	{
 		return winner;
+	}
+
+	public List<Integer> getNumbers()
+	{
+		List<Integer> numbers = new ArrayList<>();
+		for (BingoRow row : rows)
+		{
+			for (int i = 0; i < row.getNumbers().length; i++)
+				numbers.add(row.getNumbers()[i]);
+		}
+		return numbers;
 	}
 
 	public JSONArray getCardNumbers()

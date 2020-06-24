@@ -2,6 +2,7 @@ package me.dylanmullen.bingo.game.components;
 
 import java.awt.Graphics;
 import java.util.List;
+import java.util.UUID;
 
 import me.dylanmullen.bingo.game.cards.BingoCardContainer;
 import me.dylanmullen.bingo.game.cards.CardInformation;
@@ -48,14 +49,15 @@ public class GameComponent extends Panel
 		repaint();
 	}
 
-	public void createCardGroup(List<CardInformation> cards)
+	public void createCardGroup(UUID dropletUUID, List<CardInformation> cards)
 	{
-		comp = new BingoCardContainer(15, 15, getWidth() - 30, getHeight() - 30);
+		comp = new BingoCardContainer(dropletUUID, 15, 15, getWidth() - 30, getHeight() - 30);
 		comp.setup();
 		comp.createCards(cards);
 		comp.setVisible(true);
 		comp.repaint();
 		add(comp);
+		setComponentZOrder(comp, 0);
 		repaint();
 	}
 
@@ -65,6 +67,7 @@ public class GameComponent extends Panel
 		winner.setVisible(false);
 		add(winner);
 		setComponentZOrder(winner, 1);
+		repaint();
 	}
 
 	public void hideWinnerOverlay()

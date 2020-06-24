@@ -1,19 +1,16 @@
 package me.dylanmullen.bingo.events.events.user;
 
-import java.util.UUID;
-
 import org.json.simple.JSONObject;
 
-import me.dylanmullen.bingo.events.DropletEvent;
+import me.dylanmullen.bingo.events.Event;;
 
-public class CurrencyChangeEvent extends DropletEvent
+public class CurrencyChangeEvent implements Event
 {
 
 	private double credits;
 
-	public CurrencyChangeEvent(UUID dropletUUID, JSONObject message)
+	public CurrencyChangeEvent(JSONObject message)
 	{
-		super(dropletUUID);
 		this.credits = ((Number) message.get("credits")).doubleValue();
 	}
 

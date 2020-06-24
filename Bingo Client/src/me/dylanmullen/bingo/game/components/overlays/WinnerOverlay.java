@@ -63,7 +63,6 @@ public class WinnerOverlay extends Overlay
 		setText(sb.toString());
 		setVisible(true);
 		repaint();
-
 	}
 
 	public void setText(String text)

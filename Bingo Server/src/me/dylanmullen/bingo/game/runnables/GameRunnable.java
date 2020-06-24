@@ -34,8 +34,7 @@ public class GameRunnable implements Runnable
 						continue;
 					}
 					paused = false;
-				}
-				else
+				} else
 				{
 					continue;
 				}
@@ -50,7 +49,7 @@ public class GameRunnable implements Runnable
 			game.sendNextNumber(num);
 
 			paused = true;
-			if (game.checkWinners())
+			if (game.checkWinners(num))
 			{
 				game.handleWinning();
 			}
