@@ -64,9 +64,7 @@ public class BingoDroplet
 	 */
 	public void showWinners(List<String> list)
 	{
-		System.out.println("list is null: " + list == null);
 		getGamePanel().getGameComponent().showWinners(list);
-//		getGamePanel().getGameComponent().repaint();
 	}
 
 	/**
@@ -121,8 +119,12 @@ public class BingoDroplet
 	{
 		this.gameState = state;
 		if (gameState.equals(GameState.PLAYING))
+		{
+			deselectCards();
 			showCalledNumberComponent();
+		}
 	}
+	
 
 	/**
 	 * Sets the new Line State of the game.

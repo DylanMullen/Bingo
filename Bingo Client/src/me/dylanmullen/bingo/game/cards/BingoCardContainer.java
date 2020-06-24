@@ -197,8 +197,12 @@ public class BingoCardContainer extends Panel
 	 */
 	public void disableSelectors()
 	{
-		for (BingoCard card : cards)
-			card.hidePurchaseOverlay();
+		for (BingoCard card : getCards())
+			if (!card.isPurchased())
+			{
+				card.setVisible(false);
+				card.hidePurchaseOverlay();
+			}
 	}
 
 	/**
@@ -216,5 +220,12 @@ public class BingoCardContainer extends Panel
 		getCard(cardUUID).setPurchased(true);
 		getCard(cardUUID).hidePurchaseOverlay();
 		repaint();
+	}
+
+	public void deselectNonPurchased()
+	{
+		for (BingoCard card : cards)
+			if (!card.isPurchased())
+				deselectCard(card);
 	}
 }
