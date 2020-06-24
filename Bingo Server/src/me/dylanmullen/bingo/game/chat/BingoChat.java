@@ -25,9 +25,9 @@ public class BingoChat
 
 	public void sendMessage(Set<User> users, ChatMessage message)
 	{
-		Packet packet = createChatPacket(message);
 		for (User user : users)
 		{
+			Packet packet = createChatPacket(message);
 			packet.setClient(user.getClient());
 			PacketHandler.sendPacket(packet);
 		}
@@ -44,7 +44,7 @@ public class BingoChat
 		messageData.put("message", message.getMessage());
 		messageData.put("timestamp", message.getTimeProduced());
 		packet.setMessageSection(messageData);
-		
+
 		return packet;
 	}
 
