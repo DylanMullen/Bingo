@@ -13,6 +13,8 @@ import org.json.simple.JSONObject;
 import me.dylanmullen.bingo.game.GameSettings;
 import me.dylanmullen.bingo.game.cards.BingoCard;
 import me.dylanmullen.bingo.game.cards.BingoCardGroup;
+import me.dylanmullen.bingo.game.chat.BingoChat;
+import me.dylanmullen.bingo.game.chat.ChatMessage;
 import me.dylanmullen.bingo.game.currency.CurrencyController;
 import me.dylanmullen.bingo.game.runnables.GameRunnable;
 import me.dylanmullen.bingo.game.runnables.LobbyRunnable;
@@ -69,6 +71,8 @@ public class BingoDroplet
 	private UUID uuid;
 	private GameSettings settings;
 
+	private BingoChat chat;
+
 	private Set<User> usersConnected;
 	private Set<BingoCardGroup> cards;
 
@@ -89,6 +93,7 @@ public class BingoDroplet
 
 	private void setupDroplet()
 	{
+		this.chat = new BingoChat(uuid);
 		this.usersConnected = new HashSet<User>();
 		this.cards = new HashSet<BingoCardGroup>();
 		this.numbers = new ArrayList<Integer>();
@@ -153,13 +158,6 @@ public class BingoDroplet
 
 	private void rig()
 	{
-		BingoCardGroup group = cards.iterator().next();
-		this.numbers.clear();
-		List<Integer> numbers = group.getCard().getNumbers();
-		for (int i = 0; i < numbers.size(); i++)
-		{
-			this.numbers.add(numbers.get(i));
-		}
 	}
 
 	private void restart()
@@ -167,11 +165,10 @@ public class BingoDroplet
 		if (!shouldRestart())
 			return;
 
-		dropletState = GameState.LOBBY;
 		lineState = LineState.ONE;
 		cards.clear();
-		sendAllNewCards();
 		setupNumbers();
+		sendAllNewCards();
 		this.restart = false;
 	}
 
@@ -204,9 +201,7 @@ public class BingoDroplet
 		{
 			updateLineState();
 		} else
-		{
 			restart = true;
-		}
 	}
 
 	private void updateLineState()
@@ -339,6 +334,11 @@ public class BingoDroplet
 		}
 	}
 
+	public void sendMessage(ChatMessage message)
+	{
+		getChat().sendMessage(usersConnected, message);
+	}
+
 	/**
 	 * Generates the User a new set of cards.
 	 * 
@@ -437,6 +437,11 @@ public class BingoDroplet
 					return cards;
 			return null;
 		}
+	}
+
+	public BingoChat getChat()
+	{
+		return chat;
 	}
 
 	public JSONObject toJSON()

@@ -36,14 +36,22 @@ public class BingoDroplet
 	{
 		JSONObject message = new JSONObject();
 		message.put("dropletUUID", uuid.toString());
-		System.out.println("Rquesting cards");
 		PacketHandler.sendPacket(PacketHandler.createPacket(7, message), new CardRequestCallback());
+	}
+
+	public void recieveChatMessage(long timestamp, String username, String usergroup, String message)
+	{
+		getGamePanel().getChatComponent().recieveMessage(timestamp, username, usergroup, message);
 	}
 
 	public void restartDropletGame(List<CardInformation> newCards)
 	{
 		getGamePanel().getGameComponent().hideWinnerOverlay();
-		getGamePanel().getGameComponent().getCardGroup().setCardInformation(newCards);
+		if (getGamePanel().getGameComponent().getCardGroup() == null)
+			getGamePanel().getGameComponent().createCardGroup(uuid, newCards);
+		else
+			getGamePanel().getGameComponent().getCardGroup().setCardInformation(newCards);
+
 		getGamePanel().getHeaderComponent().getNumbersComp().restart();
 		getGamePanel().getGameComponent().repaint();
 	}
@@ -56,7 +64,8 @@ public class BingoDroplet
 	 */
 	public void showWinners(List<String> list)
 	{
-		getGamePanel().getGameComponent().getWinner().setWinners(list);
+		System.out.println("list is null: " + list == null);
+		getGamePanel().getGameComponent().showWinners(list);
 //		getGamePanel().getGameComponent().repaint();
 	}
 
@@ -76,6 +85,8 @@ public class BingoDroplet
 	 */
 	public void showCalledNumberComponent()
 	{
+		if (getGamePanel().getHeaderComponent() == null)
+			return;
 		getGamePanel().getHeaderComponent().showNumberComp();
 	}
 
@@ -96,7 +107,7 @@ public class BingoDroplet
 	{
 		if (getGamePanel().getGameComponent().getWinner().isVisible())
 			getGamePanel().getGameComponent().hideWinnerOverlay();
-		
+
 		getGamePanel().getHeaderComponent().getNumbersComp().update(number);
 		getGamePanel().getGameComponent().getCardGroup().markNumber(number);
 	}
@@ -110,9 +121,7 @@ public class BingoDroplet
 	{
 		this.gameState = state;
 		if (gameState.equals(GameState.PLAYING))
-		{
 			showCalledNumberComponent();
-		}
 	}
 
 	/**

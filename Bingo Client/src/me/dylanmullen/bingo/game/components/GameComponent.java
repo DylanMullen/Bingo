@@ -29,6 +29,7 @@ public class GameComponent extends Panel
 		setBounds(x, y, width, height);
 		setLayout(null);
 		setBackground(UIColour.FRAME_BINGO_BG.toColor());
+//		createWinnerOverlay();
 	}
 
 	@Override
@@ -54,20 +55,26 @@ public class GameComponent extends Panel
 		comp = new BingoCardContainer(dropletUUID, 15, 15, getWidth() - 30, getHeight() - 30);
 		comp.setup();
 		comp.createCards(cards);
-		comp.setVisible(true);
-		comp.repaint();
 		add(comp);
-		setComponentZOrder(comp, 0);
+		comp.setVisible(false);
+		comp.setVisible(true);
 		repaint();
 	}
 
 	public void createWinnerOverlay()
 	{
-		winner = new WinnerOverlay(0, 0, width, height);
-		winner.setVisible(false);
+		winner = new WinnerOverlay(15, 15, width - 30, height - 30);
+		winner.setVisible(true);
 		add(winner);
-		setComponentZOrder(winner, 1);
-		repaint();
+		setComponentZOrder(winner, 0);
+	}
+
+	public void showWinners(List<String> list)
+	{
+		if (winner == null)
+			createWinnerOverlay();
+		winner.setWinners(list);
+		winner.setVisible(true);
 	}
 
 	public void hideWinnerOverlay()

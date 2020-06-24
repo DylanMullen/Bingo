@@ -46,7 +46,6 @@ public class BingoCardContainer extends Panel
 					info);
 			card.addMouseListener(new BingoCardListener(this));
 			cards.add(card);
-			card.repaint();
 			add(card);
 		}
 		repaint();
@@ -93,7 +92,7 @@ public class BingoCardContainer extends Panel
 	public void setCardInformation(List<CardInformation> newCards)
 	{
 		int index = 0;
-		for (int i = 1; i < newCards.size(); i++)
+		for (int i = 0; i < newCards.size(); i++)
 		{
 			if (index > getCards().size())
 				break;

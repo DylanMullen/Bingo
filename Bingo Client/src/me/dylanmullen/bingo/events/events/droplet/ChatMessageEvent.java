@@ -21,6 +21,7 @@ public class ChatMessageEvent extends DropletEvent
 		this.userGroup = (String) message.get("userGroup");
 		this.message = (String) message.get("message");
 		this.timestamp=((Number)message.get("timestamp")).longValue();
+		System.out.println("chat message");
 	}
 
 	public String getUsername()

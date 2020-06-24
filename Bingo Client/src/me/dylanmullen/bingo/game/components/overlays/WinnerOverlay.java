@@ -47,21 +47,21 @@ public class WinnerOverlay extends Overlay
 		add(winners);
 	}
 
-	public void setWinners(List<String> winners)
+	public void setWinners(List<String> list)
 	{
-		if (winners == null)
+		if (list == null)
 		{
 			setText("");
+			System.out.println("winners is null");
 			return;
 		}
 
 		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < winners.size(); i++)
+		for (int i = 0; i < list.size(); i++)
 		{
-			sb.append(winners.get(i) + (winners.size() - 1 == i ? "" : "\n"));
+			sb.append(list.get(i) + (list.size() - 1 == i ? "" : "\n"));
 		}
 		setText(sb.toString());
-		setVisible(true);
 		repaint();
 	}
 

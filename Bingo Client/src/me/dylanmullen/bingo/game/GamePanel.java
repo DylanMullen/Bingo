@@ -1,5 +1,7 @@
 package me.dylanmullen.bingo.game;
 
+import java.util.UUID;
+
 import me.dylanmullen.bingo.game.chat.ChatPanel;
 import me.dylanmullen.bingo.game.components.GameComponent;
 import me.dylanmullen.bingo.game.components.HeaderPanel;
@@ -16,6 +18,7 @@ public class GamePanel extends Panel
 {
 
 	private static final long serialVersionUID = 3683450078479151314L;
+	private UUID dropletUUID;
 
 	private HeaderPanel headerComponent;
 	private ChatPanel chatComponent;
@@ -31,9 +34,10 @@ public class GamePanel extends Panel
 	 * @param width  The width of the Panel.
 	 * @param height The height of the Panel.
 	 */
-	public GamePanel(int x, int y, int width, int height)
+	public GamePanel(UUID dropletUUID, int x, int y, int width, int height)
 	{
 		super(x, y, width, height);
+		this.dropletUUID = dropletUUID;
 	}
 
 	@Override
@@ -52,7 +56,7 @@ public class GamePanel extends Panel
 		getGameComponent().setup();
 		getGameComponent().create();
 
-		this.chatComponent = new ChatPanel(gameComponent.getWidth(), headerComponent.getHeight(),
+		this.chatComponent = new ChatPanel(dropletUUID, gameComponent.getWidth(), headerComponent.getHeight(),
 				getWidth() - gameComponent.getWidth(), getHeight() - headerComponent.getHeight());
 		getChatComponent().setup();
 		getChatComponent().create();

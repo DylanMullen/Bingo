@@ -3,6 +3,7 @@ package me.dylanmullen.bingo.game.chat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import org.json.simple.JSONObject;
 
@@ -13,10 +14,12 @@ import me.dylanmullen.bingo.net.packet.PacketHandler;
 public class BingoChat
 {
 
+	private UUID dropletUUID;
 	private List<ChatMessage> chatMessages;
 
-	public BingoChat()
+	public BingoChat(UUID uuid)
 	{
+		this.dropletUUID = uuid;
 		this.chatMessages = new ArrayList<>();
 	}
 
@@ -29,12 +32,13 @@ public class BingoChat
 			PacketHandler.sendPacket(packet);
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private Packet createChatPacket(ChatMessage message)
 	{
 		Packet packet = PacketHandler.createPacket(null, 16, null);
 		JSONObject messageData = new JSONObject();
+		messageData.put("dropletUUID", dropletUUID.toString());
 		messageData.put("displayName", message.getUser().getUserInformation().getDisplayName());
 		messageData.put("userGroup", "User");
 		messageData.put("message", message.getMessage());

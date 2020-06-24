@@ -1,5 +1,7 @@
 package me.dylanmullen.bingo.game.chat;
 
+import java.util.UUID;
+
 import javax.swing.JScrollPane;
 
 import org.json.simple.JSONObject;
@@ -14,9 +16,12 @@ public class ChatPanel extends Panel
 
 	private static final long serialVersionUID = -6660881977261292475L;
 
-	public ChatPanel(int x, int y, int width, int height)
+	private UUID dropletUUID;
+
+	public ChatPanel(UUID dropletUUID, int x, int y, int width, int height)
 	{
 		super(x, y, width, height);
+		this.dropletUUID = dropletUUID;
 	}
 
 	private ChatMessagesComponent chatMessagesComponent;
@@ -46,9 +51,9 @@ public class ChatPanel extends Panel
 		add(getChatInputComponent());
 	}
 
-	public void recieveMessage(JSONObject data)
+	public void recieveMessage(long timestamp, String username, String usergroup, String message)
 	{
-		getChatMessagesComponent().addMessage((String) data.get("displayName"), (String) data.get("message"));
+		getChatMessagesComponent().addMessage(username, usergroup, message);
 	}
 
 	public void sendMessage(String message)
@@ -61,6 +66,7 @@ public class ChatPanel extends Panel
 	private Packet constructPacket(String mes)
 	{
 		JSONObject message = new JSONObject();
+		message.put("dropletUUID", dropletUUID.toString());
 		message.put("chatMessage", mes);
 		return PacketHandler.createPacket(16, message);
 	}
@@ -74,4 +80,5 @@ public class ChatPanel extends Panel
 	{
 		return this.chatInputComponent;
 	}
+
 }

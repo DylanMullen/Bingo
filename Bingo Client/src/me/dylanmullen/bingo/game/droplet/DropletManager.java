@@ -72,6 +72,7 @@ public class DropletManager implements EventListener
 
 		if (droplet == null)
 		{
+			System.out.println("droplet null");
 			if (event instanceof DropletJoinEvent)
 			{
 				joinDroplet(((DropletJoinEvent) event).getDropletUUID(), ((DropletJoinEvent) event).getNewState());
@@ -105,7 +106,9 @@ public class DropletManager implements EventListener
 			return;
 		} else if (event instanceof ChatMessageEvent)
 		{
-
+			ChatMessageEvent ce = (ChatMessageEvent) event;
+			droplet.recieveChatMessage(ce.getTimestamp(), ce.getUsername(), ce.getUserGroup(), ce.getMessage());
+			return;
 		} else if (event instanceof CardPurchasedEvent)
 		{
 			droplet.setCardPuchased(((CardPurchasedEvent) event).getCardUUID());
@@ -123,9 +126,7 @@ public class DropletManager implements EventListener
 		BingoDroplet droplet = createDroplet(uuid, state);
 		setActiveDroplet(droplet);
 		this.droplets.add(droplet);
-		// TODO set the droplet in the container
 		BingoWindow.getWindow().showDroplet(droplet);
-
 		if (droplet.getGameState() == GameState.LOBBY)
 			droplet.requestCards();
 	}
@@ -148,7 +149,7 @@ public class DropletManager implements EventListener
 
 	private BingoDroplet createDroplet(UUID uuid, GameState state)
 	{
-		GamePanel panel = new GamePanel(0, 0, 0, 0); // TODO get the width and height of the container
+		GamePanel panel = new GamePanel(uuid, 0, 0, 0, 0); // TODO get the width and height of the container
 		BingoDroplet droplet = new BingoDroplet(uuid, panel);
 		droplet.setGameState(state);
 		return droplet;

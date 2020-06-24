@@ -8,8 +8,7 @@ import org.json.simple.JSONObject;
 import me.dylanmullen.bingo.configs.Config;
 import me.dylanmullen.bingo.configs.ConfigManager;
 import me.dylanmullen.bingo.game.cards.BingoCardGroup;
-import me.dylanmullen.bingo.game.currency.CurrencyController;
-import me.dylanmullen.bingo.game.currency.InvalidAmountException;
+import me.dylanmullen.bingo.game.chat.ChatMessage;
 import me.dylanmullen.bingo.game.droplet.BingoCloud;
 import me.dylanmullen.bingo.game.droplet.BingoDroplet;
 import me.dylanmullen.bingo.game.user.User;
@@ -118,14 +117,14 @@ public class GameController
 		if (droplet == null)
 			return; // TODO not in droplet;
 
-		try
-		{
-			CurrencyController.getController().deduct(user, droplet.getSettings().getTicketPrice());
-		} catch (InvalidAmountException e)
-		{
-			System.err.println(e.getMessage());
-			return;
-		}
+//		try
+//		{
+//			CurrencyController.getController().deduct(user, droplet.getSettings().getTicketPrice());
+//		} catch (InvalidAmountException e)
+//		{
+//			System.err.println(e.getMessage());
+//			return;
+//		}
 
 		BingoCardGroup cards = droplet.getCards(user);
 		cards.getCard(card).setPurchased(true);
@@ -139,7 +138,11 @@ public class GameController
 
 	public void handleChatMessage(User user, UUID dropletUUID, String message)
 	{
-		// TODO
+		BingoDroplet droplet = user.getDropletByUUID(dropletUUID);
+		if (droplet == null)
+			return; // TODO not in droplet;
+		ChatMessage chatMessage = droplet.getChat().submitMessage(user, message);
+		droplet.sendMessage(chatMessage);
 	}
 
 	public BingoCloud getBingoCloud(UUID cloudUUID)
