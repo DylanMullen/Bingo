@@ -22,6 +22,7 @@ public class BingoCloud
 		this.settings = settings;
 		this.droplets = new ArrayList<>();
 		droplets.add(createDroplet());
+		droplets.add(createDroplet());
 	}
 
 	public BingoDroplet createDroplet()

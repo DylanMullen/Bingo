@@ -124,7 +124,6 @@ public class BingoDroplet
 			showCalledNumberComponent();
 		}
 	}
-	
 
 	/**
 	 * Sets the new Line State of the game.
