@@ -12,7 +12,7 @@
       "basePrize": {
         "min": 15,
         "max": 25
-      }
+      },
       "ticketPrice": 15,
       "incrementMultiplier": 0.2,
     }
