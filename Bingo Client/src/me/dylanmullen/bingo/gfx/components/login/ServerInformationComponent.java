@@ -1,48 +1,41 @@
-package me.dylanmullen.bingo.window.login.comp;
+package me.dylanmullen.bingo.gfx.components.login;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
+import javax.swing.JComponent;
 
+import me.dylanmullen.bingo.core.BingoApp;
 import me.dylanmullen.bingo.events.Event;
 import me.dylanmullen.bingo.events.EventHandler;
 import me.dylanmullen.bingo.events.EventListener;
 import me.dylanmullen.bingo.events.events.ServerStatusChangeEvent;
+import me.dylanmullen.bingo.gfx.ui.colour.UIColourSet;
 import me.dylanmullen.bingo.net.ServerStatusManager;
 import me.dylanmullen.bingo.net.ServerStatusManager.ServerStatus;
 import me.dylanmullen.bingo.util.FontUtil;
-import me.dylanmullen.bingo.window.ui.Panel;
-import me.dylanmullen.bingo.window.ui.UIColour;
+import me.dylanmullen.bingo.util.Vector2I;
 
 /**
  * @author Dylan
  * @date 19 Jun 2020
  * @project Bingo Client
  */
-public class ServerInformationComponent extends Panel implements EventListener
+public class ServerInformationComponent extends JComponent implements EventListener
 {
 
 	private static final long serialVersionUID = 1188076056138803597L;
 
-	private JLabel statusText;
+	private String statusText;
+	private UIColourSet set;
 
-	/**
-	 * Creates new Server Information Component. <br>
-	 * This class displays to the Player the current status of the Bingo Server. The
-	 * text is updated every time the {@link ServerStatusChangeEvent} has been
-	 * fired.
-	 * 
-	 * @param x      X-Position of the Component.
-	 * @param y      Y-Position of the Component.
-	 * @param width  The width of the Component.
-	 * @param height The height of the Component.
-	 */
-	public ServerInformationComponent(int x, int y, int width, int height)
+	public ServerInformationComponent(Vector2I pos, Vector2I dim)
 	{
-		super(x, y, width, height);
+		setBounds(pos.getX(), pos.getY(), dim.getX(), dim.getY());
+		this.set = BingoApp.getInstance().getColours().getSet("serverStatus");
+		EventHandler.getHandler().registerListener(ServerStatusChangeEvent.class, this);
 	}
 
 	/**
@@ -60,33 +53,25 @@ public class ServerInformationComponent extends Panel implements EventListener
 	 */
 	public ServerInformationComponent()
 	{
-		super(0, 0, 0, 0);
+		setBounds(0, 0, 0, 0);
+		EventHandler.getHandler().registerListener(ServerStatusChangeEvent.class, this);
 	}
 
 	@SuppressWarnings("deprecation")
-	@Override
 	public void setup()
 	{
-		setLayout(null);
 		setOpaque(false);
-		EventHandler.getHandler().registerListener(ServerStatusChangeEvent.class, this);
+		setBackground(set.getColour("undefined").getColour());
 
-		setBackground(UIColour.STATUS_UNDEFINED.toColor());
-
-		this.statusText = new JLabel();
+		this.statusText = "Ping";
 		updateStatus(ServerStatusManager.getManager().getStatus());
-		getStatusText().setBounds(5, 0, getWidth() - 10, getHeight());
-		getStatusText().setFont(FontUtil.getFont(getStatusText(), getStatusText().getText(), 0, 0));
-		getStatusText().setForeground(UIColour.STATUS_UNDEFINED.getTextColour());
-		getStatusText().setHorizontalAlignment(SwingConstants.CENTER);
-		getStatusText().setOpaque(false);
+		setFont(FontUtil.getFont(this, statusText, 0, 0));
+		setForeground(set.getColour("undefined").getTextColour());
 	}
 
-	@Override
 	public void create()
 	{
 		setup();
-		add(getStatusText());
 	}
 
 	@Override
@@ -101,17 +86,20 @@ public class ServerInformationComponent extends Panel implements EventListener
 		if (getHeight() > 50)
 		{
 			g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
-			super.paintComponent(g);
+			drawText(g2);
 			return;
 		} else
 		{
-			if (getStatusText().isVisible())
-				getStatusText().setVisible(false);
 			g2.fillOval(getWidth() / 4, 0, getHeight(), getHeight());
-			/* TODO secondary inner colour */
-//			g2.setColor(Color.BLACK);
-//			g2.fillOval(width/4+5, 5, height-10, height-10);
 		}
+	}
+
+	private void drawText(Graphics2D g2)
+	{
+		g2.setColor(getForeground());
+		g2.setFont(getFont());
+		Dimension dim = FontUtil.getFontSize(getFontMetrics(getFont()), statusText, 0, 0);
+		g2.drawString(statusText, getWidth() / 2 - (dim.width / 2), getHeight() / 2 - dim.height / 4);
 	}
 
 	/**
@@ -128,26 +116,26 @@ public class ServerInformationComponent extends Panel implements EventListener
 	{
 		if (status == null)
 		{
-			getStatusText().setText("Please wait...");
+			statusText = "Please wait...";
 			return;
 		}
 
-		getStatusText().setText(status.getMesssage());
-		getStatusText().setFont(FontUtil.getFont(getStatusText(), getStatusText().getText(), 10, 0));
+		statusText = status.getMesssage();
+		setFont(FontUtil.getFont(this, statusText, 0, 0));
 
 		switch (status)
 		{
 			case UNDEFINED:
-				setBackground(UIColour.STATUS_UNDEFINED.toColor());
-				getStatusText().setForeground(UIColour.STATUS_UNDEFINED.getTextColour());
+				setBackground(set.getColour("undefined").getColour());
+				setForeground(set.getColour("undefined").getTextColour());
 				break;
 			case CONNECTED:
-				setBackground(UIColour.STATUS_CONNECTED.toColor());
-				getStatusText().setForeground(UIColour.STATUS_CONNECTED.getTextColour());
+				setBackground(set.getColour("connected").getColour());
+				setForeground(set.getColour("connected").getTextColour());
 				break;
 			case DISCONNECTED:
-				setBackground(UIColour.STATUS_DISCONNECTED.toColor());
-				getStatusText().setForeground(UIColour.STATUS_DISCONNECTED.getTextColour());
+				setBackground(set.getColour("disconnected").getColour());
+				setForeground(set.getColour("disconnected").getTextColour());
 				break;
 		}
 	}
@@ -160,15 +148,4 @@ public class ServerInformationComponent extends Panel implements EventListener
 			updateStatus(((ServerStatusChangeEvent) e).getStatus());
 		}
 	}
-
-	/**
-	 * Returns the JLabel of the Status Text of the Component.
-	 * 
-	 * @return {@link #statusText}
-	 */
-	public JLabel getStatusText()
-	{
-		return this.statusText;
-	}
-
 }

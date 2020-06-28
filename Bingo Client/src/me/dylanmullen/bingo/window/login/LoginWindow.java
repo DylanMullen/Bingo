@@ -1,8 +1,8 @@
 package me.dylanmullen.bingo.window.login;
 
+import me.dylanmullen.bingo.gfx.components.shared.TopMenu;
 import me.dylanmullen.bingo.window.Window;
 import me.dylanmullen.bingo.window.login.panels.LoginPanel;
-import me.dylanmullen.bingo.window.ui.TopMenu;
 
 /**
  * @author Dylan

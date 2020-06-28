@@ -1,21 +1,18 @@
 package me.dylanmullen.bingo.window.bingo.panels.sidemenu;
 
-import java.awt.Dimension;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
+import me.dylanmullen.bingo.core.BingoApp;
+import me.dylanmullen.bingo.gfx.ui.buttons.ButtonInformation;
+import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
 import me.dylanmullen.bingo.window.bingo.BingoWindow;
 import me.dylanmullen.bingo.window.bingo.ui.buttons.ButtonContainer;
 import me.dylanmullen.bingo.window.bingo.ui.buttons.SidePanelButton;
-import me.dylanmullen.bingo.window.ui.Panel;
-import me.dylanmullen.bingo.window.ui.UIColour;
 
 /**
  * @author Dylan
  * @date 18 Jun 2020
  * @project Bingo Client
  */
-public class SideMenu extends Panel
+public class SideMenu extends UIPanel
 {
 
 	private static final long serialVersionUID = 7856700131153385897L;
@@ -50,7 +47,7 @@ public class SideMenu extends Panel
 	{
 		setBounds(x, y, width, height);
 		setLayout(null);
-		setBackground(UIColour.FRAME_BINGO_BG_TOP.toColor());
+		setBackground(BingoApp.getInstance().getColours().getSet("frame").getColour("side-menu").getColour());
 	}
 
 	@Override
@@ -70,38 +67,28 @@ public class SideMenu extends Panel
 		ButtonContainer buttons = new ButtonContainer(0, getHeight() / 2, getWidth(), getHeight() / 2)
 				.setButtonHeight(60);
 
-		this.homeButton = new SidePanelButton("Home", new Dimension(1, 0));
-		getHomeButton().addMouseListener(new MouseAdapter()
+		this.homeButton = new SidePanelButton("Home", null, new ButtonInformation(null, null, () ->
 		{
-			@Override
-			public void mouseClicked(MouseEvent e)
+			if (!getHomeButton().isActive())
 			{
-				if (!getHomeButton().isActive())
-				{
-					getBingoWindow().showHomePanel();
-				}
+				getBingoWindow().showHomePanel();
 			}
-		});
-		this.playButton = new SidePanelButton("Play", new Dimension(2, 0));
-		getPlayButton().addMouseListener(new MouseAdapter()
+		}));
+		this.playButton = new SidePanelButton("Bingo", null, new ButtonInformation(null, null, () ->
 		{
-			@Override
-			public void mouseClicked(MouseEvent e)
-			{
-				if (!getPlayButton().isActive())
-				{
-//					getBingoWindow().showBingoPanel();
-				}
-			}
-		});
-		this.settingsButton = new SidePanelButton("Settings", new Dimension(3, 0));
-
+			System.out.println("Not implemented yet");
+		}));
+		this.settingsButton = new SidePanelButton("Settings", null, new ButtonInformation(null, null, () ->
+		{
+			System.out.println("Not implemented yet");
+		}));
+		
 		buttons.addButton(getHomeButton());
 		buttons.addButton(getPlayButton());
 		buttons.addButton(getSettingsButton());
 
 		buttons.populate();
-		buttons.setBackground(UIColour.FRAME_BINGO_BG_SIDE.toColor());
+		buttons.setBackground(getBackground());
 		add(buttons);
 	}
 

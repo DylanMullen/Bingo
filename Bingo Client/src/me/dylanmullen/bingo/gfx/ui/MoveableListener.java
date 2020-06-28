@@ -1,4 +1,4 @@
-package me.dylanmullen.bingo.window.ui.listeners;
+package me.dylanmullen.bingo.gfx.ui;
 
 import java.awt.Container;
 import java.awt.Point;

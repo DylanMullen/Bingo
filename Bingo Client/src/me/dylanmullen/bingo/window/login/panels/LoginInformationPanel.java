@@ -1,27 +1,27 @@
-package me.dylanmullen.bingo.window.login.comp;
+package me.dylanmullen.bingo.window.login.panels;
 
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.dylanmullen.bingo.core.BingoApp;
+import me.dylanmullen.bingo.game.LoginHandler;
+import me.dylanmullen.bingo.gfx.ui.buttons.ButtonInformation;
+import me.dylanmullen.bingo.gfx.ui.buttons.RoundedButton;
+import me.dylanmullen.bingo.gfx.ui.colour.UIColourSet;
+import me.dylanmullen.bingo.gfx.ui.grid.Grid;
+import me.dylanmullen.bingo.gfx.ui.grid.GridItem;
+import me.dylanmullen.bingo.gfx.ui.grid.GridSettings;
+import me.dylanmullen.bingo.gfx.ui.input.UIPasswordField;
+import me.dylanmullen.bingo.gfx.ui.input.UITextField;
+import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
 import me.dylanmullen.bingo.window.login.LoginWindow;
-import me.dylanmullen.bingo.window.login.panels.LoginPanel;
-import me.dylanmullen.bingo.window.ui.Panel;
-import me.dylanmullen.bingo.window.ui.RoundedButton;
-import me.dylanmullen.bingo.window.ui.UIColour;
-import me.dylanmullen.bingo.window.ui.UIPasswordField;
-import me.dylanmullen.bingo.window.ui.UITextField;
-import me.dylanmullen.bingo.window.ui.grid.Grid;
-import me.dylanmullen.bingo.window.ui.grid.GridItem;
-import me.dylanmullen.bingo.window.ui.grid.GridSettings;
-import me.dylanmullen.bingo.window.ui.listeners.LoginButtonListener;
 
 /**
  * @author Dylan
  * @date 19 Jun 2020
  * @project Bingo Client
  */
-public class LoginInformationComponent extends Panel
+public class LoginInformationPanel extends UIPanel
 {
 
 	private static final long serialVersionUID = -6138313483836658937L;
@@ -42,7 +42,7 @@ public class LoginInformationComponent extends Panel
 	 * @param width      The width of the Component.
 	 * @param height     The height of the Component.
 	 */
-	public LoginInformationComponent(LoginPanel loginPanel, int x, int y, int width, int height)
+	public LoginInformationPanel(LoginPanel loginPanel, int x, int y, int width, int height)
 	{
 		super(x, y, width, height);
 		this.panel = loginPanel;
@@ -54,20 +54,24 @@ public class LoginInformationComponent extends Panel
 	{
 		Grid grid = new Grid(new GridSettings(width, height, 3, 2, (width / 100)), 0, 0);
 
-		this.username = new UITextField("Username");
+		UIColourSet set = BingoApp.getInstance().getColours().getSet("loginInput");
+		this.username = new UITextField("Username", set);
 		grid.addGridItem(new GridItem(getUsername(), 1, 2), 0, true);
 
-		this.password = new UIPasswordField("Password");
+		this.password = new UIPasswordField("Password", set);
 		grid.addGridItem(new GridItem(getPassword(), 1, 2), 1, true);
 
-		Font font = new Font("Calibri", Font.PLAIN, 25);
-		RoundedButton login = new RoundedButton("Login", font, UIColour.BTN_LOGIN);
-		login.addMouseListener(new LoginButtonListener(getLoginPanel()));
+		RoundedButton login = new RoundedButton("Login", new ButtonInformation(null, null, () ->
+		{
+			LoginHandler.getHandlerInstance().handleLoginRequest(getLoginPanel());
+		}));
 		getButtons().add(login);
 		grid.addGridItem(new GridItem(login, 1, 1), 2, false);
 
-		RoundedButton register = new RoundedButton("Register", font, UIColour.BTN_REGISTER);
-		register.addMouseListener(new LoginButtonListener(getLoginPanel()));
+		RoundedButton register = new RoundedButton("Register", new ButtonInformation(null, null, () ->
+		{
+			LoginHandler.getHandlerInstance().handleRegisterRequest(getLoginPanel());
+		}));
 
 		grid.addGridItem(new GridItem(register, 1, 1), 2, true);
 		getButtons().add(register);
@@ -83,11 +87,7 @@ public class LoginInformationComponent extends Panel
 		add(getPassword());
 
 		for (RoundedButton button : getButtons())
-		{
-			button.create();
-			button.setFocusable(true);
 			add(button);
-		}
 	}
 
 	/**

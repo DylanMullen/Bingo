@@ -1,4 +1,4 @@
-package me.dylanmullen.bingo.window.ui.grid;
+package me.dylanmullen.bingo.gfx.ui.grid;
 
 import javax.swing.JComponent;
 

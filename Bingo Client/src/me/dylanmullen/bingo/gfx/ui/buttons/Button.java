@@ -18,7 +18,7 @@ public class Button extends UIButton
 	{
 		Graphics2D g2 = (Graphics2D) g;
 		g2.fillRect(0, 0, getWidth(), getHeight());
-		drawText(g2);
+		drawText(g2, 0);
 	}
 
 }

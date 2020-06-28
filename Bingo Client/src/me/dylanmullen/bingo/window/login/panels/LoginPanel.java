@@ -1,19 +1,19 @@
 package me.dylanmullen.bingo.window.login.panels;
 
-import me.dylanmullen.bingo.window.login.comp.LoginInformationComponent;
-import me.dylanmullen.bingo.window.login.comp.WarningInfoComponent;
-import me.dylanmullen.bingo.window.ui.Panel;
-import me.dylanmullen.bingo.window.ui.UIColour;
-import me.dylanmullen.bingo.window.ui.grid.Grid;
-import me.dylanmullen.bingo.window.ui.grid.GridItem;
-import me.dylanmullen.bingo.window.ui.grid.GridSettings;
+import me.dylanmullen.bingo.core.BingoApp;
+import me.dylanmullen.bingo.gfx.components.login.WarningInfoComponent;
+import me.dylanmullen.bingo.gfx.ui.colour.UIColour;
+import me.dylanmullen.bingo.gfx.ui.grid.Grid;
+import me.dylanmullen.bingo.gfx.ui.grid.GridItem;
+import me.dylanmullen.bingo.gfx.ui.grid.GridSettings;
+import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
 
 /**
  * @author Dylan
  * @date 19 Jun 2020
  * @project Bingo Client
  */
-public class LoginPanel extends Panel
+public class LoginPanel extends UIPanel
 {
 
 	private static final long serialVersionUID = 4140252095370157896L;
@@ -21,7 +21,7 @@ public class LoginPanel extends Panel
 	private Grid grid;
 
 	private WarningInfoComponent warningInfoComponent;
-	private LoginInformationComponent loginInfoComponent;
+	private LoginInformationPanel loginInfoComponent;
 
 	private int indent;
 
@@ -36,14 +36,14 @@ public class LoginPanel extends Panel
 	{
 		setBounds(x, y, width, height);
 		setLayout(null);
-		setBackground(UIColour.FRAME_BINGO_BG.toColor());
+		setBackground(BingoApp.getInstance().getColours().getSet("frame").getColour("content").getColour());
 
 		grid = new Grid(new GridSettings(width, height, 3, 1, 10), 0, 0);
 
 		warningInfoComponent = new WarningInfoComponent();
 		grid.addGridItem(new GridItem(warningInfoComponent, 1, 1), 0, true);
 
-		loginInfoComponent = new LoginInformationComponent(this, indent, warningInfoComponent.getHeight() + (indent),
+		loginInfoComponent = new LoginInformationPanel(this, indent, warningInfoComponent.getHeight() + (indent),
 				getWidth() - (indent * 2), (height / 6 * 4) - (indent));
 		grid.addGridItem(new GridItem(loginInfoComponent, 2, 1), 1, true);
 
@@ -58,7 +58,7 @@ public class LoginPanel extends Panel
 		add(loginInfoComponent);
 	}
 
-	public LoginInformationComponent getLoginInfoComponent()
+	public LoginInformationPanel getLoginInfoComponent()
 	{
 		return loginInfoComponent;
 	}

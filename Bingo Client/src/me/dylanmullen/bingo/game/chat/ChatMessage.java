@@ -61,7 +61,6 @@ public class ChatMessage extends JComponent
 			if (message.length() - 1 == i)
 				lines.add(lineBuilder.toString());
 		}
-
 	}
 
 	private int getHeightOfLines()

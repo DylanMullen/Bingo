@@ -5,17 +5,17 @@ import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import me.dylanmullen.bingo.window.ui.Panel;
-import me.dylanmullen.bingo.window.ui.grid.Grid;
-import me.dylanmullen.bingo.window.ui.grid.GridItem;
-import me.dylanmullen.bingo.window.ui.grid.GridSettings;
+import me.dylanmullen.bingo.gfx.ui.grid.Grid;
+import me.dylanmullen.bingo.gfx.ui.grid.GridItem;
+import me.dylanmullen.bingo.gfx.ui.grid.GridSettings;
+import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
 
 /**
  * @author Dylan
  * @date 18 Jun 2020
  * @project Bingo Client
  */
-public class InformationComponent extends Panel
+public class InformationComponent extends UIPanel
 {
 
 	// TODO remove JLabel and paint it instead.

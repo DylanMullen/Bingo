@@ -18,7 +18,7 @@ public class UIColourSet
 	public UIColour getColour(String name)
 	{
 		for (UIColour colour : getColours())
-			if (colour.getColourName().equalsIgnoreCase("name"))
+			if (colour.getColourName().equalsIgnoreCase(name))
 				return colour;
 		return null;
 	}

@@ -36,10 +36,10 @@ public class ConfigManager
 	 */
 	private void load()
 	{
-
+		loadUIFiles();
 	}
 
-	public void loadBingoFiles()
+	public void loadUIFiles()
 	{
 		for (File file : IOController.getController().getUIConfigFolder().listFiles())
 		{
@@ -47,6 +47,7 @@ public class ConfigManager
 				return;
 			uiConfigs.add(new Config(file.getName(), file));
 		}
+		System.out.println(uiConfigs.size());
 	}
 
 	/**
@@ -55,6 +56,7 @@ public class ConfigManager
 	 */
 	public Config getUIConfig(String name)
 	{
+		System.out.println(name);
 		for (Config cfg : uiConfigs)
 			if (cfg.getName().equals(name))
 				return cfg;

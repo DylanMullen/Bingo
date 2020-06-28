@@ -1,18 +1,15 @@
 package me.dylanmullen.bingo.window.bingo.ui.buttons;
 
-import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-
-import me.dylanmullen.bingo.gfx.ImageAtlas;
-import me.dylanmullen.bingo.window.ui.ImageComponent;
-import me.dylanmullen.bingo.window.ui.UIButton;
-import me.dylanmullen.bingo.window.ui.UIColour;
+import me.dylanmullen.bingo.core.BingoApp;
+import me.dylanmullen.bingo.gfx.ui.buttons.ButtonInformation;
+import me.dylanmullen.bingo.gfx.ui.buttons.ButtonInformation.TextPosition;
+import me.dylanmullen.bingo.gfx.ui.buttons.UIButton;
+import me.dylanmullen.bingo.gfx.ui.colour.UIColourSet;
 
 /**
  * @author Dylan
@@ -21,114 +18,54 @@ import me.dylanmullen.bingo.window.ui.UIColour;
  */
 public class SidePanelButton extends UIButton
 {
-	//TODO
+	// TODO
 
 	private static final long serialVersionUID = -1495099977168142089L;
 
-	private final ImageAtlas ATLAS = new ImageAtlas("uiAtlas.png", 42);
+	private UIColourSet colours;
+	private BufferedImage image;
 
-	private JPanel selected;
-	private ImageComponent icon;
-	private ImageComponent chevron;
-
-	private JLabel textLabel;
-	private Dimension dimension;
-
-	public SidePanelButton(Dimension dim, String text, int x, int y, int w, int h)
+	public SidePanelButton(String text, BufferedImage icon, ButtonInformation information)
 	{
-		super(text, x, y, w, h);
-		this.dimension = dim;
+		super(text, information);
+		this.image = icon;
+		this.colours = BingoApp.getInstance().getColours().getSet("buttons");
 	}
 
-	public SidePanelButton(String text, Dimension dim)
-	{
-		super(text);
-		this.dimension = dim;
-	}
-
-	@Override
 	protected void setup()
 	{
-		init();
-		setBackground((isActive() ? UIColour.BTN_BINGO_SIDE_HOVER : UIColour.FRAME_BINGO_BG_SIDE).toColor());
-		int indentX = (getWidth() / 20);
-		int indentY = 10;
-
-		selected = new JPanel();
-
-		selected.setBounds(0, 0, indentX, getHeight());
-
-		indentX += 10;
-		icon = new ImageComponent(indentX, indentY, getMaxHeight(getHeight(), indentY),
-				getMaxHeight(getHeight(), indentY));
-		icon.setImage(ATLAS.getImage(dimension.width, dimension.height, UIColour.BTN_BINGO_ACTIVE.toColor()));
-
-		indentX += icon.getWidth() + 4;
-		textLabel = new JLabel(getText());
-		textLabel.setBounds(indentX, indentY, ((getWidth() - indentX) - 12) - (42 + 4),
-				getMaxHeight(getHeight(), indentY));
-
-		textLabel.setFont(new Font("Calibri", Font.PLAIN, 40));
-		textLabel.setVerticalAlignment(SwingConstants.TOP);
-
-		indentX += textLabel.getWidth() + 4;
-		chevron = new ImageComponent(indentX, indentY, getMaxHeight(getHeight(), indentY),
-				getMaxHeight(getHeight(), indentY));
-		chevron.setImage(ATLAS.getImage(0, 0, UIColour.BTN_BINGO_ACTIVE.toColor()));
-		
-		addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mouseEntered(MouseEvent e)
-			{
-				SidePanelButton spb = (SidePanelButton) e.getComponent();
-				if(spb.isActive())
-					return;
-				spb.setBackground(UIColour.BTN_BINGO_SIDE_HOVER.toColor());
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e)
-			{
-				SidePanelButton spb = (SidePanelButton) e.getComponent();
-				if(spb.isActive())
-					return;
-				
-				spb.setBackground(UIColour.FRAME_BINGO_BG_SIDE.toColor());
-			}
-		});
+		setBackground(
+				(isActive() ? colours.getColour("sidepanel-active") : colours.getColour("sidepanel-bg")).getColour());
+		setFont(new Font("Calibri", Font.PLAIN, 25));
+		getInformation().setTextPosition(TextPosition.LEFT);
 	}
 
 	@Override
-	public SidePanelButton create()
+	protected void paintComponent(Graphics g)
 	{
-		setup();
-		selected.setBackground(UIColour.BTN_BINGO_ACTIVE.toColor());
-		selected.setVisible(isActive());
-
-		textLabel.setForeground(UIColour.BTN_BINGO_TEXT.toColor());
-
-		add(selected);
-		add(icon);
-		add(textLabel);
-		add(chevron);
-
-		return this;
+		Graphics2D g2 = (Graphics2D) g;
+		drawBody(g2);
+		drawContent(g2);
 	}
 
-	private int getMaxHeight(int height, int indent)
+	private void drawBody(Graphics2D g2)
 	{
-		int x = height - (indent * 2) + 2;
-		return x;
+		g2.setColor(colours.getColour("sidepanel-bg").getColour());
+		g2.drawRect(0, 0, getWidth(), getHeight());
+
+		if (isActive())
+		{
+			g2.setColor(colours.getColour("sidepanel-active").getColour());
+			g2.drawRect(0, 0, getWidth() / 20, getHeight());
+		}
 	}
 
-	public UIButton setActive(boolean active)
+	private void drawContent(Graphics2D g2)
 	{
-		super.setActive(active);
-		selected.setVisible(active);
-		setBackground((active ? UIColour.BTN_BINGO_SIDE_HOVER : UIColour.FRAME_BINGO_BG_SIDE).toColor());
-		repaint();
-		return this;
+		if(image !=null)
+			g2.drawImage(image, (getWidth() / 20) + 5, getHeight() / 2 - (getHeight() / 4), getHeight(), getHeight(), null);
+		g2.setColor(colours.getColour("sidepanel-active").getColour());
+		drawText(g2, (getWidth() / 20) + 5 + getHeight());
 	}
-	
+
 }

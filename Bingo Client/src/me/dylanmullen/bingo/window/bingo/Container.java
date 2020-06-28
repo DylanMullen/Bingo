@@ -6,9 +6,9 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import me.dylanmullen.bingo.window.ui.Panel;
+import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
 
-public class Container extends Panel
+public class Container extends UIPanel
 {
 
 	private static final long serialVersionUID = -2373878660466121716L;

@@ -15,19 +15,19 @@ import me.dylanmullen.bingo.events.EventHandler;
 import me.dylanmullen.bingo.events.EventListener;
 import me.dylanmullen.bingo.events.events.user.CurrencyChangeEvent;
 import me.dylanmullen.bingo.events.events.user.UserInformationChangeEvent;
+import me.dylanmullen.bingo.gfx.ui.colour.UIColour;
+import me.dylanmullen.bingo.gfx.ui.grid.Grid;
+import me.dylanmullen.bingo.gfx.ui.grid.GridItem;
+import me.dylanmullen.bingo.gfx.ui.grid.GridSettings;
+import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
 import me.dylanmullen.bingo.window.ui.ImageComponent;
-import me.dylanmullen.bingo.window.ui.Panel;
-import me.dylanmullen.bingo.window.ui.UIColour;
-import me.dylanmullen.bingo.window.ui.grid.Grid;
-import me.dylanmullen.bingo.window.ui.grid.GridItem;
-import me.dylanmullen.bingo.window.ui.grid.GridSettings;
 
 /**
  * @author Dylan
  * @date 18 Jun 2020
  * @project Bingo Client
  */
-public class ProfilePanel extends Panel implements EventListener
+public class ProfilePanel extends UIPanel implements EventListener
 {
 
 	private static final long serialVersionUID = 3952772083758555561L;
@@ -102,18 +102,6 @@ public class ProfilePanel extends Panel implements EventListener
 		{
 			add(item);
 		}
-	}
-
-	@Override
-	protected void paintComponent(Graphics g)
-	{
-		Graphics2D g2 = (Graphics2D) g;
-
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g2.setColor(UIColour.BTN_FAILURE.toColor());
-		g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
-		super.paintComponent(g);
-
 	}
 
 	/**

@@ -2,13 +2,13 @@ package me.dylanmullen.bingo.game;
 
 import org.json.simple.JSONObject;
 
+import me.dylanmullen.bingo.gfx.components.login.WarningInfoComponent;
+import me.dylanmullen.bingo.gfx.ui.input.UIPasswordField;
+import me.dylanmullen.bingo.gfx.ui.input.UITextField;
 import me.dylanmullen.bingo.net.PacketHandler;
 import me.dylanmullen.bingo.net.callbacks.LoginCallback;
 import me.dylanmullen.bingo.net.packet.Packet;
-import me.dylanmullen.bingo.window.login.comp.WarningInfoComponent;
 import me.dylanmullen.bingo.window.login.panels.LoginPanel;
-import me.dylanmullen.bingo.window.ui.UIPasswordField;
-import me.dylanmullen.bingo.window.ui.UITextField;
 
 /**
  * @author Dylan

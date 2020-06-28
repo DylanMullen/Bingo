@@ -9,6 +9,9 @@ import javax.imageio.ImageIO;
 
 import org.json.simple.JSONObject;
 
+import me.dylanmullen.bingo.gfx.ui.grid.Grid;
+import me.dylanmullen.bingo.gfx.ui.grid.GridItem;
+import me.dylanmullen.bingo.gfx.ui.grid.GridSettings;
 import me.dylanmullen.bingo.net.PacketHandler;
 import me.dylanmullen.bingo.net.packet.Packet;
 import me.dylanmullen.bingo.net.packet.PacketCallback;
@@ -16,9 +19,6 @@ import me.dylanmullen.bingo.window.bingo.BingoWindow;
 import me.dylanmullen.bingo.window.ui.ImageComponent;
 import me.dylanmullen.bingo.window.ui.Panel;
 import me.dylanmullen.bingo.window.ui.UIColour;
-import me.dylanmullen.bingo.window.ui.grid.Grid;
-import me.dylanmullen.bingo.window.ui.grid.GridItem;
-import me.dylanmullen.bingo.window.ui.grid.GridSettings;
 
 public class HomePanel extends Panel
 {

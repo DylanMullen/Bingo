@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JComponent;
 
 import me.dylanmullen.bingo.util.FontUtil;
+import me.dylanmullen.bingo.util.Vector2I;
 
 public abstract class UIButton extends JComponent
 {
@@ -21,6 +22,7 @@ public abstract class UIButton extends JComponent
 	private String text;
 	private ButtonInformation information;
 
+	private boolean active;
 	private long lastClick;
 
 	private boolean hovered;
@@ -37,6 +39,10 @@ public abstract class UIButton extends JComponent
 	{
 		updateBounds();
 		addListeners();
+		if (getInformation().getMainColour() != null)
+			setBackground(getInformation().getMainColour().getColour());
+
+		setFocusable(true);
 	}
 
 	private void addListeners()
@@ -72,6 +78,7 @@ public abstract class UIButton extends JComponent
 				{
 					getInformation().getListener().invoke();
 					lastClick = System.currentTimeMillis();
+					active = !active;
 					if (focused)
 					{
 						focused = false;
@@ -130,11 +137,18 @@ public abstract class UIButton extends JComponent
 
 	public void updateBounds()
 	{
-		setBounds(getInformation().getX(), getInformation().getY(), getInformation().getWidth(),
-				getInformation().getHeight());
+		if (getInformation().getDimensions() != null || getInformation().getPosition() != null)
+			setBounds(getInformation().getX(), getInformation().getY(), getInformation().getWidth(),
+					getInformation().getHeight());
 	}
 
-	protected void drawText(Graphics2D g2)
+	public void updateBounds(Vector2I pos, Vector2I dim)
+	{
+		getInformation().updateBounds(pos, dim);
+		updateBounds();
+	}
+
+	protected void drawText(Graphics2D g2, int x)
 	{
 		Dimension textDim = FontUtil.getFontSize(getFontMetrics(getInformation().getFont()), text, 0, 0);
 		g2.setFont(getInformation().getFont());
@@ -144,7 +158,7 @@ public abstract class UIButton extends JComponent
 				g2.drawString(text, getWidth() / 2 - (textDim.width / 2), getHeight() / 2 - (textDim.height / 4));
 				break;
 			case LEFT:
-				g2.drawString(text, 0, getHeight() / 2 - (textDim.height / 4));
+				g2.drawString(text, x, getHeight() / 2 - (textDim.height / 4));
 				break;
 			case RIGHT:
 				g2.drawString(text, getWidth() - textDim.width, getHeight() / 2 - (textDim.height / 4));
@@ -160,5 +174,10 @@ public abstract class UIButton extends JComponent
 	public ButtonInformation getInformation()
 	{
 		return information;
+	}
+
+	public boolean isActive()
+	{
+		return active;
 	}
 }

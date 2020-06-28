@@ -1,4 +1,4 @@
-package me.dylanmullen.bingo.window.ui;
+package me.dylanmullen.bingo.gfx.ui.panel;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -9,17 +9,17 @@ import javax.swing.JPanel;
 import javax.swing.Scrollable;
 import javax.swing.SwingConstants;
 
-public abstract class Panel extends JPanel implements Scrollable,MouseMotionListener
+public abstract class UIPanel extends JPanel implements Scrollable, MouseMotionListener
 {
 
 	private static final long serialVersionUID = -3182799998146452612L;
 
 	protected int x, y;
 	protected int width, height;
-	
+
 	private int maxUnitIncrement = 20;
 
-	public Panel(int x, int y, int width, int height)
+	public UIPanel(int x, int y, int width, int height)
 	{
 		setBounds(x, y, width, height);
 		setLayout(null);
@@ -36,7 +36,6 @@ public abstract class Panel extends JPanel implements Scrollable,MouseMotionList
 	}
 
 	public abstract void setup();
-
 	public abstract void create();
 
 	public void mouseMoved(MouseEvent e)
@@ -106,5 +105,5 @@ public abstract class Panel extends JPanel implements Scrollable,MouseMotionList
 	{
 		this.maxUnitIncrement = pixels;
 	}
-	
+
 }

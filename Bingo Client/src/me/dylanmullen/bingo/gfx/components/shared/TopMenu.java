@@ -1,4 +1,4 @@
-package me.dylanmullen.bingo.window.ui;
+package me.dylanmullen.bingo.gfx.components.shared;
 
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
@@ -7,19 +7,29 @@ import java.awt.event.MouseMotionListener;
 
 import javax.swing.JFrame;
 
-import me.dylanmullen.bingo.gfx.ImageAtlas;
-import me.dylanmullen.bingo.window.login.comp.ServerInformationComponent;
+import me.dylanmullen.bingo.core.BingoApp;
+import me.dylanmullen.bingo.gfx.components.login.ServerInformationComponent;
+import me.dylanmullen.bingo.gfx.ui.buttons.Button;
+import me.dylanmullen.bingo.gfx.ui.buttons.ButtonInformation;
+import me.dylanmullen.bingo.gfx.ui.buttons.UIButton;
+import me.dylanmullen.bingo.gfx.ui.colour.UIColourSet;
+import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
+import me.dylanmullen.bingo.util.Vector2I;
 
-public class TopMenu extends Panel
+public class TopMenu extends UIPanel
 {
-
+	private static final long serialVersionUID = 284079253028974329L;
 	private TopMenuListener listener;
-	private final ImageAtlas ATLAS = new ImageAtlas("uiAtlas.png", 42);
+	private UIColourSet set;
 
 	public TopMenu(JFrame frame, int x, int y, int width, int height)
 	{
 		super(x, y, width, height);
 		listener = new TopMenuListener(frame);
+		this.set = BingoApp.getInstance().getColours().getSet("frame");
+		this.set.getColours().stream().forEach(e->{
+			System.out.println(e.getColour());
+		});
 	}
 
 	private UIButton close;
@@ -29,24 +39,16 @@ public class TopMenu extends Panel
 	{
 		setBounds(x, y, width, height);
 		setLayout(null);
-		setBackground(UIColour.FRAME_BINGO_BG_SIDE.toColor());
+		setBackground(set.getColour("top-menu").getColour());
 
-		close = new Button("", null, getWidth() - 100, 0, 100, getHeight(), UIColour.BTN_FAILURE);
-		ImageComponent icon = new ImageComponent((close.getWidth() / 2) - 21, (close.getHeight() / 2) - 21, 42, 42);
-		icon.setImage(ATLAS.getImage(3, 1, UIColour.BTN_BINGO_ACTIVE.toColor()));
-		close.create();
-		close.add(icon);
+		close = new Button("Close", new ButtonInformation(new Vector2I(getWidth() - (getWidth() / 8), 0),
+				new Vector2I(getWidth() / 8, getHeight()), () ->
+				{
+					System.exit(0);
+				}));
 
-		close.addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mouseClicked(MouseEvent e)
-			{
-				System.exit(0);
-			}
-		});
-
-		ServerInformationComponent si = new ServerInformationComponent((close.getX() - 10) - (width / 8), 10, width / 8, height - 20);
+		ServerInformationComponent si = new ServerInformationComponent(
+				new Vector2I((close.getX() - 10) - (width / 8), 0), new Vector2I(getWidth() / 8, getHeight()));
 		si.create();
 		add(si);
 		addMouseListener(listener);
@@ -56,7 +58,7 @@ public class TopMenu extends Panel
 	@Override
 	public void create()
 	{
-		add(close);
+//		add(close);
 	}
 
 	class TopMenuListener extends MouseAdapter implements MouseMotionListener

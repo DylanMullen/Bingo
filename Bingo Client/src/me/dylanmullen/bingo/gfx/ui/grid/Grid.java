@@ -1,4 +1,4 @@
-package me.dylanmullen.bingo.window.ui.grid;
+package me.dylanmullen.bingo.gfx.ui.grid;
 
 import java.util.ArrayList;
 import java.util.HashMap;

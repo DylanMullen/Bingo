@@ -1,6 +1,5 @@
-package me.dylanmullen.bingo.window.ui;
+package me.dylanmullen.bingo.gfx.ui.input;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -14,31 +13,37 @@ import javax.swing.BorderFactory;
 import javax.swing.JPasswordField;
 import javax.swing.SwingConstants;
 
+import me.dylanmullen.bingo.gfx.ui.colour.UIColour;
+import me.dylanmullen.bingo.gfx.ui.colour.UIColourSet;
+import me.dylanmullen.bingo.util.Vector2I;
+
 public class UIPasswordField extends JPasswordField
 {
 
 	private static final long serialVersionUID = 8395208345260502315L;
 
 	private String placeholder;
+	private UIColourSet set;
+
 	private boolean hovered;
 	private boolean focused;
 
-	public UIPasswordField(String placeholder, int[] properties)
+	public UIPasswordField(String placeholder, Vector2I pos, Vector2I dimensions, UIColourSet set)
 	{
-		this(placeholder);
-		setBounds(properties[0], properties[1], properties[2], properties[3]);
-		setup();
+		this(placeholder, set);
+		setBounds(pos.getX(), pos.getY(), dimensions.getX(), dimensions.getY());
 	}
 
-	public UIPasswordField(String placeHolder)
+	public UIPasswordField(String placeHolder, UIColourSet set)
 	{
 		this.placeholder = placeHolder;
+		this.set = set;
 		setup();
 	}
 
-	public void resize(int[] properties)
+	public void resize(Vector2I pos, Vector2I dimensions)
 	{
-		setBounds(properties[0], properties[1], properties[2], properties[3]);
+		setBounds(pos.getX(), pos.getY(), dimensions.getX(), dimensions.getY());
 	}
 
 	private void setup()
@@ -50,8 +55,9 @@ public class UIPasswordField extends JPasswordField
 		setText(placeholder);
 		setHorizontalAlignment(SwingConstants.CENTER);
 
-		updateBackground(UIColour.FRAME_BINGO_BG);
-		setForeground(Color.LIGHT_GRAY);
+		updateBackground(set.getColour("primary"));
+		setForeground(set.getColour("text-colour").getColour());
+		setCaretColor(set.getColour("text-colour").getColour());
 		setEchoChar((char) 0);
 
 		addFocusListener(new FocusListener()
@@ -60,7 +66,7 @@ public class UIPasswordField extends JPasswordField
 			public void focusLost(FocusEvent e)
 			{
 				focused = false;
-				updateBackground(UIColour.FRAME_BINGO_BG);
+				updateBackground(set.getColour("primary"));
 				if (getPassword().length == 0)
 				{
 					setText(placeholder);
@@ -68,7 +74,8 @@ public class UIPasswordField extends JPasswordField
 				} else
 					setEchoChar('*');
 
-				setForeground(Color.LIGHT_GRAY);
+				setForeground(set.getColour("text-colour").getColour());
+				repaint();
 			}
 
 			@Override
@@ -80,8 +87,9 @@ public class UIPasswordField extends JPasswordField
 					setText("");
 				}
 				setEchoChar((char) 0);
-				updateBackground(UIColour.FRAME_BINGO_BG_TOP);
+				updateBackground(set.getColour("hovered"));
 				setCaretPosition(getPassword().length);
+				repaint();
 			}
 		});
 
@@ -93,8 +101,8 @@ public class UIPasswordField extends JPasswordField
 				hovered = false;
 				if (!focused)
 				{
-					updateBackground(UIColour.FRAME_BINGO_BG);
-					setForeground(Color.LIGHT_GRAY);
+					updateBackground(set.getColour("primary"));
+					setForeground(set.getColour("text-colour").getColour());
 					repaint();
 				}
 			}
@@ -105,7 +113,7 @@ public class UIPasswordField extends JPasswordField
 				hovered = true;
 				if (!focused)
 				{
-					updateBackground(UIColour.FRAME_BINGO_BG_TOP);
+					updateBackground(set.getColour("hovered"));
 					repaint();
 				}
 			}
@@ -114,9 +122,8 @@ public class UIPasswordField extends JPasswordField
 
 	private void updateBackground(UIColour colour)
 	{
-		setForeground(colour.getTextColour());
-		setBackground(colour.toColor());
-		setCaretColor(colour.getTextColour());
+		setBackground(colour.getColour());
+		repaint();
 	}
 
 	@Override
@@ -127,7 +134,7 @@ public class UIPasswordField extends JPasswordField
 		g2.setColor(getBackground());
 		g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
 
-		g2.setColor(UIColour.FRAME_BINGO_BG_SIDE.toColor());
+		g2.setColor(set.getColour("border-bottom").getColour());
 		g2.fillRoundRect(0, getHeight() - 8, getWidth(), 8, 15, 15);
 
 		super.paintComponent(g);
@@ -136,6 +143,11 @@ public class UIPasswordField extends JPasswordField
 	public boolean isPlaceHolder()
 	{
 		return new String(getPassword()).equals(placeholder);
+	}
+
+	public boolean isHovered()
+	{
+		return hovered;
 	}
 
 }

@@ -18,6 +18,7 @@ public class ColourManager
 	public ColourManager()
 	{
 		this.sets = new ArrayList<UIColourSet>();
+		load();
 	}
 
 	public void load()
@@ -39,6 +40,7 @@ public class ColourManager
 							scanner.nextInt());
 					set.addColour(colour);
 				}
+				sets.add(set);
 			}
 		} catch (IOException e)
 		{
@@ -61,10 +63,8 @@ public class ColourManager
 	public UIColourSet getSet(String name)
 	{
 		for (UIColourSet set : sets)
-		{
-			if (set.getName().equalsIgnoreCase(name))
+			if (set.getName().startsWith(name))
 				return set;
-		}
 		return null;
 	}
 

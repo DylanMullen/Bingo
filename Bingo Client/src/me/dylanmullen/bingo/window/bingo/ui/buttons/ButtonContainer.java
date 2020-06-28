@@ -6,7 +6,8 @@ import java.util.List;
 
 import javax.swing.JComponent;
 
-import me.dylanmullen.bingo.window.ui.UIButton;
+import me.dylanmullen.bingo.gfx.ui.buttons.UIButton;
+import me.dylanmullen.bingo.util.Vector2I;
 
 /**
  * @author Dylan
@@ -72,12 +73,7 @@ public class ButtonContainer extends JComponent
 		int indent = 0;
 		for (UIButton btn : getButtons())
 		{
-			btn.setWidth(getWidth());
-			btn.setHeight(this.BTN_HEIGHT);
-			btn.setX(getX());
-			btn.setY(indent);
-			btn.create();
-
+			btn.updateBounds(new Vector2I(getX(), indent), new Vector2I(getWidth(), this.BTN_HEIGHT));
 			indent += this.BTN_HEIGHT;
 			add(btn);
 		}

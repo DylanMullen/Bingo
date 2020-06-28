@@ -33,6 +33,10 @@ public class ButtonInformation
 		this.textPosition = TextPosition.CENTER;
 		this.listener = listener;
 		this.font = new Font("Calibri", Font.PLAIN, 25);// TODO change this.
+		ButtonListener x = () ->
+		{
+
+		};
 	}
 
 	public void setMainColour(UIColour mainColour)
@@ -99,9 +103,15 @@ public class ButtonInformation
 	{
 		return listener;
 	}
-	
+
 	public Font getFont()
 	{
 		return font;
+	}
+
+	public void updateBounds(Vector2I pos, Vector2I dim)
+	{
+		this.position = pos;
+		this.dimensions = dim;
 	}
 }

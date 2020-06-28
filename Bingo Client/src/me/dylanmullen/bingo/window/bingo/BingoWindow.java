@@ -14,9 +14,9 @@ import me.dylanmullen.bingo.game.droplet.BingoCloud;
 import me.dylanmullen.bingo.game.droplet.BingoDroplet;
 import me.dylanmullen.bingo.game.droplet.DropletManager;
 import me.dylanmullen.bingo.game.home.HomePanel;
+import me.dylanmullen.bingo.gfx.components.shared.TopMenu;
 import me.dylanmullen.bingo.window.Window;
 import me.dylanmullen.bingo.window.bingo.panels.sidemenu.SideMenu;
-import me.dylanmullen.bingo.window.ui.TopMenu;
 
 /**
  * @author Dylan

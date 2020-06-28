@@ -6,8 +6,8 @@ import me.dylanmullen.bingo.core.BingoApp;
 import me.dylanmullen.bingo.events.EventHandler;
 import me.dylanmullen.bingo.events.events.user.UserInformationChangeEvent;
 import me.dylanmullen.bingo.game.UserInformation;
+import me.dylanmullen.bingo.gfx.components.login.WarningInfoComponent;
 import me.dylanmullen.bingo.net.packet.PacketCallback;
-import me.dylanmullen.bingo.window.login.comp.WarningInfoComponent;
 
 /**
  * @author Dylan

@@ -2,6 +2,8 @@ package me.dylanmullen.bingo.core;
 
 import java.awt.EventQueue;
 
+import me.dylanmullen.bingo.configs.ConfigManager;
+import me.dylanmullen.bingo.configs.IOController;
 import me.dylanmullen.bingo.events.events.user.UserInformationChangeEvent;
 import me.dylanmullen.bingo.gfx.ui.colour.ColourManager;
 import me.dylanmullen.bingo.net.handlers.ClientHandler;
@@ -56,6 +58,8 @@ public class BingoApp
 	 */
 	public void init()
 	{
+		IOController.getController().setup();
+		ConfigManager.getInstance();
 		this.clientHandler = new ClientHandler("localhost", 4585);
 		this.colours = new ColourManager();
 	}
