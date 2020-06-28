@@ -61,7 +61,7 @@ public class ServerInformationComponent extends JComponent implements EventListe
 	public void setup()
 	{
 		setOpaque(false);
-		setBackground(set.getColour("undefined").getColour());
+		setBackground(set.getColour("undefined").toColour());
 
 		this.statusText = "Ping";
 		updateStatus(ServerStatusManager.getManager().getStatus());
@@ -126,15 +126,15 @@ public class ServerInformationComponent extends JComponent implements EventListe
 		switch (status)
 		{
 			case UNDEFINED:
-				setBackground(set.getColour("undefined").getColour());
+				setBackground(set.getColour("undefined").toColour());
 				setForeground(set.getColour("undefined").getTextColour());
 				break;
 			case CONNECTED:
-				setBackground(set.getColour("connected").getColour());
+				setBackground(set.getColour("connected").toColour());
 				setForeground(set.getColour("connected").getTextColour());
 				break;
 			case DISCONNECTED:
-				setBackground(set.getColour("disconnected").getColour());
+				setBackground(set.getColour("disconnected").toColour());
 				setForeground(set.getColour("disconnected").getTextColour());
 				break;
 		}

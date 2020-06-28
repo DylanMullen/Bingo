@@ -35,7 +35,7 @@ public class SidePanelButton extends UIButton
 	protected void setup()
 	{
 		setBackground(
-				(isActive() ? colours.getColour("sidepanel-active") : colours.getColour("sidepanel-bg")).getColour());
+				(isActive() ? colours.getColour("sidepanel-active") : colours.getColour("sidepanel-bg")).toColour());
 		setFont(new Font("Calibri", Font.PLAIN, 25));
 		getInformation().setTextPosition(TextPosition.LEFT);
 	}
@@ -50,12 +50,12 @@ public class SidePanelButton extends UIButton
 
 	private void drawBody(Graphics2D g2)
 	{
-		g2.setColor(colours.getColour("sidepanel-bg").getColour());
+		g2.setColor(colours.getColour("sidepanel-bg").toColour());
 		g2.drawRect(0, 0, getWidth(), getHeight());
 
 		if (isActive())
 		{
-			g2.setColor(colours.getColour("sidepanel-active").getColour());
+			g2.setColor(colours.getColour("sidepanel-active").toColour());
 			g2.drawRect(0, 0, getWidth() / 20, getHeight());
 		}
 	}
@@ -64,7 +64,7 @@ public class SidePanelButton extends UIButton
 	{
 		if(image !=null)
 			g2.drawImage(image, (getWidth() / 20) + 5, getHeight() / 2 - (getHeight() / 4), getHeight(), getHeight(), null);
-		g2.setColor(colours.getColour("sidepanel-active").getColour());
+		g2.setColor(colours.getColour("sidepanel-active").toColour());
 		drawText(g2, (getWidth() / 20) + 5 + getHeight());
 	}
 

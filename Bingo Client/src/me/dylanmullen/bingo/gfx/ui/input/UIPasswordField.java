@@ -56,8 +56,8 @@ public class UIPasswordField extends JPasswordField
 		setHorizontalAlignment(SwingConstants.CENTER);
 
 		updateBackground(set.getColour("primary"));
-		setForeground(set.getColour("text-colour").getColour());
-		setCaretColor(set.getColour("text-colour").getColour());
+		setForeground(set.getColour("text-colour").toColour());
+		setCaretColor(set.getColour("text-colour").toColour());
 		setEchoChar((char) 0);
 
 		addFocusListener(new FocusListener()
@@ -74,7 +74,7 @@ public class UIPasswordField extends JPasswordField
 				} else
 					setEchoChar('*');
 
-				setForeground(set.getColour("text-colour").getColour());
+				setForeground(set.getColour("text-colour").toColour());
 				repaint();
 			}
 
@@ -102,7 +102,7 @@ public class UIPasswordField extends JPasswordField
 				if (!focused)
 				{
 					updateBackground(set.getColour("primary"));
-					setForeground(set.getColour("text-colour").getColour());
+					setForeground(set.getColour("text-colour").toColour());
 					repaint();
 				}
 			}
@@ -122,7 +122,7 @@ public class UIPasswordField extends JPasswordField
 
 	private void updateBackground(UIColour colour)
 	{
-		setBackground(colour.getColour());
+		setBackground(colour.toColour());
 		repaint();
 	}
 
@@ -134,7 +134,7 @@ public class UIPasswordField extends JPasswordField
 		g2.setColor(getBackground());
 		g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
 
-		g2.setColor(set.getColour("border-bottom").getColour());
+		g2.setColor(set.getColour("border-bottom").toColour());
 		g2.fillRoundRect(0, getHeight() - 8, getWidth(), 8, 15, 15);
 
 		super.paintComponent(g);

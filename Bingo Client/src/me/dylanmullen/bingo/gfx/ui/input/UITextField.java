@@ -56,8 +56,8 @@ public class UITextField extends JTextField
 		setHorizontalAlignment(SwingConstants.CENTER);
 
 		updateBackground(set.getColour("primary"));
-		setForeground(set.getColour("text-colour").getColour());
-		setCaretColor(set.getColour("text-colour").getColour());
+		setForeground(set.getColour("text-colour").toColour());
+		setCaretColor(set.getColour("text-colour").toColour());
 
 		addFocusListener(new FocusListener()
 		{
@@ -66,7 +66,7 @@ public class UITextField extends JTextField
 			{
 				focused = false;
 				updateBackground(set.getColour("primary"));
-				setForeground(set.getColour("text-colour").getColour());
+				setForeground(set.getColour("text-colour").toColour());
 				repaint();
 			}
 
@@ -88,7 +88,7 @@ public class UITextField extends JTextField
 				if (!focused)
 				{
 					updateBackground(set.getColour("primary"));
-					setForeground(set.getColour("text-colour").getColour());
+					setForeground(set.getColour("text-colour").toColour());
 					repaint();
 				}
 			}
@@ -108,7 +108,7 @@ public class UITextField extends JTextField
 
 	private void updateBackground(UIColour colour)
 	{
-		setBackground(colour.getColour());
+		setBackground(colour.toColour());
 	}
 
 	@Override
@@ -119,7 +119,7 @@ public class UITextField extends JTextField
 		g2.setColor(getBackground());
 		g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
 
-		g2.setColor(set.getColour("border-bottom").getColour());
+		g2.setColor(set.getColour("border-bottom").toColour());
 		g2.fillRoundRect(0, getHeight() - 8, getWidth(), 8, 15, 15);
 
 		super.paintComponent(g);

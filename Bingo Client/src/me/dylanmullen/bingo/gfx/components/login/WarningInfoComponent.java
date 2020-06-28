@@ -126,7 +126,7 @@ public class WarningInfoComponent extends RoundedPanel
 	 */
 	public void updateBackground(UIColour colour)
 	{
-		setBackground(colour.getColour());
+		setBackground(colour.toColour());
 		setForeground(colour.getTextColour());
 	}
 }

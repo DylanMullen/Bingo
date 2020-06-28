@@ -26,10 +26,10 @@ public class UIColour
 
 	public Color applyTransparency(int opacity)
 	{
-		return new Color(getColour().getRed(), getColour().getBlue(), getColour().getGreen(), opacity);
+		return new Color(toColour().getRed(), toColour().getBlue(), toColour().getGreen(), opacity);
 	}
 
-	public Color getColour()
+	public Color toColour()
 	{
 		return colour;
 	}

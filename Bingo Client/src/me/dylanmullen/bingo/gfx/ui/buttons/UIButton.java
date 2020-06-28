@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JComponent;
 
+import me.dylanmullen.bingo.gfx.ui.colour.UIColour;
 import me.dylanmullen.bingo.util.FontUtil;
 import me.dylanmullen.bingo.util.Vector2I;
 
@@ -40,7 +41,7 @@ public abstract class UIButton extends JComponent
 		updateBounds();
 		addListeners();
 		if (getInformation().getMainColour() != null)
-			setBackground(getInformation().getMainColour().getColour());
+			setBackground(getInformation().getMainColour().toColour());
 
 		setFocusable(true);
 	}
@@ -56,7 +57,7 @@ public abstract class UIButton extends JComponent
 				{
 					hovered = true;
 					if (information.getHoverColour() != null)
-						setBackground(information.getHoverColour().getColour());
+						setBackground(information.getHoverColour().toColour());
 				}
 			}
 
@@ -67,7 +68,7 @@ public abstract class UIButton extends JComponent
 				{
 					hovered = false;
 					if (information.getMainColour() != null)
-						setBackground(information.getMainColour().getColour());
+						setBackground(information.getMainColour().toColour());
 				}
 			}
 
@@ -83,7 +84,7 @@ public abstract class UIButton extends JComponent
 					{
 						focused = false;
 						if (information.getMainColour() != null)
-							setBackground(information.getMainColour().getColour());
+							setBackground(information.getMainColour().toColour());
 					}
 				}
 			}
@@ -97,7 +98,7 @@ public abstract class UIButton extends JComponent
 				{
 					focused = true;
 					if (information.getHoverColour() != null)
-						setBackground(information.getHoverColour().getColour());
+						setBackground(information.getHoverColour().toColour());
 				}
 			}
 
@@ -108,7 +109,7 @@ public abstract class UIButton extends JComponent
 				{
 					focused = false;
 					if (information.getMainColour() != null)
-						setBackground(information.getMainColour().getColour());
+						setBackground(information.getMainColour().toColour());
 				}
 			}
 		});
@@ -127,7 +128,7 @@ public abstract class UIButton extends JComponent
 						{
 							focused = false;
 							if (information.getMainColour() != null)
-								setBackground(information.getMainColour().getColour());
+								setBackground(information.getMainColour().toColour());
 						}
 					}
 				}
@@ -148,6 +149,13 @@ public abstract class UIButton extends JComponent
 		updateBounds();
 	}
 
+	public void updateColours(UIColour main, UIColour hover)
+	{
+		getInformation().setMainColour(main);
+		getInformation().setHoverColour(hover);
+		setBackground(getInformation().getMainColour().toColour());
+	}
+
 	protected void drawText(Graphics2D g2, int x)
 	{
 		Dimension textDim = FontUtil.getFontSize(getFontMetrics(getInformation().getFont()), text, 0, 0);
@@ -155,13 +163,13 @@ public abstract class UIButton extends JComponent
 		switch (information.getTextPosition())
 		{
 			case CENTER:
-				g2.drawString(text, getWidth() / 2 - (textDim.width / 2), getHeight() / 2 - (textDim.height / 4));
+				g2.drawString(text, getWidth() / 2 - (textDim.width / 2), getHeight() / 2 + (textDim.height / 4));
 				break;
 			case LEFT:
-				g2.drawString(text, x, getHeight() / 2 - (textDim.height / 4));
+				g2.drawString(text, x, getHeight() / 2 + (textDim.height / 4));
 				break;
 			case RIGHT:
-				g2.drawString(text, getWidth() - textDim.width, getHeight() / 2 - (textDim.height / 4));
+				g2.drawString(text, getWidth() - textDim.width, getHeight() / 2 + (textDim.height / 4));
 				break;
 		}
 	}

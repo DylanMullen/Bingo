@@ -2,7 +2,6 @@ package me.dylanmullen.bingo.window.login.panels;
 
 import me.dylanmullen.bingo.core.BingoApp;
 import me.dylanmullen.bingo.gfx.components.login.WarningInfoComponent;
-import me.dylanmullen.bingo.gfx.ui.colour.UIColour;
 import me.dylanmullen.bingo.gfx.ui.grid.Grid;
 import me.dylanmullen.bingo.gfx.ui.grid.GridItem;
 import me.dylanmullen.bingo.gfx.ui.grid.GridSettings;
@@ -36,7 +35,7 @@ public class LoginPanel extends UIPanel
 	{
 		setBounds(x, y, width, height);
 		setLayout(null);
-		setBackground(BingoApp.getInstance().getColours().getSet("frame").getColour("content").getColour());
+		setBackground(BingoApp.getInstance().getColours().getSet("frame").getColour("content").toColour());
 
 		grid = new Grid(new GridSettings(width, height, 3, 1, 10), 0, 0);
 

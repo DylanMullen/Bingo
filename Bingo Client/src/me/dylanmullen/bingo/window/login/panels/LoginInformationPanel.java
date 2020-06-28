@@ -73,6 +73,10 @@ public class LoginInformationPanel extends UIPanel
 			LoginHandler.getHandlerInstance().handleRegisterRequest(getLoginPanel());
 		}));
 
+		set = BingoApp.getInstance().getColours().getSet("buttons");
+		register.updateColours(set.getColour("register-bg"), set.getColour("register-active"));
+		login.updateColours(set.getColour("login-bg"), set.getColour("login-active"));
+
 		grid.addGridItem(new GridItem(register, 1, 1), 2, true);
 		getButtons().add(register);
 

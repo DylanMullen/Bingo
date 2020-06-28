@@ -28,7 +28,7 @@ public class TopMenu extends UIPanel
 		listener = new TopMenuListener(frame);
 		this.set = BingoApp.getInstance().getColours().getSet("frame");
 		this.set.getColours().stream().forEach(e->{
-			System.out.println(e.getColour());
+			System.out.println(e.toColour());
 		});
 	}
 
@@ -39,7 +39,7 @@ public class TopMenu extends UIPanel
 	{
 		setBounds(x, y, width, height);
 		setLayout(null);
-		setBackground(set.getColour("top-menu").getColour());
+		setBackground(set.getColour("top-menu").toColour());
 
 		close = new Button("Close", new ButtonInformation(new Vector2I(getWidth() - (getWidth() / 8), 0),
 				new Vector2I(getWidth() / 8, getHeight()), () ->

@@ -47,7 +47,7 @@ public class SideMenu extends UIPanel
 	{
 		setBounds(x, y, width, height);
 		setLayout(null);
-		setBackground(BingoApp.getInstance().getColours().getSet("frame").getColour("side-menu").getColour());
+		setBackground(BingoApp.getInstance().getColours().getSet("frame").getColour("side-menu").toColour());
 	}
 
 	@Override
