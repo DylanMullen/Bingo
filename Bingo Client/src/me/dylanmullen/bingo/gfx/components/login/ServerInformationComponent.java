@@ -90,7 +90,7 @@ public class ServerInformationComponent extends JComponent implements EventListe
 			return;
 		} else
 		{
-			g2.fillOval(getWidth() / 4, 0, getHeight(), getHeight());
+			g2.fillOval(5, 5, getHeight()-10, getHeight()-10);
 		}
 	}
 

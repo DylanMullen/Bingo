@@ -1,5 +1,6 @@
 package me.dylanmullen.bingo.gfx.components.login;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -79,14 +80,20 @@ public class WarningInfoComponent extends RoundedPanel
 
 		g2.setColor(getForeground());
 		Dimension prev = null;
-		int indentY = 10;
-		for (String string : lines)
+		int indentY = -1;
+		int height = -1;
+		for (int i = 0; i < lines.size(); i++)
 		{
-			prev = FontUtil.getFontSize(getFontMetrics(getFont()), string, 0, 0);
+			String text = lines.get(i);
+			prev = FontUtil.getFontSize(getFontMetrics(getFont()), text, 0, 0);
+			if (height == -1)
+			{
+				height = prev.height * lines.size();
+				indentY = (getHeight() / 2 + ((getHeight() - height))) / 2;
+			}
 
-			indentY += prev.height / 2;
-			g2.drawString(string, OFFSET, indentY);
-			indentY += 5;
+			g2.drawString(text, getWidth() / 2 - (prev.width / 2), indentY);
+			indentY += prev.height;
 		}
 	}
 
@@ -105,7 +112,7 @@ public class WarningInfoComponent extends RoundedPanel
 		for (int i = 0; i < message.length(); i++)
 		{
 			currentWidth = FontUtil.getFontSize(metrics, lineBuilder.toString(), 0, 0).width;
-			if (currentWidth >= getWidth() - (OFFSET * 3))
+			if (currentWidth >= getWidth() - (OFFSET * 3) || message.charAt(i) == '\n')
 			{
 				currentWidth = 0;
 				lines.add(lineBuilder.toString());
@@ -128,5 +135,6 @@ public class WarningInfoComponent extends RoundedPanel
 	{
 		setBackground(colour.toColour());
 		setForeground(colour.getTextColour());
+		repaint();
 	}
 }

@@ -27,9 +27,6 @@ public class TopMenu extends UIPanel
 		super(x, y, width, height);
 		listener = new TopMenuListener(frame);
 		this.set = BingoApp.getInstance().getColours().getSet("frame");
-		this.set.getColours().stream().forEach(e->{
-			System.out.println(e.toColour());
-		});
 	}
 
 	private UIButton close;
@@ -58,7 +55,7 @@ public class TopMenu extends UIPanel
 	@Override
 	public void create()
 	{
-//		add(close);
+		add(close);
 	}
 
 	class TopMenuListener extends MouseAdapter implements MouseMotionListener
