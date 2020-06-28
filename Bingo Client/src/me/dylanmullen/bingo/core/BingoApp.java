@@ -3,6 +3,7 @@ package me.dylanmullen.bingo.core;
 import java.awt.EventQueue;
 
 import me.dylanmullen.bingo.events.events.user.UserInformationChangeEvent;
+import me.dylanmullen.bingo.gfx.ui.colour.ColourManager;
 import me.dylanmullen.bingo.net.handlers.ClientHandler;
 import me.dylanmullen.bingo.window.bingo.BingoWindow;
 import me.dylanmullen.bingo.window.login.LoginWindow;
@@ -16,6 +17,8 @@ public class BingoApp
 {
 
 	private static BingoApp instance;
+
+	private ColourManager colours;
 
 	private ClientHandler clientHandler;
 
@@ -54,6 +57,7 @@ public class BingoApp
 	public void init()
 	{
 		this.clientHandler = new ClientHandler("localhost", 4585);
+		this.colours = new ColourManager();
 	}
 
 	/**
@@ -82,7 +86,7 @@ public class BingoApp
 	{
 		if (this.loginWindow != null)
 			this.loginWindow.dispose();
-		
+
 		EventQueue.invokeLater(new Runnable()
 		{
 			@Override
@@ -122,5 +126,10 @@ public class BingoApp
 	public ClientHandler getClientHandler()
 	{
 		return this.clientHandler;
+	}
+
+	public ColourManager getColours()
+	{
+		return colours;
 	}
 }
