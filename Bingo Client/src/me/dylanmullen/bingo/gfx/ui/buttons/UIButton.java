@@ -174,6 +174,13 @@ public abstract class UIButton extends JComponent
 		}
 	}
 
+	@Override
+	public void setBounds(int x, int y, int width, int height)
+	{
+		super.setBounds(x, y, width, height);
+		getInformation().updateBounds(new Vector2I(x, y), new Vector2I(width, height));
+	}
+
 	public String getText()
 	{
 		return text;

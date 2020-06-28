@@ -15,7 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.Scrollable;
 import javax.swing.SwingConstants;
 
-import me.dylanmullen.bingo.window.ui.UIColour;
+import me.dylanmullen.bingo.core.BingoApp;
 
 /**
  * @author Dylan
@@ -68,7 +68,7 @@ public class ChatMessagesComponent extends JComponent implements Scrollable, Mou
 
 	private void drawMessages(Graphics2D g2)
 	{
-		g2.setColor(UIColour.FRAME_BINGO_BG_TOP.toColor());
+		g2.setColor(BingoApp.getInstance().getColours().getSet("frame").getColour("top-menu").toColour());
 		g2.fillRect(0, 0, getWidth(), getHeight());
 	}
 

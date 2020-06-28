@@ -11,8 +11,9 @@ import java.util.List;
 
 import javax.swing.JComponent;
 
+import me.dylanmullen.bingo.core.BingoApp;
+import me.dylanmullen.bingo.gfx.ui.colour.UIColourSet;
 import me.dylanmullen.bingo.util.FontUtil;
-import me.dylanmullen.bingo.window.ui.UIColour;
 
 public class ChatMessage extends JComponent
 {
@@ -25,13 +26,16 @@ public class ChatMessage extends JComponent
 	private String username;
 	private String userGroup;
 	private String message;
-
 	private List<String> lines;
+
+	private UIColourSet set;
 
 	public ChatMessage(int x, int y, int width)
 	{
 		this.lines = new ArrayList<>();
-
+		this.set = BingoApp.getInstance().getColours().getSet("chat");
+		setBackground(set.getColour("header").toColour());
+		setForeground(set.getColour("body").toColour());
 		setBounds(x, y, width, 0);
 	}
 
@@ -80,7 +84,7 @@ public class ChatMessage extends JComponent
 	{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
-		g2.setColor(Color.black);
+		g2.setColor(getForeground());
 		g2.fillRect(0, 0, getWidth(), getHeight());
 		drawHeader(g2);
 		g2.setFont(getFont());
@@ -90,9 +94,9 @@ public class ChatMessage extends JComponent
 	private void drawHeader(Graphics2D g2)
 	{
 		g2.setFont(new Font("Calibri", Font.PLAIN, 18));
-		g2.setColor(UIColour.BINGO_BALL_3.toColor());
+		g2.setColor(getBackground());
 		g2.fillRect(0, 0, getWidth(), HEADER_HEIGHT);
-		g2.setColor(Color.white);
+		g2.setColor(set.getColour("text").toColour());
 		int indent = HEADER_HEIGHT / 2
 				+ FontUtil.getFontSize(getFontMetrics(getFont()), getHeaderString(), 0, 0).height / 4;
 		g2.drawString(getHeaderString(), OFFSET, indent);

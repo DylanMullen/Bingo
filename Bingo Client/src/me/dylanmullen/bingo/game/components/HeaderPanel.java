@@ -1,9 +1,10 @@
 package me.dylanmullen.bingo.game.components;
 
-import me.dylanmullen.bingo.window.ui.Panel;
-import me.dylanmullen.bingo.window.ui.UIColour;
+import me.dylanmullen.bingo.core.BingoApp;
+import me.dylanmullen.bingo.gfx.ui.colour.UIColour;
+import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
 
-public class HeaderPanel extends Panel
+public class HeaderPanel extends UIPanel
 {
 
 	private static final long serialVersionUID = 1154494652172939716L;
@@ -20,7 +21,7 @@ public class HeaderPanel extends Panel
 	public void setup()
 	{
 		setBounds(x, y, width, height);
-		setBackground(UIColour.BTN_BINGO_ACTIVE.toColor());
+		setBackground(BingoApp.getInstance().getColours().getSet("frame").getColour("header").toColour());
 		setLayout(null);
 
 		this.numbersComp = new NumbersCalledComponent(0, 0, getWidth(), getHeight());

@@ -2,10 +2,9 @@ package me.dylanmullen.bingo.game.components;
 
 import javax.swing.JLabel;
 
-import me.dylanmullen.bingo.window.ui.Panel;
-import me.dylanmullen.bingo.window.ui.UIColour;
+import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
 
-public class NumbersCalledComponent extends Panel
+public class NumbersCalledComponent extends UIPanel
 {
 
 	private static final long serialVersionUID = 4164051545883107133L;
@@ -28,7 +27,7 @@ public class NumbersCalledComponent extends Panel
 	{
 		setBounds(x, y, width, height);
 		setLayout(null);
-		setBackground(UIColour.BTN_BINGO_ACTIVE.toColor());
+		setBackground(getParent().getBackground());
 		this.numbers = new NumberGrid[5];
 		this.gridSize = (getHeight() - 24);
 	}
@@ -77,12 +76,12 @@ public class NumbersCalledComponent extends Panel
 	{
 		calls = 0;
 		label.setText("");
-		for(NumberGrid grid : numbers)
+		for (NumberGrid grid : numbers)
 		{
 			grid.updateCurrentNumber(-1);
 			grid.repaint();
 		}
-		
+
 	}
 
 	private void updateCalls()

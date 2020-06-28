@@ -6,9 +6,9 @@ import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import me.dylanmullen.bingo.window.ui.Panel;
+import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
 
-public class InfoPanel extends Panel
+public class InfoPanel extends UIPanel
 {
 
 	/**

@@ -7,10 +7,10 @@ import java.util.UUID;
 import me.dylanmullen.bingo.game.cards.BingoCardContainer;
 import me.dylanmullen.bingo.game.cards.CardInformation;
 import me.dylanmullen.bingo.game.components.overlays.WinnerOverlay;
-import me.dylanmullen.bingo.window.ui.Panel;
-import me.dylanmullen.bingo.window.ui.UIColour;
+import me.dylanmullen.bingo.gfx.ui.colour.UIColour;
+import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
 
-public class GameComponent extends Panel
+public class GameComponent extends UIPanel
 {
 
 	private static final long serialVersionUID = 6557409370693226153L;
@@ -28,7 +28,7 @@ public class GameComponent extends Panel
 	{
 		setBounds(x, y, width, height);
 		setLayout(null);
-		setBackground(UIColour.FRAME_BINGO_BG.toColor());
+		setBackground(getParent().getBackground());
 //		createWinnerOverlay();
 	}
 

@@ -6,14 +6,14 @@ import java.util.List;
 import java.util.UUID;
 
 import me.dylanmullen.bingo.game.components.listeners.BingoCardListener;
-import me.dylanmullen.bingo.window.ui.Panel;
+import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
 
 /**
  * @author Dylan
  * @date 17 Jun 2020
  * @project Bingo Client
  */
-public class BingoCardContainer extends Panel
+public class BingoCardContainer extends UIPanel
 {
 
 	private static final long serialVersionUID = -2951295854163796573L;

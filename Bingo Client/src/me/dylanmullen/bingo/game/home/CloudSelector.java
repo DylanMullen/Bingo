@@ -16,9 +16,9 @@ import javax.swing.JComponent;
 import org.json.simple.JSONObject;
 
 import me.dylanmullen.bingo.game.components.listeners.JoinCloudListener;
+import me.dylanmullen.bingo.gfx.ui.buttons.RoundedButton;
+import me.dylanmullen.bingo.gfx.ui.colour.UIColour;
 import me.dylanmullen.bingo.util.FontUtil;
-import me.dylanmullen.bingo.window.ui.RoundedButton;
-import me.dylanmullen.bingo.window.ui.UIColour;
 
 /**
  * @author Dylan
@@ -100,7 +100,6 @@ public class CloudSelector extends JComponent
 	public void create()
 	{
 		setup();
-		getJoinButton().create();
 		add(getJoinButton());
 	}
 

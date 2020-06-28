@@ -1,14 +1,11 @@
 package me.dylanmullen.bingo.game.chat;
 
-import java.awt.Font;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import me.dylanmullen.bingo.gfx.ui.buttons.Button;
+import me.dylanmullen.bingo.gfx.ui.buttons.ButtonInformation;
+import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
+import me.dylanmullen.bingo.util.Vector2I;
 
-import me.dylanmullen.bingo.window.ui.Button;
-import me.dylanmullen.bingo.window.ui.Panel;
-import me.dylanmullen.bingo.window.ui.UIColour;
-
-public class ChatInputComponent extends Panel
+public class ChatInputComponent extends UIPanel
 {
 
 	private static final long serialVersionUID = -1228467449669717505L;
@@ -28,18 +25,12 @@ public class ChatInputComponent extends Panel
 	{
 		this.textArea = new ChatInputField(0, 0, (int) (getWidth() / 4 * 3), getHeight());
 
-		this.submitButton = new Button("Send!", new Font("Calibri", Font.PLAIN, 25), getTextArea().getWidth(), 0,
-				getWidth() - getTextArea().getWidth(), getHeight(), UIColour.BINGO_BALL_0);
-		getSubmitButton().create();
-		getSubmitButton().addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mouseClicked(MouseEvent e)
-			{
-//				getChatPanel().getChatMessagesComponent().addMessage("rpfoviblhpuxdmsavuiwbjzkpzjyklheyqhbvyjnfqzafnkvsijlizxrvnlfbxbhwgifspzmkzkyymhrjkrstzorviwlmojokaznrfzpnykqvxsjyurqijkkofmsxjyo");
-				getChatPanel().sendMessage(getTextArea().getText());
-			}
-		});
+		this.submitButton = new Button("Send", new ButtonInformation(new Vector2I(getTextArea().getWidth(), 0),
+				new Vector2I(getWidth() - getTextArea().getWidth(), getHeight()), () ->
+				{
+					getChatPanel().sendMessage(getTextArea().getText());
+				}));
+
 	}
 
 	@Override

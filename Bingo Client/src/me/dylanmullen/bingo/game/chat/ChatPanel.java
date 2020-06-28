@@ -6,12 +6,12 @@ import javax.swing.JScrollPane;
 
 import org.json.simple.JSONObject;
 
+import me.dylanmullen.bingo.core.BingoApp;
+import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
 import me.dylanmullen.bingo.net.PacketHandler;
 import me.dylanmullen.bingo.net.packet.Packet;
-import me.dylanmullen.bingo.window.ui.Panel;
-import me.dylanmullen.bingo.window.ui.UIColour;
 
-public class ChatPanel extends Panel
+public class ChatPanel extends UIPanel
 {
 
 	private static final long serialVersionUID = -6660881977261292475L;
@@ -30,7 +30,7 @@ public class ChatPanel extends Panel
 	@Override
 	public void setup()
 	{
-		setBackground(UIColour.FRAME_BINGO_BG_SIDE.toColor());
+		setBackground(BingoApp.getInstance().getColours().getSet("frame").getColour("side-menu").toColour());
 
 		JScrollPane scroll = new JScrollPane();
 		this.chatMessagesComponent = new ChatMessagesComponent(scroll, 15, 15, getWidth() - 30, getHeight() - 45 - 50);

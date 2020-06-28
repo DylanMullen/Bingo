@@ -10,13 +10,13 @@ import java.util.UUID;
 import org.json.simple.JSONObject;
 
 import me.dylanmullen.bingo.game.home.DropletSelector;
+import me.dylanmullen.bingo.gfx.ui.colour.UIColour;
 import me.dylanmullen.bingo.gfx.ui.grid.Grid;
 import me.dylanmullen.bingo.gfx.ui.grid.GridItem;
 import me.dylanmullen.bingo.gfx.ui.grid.GridSettings;
-import me.dylanmullen.bingo.window.ui.Panel;
-import me.dylanmullen.bingo.window.ui.UIColour;
+import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
 
-public class BingoCloud extends Panel
+public class BingoCloud extends UIPanel
 {
 
 	private static final long serialVersionUID = 8868641235552384755L;
@@ -80,7 +80,7 @@ public class BingoCloud extends Panel
 	public void setup()
 	{
 		this.dropletSelectors = new ArrayList<>();
-		setBackground(UIColour.FRAME_BINGO_BG.toColor());
+		setBackground(getParent().getBackground());
 		this.grid = new Grid(new GridSettings(getWidth() - 50, getHeight() - indentY - 30, -1, 2, 5), 25, indentY + 15);
 		grid.getGridSettings().setFixedRowHeight(50);
 	}
