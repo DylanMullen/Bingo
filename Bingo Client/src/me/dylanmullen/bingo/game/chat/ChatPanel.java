@@ -30,7 +30,7 @@ public class ChatPanel extends UIPanel
 	@Override
 	public void setup()
 	{
-		setBackground(BingoApp.getInstance().getColours().getSet("frame").getColour("side-menu").toColour());
+		setBackground(BingoApp.getInstance().getColourManager().getSet("frame").getColour("side-menu").toColour());
 
 		JScrollPane scroll = new JScrollPane();
 		this.chatMessagesComponent = new ChatMessagesComponent(scroll, 15, 15, getWidth() - 30, getHeight() - 45 - 50);

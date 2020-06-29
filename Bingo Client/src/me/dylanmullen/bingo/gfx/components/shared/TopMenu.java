@@ -26,7 +26,7 @@ public class TopMenu extends UIPanel
 	{
 		super(x, y, width, height);
 		listener = new TopMenuListener(frame);
-		this.set = BingoApp.getInstance().getColours().getSet("frame");
+		this.set = BingoApp.getInstance().getColourManager().getSet("frame");
 	}
 
 	private UIButton close;

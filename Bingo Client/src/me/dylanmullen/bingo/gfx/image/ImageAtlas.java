@@ -1,4 +1,4 @@
-package me.dylanmullen.bingo.gfx;
+package me.dylanmullen.bingo.gfx.image;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -16,10 +16,12 @@ import javax.imageio.ImageIO;
 public class ImageAtlas
 {
 
+	private String name;
 	private String path;
 	private int size;
 
 	private BufferedImage image;
+	private boolean loaded;
 
 	/**
 	 * Creates an Image Atlas based on an image passed in by the path and the size
@@ -28,26 +30,24 @@ public class ImageAtlas
 	 * @param path The path of the image.
 	 * @param size The size of each square in the atlas.
 	 */
-	public ImageAtlas(String path, int size)
+	public ImageAtlas(String name, String path, int size)
 	{
+		this.name = name;
 		this.path = path;
 		this.size = size;
-		load();
+		this.loaded = load();
 	}
 
-	/**
-	 * Loads the image based on the path provided.<br>
-	 * This will throw an IOException if the path cannot provide an image. This will
-	 * make the image null.
-	 */
-	private void load()
+	private boolean load()
 	{
 		try
 		{
-			this.image = ImageIO.read(getClass().getClassLoader().getResourceAsStream(path));
+			this.image = ImageIO.read(getClass().getClassLoader().getResource(path));
+			return true;
 		} catch (IOException e)
 		{
 			e.printStackTrace();
+			return false;
 		}
 	}
 
@@ -72,7 +72,7 @@ public class ImageAtlas
 	 * @param colour The colour to replace with.
 	 * @return Returns a new recoloured sub-image.
 	 */
-	public BufferedImage getImage(int x, int y, Color colour)
+	public BufferedImage getImage(int x, int y, Color colour, Color toReplace)
 	{
 		BufferedImage img = getSubImage(x, y);
 		BufferedImage temp = new BufferedImage(this.size, this.size, BufferedImage.TYPE_INT_ARGB);
@@ -83,27 +83,10 @@ public class ImageAtlas
 		int[] initialBuf = ((DataBufferInt) temp.getRaster().getDataBuffer()).getData();
 
 		for (int i = 0; i < initialBuf.length; i++)
-		{
-			initialBuf[i] = replaceColour(initialBuf[i], colour.getRGB());
-		}
-		return temp;
-	}
+			if (initialBuf[i] == colour.getRGB())
+				initialBuf[i] = toReplace.getRGB();
 
-	/**
-	 * Replaces a colour with another colour.
-	 * 
-	 * @param colour    The current colour of the pixel.
-	 * @param toReplace The colour to replace with.
-	 * @return Returns the RGB colour value of toReplace if the colour equals black.
-	 */
-	private int replaceColour(int colour, int toReplace)
-	{
-		// TODO make the colour be able to change.
-		if (colour == Color.BLACK.getRGB())
-		{
-			return toReplace;
-		}
-		return colour;
+		return temp;
 	}
 
 	/**
@@ -116,4 +99,13 @@ public class ImageAtlas
 		return this.image;
 	}
 
+	public boolean isLoaded()
+	{
+		return loaded;
+	}
+
+	public String getName()
+	{
+		return name;
+	}
 }

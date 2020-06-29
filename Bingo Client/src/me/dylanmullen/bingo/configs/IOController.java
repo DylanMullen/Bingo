@@ -1,11 +1,7 @@
 package me.dylanmullen.bingo.configs;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
-import java.net.URLDecoder;
-
-import me.dylanmullen.bingo.core.Main;
 
 public class IOController
 {
@@ -14,7 +10,6 @@ public class IOController
 
 	private static IOController instance;
 
-	private File parentFolder;
 	private File uiConfigFolder;
 
 	public static IOController getController()
@@ -34,9 +29,8 @@ public class IOController
 	{
 		try
 		{
-			this.parentFolder = new File(getJARPath() + SEPERATOR + "resources" + SEPERATOR);
 			this.uiConfigFolder = new File(getClass().getClassLoader().getResource("ui").toURI());
-		} catch (UnsupportedEncodingException | URISyntaxException e)
+		} catch (URISyntaxException e)
 		{
 			e.printStackTrace();
 			return false;
@@ -54,11 +48,6 @@ public class IOController
 		try
 		{
 			boolean status = false;
-			if (!this.parentFolder.exists())
-			{
-				status = true;
-				this.parentFolder.mkdir();
-			}
 			if (!this.uiConfigFolder.exists())
 			{
 				status = true;
@@ -70,13 +59,6 @@ public class IOController
 			e.printStackTrace();
 			return false;
 		}
-	}
-
-	private String getJARPath() throws UnsupportedEncodingException
-	{
-		String temp = URLDecoder.decode(Main.class.getProtectionDomain().getCodeSource().getLocation().getFile(),
-				"UTF-8");
-		return new File(temp).getParentFile().getPath();
 	}
 
 	public File getUIConfigFolder()

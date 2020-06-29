@@ -21,7 +21,7 @@ public class HeaderPanel extends UIPanel
 	public void setup()
 	{
 		setBounds(x, y, width, height);
-		setBackground(BingoApp.getInstance().getColours().getSet("frame").getColour("header").toColour());
+		setBackground(BingoApp.getInstance().getColourManager().getSet("frame").getColour("header").toColour());
 		setLayout(null);
 
 		this.numbersComp = new NumbersCalledComponent(0, 0, getWidth(), getHeight());

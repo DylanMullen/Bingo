@@ -3,6 +3,7 @@ package me.dylanmullen.bingo.window.bingo.ui.buttons;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
 import me.dylanmullen.bingo.core.BingoApp;
@@ -29,7 +30,7 @@ public class SidePanelButton extends UIButton
 	{
 		super(text, information);
 		this.image = icon;
-		this.colours = BingoApp.getInstance().getColours().getSet("buttons");
+		this.colours = BingoApp.getInstance().getColourManager().getSet("buttons");
 	}
 
 	protected void setup()
@@ -44,6 +45,7 @@ public class SidePanelButton extends UIButton
 	protected void paintComponent(Graphics g)
 	{
 		Graphics2D g2 = (Graphics2D) g;
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		drawBody(g2);
 		drawContent(g2);
 	}
@@ -63,7 +65,7 @@ public class SidePanelButton extends UIButton
 	private void drawContent(Graphics2D g2)
 	{
 		if(image !=null)
-			g2.drawImage(image, (getWidth() / 20) + 5, getHeight() / 2 - (getHeight() / 4), getHeight(), getHeight(), null);
+			g2.drawImage(image, (getWidth() / 20) + 5, 5 + getHeight() / 2 - (getHeight() / 2), getHeight()-10, getHeight()-10, null);
 		g2.setColor(colours.getColour("sidepanel-active").toColour());
 		drawText(g2, (getWidth() / 20) + 5 + getHeight());
 	}

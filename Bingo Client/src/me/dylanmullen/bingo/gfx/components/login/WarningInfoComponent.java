@@ -61,7 +61,7 @@ public class WarningInfoComponent extends RoundedPanel
 	{
 		this.lines = new ArrayList<>();
 		setFont(new Font("Calibri", Font.PLAIN, 25));
-		updateBackground(BingoApp.getInstance().getColours().getSet("frame").getColour("information"));
+		updateBackground(BingoApp.getInstance().getColourManager().getSet("frame").getColour("information"));
 		construct("Please Login/Register");
 	}
 

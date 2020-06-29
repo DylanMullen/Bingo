@@ -28,7 +28,7 @@ public class Container extends UIPanel
 		getScrollHomePanel().setBounds(0, 0, getWidth(), getHeight());
 		getScrollHomePanel().setBorder(null);
 		
-		setBackground(BingoApp.getInstance().getColours().getSet("frame").getColour("content").toColour());
+		setBackground(BingoApp.getInstance().getColourManager().getSet("frame").getColour("content").toColour());
 	}
 
 	public void removeCurrent()

@@ -1,6 +1,9 @@
 package me.dylanmullen.bingo.window.bingo.panels.sidemenu;
 
+import java.awt.Color;
+
 import me.dylanmullen.bingo.core.BingoApp;
+import me.dylanmullen.bingo.gfx.image.ImageAtlas;
 import me.dylanmullen.bingo.gfx.ui.buttons.ButtonInformation;
 import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
 import me.dylanmullen.bingo.window.bingo.BingoWindow;
@@ -24,6 +27,8 @@ public class SideMenu extends UIPanel
 	private SidePanelButton playButton;
 	private SidePanelButton settingsButton;
 
+	private ImageAtlas uiIcons;
+
 	/**
 	 * This the the side navigation bar for the application.<br>
 	 * This contains the profile panel which displays the information of the player
@@ -40,6 +45,7 @@ public class SideMenu extends UIPanel
 	{
 		super(x, y, width, height);
 		this.bingoWindow = bingoWindow;
+		this.uiIcons = BingoApp.getInstance().getAtlastManager().getAtlas("uiAtlas", 42);
 	}
 
 	@Override
@@ -47,7 +53,7 @@ public class SideMenu extends UIPanel
 	{
 		setBounds(x, y, width, height);
 		setLayout(null);
-		setBackground(BingoApp.getInstance().getColours().getSet("frame").getColour("side-menu").toColour());
+		setBackground(BingoApp.getInstance().getColourManager().getSet("frame").getColour("side-menu").toColour());
 	}
 
 	@Override
@@ -67,22 +73,23 @@ public class SideMenu extends UIPanel
 		ButtonContainer buttons = new ButtonContainer(0, getHeight() / 2, getWidth(), getHeight() / 2)
 				.setButtonHeight(60);
 
-		this.homeButton = new SidePanelButton("Home", null, new ButtonInformation(null, null, () ->
+		Color color = BingoApp.getInstance().getColourManager().getSet("buttons").getColour("sidepanel-active").toColour();
+		this.homeButton = new SidePanelButton("Home", uiIcons.getImage(1, 0, Color.BLACK, color), new ButtonInformation(null, null, () ->
 		{
 			if (!getHomeButton().isActive())
 			{
 				getBingoWindow().showHomePanel();
 			}
 		}));
-		this.playButton = new SidePanelButton("Bingo", null, new ButtonInformation(null, null, () ->
+		this.playButton = new SidePanelButton("Bingo", uiIcons.getImage(0, 0, Color.BLACK, color), new ButtonInformation(null, null, () ->
 		{
 			System.out.println("Not implemented yet");
 		}));
-		this.settingsButton = new SidePanelButton("Settings", null, new ButtonInformation(null, null, () ->
+		this.settingsButton = new SidePanelButton("Settings", uiIcons.getImage(3, 0, Color.BLACK, color), new ButtonInformation(null, null, () ->
 		{
 			System.out.println("Not implemented yet");
 		}));
-		
+
 		buttons.addButton(getHomeButton());
 		buttons.addButton(getPlayButton());
 		buttons.addButton(getSettingsButton());

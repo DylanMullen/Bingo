@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JComponent;
 
@@ -34,7 +36,7 @@ public class ServerInformationComponent extends JComponent implements EventListe
 	public ServerInformationComponent(Vector2I pos, Vector2I dim)
 	{
 		setBounds(pos.getX(), pos.getY(), dim.getX(), dim.getY());
-		this.set = BingoApp.getInstance().getColours().getSet("serverStatus");
+		this.set = BingoApp.getInstance().getColourManager().getSet("serverStatus");
 		EventHandler.getHandler().registerListener(ServerStatusChangeEvent.class, this);
 	}
 
@@ -63,10 +65,18 @@ public class ServerInformationComponent extends JComponent implements EventListe
 		setOpaque(false);
 		setBackground(set.getColour("undefined").toColour());
 
-		this.statusText = "Ping";
 		updateStatus(ServerStatusManager.getManager().getStatus());
 		setFont(FontUtil.getFont(this, statusText, 0, 0));
 		setForeground(set.getColour("undefined").getTextColour());
+
+		addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent arg0)
+			{
+				repaint();
+			}
+		});
 	}
 
 	public void create()
@@ -90,7 +100,7 @@ public class ServerInformationComponent extends JComponent implements EventListe
 			return;
 		} else
 		{
-			g2.fillOval(5, 5, getHeight()-10, getHeight()-10);
+			g2.fillOval(5, 5, getHeight() - 10, getHeight() - 10);
 		}
 	}
 
@@ -99,7 +109,7 @@ public class ServerInformationComponent extends JComponent implements EventListe
 		g2.setColor(getForeground());
 		g2.setFont(getFont());
 		Dimension dim = FontUtil.getFontSize(getFontMetrics(getFont()), statusText, 0, 0);
-		g2.drawString(statusText, getWidth() / 2 - (dim.width / 2), getHeight() / 2 - dim.height / 4);
+		g2.drawString(statusText, getWidth() / 2 - (dim.width / 2), getHeight() / 2 + (dim.height / 4));
 	}
 
 	/**

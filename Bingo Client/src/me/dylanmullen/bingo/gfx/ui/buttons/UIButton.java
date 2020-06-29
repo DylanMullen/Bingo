@@ -75,11 +75,15 @@ public abstract class UIButton extends JComponent
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				if (System.currentTimeMillis() - lastClick >= 500)
+				System.out.println("fired");
+				if (System.currentTimeMillis() - lastClick >= 1000)
 				{
 					getInformation().getListener().invoke();
 					lastClick = System.currentTimeMillis();
-					active = !active;
+					if(isActive())
+						setActive(false);
+					else
+						setActive(true);
 					if (focused)
 					{
 						focused = false;
@@ -198,6 +202,7 @@ public abstract class UIButton extends JComponent
 	
 	public void setActive(boolean active)
 	{
+		System.out.println(active);
 		this.active = active;
 		repaint();
 	}

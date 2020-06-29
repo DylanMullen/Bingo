@@ -28,7 +28,7 @@ public class NumbersCalledComponent extends UIPanel
 	{
 		setBounds(x, y, width, height);
 		setLayout(null);
-		setBackground(BingoApp.getInstance().getColours().getSet("frame").getColour("content").toColour());
+		setBackground(BingoApp.getInstance().getColourManager().getSet("frame").getColour("content").toColour());
 		this.numbers = new NumberGrid[5];
 		this.gridSize = (getHeight() - 24);
 	}

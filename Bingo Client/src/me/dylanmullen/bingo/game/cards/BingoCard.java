@@ -53,7 +53,7 @@ public class BingoCard extends JComponent
 		this.x = x;
 		this.y = y;
 		this.cardInfo = info;
-		this.set = BingoApp.getInstance().getColours().getSet("bingo-card");
+		this.set = BingoApp.getInstance().getColourManager().getSet("bingo-card");
 		createSquares(width, height);
 		updateCardInformation(cardInfo);
 	}

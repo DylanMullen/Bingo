@@ -33,7 +33,7 @@ public class ChatMessage extends JComponent
 	public ChatMessage(int x, int y, int width)
 	{
 		this.lines = new ArrayList<>();
-		this.set = BingoApp.getInstance().getColours().getSet("chat");
+		this.set = BingoApp.getInstance().getColourManager().getSet("chat");
 		setBackground(set.getColour("header").toColour());
 		setForeground(set.getColour("body").toColour());
 		setBounds(x, y, width, 0);

@@ -81,7 +81,7 @@ public class BingoCloud extends UIPanel
 	public void setup()
 	{
 		this.dropletSelectors = new ArrayList<>();
-		setBackground(BingoApp.getInstance().getColours().getSet("frame").getColour("content").toColour());
+		setBackground(BingoApp.getInstance().getColourManager().getSet("frame").getColour("content").toColour());
 		this.grid = new Grid(new GridSettings(getWidth() - 50, getHeight() - indentY - 30, -1, 2, 5), 25, indentY + 15);
 		grid.getGridSettings().setFixedRowHeight(50);
 	}

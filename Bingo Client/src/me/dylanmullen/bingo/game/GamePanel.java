@@ -45,7 +45,7 @@ public class GamePanel extends UIPanel
 	{
 		setBounds(x, y, width, height);
 		setLayout(null);
-		setBackground(BingoApp.getInstance().getColours().getSet("frame").getColour("content").toColour());
+		setBackground(BingoApp.getInstance().getColourManager().getSet("frame").getColour("content").toColour());
 
 		this.headerComponent = new HeaderPanel(0, 0, getWidth(), getHeight() / 6);
 		getHeaderComponent().setup();

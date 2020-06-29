@@ -68,7 +68,7 @@ public class CloudSelector extends JComponent
 	{
 		setBounds(x, y, width, height);
 		setLayout(null);
-		this.set = BingoApp.getInstance().getColours().getSet("droplets");
+		this.set = BingoApp.getInstance().getColourManager().getSet("droplets");
 		setBackground(set.getColour("body-bg").toColour());
 		setForeground(set.getColour("text-colour").toColour());
 	}

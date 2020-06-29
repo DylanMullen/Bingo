@@ -1,5 +1,6 @@
 package me.dylanmullen.bingo.game.home;
 
+import java.awt.Graphics;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +92,7 @@ public class HomePanel extends UIPanel
 	public void setup()
 	{
 		this.gameSelectors = new ArrayList<>();
-		setBackground(BingoApp.getInstance().getColours().getSet("frame").getColour("content").toColour());
+		setBackground(BingoApp.getInstance().getColourManager().getSet("frame").getColour("content").toColour());
 		grid = new Grid(new GridSettings(getWidth() - 100, (int) (getHeight() / 8) * 6 - 50, -1, 3, 15), 50,
 				getHeight() + 25 - (int) (getHeight() / 8) * 6);
 		grid.getGridSettings().setFixedRowHeight(290);
@@ -135,7 +136,6 @@ public class HomePanel extends UIPanel
 	@Override
 	public void create()
 	{
-
 	}
 
 	/**

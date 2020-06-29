@@ -31,7 +31,7 @@ public class PurchaseOverlay extends Overlay
 	public void setup()
 	{
 		Font font = new Font("Calibri", Font.PLAIN, 35);
-		UIColourSet set = BingoApp.getInstance().getColours().getSet("buttons");
+		UIColourSet set = BingoApp.getInstance().getColourManager().getSet("buttons");
 		RoundedButton purchased = new RoundedButton("Purchase", new ButtonInformation(null, null, () ->
 		{
 			PacketHandler.sendPacket(constructPacket(getCard().getUUID()), new PurchaseCallback());

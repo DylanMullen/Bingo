@@ -26,14 +26,14 @@ public class WinnerOverlay extends Overlay
 
 	public WinnerOverlay(int x, int y, int width, int height)
 	{
-		super(BingoApp.getInstance().getColours().getSet("overlays").getColour("winner-body").applyTransparency(200), x,
+		super(BingoApp.getInstance().getColourManager().getSet("overlays").getColour("winner-body").applyTransparency(200), x,
 				y, width, height);
 		setup();
 	}
 
 	public void setup()
 	{
-		this.set = BingoApp.getInstance().getColours().getSet("overlays");
+		this.set = BingoApp.getInstance().getColourManager().getSet("overlays");
 		this.headerFont = new Font("Calibri", Font.PLAIN, 30);
 		this.winnersFont = new Font("Calibri", Font.PLAIN, 25);
 		this.lines = new ArrayList<String>();

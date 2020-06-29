@@ -35,7 +35,7 @@ public class LoginPanel extends UIPanel
 	{
 		setBounds(x, y, width, height);
 		setLayout(null);
-		setBackground(BingoApp.getInstance().getColours().getSet("frame").getColour("content").toColour());
+		setBackground(BingoApp.getInstance().getColourManager().getSet("frame").getColour("content").toColour());
 
 		grid = new Grid(new GridSettings(width, height, 3, 1, 10), 0, 0);
 

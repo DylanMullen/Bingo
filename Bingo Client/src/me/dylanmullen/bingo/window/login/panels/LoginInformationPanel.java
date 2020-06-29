@@ -54,7 +54,7 @@ public class LoginInformationPanel extends UIPanel
 	{
 		Grid grid = new Grid(new GridSettings(width, height, 3, 2, (width / 100)), 0, 0);
 
-		UIColourSet set = BingoApp.getInstance().getColours().getSet("loginInput");
+		UIColourSet set = BingoApp.getInstance().getColourManager().getSet("loginInput");
 		this.username = new UITextField("Username", set);
 		grid.addGridItem(new GridItem(getUsername(), 1, 2), 0, true);
 
@@ -73,7 +73,7 @@ public class LoginInformationPanel extends UIPanel
 			LoginHandler.getHandlerInstance().handleRegisterRequest(getLoginPanel());
 		}));
 
-		set = BingoApp.getInstance().getColours().getSet("buttons");
+		set = BingoApp.getInstance().getColourManager().getSet("buttons");
 		register.updateColours(set.getColour("register-bg"), set.getColour("register-active"));
 		login.updateColours(set.getColour("login-bg"), set.getColour("login-active"));
 

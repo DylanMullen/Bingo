@@ -51,7 +51,7 @@ public class DropletSelector extends JComponent
 		this.pos = pos;
 		this.players = players;
 		this.max = max;
-		this.set = BingoApp.getInstance().getColours().getSet("droplets");
+		this.set = BingoApp.getInstance().getColourManager().getSet("droplets");
 	}
 
 	public void setup()

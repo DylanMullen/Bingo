@@ -7,18 +7,18 @@ public class Config
 
 	private String name;
 	private File file;
-	
-	public Config(String name,File file)
+
+	public Config(String name, File file)
 	{
-		this.name=name;
+		this.name = name;
 		this.file = file;
 	}
-	
+
 	public File getFile()
 	{
 		return file;
 	}
-	
+
 	public String getName()
 	{
 		return name;

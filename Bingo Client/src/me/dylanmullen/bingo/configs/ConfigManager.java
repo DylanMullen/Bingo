@@ -47,7 +47,6 @@ public class ConfigManager
 				return;
 			uiConfigs.add(new Config(file.getName(), file));
 		}
-		System.out.println(uiConfigs.size());
 	}
 
 	/**
