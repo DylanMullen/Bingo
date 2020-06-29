@@ -64,6 +64,8 @@ public class UITextField extends JTextField
 			@Override
 			public void focusLost(FocusEvent e)
 			{
+				if (getText().length() == 0)
+					setText(placeholder);
 				focused = false;
 				updateBackground(set.getColour("primary"));
 				setForeground(set.getColour("text-colour").toColour());
@@ -73,6 +75,10 @@ public class UITextField extends JTextField
 			@Override
 			public void focusGained(FocusEvent e)
 			{
+				if (getText().equals(placeholder))
+				{
+					setText("");
+				}
 				focused = true;
 				updateBackground(set.getColour("hovered"));
 				repaint();
