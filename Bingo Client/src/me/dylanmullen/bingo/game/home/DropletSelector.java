@@ -6,22 +6,23 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.UUID;
 
 import javax.swing.JComponent;
 
 import org.json.simple.JSONObject;
 
+import me.dylanmullen.bingo.core.BingoApp;
 import me.dylanmullen.bingo.events.EventHandler;
 import me.dylanmullen.bingo.events.events.droplet.DropletJoinEvent;
+import me.dylanmullen.bingo.gfx.ui.buttons.ButtonInformation;
+import me.dylanmullen.bingo.gfx.ui.buttons.RoundedButton;
+import me.dylanmullen.bingo.gfx.ui.colour.UIColourSet;
 import me.dylanmullen.bingo.net.PacketHandler;
 import me.dylanmullen.bingo.net.packet.Packet;
 import me.dylanmullen.bingo.net.packet.PacketCallback;
 import me.dylanmullen.bingo.util.FontUtil;
-import me.dylanmullen.bingo.window.ui.RoundedButton;
-import me.dylanmullen.bingo.window.ui.UIColour;
+import me.dylanmullen.bingo.util.Vector2I;
 
 public class DropletSelector extends JComponent
 {
@@ -32,6 +33,8 @@ public class DropletSelector extends JComponent
 	private int players;
 	private int max;
 	private int pos;
+
+	private UIColourSet set;
 
 	private RoundedButton joinButton;
 
@@ -48,38 +51,30 @@ public class DropletSelector extends JComponent
 		this.pos = pos;
 		this.players = players;
 		this.max = max;
+		this.set = BingoApp.getInstance().getColours().getSet("droplets");
 	}
 
 	public void setup()
 	{
 		int width = getWidth() / 4;
-		joinButton = new RoundedButton("Join", getFont(), getWidth() - width, 0, width, getHeight(),
-				UIColour.BINGO_BALL_0);
-		joinButton.create();
-		joinButton.addMouseListener(new MouseAdapter()
-		{
-			boolean clicked = false;
-
-			@Override
-			public void mouseClicked(MouseEvent e)
-			{
-				if (clicked)
-					return;
-				JSONObject message = new JSONObject();
-				message.put("cloudUUID", cloudUUID.toString());
-				message.put("dropletUUID", dropletUUID.toString());
-				Packet packet = PacketHandler.createPacket(6, message);
-				PacketHandler.sendPacket(packet, new PacketCallback()
+		joinButton = new RoundedButton("Join Dropet",
+				new ButtonInformation(new Vector2I(getWidth() - width, 0), new Vector2I(width, getHeight()), () ->
 				{
-					@Override
-					public boolean callback()
+					JSONObject message = new JSONObject();
+					message.put("cloudUUID", cloudUUID.toString());
+					message.put("dropletUUID", dropletUUID.toString());
+					Packet packet = PacketHandler.createPacket(6, message);
+					PacketHandler.sendPacket(packet, new PacketCallback()
 					{
-						EventHandler.getHandler().fire(new DropletJoinEvent(getDropletUUID(), getMessage()));
-						return false;
-					}
-				});
-			}
-		});
+						@Override
+						public boolean callback()
+						{
+							EventHandler.getHandler().fire(new DropletJoinEvent(getDropletUUID(), getMessage()));
+							return false;
+						}
+					});
+				}));
+		joinButton.updateColours(set.getColour("join-bg"), set.getColour("join-active"));
 		add(joinButton);
 	}
 

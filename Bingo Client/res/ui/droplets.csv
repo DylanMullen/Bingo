@@ -1,2 +1,6 @@
-body
-banner
+body-bg,118,58,140
+banner-bg,188,25,200
+text-colour,0,0,0
+price-tag,229,95,0
+join-bg,83,229,39
+join-active,56,229,39

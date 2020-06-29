@@ -51,12 +51,12 @@ public class SidePanelButton extends UIButton
 	private void drawBody(Graphics2D g2)
 	{
 		g2.setColor(colours.getColour("sidepanel-bg").toColour());
-		g2.drawRect(0, 0, getWidth(), getHeight());
+		g2.fillRect(0, 0, getWidth(), getHeight());
 
 		if (isActive())
 		{
 			g2.setColor(colours.getColour("sidepanel-active").toColour());
-			g2.drawRect(0, 0, getWidth() / 20, getHeight());
+			g2.fillRect(0, 0, getWidth() / 20, getHeight());
 		}
 	}
 

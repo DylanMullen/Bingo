@@ -2,11 +2,11 @@ package me.dylanmullen.bingo.game;
 
 import java.util.UUID;
 
+import me.dylanmullen.bingo.core.BingoApp;
 import me.dylanmullen.bingo.game.chat.ChatPanel;
 import me.dylanmullen.bingo.game.components.GameComponent;
 import me.dylanmullen.bingo.game.components.HeaderPanel;
-import me.dylanmullen.bingo.window.ui.Panel;
-import me.dylanmullen.bingo.window.ui.UIColour;
+import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
 
 /**
  * 
@@ -14,7 +14,7 @@ import me.dylanmullen.bingo.window.ui.UIColour;
  * @date 17 Jun 2020
  * @project Bingo Client
  */
-public class GamePanel extends Panel
+public class GamePanel extends UIPanel
 {
 
 	private static final long serialVersionUID = 3683450078479151314L;
@@ -45,7 +45,7 @@ public class GamePanel extends Panel
 	{
 		setBounds(x, y, width, height);
 		setLayout(null);
-		setBackground(UIColour.FRAME_BINGO_BG.toColor());
+		setBackground(BingoApp.getInstance().getColours().getSet("frame").getColour("content").toColour());
 
 		this.headerComponent = new HeaderPanel(0, 0, getWidth(), getHeight() / 6);
 		getHeaderComponent().setup();

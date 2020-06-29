@@ -9,18 +9,18 @@ import javax.imageio.ImageIO;
 
 import org.json.simple.JSONObject;
 
+import me.dylanmullen.bingo.core.BingoApp;
 import me.dylanmullen.bingo.gfx.ui.grid.Grid;
 import me.dylanmullen.bingo.gfx.ui.grid.GridItem;
 import me.dylanmullen.bingo.gfx.ui.grid.GridSettings;
+import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
 import me.dylanmullen.bingo.net.PacketHandler;
 import me.dylanmullen.bingo.net.packet.Packet;
 import me.dylanmullen.bingo.net.packet.PacketCallback;
 import me.dylanmullen.bingo.window.bingo.BingoWindow;
 import me.dylanmullen.bingo.window.ui.ImageComponent;
-import me.dylanmullen.bingo.window.ui.Panel;
-import me.dylanmullen.bingo.window.ui.UIColour;
 
-public class HomePanel extends Panel
+public class HomePanel extends UIPanel
 {
 
 	private static final long serialVersionUID = 1L;
@@ -32,6 +32,7 @@ public class HomePanel extends Panel
 	private Grid grid;
 
 	private int minHeight;
+
 	/**
 	 * This is the Home Panel for the Bingo Application.<br>
 	 * This panel contains all the possible games that a Player can join as well as
@@ -90,7 +91,7 @@ public class HomePanel extends Panel
 	public void setup()
 	{
 		this.gameSelectors = new ArrayList<>();
-		setBackground(UIColour.FRAME_BINGO_BG.toColor());
+		setBackground(BingoApp.getInstance().getColours().getSet("frame").getColour("content").toColour());
 		grid = new Grid(new GridSettings(getWidth() - 100, (int) (getHeight() / 8) * 6 - 50, -1, 3, 15), 50,
 				getHeight() + 25 - (int) (getHeight() / 8) * 6);
 		grid.getGridSettings().setFixedRowHeight(290);

@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import org.json.simple.JSONObject;
 
+import me.dylanmullen.bingo.core.BingoApp;
 import me.dylanmullen.bingo.game.home.DropletSelector;
 import me.dylanmullen.bingo.gfx.ui.colour.UIColour;
 import me.dylanmullen.bingo.gfx.ui.grid.Grid;
@@ -80,7 +81,7 @@ public class BingoCloud extends UIPanel
 	public void setup()
 	{
 		this.dropletSelectors = new ArrayList<>();
-		setBackground(getParent().getBackground());
+		setBackground(BingoApp.getInstance().getColours().getSet("frame").getColour("content").toColour());
 		this.grid = new Grid(new GridSettings(getWidth() - 50, getHeight() - indentY - 30, -1, 2, 5), 25, indentY + 15);
 		grid.getGridSettings().setFixedRowHeight(50);
 	}

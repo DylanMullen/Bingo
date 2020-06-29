@@ -6,6 +6,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import me.dylanmullen.bingo.core.BingoApp;
 import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
 
 public class Container extends UIPanel
@@ -26,6 +27,8 @@ public class Container extends UIPanel
 		getScrollHomePanel().setPreferredSize(new Dimension(getWidth(), getHeight()));
 		getScrollHomePanel().setBounds(0, 0, getWidth(), getHeight());
 		getScrollHomePanel().setBorder(null);
+		
+		setBackground(BingoApp.getInstance().getColours().getSet("frame").getColour("content").toColour());
 	}
 
 	public void removeCurrent()

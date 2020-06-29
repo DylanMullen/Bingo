@@ -15,10 +15,16 @@ import javax.swing.JComponent;
 
 import org.json.simple.JSONObject;
 
-import me.dylanmullen.bingo.game.components.listeners.JoinCloudListener;
+import me.dylanmullen.bingo.core.BingoApp;
+import me.dylanmullen.bingo.gfx.ui.buttons.ButtonInformation;
 import me.dylanmullen.bingo.gfx.ui.buttons.RoundedButton;
-import me.dylanmullen.bingo.gfx.ui.colour.UIColour;
+import me.dylanmullen.bingo.gfx.ui.colour.UIColourSet;
+import me.dylanmullen.bingo.net.PacketHandler;
+import me.dylanmullen.bingo.net.packet.Packet;
+import me.dylanmullen.bingo.net.packet.PacketCallback;
 import me.dylanmullen.bingo.util.FontUtil;
+import me.dylanmullen.bingo.util.Vector2I;
+import me.dylanmullen.bingo.window.bingo.BingoWindow;
 
 /**
  * @author Dylan
@@ -37,6 +43,8 @@ public class CloudSelector extends JComponent
 	private int players;
 	private int instances;
 	private double price;
+
+	private UIColourSet set;
 
 	private RoundedButton joinButton;
 	Font font = new Font("Calibri", Font.PLAIN, 25);
@@ -60,6 +68,9 @@ public class CloudSelector extends JComponent
 	{
 		setBounds(x, y, width, height);
 		setLayout(null);
+		this.set = BingoApp.getInstance().getColours().getSet("droplets");
+		setBackground(set.getColour("body-bg").toColour());
+		setForeground(set.getColour("text-colour").toColour());
 	}
 
 	/**
@@ -87,11 +98,25 @@ public class CloudSelector extends JComponent
 		this.priceBubbleHeight = (int) (((getWidth() - (this.OFFSET * 2)) / 4) - this.GAP * 2);
 		this.buttonHeight = getHeight() / 6;
 
-		this.joinButton = new RoundedButton("Click to Join!", new Font("Calbiri", Font.PLAIN, 20),
-				UIColour.BINGO_BALL_4);
-		getJoinButton().setBounds(this.OFFSET * 2, this.OFFSET + this.GAP * 2 + this.bannerHeight,
-				getWidth() - (this.OFFSET * 4), this.buttonHeight);
-		getJoinButton().addMouseListener(new JoinCloudListener(this.uuid));
+		this.joinButton = new RoundedButton("Join Now!",
+				new ButtonInformation(new Vector2I(this.OFFSET * 2, this.OFFSET + this.GAP * 2 + this.bannerHeight),
+						new Vector2I(getWidth() - (this.OFFSET * 4), this.buttonHeight), () ->
+						{
+							JSONObject message = new JSONObject();
+							message.put("cloudUUID", uuid.toString());
+							Packet packet = PacketHandler.createPacket(18, message);
+							PacketHandler.sendPacket(packet, new PacketCallback()
+							{
+								@Override
+								public boolean callback()
+								{
+									BingoWindow.getWindow().showBingoCloud(uuid, getMessage());
+									return false;
+								}
+							});
+						}));
+
+		getJoinButton().updateColours(set.getColour("join-bg"), set.getColour("join-active"));
 	}
 
 	/**
@@ -122,7 +147,7 @@ public class CloudSelector extends JComponent
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-		g2.setColor(UIColour.BTN_BINGO_ACTIVE.toColor());
+		g2.setColor(getBackground());
 		g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
 
 		drawImageBanner(g2);
@@ -158,11 +183,11 @@ public class CloudSelector extends JComponent
 	 */
 	private void drawPriceBubble(Graphics2D g2)
 	{
-		g2.setColor(UIColour.UI_PRICE_BUBBLE.toColor());
+		g2.setColor(set.getColour("price-tag").toColour());
 		g2.fillOval(getWidth() - (this.OFFSET + this.GAP) - this.priceBubbleHeight, this.OFFSET + this.GAP,
 				this.priceBubbleHeight, this.priceBubbleHeight);
 
-		g2.setColor(UIColour.UI_PRICE_BUBBLE.getTextColour());
+		g2.setColor(getForeground());
 		Font font = new Font("Calibri", Font.PLAIN, 20);
 		g2.setFont(font);
 		String string = (int) price + "";
@@ -180,8 +205,7 @@ public class CloudSelector extends JComponent
 	 */
 	private void drawNameBanner(Graphics2D g2)
 	{
-		Color color = UIColour.FRAME_BINGO_BG_TOP.toColor();
-		g2.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 220));
+		g2.setColor(set.getColour("banner-bg").applyTransparency(220));
 		g2.fillRoundRect(this.OFFSET, this.OFFSET + this.bannerHeight - (int) ((this.bannerHeight / 4) * 1.15),
 				getWidth() - this.OFFSET * 2, (int) ((this.bannerHeight / 4) * 1.15), 15, 15);
 
