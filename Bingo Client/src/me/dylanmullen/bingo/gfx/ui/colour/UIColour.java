@@ -29,6 +29,30 @@ public class UIColour
 		return new Color(toColour().getRed(), toColour().getBlue(), toColour().getGreen(), opacity);
 	}
 
+	public Color darken(double darkenAmount)
+	{
+		double percent = clamp(1.0 - darkenAmount, 1.0, 0.0);
+		return new Color((int) (toColour().getRed() * percent), (int) (toColour().getGreen() * percent),
+				(int) (toColour().getBlue() * percent));
+	}
+
+	public Color lighten(double lightAmount)
+	{
+		double percent = 1.0 + clamp(lightAmount, 1.0, 0.0);
+		return new Color((int) (toColour().getRed() * percent), (int) (toColour().getGreen() * percent),
+				(int) (toColour().getBlue() * percent));
+	}
+
+	private double clamp(double value, double max, double min)
+	{
+		if (value > max)
+			return max;
+		else if (value < min)
+			return min;
+		else
+			return value;
+	}
+
 	public Color toColour()
 	{
 		return colour;
