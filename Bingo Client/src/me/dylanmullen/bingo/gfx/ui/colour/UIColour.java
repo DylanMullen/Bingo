@@ -29,17 +29,17 @@ public class UIColour
 		return new Color(toColour().getRed(), toColour().getBlue(), toColour().getGreen(), opacity);
 	}
 
-	public Color darken(double darkenAmount)
+	public UIColour darken(double darkenAmount)
 	{
 		double percent = clamp(1.0 - darkenAmount, 1.0, 0.0);
-		return new Color((int) (toColour().getRed() * percent), (int) (toColour().getGreen() * percent),
+		return new UIColour("",(int) (toColour().getRed() * percent), (int) (toColour().getGreen() * percent),
 				(int) (toColour().getBlue() * percent));
 	}
 
-	public Color lighten(double lightAmount)
+	public UIColour lighten(double lightAmount)
 	{
 		double percent = 1.0 + clamp(lightAmount, 1.0, 0.0);
-		return new Color((int) (toColour().getRed() * percent), (int) (toColour().getGreen() * percent),
+		return new UIColour("",(int) (toColour().getRed() * percent), (int) (toColour().getGreen() * percent),
 				(int) (toColour().getBlue() * percent));
 	}
 

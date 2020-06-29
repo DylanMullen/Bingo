@@ -2,6 +2,8 @@ package me.dylanmullen.bingo.window.bingo.panels.sidemenu;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import me.dylanmullen.bingo.core.BingoApp;
 import me.dylanmullen.bingo.gfx.image.ImageAtlas;
@@ -51,7 +53,7 @@ public class SideMenu extends UIPanel
 		this.set = BingoApp.getInstance().getColourManager().getSet("frame");
 		this.uiIcons = BingoApp.getInstance().getAtlastManager().getAtlas("uiAtlas", 42);
 		setBackground(set.getColour("side-primary").toColour());
-		setForeground(set.getColour("side-secondary").toColour());
+		setForeground(set.getColour("side-primary").lighten(0.35).toColour());
 	}
 
 	@Override
@@ -107,6 +109,15 @@ public class SideMenu extends UIPanel
 		buttons.populate();
 		buttons.setBackground(getBackground());
 		add(buttons);
+		
+		addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				repaint();
+			}
+		});
 	}
 
 	@Override
@@ -116,7 +127,7 @@ public class SideMenu extends UIPanel
 		g.fillRect(0, 0, getWidth(), (int) (getHeight() / 2));
 		g.setColor(getForeground());
 		g.fillRect(0, getHeight() / 2, getWidth(), getHeight() / 2);
-		g.setColor(new Color(0x5E3E7C));
+		g.setColor(set.getColour("side-primary").lighten(0.15).toColour());
 		g.fillRect(0, getHeight()/2-10, getWidth(), 10);
 		super.paintComponent(g);
 	}

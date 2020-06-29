@@ -36,7 +36,8 @@ public class SidePanelButton extends UIButton
 
 	protected void setup()
 	{
-		updateColours(colours.getColour("sidepanel-bg"), colours.getColour("sidepanel-hover"));
+		updateColours(BingoApp.getInstance().getColourManager().getSet("frame").getColour("side-primary").lighten(0.35),
+				BingoApp.getInstance().getColourManager().getSet("frame").getColour("side-primary").lighten(0.25));
 		setFont(new Font("Calibri", Font.PLAIN, 25));
 		getInformation().setTextPosition(TextPosition.LEFT);
 	}

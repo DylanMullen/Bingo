@@ -1,21 +1,25 @@
 package me.dylanmullen.bingo.window.bingo.panels.sidemenu;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
 
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
+import javax.swing.JComponent;
 
+import me.dylanmullen.bingo.gfx.ui.colour.UIColour;
 import me.dylanmullen.bingo.gfx.ui.grid.Grid;
-import me.dylanmullen.bingo.gfx.ui.grid.GridItem;
-import me.dylanmullen.bingo.gfx.ui.grid.GridSettings;
-import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
+import me.dylanmullen.bingo.util.FontUtil;
+import me.dylanmullen.bingo.util.Vector2I;
 
 /**
  * @author Dylan
  * @date 18 Jun 2020
  * @project Bingo Client
  */
-public class InformationComponent extends UIPanel
+public class InformationComponent extends JComponent
 {
 
 	// TODO remove JLabel and paint it instead.
@@ -23,8 +27,12 @@ public class InformationComponent extends UIPanel
 	private static final long serialVersionUID = 5499959852042006713L;
 
 	private Grid grid;
-	private JLabel header;
-	private JLabel info;
+	private String header;
+	private String info;
+
+	private Dimension textDim;
+	private Polygon headerShape;
+	private Polygon bodyShape;
 
 	/**
 	 * Creates an Information row. <br>
@@ -38,74 +46,73 @@ public class InformationComponent extends UIPanel
 	 * @param width      The width of the panel.
 	 * @param height     The height of the panel.
 	 */
+	public InformationComponent(String headerText, String infoText, Vector2I pos, Vector2I dim, UIColour header,
+			UIColour body)
+	{
+		setBounds(pos.getX(), pos.getY(), pos.getX(), pos.getY());
+		this.header = headerText;
+		this.info = infoText;
+		setBackground(header.toColour());
+		setForeground(body.toColour());
+	}
+
 	public InformationComponent(String headerText, String infoText, int x, int y, int width, int height)
 	{
-		super(x, y, width, height);
+		setBounds(x, y, width, height);
+		this.header = headerText;
+		this.info = infoText;
+		setFont(new Font("Calibri", Font.PLAIN, 15));
+		setBackground(Color.gray);
+		setForeground(Color.white);
+		repaint();
+	}
 
-		this.header = new JLabel(headerText);
-		this.info = new JLabel(infoText);
+	private void setup()
+	{
+		textDim = FontUtil.getFontSize(getFontMetrics(getFont()), header, 0, 0);
+
+		headerShape = new Polygon();
+		headerShape.addPoint(0, 0);
+		headerShape.addPoint(10 + textDim.width + (10), 0);
+		headerShape.addPoint(10 + textDim.width, getHeight());
+		headerShape.addPoint(0, getHeight());
+
+		bodyShape = new Polygon();
+		bodyShape.addPoint(headerShape.xpoints[1], 0);
+		bodyShape.addPoint(getWidth(), 0);
+		bodyShape.addPoint(getWidth(), getHeight());
+		bodyShape.addPoint(headerShape.xpoints[2], getHeight());
 	}
 
 	@Override
-	public void setup()
+	protected void paintComponent(Graphics g)
 	{
-		setOpaque(false);
-		this.grid = new Grid(new GridSettings(width, height, 1, 2, 0), 0, 0);
-		getGrid().addGridItem(new GridItem(getHeader(), 1, 1), 0);
-		getGrid().addGridItem(new GridItem(getInformation(), 1, 1), 0);
-
-		Font headerF = new Font("Calibri", Font.PLAIN, 20);
-		Font font = new Font("Calibri", Font.PLAIN, 16);
-
-		getHeader().setFont(headerF);
-		getInformation().setFont(font);
-
-		getHeader().setOpaque(true);
-		getInformation().setOpaque(true);
-
-		getHeader().setHorizontalAlignment(SwingConstants.CENTER);
-		getHeader().setVerticalAlignment(SwingConstants.CENTER);
-		getInformation().setHorizontalAlignment(SwingConstants.CENTER);
-		getInformation().setVerticalAlignment(SwingConstants.CENTER);
-
-	}
-
-	@Override
-	public void create()
-	{
+		Graphics2D g2 = (Graphics2D) g;
 		setup();
-		add(getHeader());
-		add(getInformation());
+		drawBody(g2);
+		drawHeader(g2);
 	}
 
-	/**
-	 * Returns the Grid component which houses the labels.
-	 * 
-	 * @return {@link #grid}
-	 */
-	private Grid getGrid()
+	private void drawHeader(Graphics2D g2)
 	{
-		return this.grid;
+		g2.setColor(getBackground());
+		g2.fillPolygon(headerShape);
+		g2.setColor(Color.WHITE);
+		g2.drawString(header, 5, getHeight() / 2 + (textDim.height / 4));
 	}
 
-	/**
-	 * Returns the JLabel Header which houses the header text for the row.
-	 * 
-	 * @return {@link #header}
-	 */
-	public JLabel getHeader()
+	private void drawBody(Graphics2D g2)
 	{
-		return this.header;
+		g2.setColor(getForeground());
+		g2.fill(bodyShape);
+		g2.setColor(Color.black);
+		g2.drawString(info, headerShape.xpoints[1] + 5, getHeight() / 2 + textDim.height / 4);
 	}
 
-	/**
-	 * Returns the JLabel Information which houses the information text for the row.
-	 * 
-	 * @return {@link #info}
-	 */
-	public JLabel getInformation()
+	public void setText(String text)
 	{
-		return this.info;
+		this.info = text;
+		repaint();
 	}
 
 }
