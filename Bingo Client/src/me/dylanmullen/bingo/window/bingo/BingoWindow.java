@@ -100,7 +100,7 @@ public class BingoWindow extends Window
 					(getWidth() / 4 * 3) - ((Integer) UIManager.get("ScrollBar.width")).intValue(),
 					getHeight() - topMenu.getHeight());
 		}
-
+		getSideBar().getHomeButton().setActive(true);
 		container.setScrollCurrentPanel(getHomePanel());
 	}
 

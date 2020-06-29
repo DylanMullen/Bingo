@@ -31,12 +31,12 @@ public class SidePanelButton extends UIButton
 		super(text, information);
 		this.image = icon;
 		this.colours = BingoApp.getInstance().getColourManager().getSet("buttons");
+		setup();
 	}
 
 	protected void setup()
 	{
-		setBackground(
-				(isActive() ? colours.getColour("sidepanel-active") : colours.getColour("sidepanel-bg")).toColour());
+		updateColours(colours.getColour("sidepanel-bg"), colours.getColour("sidepanel-hover"));
 		setFont(new Font("Calibri", Font.PLAIN, 25));
 		getInformation().setTextPosition(TextPosition.LEFT);
 	}
@@ -52,7 +52,7 @@ public class SidePanelButton extends UIButton
 
 	private void drawBody(Graphics2D g2)
 	{
-		g2.setColor(colours.getColour("sidepanel-bg").toColour());
+		g2.setColor((isActive() ? getForeground() : getBackground()));
 		g2.fillRect(0, 0, getWidth(), getHeight());
 
 		if (isActive())
@@ -64,8 +64,9 @@ public class SidePanelButton extends UIButton
 
 	private void drawContent(Graphics2D g2)
 	{
-		if(image !=null)
-			g2.drawImage(image, (getWidth() / 20) + 5, 5 + getHeight() / 2 - (getHeight() / 2), getHeight()-10, getHeight()-10, null);
+		if (image != null)
+			g2.drawImage(image, (getWidth() / 20) + 5, 5 + getHeight() / 2 - (getHeight() / 2), getHeight() - 10,
+					getHeight() - 10, null);
 		g2.setColor(colours.getColour("sidepanel-active").toColour());
 		drawText(g2, (getWidth() / 20) + 5 + getHeight());
 	}

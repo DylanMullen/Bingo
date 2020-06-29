@@ -78,15 +78,6 @@ public class ButtonContainer extends JComponent
 			add(btn);
 		}
 	}
-
-	@Override
-	protected void paintComponent(Graphics g)
-	{
-		super.paintComponent(g);
-		g.setColor(getBackground());
-		g.fillRect(0, 0, getWidth(), getHeight());
-	}
-
 	/**
 	 * Sets the button height for each of the buttons.
 	 * 

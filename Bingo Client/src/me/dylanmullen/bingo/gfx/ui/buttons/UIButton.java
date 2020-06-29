@@ -78,12 +78,12 @@ public abstract class UIButton extends JComponent
 				System.out.println("fired");
 				if (System.currentTimeMillis() - lastClick >= 1000)
 				{
-					getInformation().getListener().invoke();
-					lastClick = System.currentTimeMillis();
 					if(isActive())
 						setActive(false);
 					else
 						setActive(true);
+					getInformation().getListener().invoke();
+					lastClick = System.currentTimeMillis();
 					if (focused)
 					{
 						focused = false;
@@ -158,6 +158,7 @@ public abstract class UIButton extends JComponent
 		getInformation().setMainColour(main);
 		getInformation().setHoverColour(hover);
 		setBackground(getInformation().getMainColour().toColour());
+		setForeground(getInformation().getHoverColour().toColour());
 	}
 
 	protected void drawText(Graphics2D g2, int x)
@@ -200,9 +201,13 @@ public abstract class UIButton extends JComponent
 		return active;
 	}
 	
+	public boolean isHovered()
+	{
+		return hovered;
+	}
+	
 	public void setActive(boolean active)
 	{
-		System.out.println(active);
 		this.active = active;
 		repaint();
 	}
