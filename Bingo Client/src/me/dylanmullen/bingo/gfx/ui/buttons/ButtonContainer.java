@@ -1,12 +1,10 @@
-package me.dylanmullen.bingo.window.bingo.ui.buttons;
+package me.dylanmullen.bingo.gfx.ui.buttons;
 
-import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JComponent;
 
-import me.dylanmullen.bingo.gfx.ui.buttons.UIButton;
 import me.dylanmullen.bingo.util.Vector2I;
 
 /**

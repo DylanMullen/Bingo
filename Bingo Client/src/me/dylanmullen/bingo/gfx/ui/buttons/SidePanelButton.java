@@ -1,4 +1,4 @@
-package me.dylanmullen.bingo.window.bingo.ui.buttons;
+package me.dylanmullen.bingo.gfx.ui.buttons;
 
 import java.awt.Font;
 import java.awt.Graphics;
@@ -7,9 +7,7 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
 import me.dylanmullen.bingo.core.BingoApp;
-import me.dylanmullen.bingo.gfx.ui.buttons.ButtonInformation;
 import me.dylanmullen.bingo.gfx.ui.buttons.ButtonInformation.TextPosition;
-import me.dylanmullen.bingo.gfx.ui.buttons.UIButton;
 import me.dylanmullen.bingo.gfx.ui.colour.UIColourSet;
 
 /**
@@ -19,7 +17,6 @@ import me.dylanmullen.bingo.gfx.ui.colour.UIColourSet;
  */
 public class SidePanelButton extends UIButton
 {
-	// TODO
 
 	private static final long serialVersionUID = -1495099977168142089L;
 

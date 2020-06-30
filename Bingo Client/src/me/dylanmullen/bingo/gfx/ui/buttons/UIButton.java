@@ -158,6 +158,7 @@ public abstract class UIButton extends JComponent
 		getInformation().setMainColour(main);
 		getInformation().setHoverColour(hover);
 		setBackground(getInformation().getMainColour().toColour());
+		setForeground(getInformation().getHoverColour().toColour());
 		repaint();
 	}
 

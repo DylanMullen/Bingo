@@ -7,12 +7,12 @@ import java.awt.event.MouseEvent;
 
 import me.dylanmullen.bingo.core.BingoApp;
 import me.dylanmullen.bingo.gfx.image.ImageAtlas;
+import me.dylanmullen.bingo.gfx.ui.buttons.ButtonContainer;
 import me.dylanmullen.bingo.gfx.ui.buttons.ButtonInformation;
+import me.dylanmullen.bingo.gfx.ui.buttons.SidePanelButton;
 import me.dylanmullen.bingo.gfx.ui.colour.UIColourSet;
 import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
 import me.dylanmullen.bingo.window.bingo.BingoWindow;
-import me.dylanmullen.bingo.window.bingo.ui.buttons.ButtonContainer;
-import me.dylanmullen.bingo.window.bingo.ui.buttons.SidePanelButton;
 
 /**
  * @author Dylan
