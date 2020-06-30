@@ -67,7 +67,8 @@ public class SideMenu extends UIPanel
 	@Override
 	public void create()
 	{
-		this.profilePanel = new ProfilePanel(30, 30, getWidth() - 60, (int) (getHeight() / 2.75));
+		this.profilePanel = new ProfilePanel(set.getColour("profile"), 30, 30, getWidth() - 60,
+				(int) (getHeight() / 2.75));
 		getProfilePanel().setup();
 		add(getProfilePanel());
 		createButtons();
@@ -109,7 +110,7 @@ public class SideMenu extends UIPanel
 		buttons.populate();
 		buttons.setBackground(getBackground());
 		add(buttons);
-		
+
 		addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -128,7 +129,7 @@ public class SideMenu extends UIPanel
 		g.setColor(getForeground());
 		g.fillRect(0, getHeight() / 2, getWidth(), getHeight() / 2);
 		g.setColor(set.getColour("side-primary").lighten(0.15).toColour());
-		g.fillRect(0, getHeight()/2-10, getWidth(), 10);
+		g.fillRect(0, getHeight() / 2 - 10, getWidth(), 10);
 		super.paintComponent(g);
 	}
 

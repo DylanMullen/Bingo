@@ -31,6 +31,7 @@ public class InformationComponent extends JComponent
 	private String info;
 
 	private Dimension textDim;
+	private Color textColour;
 	private Polygon headerShape;
 	private Polygon bodyShape;
 
@@ -46,24 +47,27 @@ public class InformationComponent extends JComponent
 	 * @param width      The width of the panel.
 	 * @param height     The height of the panel.
 	 */
-	public InformationComponent(String headerText, String infoText, Vector2I pos, Vector2I dim, UIColour header,
-			UIColour body)
+	public InformationComponent(String headerText, String infoText, Vector2I pos, Vector2I dim, UIColour colour)
 	{
 		setBounds(pos.getX(), pos.getY(), pos.getX(), pos.getY());
 		this.header = headerText;
 		this.info = infoText;
-		setBackground(header.toColour());
-		setForeground(body.toColour());
+		this.textColour = colour.getTextColour();
+		setBackground(colour.darken(0.15).toColour());
+		setForeground(colour.toColour());
+		setFont(new Font("Calibri", Font.PLAIN, 15));
+		repaint();
 	}
 
-	public InformationComponent(String headerText, String infoText, int x, int y, int width, int height)
+	public InformationComponent(String headerText, String infoText, UIColour colour)
 	{
-		setBounds(x, y, width, height);
+		setBounds(0, 0, 0, 0);
 		this.header = headerText;
 		this.info = infoText;
+		this.textColour = colour.getTextColour();
+		setBackground(colour.darken(0.15).toColour());
+		setForeground(colour.toColour());
 		setFont(new Font("Calibri", Font.PLAIN, 15));
-		setBackground(Color.gray);
-		setForeground(Color.white);
 		repaint();
 	}
 
@@ -97,7 +101,7 @@ public class InformationComponent extends JComponent
 	{
 		g2.setColor(getBackground());
 		g2.fillPolygon(headerShape);
-		g2.setColor(Color.WHITE);
+		g2.setColor(textColour);
 		g2.drawString(header, 5, getHeight() / 2 + (textDim.height / 4));
 	}
 
@@ -105,7 +109,7 @@ public class InformationComponent extends JComponent
 	{
 		g2.setColor(getForeground());
 		g2.fill(bodyShape);
-		g2.setColor(Color.black);
+		g2.setColor(textColour);
 		g2.drawString(info, headerShape.xpoints[1] + 5, getHeight() / 2 + textDim.height / 4);
 	}
 

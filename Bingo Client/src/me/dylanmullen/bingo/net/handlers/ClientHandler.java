@@ -60,8 +60,8 @@ public class ClientHandler
 	 */
 	private void createRunnables()
 	{
-//		this.pingTask = new PingTask(5);
-//		this.pingTask.start();
+		this.pingTask = new PingTask(5);
+		this.pingTask.start();
 	}
 
 	/**

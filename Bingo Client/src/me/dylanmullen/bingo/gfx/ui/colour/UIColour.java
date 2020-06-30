@@ -13,6 +13,7 @@ public class UIColour
 	{
 		this.colourName = name;
 		this.colour = new Color(r, g, b);
+		setupTextColour();
 	}
 
 	public void setupTextColour()
@@ -32,14 +33,14 @@ public class UIColour
 	public UIColour darken(double darkenAmount)
 	{
 		double percent = clamp(1.0 - darkenAmount, 1.0, 0.0);
-		return new UIColour("",(int) (toColour().getRed() * percent), (int) (toColour().getGreen() * percent),
+		return new UIColour("", (int) (toColour().getRed() * percent), (int) (toColour().getGreen() * percent),
 				(int) (toColour().getBlue() * percent));
 	}
 
 	public UIColour lighten(double lightAmount)
 	{
 		double percent = 1.0 + clamp(lightAmount, 1.0, 0.0);
-		return new UIColour("",(int) (toColour().getRed() * percent), (int) (toColour().getGreen() * percent),
+		return new UIColour("", (int) (toColour().getRed() * percent), (int) (toColour().getGreen() * percent),
 				(int) (toColour().getBlue() * percent));
 	}
 

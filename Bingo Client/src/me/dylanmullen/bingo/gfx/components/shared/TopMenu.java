@@ -1,5 +1,6 @@
 package me.dylanmullen.bingo.gfx.components.shared;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -8,16 +9,18 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JFrame;
 
 import me.dylanmullen.bingo.core.BingoApp;
-import me.dylanmullen.bingo.gfx.components.login.ServerInformationComponent;
-import me.dylanmullen.bingo.gfx.ui.buttons.Button;
 import me.dylanmullen.bingo.gfx.ui.buttons.ButtonInformation;
+import me.dylanmullen.bingo.gfx.ui.buttons.ImageButton;
+import me.dylanmullen.bingo.gfx.ui.buttons.ImageButton.ImageButtonType;
 import me.dylanmullen.bingo.gfx.ui.buttons.UIButton;
+import me.dylanmullen.bingo.gfx.ui.colour.UIColour;
 import me.dylanmullen.bingo.gfx.ui.colour.UIColourSet;
 import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
 import me.dylanmullen.bingo.util.Vector2I;
 
 public class TopMenu extends UIPanel
 {
+
 	private static final long serialVersionUID = 284079253028974329L;
 	private TopMenuListener listener;
 	private UIColourSet set;
@@ -37,13 +40,16 @@ public class TopMenu extends UIPanel
 		setBounds(x, y, width, height);
 		setLayout(null);
 		setBackground(set.getColour("top-menu").toColour());
-
-		close = new Button("Close", new ButtonInformation(new Vector2I(getWidth() - (getWidth() / 8), 0),
-				new Vector2I(getWidth() / 8, getHeight()), () ->
-				{
-					System.exit(0);
-				}));
-
+		UIColour colour = BingoApp.getInstance().getColourManager().getSet("buttons").getColour("close");
+		close = new ImageButton(
+				BingoApp.getInstance().getAtlastManager().getAtlas("uiAtlas", 42).getImage(0, 1, Color.BLACK,
+						colour.toColour()),
+				ImageButtonType.CENTER, new ButtonInformation(new Vector2I(getWidth() - (getWidth() / 8), 0),
+						new Vector2I(getWidth() / 8, getHeight()), () ->
+						{
+							System.exit(0);
+						}));
+		close.updateColours(colour.darken(0.15), colour.darken(0.25));
 		ServerInformationComponent si = new ServerInformationComponent(
 				new Vector2I((close.getX() - 10) - (width / 8), 0), new Vector2I(getWidth() / 8, getHeight()));
 		si.create();

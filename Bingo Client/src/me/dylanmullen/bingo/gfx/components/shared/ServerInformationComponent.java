@@ -1,4 +1,4 @@
-package me.dylanmullen.bingo.gfx.components.login;
+package me.dylanmullen.bingo.gfx.components.shared;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -14,6 +14,7 @@ import me.dylanmullen.bingo.events.Event;
 import me.dylanmullen.bingo.events.EventHandler;
 import me.dylanmullen.bingo.events.EventListener;
 import me.dylanmullen.bingo.events.events.ServerStatusChangeEvent;
+import me.dylanmullen.bingo.gfx.ui.colour.UIColour;
 import me.dylanmullen.bingo.gfx.ui.colour.UIColourSet;
 import me.dylanmullen.bingo.net.ServerStatusManager;
 import me.dylanmullen.bingo.net.ServerStatusManager.ServerStatus;
@@ -32,6 +33,7 @@ public class ServerInformationComponent extends JComponent implements EventListe
 
 	private String statusText;
 	private UIColourSet set;
+	private UIColour currentColour;
 
 	public ServerInformationComponent(Vector2I pos, Vector2I dim)
 	{
@@ -66,7 +68,7 @@ public class ServerInformationComponent extends JComponent implements EventListe
 		setBackground(set.getColour("undefined").toColour());
 
 		updateStatus(ServerStatusManager.getManager().getStatus());
-		setFont(FontUtil.getFont(this, statusText, 0, 0));
+		setFont(FontUtil.getFont(statusText, this, new Vector2I(getWidth() - 10, getHeight())));
 		setForeground(set.getColour("undefined").getTextColour());
 
 		addMouseListener(new MouseAdapter()
@@ -95,7 +97,7 @@ public class ServerInformationComponent extends JComponent implements EventListe
 		// indicator.
 		if (getHeight() > 50)
 		{
-			g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
+			g2.fillRoundRect(0, 7, getWidth(), getHeight()-14, 15, 15);
 			drawText(g2);
 			return;
 		} else
@@ -121,7 +123,6 @@ public class ServerInformationComponent extends JComponent implements EventListe
 	 * 
 	 * @param status
 	 */
-	@SuppressWarnings("deprecation")
 	public void updateStatus(ServerStatus status)
 	{
 		if (status == null)
@@ -131,7 +132,7 @@ public class ServerInformationComponent extends JComponent implements EventListe
 		}
 
 		statusText = status.getMesssage();
-		setFont(FontUtil.getFont(this, statusText, 0, 0));
+		setFont(FontUtil.getFont(statusText, this, new Vector2I(getWidth() - 10, getHeight())));
 
 		switch (status)
 		{
