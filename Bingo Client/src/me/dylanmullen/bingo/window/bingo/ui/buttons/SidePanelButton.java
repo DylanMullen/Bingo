@@ -38,7 +38,7 @@ public class SidePanelButton extends UIButton
 	{
 		updateColours(BingoApp.getInstance().getColourManager().getSet("frame").getColour("side-primary").lighten(0.35),
 				BingoApp.getInstance().getColourManager().getSet("frame").getColour("side-primary").lighten(0.25));
-		setFont(new Font("Calibri", Font.PLAIN, 25));
+		setFont(new Font("Calibri", Font.BOLD, 25));
 		getInformation().setTextPosition(TextPosition.LEFT);
 	}
 
@@ -68,8 +68,7 @@ public class SidePanelButton extends UIButton
 		if (image != null)
 			g2.drawImage(image, (getWidth() / 20) + 5, 5 + getHeight() / 2 - (getHeight() / 2), getHeight() - 10,
 					getHeight() - 10, null);
-		g2.setColor(colours.getColour("sidepanel-active").toColour());
-		drawText(g2, (getWidth() / 20) + 5 + getHeight());
+		drawText(g2, (getWidth() / 20) + 5 + getHeight(), colours.getColour("sidepanel-active").toColour());
 	}
 
 }

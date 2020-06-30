@@ -1,5 +1,6 @@
 package me.dylanmullen.bingo.gfx.ui.buttons;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.event.FocusAdapter;
@@ -75,10 +76,9 @@ public abstract class UIButton extends JComponent
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				System.out.println("fired");
 				if (System.currentTimeMillis() - lastClick >= 1000)
 				{
-					if(isActive())
+					if (isActive())
 						setActive(false);
 					else
 						setActive(true);
@@ -158,13 +158,14 @@ public abstract class UIButton extends JComponent
 		getInformation().setMainColour(main);
 		getInformation().setHoverColour(hover);
 		setBackground(getInformation().getMainColour().toColour());
-		setForeground(getInformation().getHoverColour().toColour());
+		repaint();
 	}
 
-	protected void drawText(Graphics2D g2, int x)
+	protected void drawText(Graphics2D g2, int x, Color textColor)
 	{
 		Dimension textDim = FontUtil.getFontSize(getFontMetrics(getInformation().getFont()), text, 0, 0);
 		g2.setFont(getInformation().getFont());
+		g2.setColor(textColor);
 		switch (information.getTextPosition())
 		{
 			case CENTER:
@@ -200,12 +201,12 @@ public abstract class UIButton extends JComponent
 	{
 		return active;
 	}
-	
+
 	public boolean isHovered()
 	{
 		return hovered;
 	}
-	
+
 	public void setActive(boolean active)
 	{
 		this.active = active;
