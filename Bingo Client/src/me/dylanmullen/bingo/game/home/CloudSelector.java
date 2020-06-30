@@ -1,5 +1,6 @@
 package me.dylanmullen.bingo.game.home;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -40,14 +41,14 @@ public class CloudSelector extends JComponent
 
 	private UUID uuid;
 	private String name;
-	private int players;
-	private int instances;
 	private double price;
 
 	private UIColourSet set;
+	private Color textColor;
 
 	private RoundedButton joinButton;
-	Font font = new Font("Calibri", Font.PLAIN, 25);
+	private Font textFont;
+	private Font priceFont;
 
 	private int bannerHeight;
 	private int priceBubbleHeight;
@@ -70,7 +71,8 @@ public class CloudSelector extends JComponent
 		setLayout(null);
 		this.set = BingoApp.getInstance().getColourManager().getSet("droplets");
 		setBackground(set.getColour("body-bg").toColour());
-		setForeground(set.getColour("text-colour").toColour());
+		setForeground(set.getColour("body-bg").darken(0.35).toColour());
+		this.textColor = set.getColour("price-tag").getTextColour();
 	}
 
 	/**
@@ -84,19 +86,29 @@ public class CloudSelector extends JComponent
 	{
 		this.uuid = uuid;
 		this.name = (String) object.get("cloudName");
-		this.instances = ((Number) object.get("dropletInstances")).intValue();
-		this.players = ((Number) object.get("totalPlayers")).intValue();
 		this.price = ((Number) object.get("ticketPrice")).doubleValue();
+	}
+
+	public void setupInformation(UUID uuid)
+	{
+		this.uuid = uuid;
+		this.name = "Charlies Angels";
+		this.price = 0.15;
 	}
 
 	/**
 	 * Sets up the contents of the Game Selector.
 	 */
+	@SuppressWarnings("unchecked")
 	private void setup()
 	{
-		this.bannerHeight = (int) (((getHeight() - (this.OFFSET * 2)) / 3) * 1.5);
-		this.priceBubbleHeight = (int) (((getWidth() - (this.OFFSET * 2)) / 4) - this.GAP * 2);
-		this.buttonHeight = getHeight() / 6;
+		this.bannerHeight = (int) (((getHeight() - (this.OFFSET * 2)) / 3) * 2);
+		this.priceBubbleHeight = (int) (((getWidth() - (this.OFFSET * 2)) / 4.5) - this.GAP * 2);
+		this.buttonHeight = getHeight() - bannerHeight - (this.OFFSET * 3);
+
+		this.textFont = new Font("Calibri", Font.PLAIN, 25);
+		this.priceFont = FontUtil.getFont((int) (price * 100) + "", this,
+				new Vector2I(this.priceBubbleHeight - 15, this.priceBubbleHeight - 15));
 
 		this.joinButton = new RoundedButton("Join Now!",
 				new ButtonInformation(new Vector2I(this.OFFSET * 2, this.OFFSET + this.GAP * 2 + this.bannerHeight),
@@ -116,7 +128,7 @@ public class CloudSelector extends JComponent
 							});
 						}));
 
-		getJoinButton().updateColours(set.getColour("join-bg"), set.getColour("join-active"));
+		getJoinButton().updateColours(set.getColour("join-bg"), set.getColour("join-bg").darken(0.05));
 	}
 
 	/**
@@ -147,13 +159,21 @@ public class CloudSelector extends JComponent
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-		g2.setColor(getBackground());
-		g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
-
+		drawBody(g2);
 		drawImageBanner(g2);
 		drawNameBanner(g2);
 		drawPriceBubble(g2);
 		super.paintComponent(g);
+	}
+
+	private void drawBody(Graphics2D g2)
+	{
+		g2.setColor(getBackground());
+		g2.fillRoundRect(2, 2, getWidth() - 4, getHeight() - 4, 15, 15);
+		g2.setColor(getForeground());
+		g2.setStroke(new BasicStroke(2));
+		g2.drawRoundRect(2, 2, getWidth() - 4, getHeight() - 4, 15, 15);
+		g2.setStroke(new BasicStroke());
 	}
 
 	/**
@@ -187,11 +207,10 @@ public class CloudSelector extends JComponent
 		g2.fillOval(getWidth() - (this.OFFSET + this.GAP) - this.priceBubbleHeight, this.OFFSET + this.GAP,
 				this.priceBubbleHeight, this.priceBubbleHeight);
 
-		g2.setColor(getForeground());
-		Font font = new Font("Calibri", Font.PLAIN, 20);
-		g2.setFont(font);
-		String string = (int) price + "";
-		Dimension dim = FontUtil.getFontSize(getFontMetrics(font), string, 0, 0);
+		g2.setColor(textColor);
+		g2.setFont(priceFont);
+		String string = (int) (price * 100) + "";
+		Dimension dim = FontUtil.getFontSize(getFontMetrics(priceFont), string, 0, 0);
 
 		int fontSize = getWidth() - (this.OFFSET + this.GAP) - (this.priceBubbleHeight / 2);
 		g2.drawString(string, fontSize - (dim.width / 2),
@@ -205,14 +224,14 @@ public class CloudSelector extends JComponent
 	 */
 	private void drawNameBanner(Graphics2D g2)
 	{
-		g2.setColor(set.getColour("banner-bg").applyTransparency(220));
+		g2.setColor(set.getColour("banner-bg").applyTransparency(200));
 		g2.fillRoundRect(this.OFFSET, this.OFFSET + this.bannerHeight - (int) ((this.bannerHeight / 4) * 1.15),
 				getWidth() - this.OFFSET * 2, (int) ((this.bannerHeight / 4) * 1.15), 15, 15);
 
-		Dimension dim = FontUtil.getFontSize(getFontMetrics(font), name, 0, 0);
+		Dimension dim = FontUtil.getFontSize(getFontMetrics(textFont), name, 0, 0);
 
 		g2.setColor(Color.WHITE);
-		g2.setFont(font);
+		g2.setFont(textFont);
 		g2.drawString(name, (getWidth()) / 2 - (dim.width / 2),
 				this.OFFSET + this.bannerHeight - ((int) ((this.bannerHeight / 4) * 1.15) / 2) + (dim.height / 4));
 	}

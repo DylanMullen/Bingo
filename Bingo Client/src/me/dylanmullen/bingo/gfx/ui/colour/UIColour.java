@@ -27,7 +27,7 @@ public class UIColour
 
 	public Color applyTransparency(int opacity)
 	{
-		return new Color(toColour().getRed(), toColour().getBlue(), toColour().getGreen(), opacity);
+		return new Color(toColour().getRed(), toColour().getGreen(), toColour().getBlue(), opacity);
 	}
 
 	public UIColour darken(double darkenAmount)

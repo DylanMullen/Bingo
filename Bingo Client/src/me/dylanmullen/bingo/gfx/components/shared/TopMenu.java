@@ -51,7 +51,7 @@ public class TopMenu extends UIPanel
 						}));
 		close.updateColours(colour.darken(0.15), colour.darken(0.25));
 		ServerInformationComponent si = new ServerInformationComponent(
-				new Vector2I((close.getX() - 10) - (width / 8), 0), new Vector2I(getWidth() / 8, getHeight()));
+				new Vector2I((close.getX() - getHeight() - 5), 0), new Vector2I(getHeight(), getHeight()));
 		si.create();
 		add(si);
 		addMouseListener(listener);

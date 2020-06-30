@@ -65,5 +65,10 @@ public class GridSettings
 	{
 		this.fixedRowHeight = fixedRowHeight;
 	}
+	
+	public void setWidth(int width)
+	{
+		this.width = width;
+	}
 
 }

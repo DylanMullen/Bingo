@@ -110,6 +110,12 @@ public class Grid
 			updateBounds(i, valueSize);
 		}
 	}
+	
+	public void updateWidth(int width)
+	{
+		getGridSettings().setWidth(width);
+		updatePositions();
+	}
 
 	/**
 	 * Returns a list of all the Grid Items that the Grid System will need to

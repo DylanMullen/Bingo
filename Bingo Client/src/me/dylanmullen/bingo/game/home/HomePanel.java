@@ -1,12 +1,12 @@
 package me.dylanmullen.bingo.game.home;
 
-import java.awt.Graphics;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import javax.imageio.ImageIO;
+import javax.swing.UIManager;
 
 import org.json.simple.JSONObject;
 
@@ -58,6 +58,13 @@ public class HomePanel extends UIPanel
 
 	private void sendCloudRetrivalPacket()
 	{
+		for (int i = 0; i < 15; i++)
+		{
+			CloudSelector selector = new CloudSelector(0, 0, width, 0);
+			selector.setupInformation(UUID.randomUUID());
+			gameSelectors.add(selector);
+		}
+		updateAllSelectors();
 		Packet packet = PacketHandler.createPacket(17, new JSONObject());
 		PacketHandler.sendPacket(packet, new PacketCallback()
 		{
@@ -95,7 +102,7 @@ public class HomePanel extends UIPanel
 		setBackground(BingoApp.getInstance().getColourManager().getSet("frame").getColour("content").toColour());
 		grid = new Grid(new GridSettings(getWidth() - 100, (int) (getHeight() / 8) * 6 - 50, -1, 3, 15), 50,
 				getHeight() + 25 - (int) (getHeight() / 8) * 6);
-		grid.getGridSettings().setFixedRowHeight(290);
+		grid.getGridSettings().setFixedRowHeight(200);
 
 		ImageComponent ic = new ImageComponent(15, 15, getWidth() - 30, (int) (getHeight() / 8) * 2);
 		try
@@ -129,8 +136,16 @@ public class HomePanel extends UIPanel
 			if (i == gameSelectors.size() - 1)
 				yPos = gs.getY() + gs.getHeight() + 25;
 		}
+
 		if (yPos != -1 && yPos >= minHeight)
-			setBounds(0, 0, getWidth(), yPos);
+			resize(yPos);
+	}
+
+	public void resize(int height)
+	{
+		setBounds(0, 0, getWidth() - ((Integer) UIManager.get("ScrollBar.width")).intValue(), height);
+		grid.updateWidth(getWidth() - 100);
+		repaint();
 	}
 
 	@Override
