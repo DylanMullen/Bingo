@@ -6,7 +6,7 @@ import me.dylanmullen.bingo.core.BingoApp;
 import me.dylanmullen.bingo.events.EventHandler;
 import me.dylanmullen.bingo.events.events.user.UserInformationChangeEvent;
 import me.dylanmullen.bingo.game.UserInformation;
-import me.dylanmullen.bingo.gfx.components.login.WarningInfoComponent;
+import me.dylanmullen.bingo.gfx.components.login.InformationPanel;
 import me.dylanmullen.bingo.net.packet.PacketCallback;
 
 /**
@@ -17,7 +17,7 @@ import me.dylanmullen.bingo.net.packet.PacketCallback;
 public class LoginCallback extends PacketCallback
 {
 
-	private WarningInfoComponent warningComponent;
+	private InformationPanel warningComponent;
 
 	/**
 	 * A callback to the Login Packet. <br>
@@ -26,7 +26,7 @@ public class LoginCallback extends PacketCallback
 	 * 
 	 * @param warning
 	 */
-	public LoginCallback(WarningInfoComponent warning)
+	public LoginCallback(InformationPanel warning)
 	{
 		this.warningComponent = warning;
 	}

@@ -1,16 +1,15 @@
 package me.dylanmullen.bingo.game.home;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import javax.imageio.ImageIO;
 import javax.swing.UIManager;
 
 import org.json.simple.JSONObject;
 
 import me.dylanmullen.bingo.core.BingoApp;
+import me.dylanmullen.bingo.gfx.components.login.InformationPanel;
 import me.dylanmullen.bingo.gfx.ui.grid.Grid;
 import me.dylanmullen.bingo.gfx.ui.grid.GridItem;
 import me.dylanmullen.bingo.gfx.ui.grid.GridSettings;
@@ -19,7 +18,6 @@ import me.dylanmullen.bingo.net.PacketHandler;
 import me.dylanmullen.bingo.net.packet.Packet;
 import me.dylanmullen.bingo.net.packet.PacketCallback;
 import me.dylanmullen.bingo.window.bingo.BingoWindow;
-import me.dylanmullen.bingo.window.ui.ImageComponent;
 
 public class HomePanel extends UIPanel
 {
@@ -58,13 +56,6 @@ public class HomePanel extends UIPanel
 
 	private void sendCloudRetrivalPacket()
 	{
-		for (int i = 0; i < 15; i++)
-		{
-			CloudSelector selector = new CloudSelector(0, 0, width, 0);
-			selector.setupInformation(UUID.randomUUID());
-			gameSelectors.add(selector);
-		}
-		updateAllSelectors();
 		Packet packet = PacketHandler.createPacket(17, new JSONObject());
 		PacketHandler.sendPacket(packet, new PacketCallback()
 		{
@@ -104,15 +95,9 @@ public class HomePanel extends UIPanel
 				getHeight() + 25 - (int) (getHeight() / 8) * 6);
 		grid.getGridSettings().setFixedRowHeight(200);
 
-		ImageComponent ic = new ImageComponent(15, 15, getWidth() - 30, (int) (getHeight() / 8) * 2);
-		try
-		{
-			ic.setImage(ImageIO.read(getClass().getClassLoader().getResourceAsStream("placeholder.png")));
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		add(ic);
+		InformationPanel info = new InformationPanel(15, 15, getWidth()-30, (int) ((getHeight() / 8) * 2));
+		info.construct("Please connect to a Game");
+		add(info);
 	}
 
 	public void updateAllSelectors()

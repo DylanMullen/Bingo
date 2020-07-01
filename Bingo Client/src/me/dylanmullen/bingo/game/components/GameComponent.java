@@ -4,10 +4,10 @@ import java.awt.Graphics;
 import java.util.List;
 import java.util.UUID;
 
+import me.dylanmullen.bingo.core.BingoApp;
 import me.dylanmullen.bingo.game.cards.BingoCardContainer;
 import me.dylanmullen.bingo.game.cards.CardInformation;
 import me.dylanmullen.bingo.game.components.overlays.WinnerOverlay;
-import me.dylanmullen.bingo.gfx.ui.colour.UIColour;
 import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
 
 public class GameComponent extends UIPanel
@@ -28,8 +28,7 @@ public class GameComponent extends UIPanel
 	{
 		setBounds(x, y, width, height);
 		setLayout(null);
-		setBackground(getParent().getBackground());
-//		createWinnerOverlay();
+		setBackground(BingoApp.getInstance().getColourManager().getSet("frame").getColour("content").toColour());
 	}
 
 	@Override

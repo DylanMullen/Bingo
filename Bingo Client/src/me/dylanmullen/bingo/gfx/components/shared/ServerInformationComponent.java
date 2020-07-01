@@ -1,6 +1,7 @@
 package me.dylanmullen.bingo.gfx.components.shared;
 
-import java.awt.Dimension;
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -69,8 +70,6 @@ public class ServerInformationComponent extends JComponent implements EventListe
 
 		updateStatus(ServerStatusManager.getManager().getStatus());
 		setFont(FontUtil.getFont(statusText, this, new Vector2I(getWidth() - 10, getHeight())));
-		setForeground(set.getColour("undefined").getTextColour());
-
 		addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -91,27 +90,15 @@ public class ServerInformationComponent extends JComponent implements EventListe
 	{
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g2.setColor(getBackground());
 
 		// Ensures that if the height is too small, the component just displays a circle
 		// indicator.
-		if (getHeight() > 50)
-		{
-			g2.fillRoundRect(0, 7, getWidth(), getHeight()-14, 15, 15);
-			drawText(g2);
-			return;
-		} else
-		{
-			g2.fillOval(5, 5, getHeight() - 10, getHeight() - 10);
-		}
-	}
+		g2.setColor(getBackground());
+		g2.fillOval(2, 2, getHeight() - 4, getHeight() - 4);
 
-	private void drawText(Graphics2D g2)
-	{
+		g2.setStroke(new BasicStroke(2));
 		g2.setColor(getForeground());
-		g2.setFont(getFont());
-		Dimension dim = FontUtil.getFontSize(getFontMetrics(getFont()), statusText, 0, 0);
-		g2.drawString(statusText, getWidth() / 2 - (dim.width / 2), getHeight() / 2 + (dim.height / 4));
+		g2.drawOval(2, 2, getHeight() - 4, getHeight() - 4);
 	}
 
 	/**
@@ -134,21 +121,23 @@ public class ServerInformationComponent extends JComponent implements EventListe
 		statusText = status.getMesssage();
 		setFont(FontUtil.getFont(statusText, this, new Vector2I(getWidth() - 10, getHeight())));
 
-		switch (status)
-		{
-			case UNDEFINED:
-				setBackground(set.getColour("undefined").toColour());
-				setForeground(set.getColour("undefined").getTextColour());
-				break;
-			case CONNECTED:
-				setBackground(set.getColour("connected").toColour());
-				setForeground(set.getColour("connected").getTextColour());
-				break;
-			case DISCONNECTED:
-				setBackground(set.getColour("disconnected").toColour());
-				setForeground(set.getColour("disconnected").getTextColour());
-				break;
-		}
+		setBackground(set.getColour("connected").toColour());
+		setForeground(set.getColour("connected").darken(0.25).toColour());
+		// switch (status)
+//		{
+//			case UNDEFINED:
+//				setBackground(set.getColour("undefined").toColour());
+//				setForeground(set.getColour("undefined").darken(0.05).toColour());
+//				break;
+//			case CONNECTED:
+//				setBackground(set.getColour("connected").toColour());
+//				setForeground(set.getColour("connected").darken(0.05).toColour());
+//				break;
+//			case DISCONNECTED:
+//				setBackground(set.getColour("disconnected").toColour());
+//				setForeground(set.getColour("disconnected").darken(0.05).toColour());
+//				break;
+//		}
 	}
 
 	@Override

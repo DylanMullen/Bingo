@@ -10,7 +10,6 @@ import java.awt.Polygon;
 import javax.swing.JComponent;
 
 import me.dylanmullen.bingo.gfx.ui.colour.UIColour;
-import me.dylanmullen.bingo.gfx.ui.grid.Grid;
 import me.dylanmullen.bingo.util.FontUtil;
 import me.dylanmullen.bingo.util.Vector2I;
 
@@ -22,11 +21,9 @@ import me.dylanmullen.bingo.util.Vector2I;
 public class InformationComponent extends JComponent
 {
 
-	// TODO remove JLabel and paint it instead.
 
 	private static final long serialVersionUID = 5499959852042006713L;
 
-	private Grid grid;
 	private String header;
 	private String info;
 

@@ -1,7 +1,7 @@
 package me.dylanmullen.bingo.window.login.panels;
 
 import me.dylanmullen.bingo.core.BingoApp;
-import me.dylanmullen.bingo.gfx.components.login.WarningInfoComponent;
+import me.dylanmullen.bingo.gfx.components.login.InformationPanel;
 import me.dylanmullen.bingo.gfx.ui.grid.Grid;
 import me.dylanmullen.bingo.gfx.ui.grid.GridItem;
 import me.dylanmullen.bingo.gfx.ui.grid.GridSettings;
@@ -19,7 +19,7 @@ public class LoginPanel extends UIPanel
 
 	private Grid grid;
 
-	private WarningInfoComponent warningInfoComponent;
+	private InformationPanel warningInfoComponent;
 	private LoginInformationPanel loginInfoComponent;
 
 	private int indent;
@@ -39,7 +39,7 @@ public class LoginPanel extends UIPanel
 
 		grid = new Grid(new GridSettings(width, height, 3, 1, 10), 0, 0);
 
-		warningInfoComponent = new WarningInfoComponent();
+		warningInfoComponent = new InformationPanel();
 		grid.addGridItem(new GridItem(warningInfoComponent, 1, 1), 0, true);
 
 		loginInfoComponent = new LoginInformationPanel(this, indent, warningInfoComponent.getHeight() + (indent),
@@ -62,7 +62,7 @@ public class LoginPanel extends UIPanel
 		return loginInfoComponent;
 	}
 
-	public WarningInfoComponent getWarningInfoComponent()
+	public InformationPanel getWarningInfoComponent()
 	{
 		return warningInfoComponent;
 	}

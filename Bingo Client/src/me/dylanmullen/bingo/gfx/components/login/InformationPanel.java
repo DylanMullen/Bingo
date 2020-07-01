@@ -18,7 +18,7 @@ import me.dylanmullen.bingo.util.FontUtil;
  * @date 19 Jun 2020
  * @project Bingo Client
  */
-public class WarningInfoComponent extends RoundedPanel
+public class InformationPanel extends RoundedPanel
 {
 
 	private static final long serialVersionUID = 5423352332179650770L;
@@ -35,9 +35,10 @@ public class WarningInfoComponent extends RoundedPanel
 	 * @param width  The width of the Component.
 	 * @param height The height of the Component.
 	 */
-	public WarningInfoComponent(int x, int y, int width, int height)
+	public InformationPanel(int x, int y, int width, int height)
 	{
 		super(x, y, width, height);
+		setup();
 	}
 
 	/**
@@ -51,9 +52,10 @@ public class WarningInfoComponent extends RoundedPanel
 	 * <li>{@link #getHeight()}=0</li>
 	 * </ul>
 	 */
-	public WarningInfoComponent()
+	public InformationPanel()
 	{
 		this(0, 0, 0, 0);
+		setup();
 	}
 
 	@Override
@@ -62,7 +64,6 @@ public class WarningInfoComponent extends RoundedPanel
 		this.lines = new ArrayList<>();
 		setFont(new Font("Calibri", Font.PLAIN, 25));
 		updateBackground(BingoApp.getInstance().getColourManager().getSet("frame").getColour("information"));
-		construct("Please Login/Register");
 	}
 
 	@Override
@@ -88,7 +89,7 @@ public class WarningInfoComponent extends RoundedPanel
 			if (height == -1)
 			{
 				height = prev.height * lines.size();
-				indentY = (getHeight() / 2 + ((getHeight() - height))) / 2;
+				indentY = (getHeight() / 2 + height / 4);
 			}
 
 			g2.drawString(text, getWidth() / 2 - (prev.width / 2), indentY);
@@ -101,7 +102,7 @@ public class WarningInfoComponent extends RoundedPanel
 		construct(text);
 	}
 
-	private void construct(String message)
+	public void construct(String message)
 	{
 		lines.clear();
 		FontMetrics metrics = getFontMetrics(getFont());

@@ -1,10 +1,12 @@
 package me.dylanmullen.bingo.game.home;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.RenderingHints;
 import java.util.UUID;
 
@@ -15,8 +17,8 @@ import org.json.simple.JSONObject;
 import me.dylanmullen.bingo.core.BingoApp;
 import me.dylanmullen.bingo.events.EventHandler;
 import me.dylanmullen.bingo.events.events.droplet.DropletJoinEvent;
+import me.dylanmullen.bingo.gfx.ui.buttons.Button;
 import me.dylanmullen.bingo.gfx.ui.buttons.ButtonInformation;
-import me.dylanmullen.bingo.gfx.ui.buttons.RoundedButton;
 import me.dylanmullen.bingo.gfx.ui.colour.UIColourSet;
 import me.dylanmullen.bingo.net.PacketHandler;
 import me.dylanmullen.bingo.net.packet.Packet;
@@ -36,7 +38,7 @@ public class DropletSelector extends JComponent
 
 	private UIColourSet set;
 
-	private RoundedButton joinButton;
+	private Button joinButton;
 
 	public DropletSelector(int x, int y, int width, int height)
 	{
@@ -54,10 +56,34 @@ public class DropletSelector extends JComponent
 		this.set = BingoApp.getInstance().getColourManager().getSet("droplets");
 	}
 
+	private Polygon body, buttonShape;
+
+	private void setupBody()
+	{
+		if (joinButton != null)
+		{
+			body = new Polygon();
+			body.addPoint(0, 0);
+			body.addPoint(joinButton.getX(), 0);
+			body.addPoint(joinButton.getX() + 10, getHeight());
+			body.addPoint(0, getHeight());
+
+			buttonShape = new Polygon();
+			buttonShape.addPoint(0, 0);
+			buttonShape.addPoint(getWidth(), 0);
+			buttonShape.addPoint(getWidth(), getHeight());
+			buttonShape.addPoint(10, getHeight());
+
+			joinButton.getInformation().updateBounds(new Vector2I(getWidth() - 100, 0), new Vector2I(100, getHeight()));
+			joinButton.setCustomShape(buttonShape);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
 	public void setup()
 	{
-		int width = getWidth() / 4;
-		joinButton = new RoundedButton("Join Dropet",
+		int width = 100;
+		joinButton = new Button("Join", null,
 				new ButtonInformation(new Vector2I(getWidth() - width, 0), new Vector2I(width, getHeight()), () ->
 				{
 					JSONObject message = new JSONObject();
@@ -74,23 +100,48 @@ public class DropletSelector extends JComponent
 						}
 					});
 				}));
-		joinButton.updateColours(set.getColour("join-bg"), set.getColour("join-active"));
+		joinButton.updateColours(set.getColour("join-bg"), set.getColour("join-bg").darken(0.05));
 		add(joinButton);
+		setupBody();
 	}
 
 	@Override
 	protected void paintComponent(Graphics g)
 	{
+		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-		g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
+		drawBody(g2);
 		drawInstanceString(g2);
+	}
+
+	@Override
+	public void paint(Graphics g)
+	{
+		super.paintChildren(g);
+		paintComponent(g);
+	}
+
+	@Override
+	public void setBounds(int x, int y, int width, int height)
+	{
+		super.setBounds(x, y, width, height);
+		setupBody();
+	}
+
+	private void drawBody(Graphics2D g2)
+	{
+		g2.setColor(set.getColour("body-bg").darken(0.05).toColour());
+		g2.fillPolygon(body);
+//		g2.setColor(set.getColour("body-bg").darken(0.20).toColour());
+		g2.setColor(Color.white);
+		g2.setStroke(new BasicStroke(2));
+		g2.drawLine(body.xpoints[1], 0, body.xpoints[2], getHeight());
 	}
 
 	private void drawInstanceString(Graphics2D g2)
 	{
-		String instance = "Instance #" + pos + " (" + players + "/" + max + ")";
+		String instance = "Instance " + pos + " (" + players + "/" + max + ")";
 		g2.setFont(getFont());
 		g2.setColor(Color.white);
 		Dimension dim = FontUtil.getFontSize(getFontMetrics(getFont()), instance, 0, 0);

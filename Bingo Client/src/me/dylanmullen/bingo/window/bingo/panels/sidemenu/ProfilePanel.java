@@ -20,7 +20,6 @@ import me.dylanmullen.bingo.events.events.user.CurrencyChangeEvent;
 import me.dylanmullen.bingo.events.events.user.UserInformationChangeEvent;
 import me.dylanmullen.bingo.gfx.ui.buttons.ButtonInformation;
 import me.dylanmullen.bingo.gfx.ui.buttons.RoundedButton;
-import me.dylanmullen.bingo.gfx.ui.colour.ColourManager;
 import me.dylanmullen.bingo.gfx.ui.colour.UIColour;
 import me.dylanmullen.bingo.gfx.ui.grid.Grid;
 import me.dylanmullen.bingo.gfx.ui.grid.GridItem;

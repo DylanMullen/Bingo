@@ -2,7 +2,7 @@ package me.dylanmullen.bingo.game;
 
 import org.json.simple.JSONObject;
 
-import me.dylanmullen.bingo.gfx.components.login.WarningInfoComponent;
+import me.dylanmullen.bingo.gfx.components.login.InformationPanel;
 import me.dylanmullen.bingo.gfx.ui.input.UIPasswordField;
 import me.dylanmullen.bingo.gfx.ui.input.UITextField;
 import me.dylanmullen.bingo.net.PacketHandler;
@@ -108,7 +108,7 @@ public class LoginHandler
 	 * @param usernameField    The username field to validate
 	 * @return Returns true if the username is valid.
 	 */
-	private boolean checkUsername(WarningInfoComponent warningComponent, UITextField usernameField)
+	private boolean checkUsername(InformationPanel warningComponent, UITextField usernameField)
 	{
 		if (usernameField.isPlaceholder())
 		{
@@ -141,7 +141,7 @@ public class LoginHandler
 	 * @param passwordField    The password field to validate.
 	 * @return Returns true if the password is valid.
 	 */
-	private boolean checkPassword(WarningInfoComponent warningComponent, UIPasswordField passwordField)
+	private boolean checkPassword(InformationPanel warningComponent, UIPasswordField passwordField)
 	{
 		String password = new String(passwordField.getPassword());
 		if (passwordField.isPlaceHolder())

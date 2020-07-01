@@ -2,8 +2,6 @@ package me.dylanmullen.bingo.window.bingo;
 
 import java.util.UUID;
 
-import javax.swing.UIManager;
-
 import org.json.simple.JSONObject;
 
 import me.dylanmullen.bingo.events.EventHandler;
@@ -64,7 +62,8 @@ public class BingoWindow extends Window
 		this.container = new Container(getSideBar().getWidth(), getTopMenu().getHeight(),
 				getWidth() - getSideBar().getWidth(), getHeight() - getTopMenu().getHeight());
 		add(container);
-		showHomePanel();
+		showDebug();
+//		showHomePanel();
 //		showBingoCloud();
 	}
 
@@ -96,8 +95,7 @@ public class BingoWindow extends Window
 	{
 		if (getHomePanel() == null)
 		{
-			this.home = new HomePanel(this, getWidth() / 4, getHeight() / 10,
-					(getWidth() / 4 * 3),
+			this.home = new HomePanel(this, getWidth() / 4, getHeight() / 10, (getWidth() / 4 * 3),
 					getHeight() - topMenu.getHeight());
 		}
 //		getSideBar().getHomeButton().setActive(true);
@@ -118,6 +116,16 @@ public class BingoWindow extends Window
 		panel.create();
 		panel.repaint();
 		container.setCurrentPanel(panel);
+	}
+
+	@SuppressWarnings("unchecked")
+	public void showDebug()
+	{
+		JSONObject object = new JSONObject();
+		for(int i =0;i<20;i++)
+			object.put(UUID.randomUUID().toString(), 10);
+		BingoCloud cloud = new BingoCloud(UUID.randomUUID(), object, container.getWidth(), container.getHeight());
+		container.setScrollCurrentPanel(cloud);
 	}
 
 	/**
