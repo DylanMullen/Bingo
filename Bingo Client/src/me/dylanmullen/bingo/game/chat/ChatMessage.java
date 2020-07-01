@@ -75,7 +75,7 @@ public class ChatMessage extends JComponent
 			Dimension dim = FontUtil.getFontSize(getFontMetrics(getFont()), s, 0, 5);
 			height += dim.height / 2 + 5;
 		}
-		height -= 5;
+		height += 10;
 		return height;
 	}
 
@@ -106,7 +106,7 @@ public class ChatMessage extends JComponent
 	{
 		g2.setColor(Color.white);
 		Dimension prev = null;
-		int indentY = HEADER_HEIGHT + 5;
+		int indentY = HEADER_HEIGHT + 10;
 		for (String string : lines)
 		{
 			prev = FontUtil.getFontSize(getFontMetrics(getFont()), string, 0, 0);

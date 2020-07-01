@@ -68,7 +68,8 @@ public class ChatMessagesComponent extends JComponent implements Scrollable, Mou
 
 	private void drawMessages(Graphics2D g2)
 	{
-		g2.setColor(BingoApp.getInstance().getColourManager().getSet("frame").getColour("top-menu").toColour());
+		g2.setColor(BingoApp.getInstance().getColourManager().getSet("frame").getColour("side-primary").darken(0.25)
+				.toColour());
 		g2.fillRect(0, 0, getWidth(), getHeight());
 	}
 

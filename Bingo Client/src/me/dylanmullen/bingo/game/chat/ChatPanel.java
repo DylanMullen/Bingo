@@ -68,6 +68,7 @@ public class ChatPanel extends UIPanel
 		PacketHandler.sendPacket(constructPacket(message), null);
 	}
 
+	@SuppressWarnings("unchecked")
 	private Packet constructPacket(String mes)
 	{
 		JSONObject message = new JSONObject();
