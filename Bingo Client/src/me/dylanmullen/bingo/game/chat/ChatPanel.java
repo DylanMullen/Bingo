@@ -8,6 +8,7 @@ import org.json.simple.JSONObject;
 
 import me.dylanmullen.bingo.core.BingoApp;
 import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
+import me.dylanmullen.bingo.gfx.ui.panel.UIScrollBar;
 import me.dylanmullen.bingo.net.PacketHandler;
 import me.dylanmullen.bingo.net.packet.Packet;
 
@@ -41,6 +42,7 @@ public class ChatPanel extends UIPanel
 		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scroll.setBorder(null);
+		scroll.getVerticalScrollBar().setUI(new UIScrollBar(scroll.getVerticalScrollBar()));
 
 		this.chatInputComponent = new ChatInputComponent(this, 10, getHeight() - inputHeight - 10, getWidth() - 20,
 				inputHeight);
@@ -52,7 +54,7 @@ public class ChatPanel extends UIPanel
 	{
 		add(getChatMessagesComponent().getScrollPanel());
 		add(getChatInputComponent());
-		for(int i =0;i<20;i++)
+		for (int i = 0; i < 20; i++)
 			recieveMessage(1, "TwixDylan", "User", "Test");
 	}
 
