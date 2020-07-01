@@ -13,7 +13,7 @@ import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
  * @date 17 Jun 2020
  * @project Bingo Client
  */
-public class BingoCardContainer extends UIPanel
+public class BingoCardGroup extends UIPanel
 {
 
 	private static final long serialVersionUID = -2951295854163796573L;
@@ -31,7 +31,7 @@ public class BingoCardContainer extends UIPanel
 	 * @param width  The width of the container
 	 * @param height The height of the container
 	 */
-	public BingoCardContainer(UUID dropletUUID, int x, int y, int width, int height)
+	public BingoCardGroup(UUID dropletUUID, int x, int y, int width, int height)
 	{
 		super(x, y, width, height);
 		this.dropletUUID = dropletUUID;
@@ -39,16 +39,43 @@ public class BingoCardContainer extends UIPanel
 
 	public void createCards(List<CardInformation> information)
 	{
+		int row = 0;
 		for (int i = 0; i < information.size(); i++)
 		{
+			if (i % 2 == 0 && i != 0)
+				row++;
 			CardInformation info = information.get(i);
-			BingoCard card = new BingoCard(dropletUUID, 25, getCardIndentY(i), (getWidth() - 50), getCardHeight(),
-					info);
+			BingoCard card = new BingoCard(dropletUUID, getCardIndentX(i + 1), getCardIndentY(row, i),
+					getCardWidth(getWidth() / 2), getCardHeight(), info);
 			card.addMouseListener(new BingoCardListener(this));
+			card.setPurchased(true);
 			cards.add(card);
 			add(card);
+
 		}
 		repaint();
+	}
+
+	private int getCardWidth(int width)
+	{
+		int widthSize = width / 9;
+		if ((double) (width / 9) > 0)
+			widthSize = widthSize * 9;
+		return widthSize;
+	}
+
+	private int getCardIndentX(int i)
+	{
+		if (i % 2 == 0)
+		{
+			return getWidth() / 2 + getCardXOffset() / 2;
+		} else
+			return getCardXOffset() / 2;
+	}
+
+	private int getCardXOffset()
+	{
+		return getWidth() / 2 - getCardWidth(getWidth() / 2);
 	}
 
 	@Override
@@ -68,9 +95,19 @@ public class BingoCardContainer extends UIPanel
 	 * @param cardIndex
 	 * @return
 	 */
-	private int getCardIndentY(int cardIndex)
+	private int getCardIndentY(int row, int cardIndex)
 	{
-		return (getCardHeight() * cardIndex) + (36 * cardIndex) + (10 * cardIndex) + 5;
+		return row * (getCardHeight() * 2) + 5 + (row * 5) + getCardYOffset() / 2;
+	}
+
+	private int getCardYOffset()
+	{
+		return getHeight() - getMaxCardHeight();
+	}
+
+	private int getMaxCardHeight()
+	{
+		return 3 * (getCardHeight() * 2) + 5 + (3 * 5);
 	}
 
 	/**
@@ -80,8 +117,7 @@ public class BingoCardContainer extends UIPanel
 	 */
 	private int getCardHeight()
 	{
-		int contHeight = getHeight() - (5 * 5);
-		return contHeight / 3 - 36;
+		return (getCardWidth(getWidth() / 2) / 9) + 36;
 	}
 
 	/**
@@ -98,7 +134,7 @@ public class BingoCardContainer extends UIPanel
 				break;
 			getCards().get(index).updateCardInformation(newCards.get(i));
 			getCards().get(index).setVisible(true);
-			getCards().get(index).setY(getCardIndentY(index));
+			getCards().get(index).setY(getCardIndentY(0, index));
 			getCards().get(index).repaint();
 			index++;
 		}
@@ -121,7 +157,7 @@ public class BingoCardContainer extends UIPanel
 			BingoCard card = getCard(uuid);
 
 			card.setPurchased(true);
-			card.setY(getCardIndentY(i));
+			card.setY(getCardIndentY(0, i));
 			card.repaint();
 		}
 

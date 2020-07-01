@@ -51,7 +51,7 @@ public class GamePanel extends UIPanel
 		getHeaderComponent().setup();
 		getHeaderComponent().create();
 
-		this.gameComponent = new GameComponent(0, headerComponent.getHeight(), (int) (getWidth() / 3) * 2,
+		this.gameComponent = new GameComponent(0, headerComponent.getHeight(), (int) ((getWidth() / 3) * 2.15),
 				getHeight() - headerComponent.getHeight());
 		getGameComponent().setup();
 		getGameComponent().create();

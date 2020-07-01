@@ -42,7 +42,7 @@ public class ChatPanel extends UIPanel
 		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scroll.setBorder(null);
-		scroll.getVerticalScrollBar().setUI(new UIScrollBar(scroll.getVerticalScrollBar()));
+		scroll.getVerticalScrollBar().setUI(new UIScrollBar(scroll.getVerticalScrollBar(), 15));
 
 		this.chatInputComponent = new ChatInputComponent(this, 10, getHeight() - inputHeight - 10, getWidth() - 20,
 				inputHeight);

@@ -1,11 +1,15 @@
 package me.dylanmullen.bingo.game.components;
 
 import java.awt.Graphics;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
+import org.json.simple.JSONArray;
+
 import me.dylanmullen.bingo.core.BingoApp;
-import me.dylanmullen.bingo.game.cards.BingoCardContainer;
+import me.dylanmullen.bingo.game.cards.BingoCardGroup;
 import me.dylanmullen.bingo.game.cards.CardInformation;
 import me.dylanmullen.bingo.game.components.overlays.WinnerOverlay;
 import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
@@ -15,7 +19,7 @@ public class GameComponent extends UIPanel
 
 	private static final long serialVersionUID = 6557409370693226153L;
 
-	private BingoCardContainer comp;
+	private BingoCardGroup comp;
 	private WinnerOverlay winner;
 
 	public GameComponent(int x, int y, int width, int height)
@@ -34,7 +38,16 @@ public class GameComponent extends UIPanel
 	@Override
 	public void create()
 	{
+		List<CardInformation> cards = new ArrayList<CardInformation>();
 
+		JSONArray numbers = new JSONArray();
+		Random rand = new Random();
+		for (int i = 0; i < 15; i++)
+			numbers.add(i * (rand.nextInt(8 - 1) + 1));
+
+		for (int i = 0; i < 6; i++)
+			cards.add(new CardInformation(UUID.randomUUID(), numbers));
+		createCardGroup(UUID.randomUUID(), cards);
 	}
 
 	@Override
@@ -51,7 +64,7 @@ public class GameComponent extends UIPanel
 
 	public void createCardGroup(UUID dropletUUID, List<CardInformation> cards)
 	{
-		comp = new BingoCardContainer(dropletUUID, 15, 15, getWidth() - 30, getHeight() - 30);
+		comp = new BingoCardGroup(dropletUUID, 15, 15, getWidth() - 30, getHeight() - 30);
 		comp.setup();
 		comp.createCards(cards);
 		add(comp);
@@ -89,7 +102,7 @@ public class GameComponent extends UIPanel
 		return winner;
 	}
 
-	public BingoCardContainer getCardGroup()
+	public BingoCardGroup getCardGroup()
 	{
 		return comp;
 	}

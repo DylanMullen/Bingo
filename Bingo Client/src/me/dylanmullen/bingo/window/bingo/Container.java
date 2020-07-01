@@ -28,7 +28,8 @@ public class Container extends UIPanel
 		getScrollHomePanel().setPreferredSize(new Dimension(getWidth(), getHeight()));
 		getScrollHomePanel().setBounds(0, 0, getWidth(), getHeight());
 		getScrollHomePanel().setBorder(null);
-		getScrollHomePanel().getVerticalScrollBar().setUI(new UIScrollBar(getScrollHomePanel().getVerticalScrollBar()));
+		getScrollHomePanel().getVerticalScrollBar()
+				.setUI(new UIScrollBar(getScrollHomePanel().getVerticalScrollBar(), 20));
 
 		setBackground(BingoApp.getInstance().getColourManager().getSet("frame").getColour("content").toColour());
 	}

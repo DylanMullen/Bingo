@@ -16,6 +16,7 @@ import me.dylanmullen.bingo.game.components.overlays.PurchaseOverlay;
 import me.dylanmullen.bingo.gfx.ui.colour.UIColour;
 import me.dylanmullen.bingo.gfx.ui.colour.UIColourSet;
 import me.dylanmullen.bingo.util.FontUtil;
+import me.dylanmullen.bingo.util.Vector2I;
 
 /**
  * @author Dylan
@@ -69,13 +70,9 @@ public class BingoCard extends JComponent
 	private void createSquares(int width, int height)
 	{
 		int widthSize = width / 9;
-		int heightSize = height / 3;
+		int heightSize = widthSize;
 
-		if ((double) (width / 9) > 0)
-			width = widthSize * 9;
-		if ((double) (height / 3) > 0)
-			height = heightSize * 3;
-
+		height = heightSize * 3;
 		height += this.BUFFER;
 
 		setBounds(x, y, width, height);
@@ -86,7 +83,7 @@ public class BingoCard extends JComponent
 
 		for (int i = 0; i < squares.length; i++)
 		{
-			this.squares[i] = new BingoSquare(indentX, indentY, widthSize, heightSize);
+			this.squares[i] = new BingoSquare(indentX, indentY, widthSize, widthSize);
 			indentX += widthSize;
 			if ((i + 1) % 9 == 0 && i != 0)
 			{
@@ -122,6 +119,8 @@ public class BingoCard extends JComponent
 				row--;
 			setNumber(row, info.getNumbers()[i]);
 		}
+		
+		setFont(FontUtil.getFont(info.getUUID().toString(),this, new Vector2I(getWidth()-2, BUFFER)));
 	}
 
 	/**
@@ -218,11 +217,10 @@ public class BingoCard extends JComponent
 		// TODO Store the font in a class variable. More efficent than creating a
 		// variable every draw call.
 
-		Font font = new Font("Calibri", Font.PLAIN, 20);
-		g2.setFont(font);
+		g2.setFont(getFont());
 		g2.setColor(Color.WHITE);
 
-		Dimension dim = FontUtil.getFontSize(getFontMetrics(font), getUUID().toString(), 0, 0);
+		Dimension dim = FontUtil.getFontSize(getFontMetrics(getFont()), getUUID().toString(), 0, 0);
 		g2.drawString(getUUID().toString(), getWidth() / 2 - (dim.width / 2), this.BUFFER / 2 + dim.height / 4);
 	}
 

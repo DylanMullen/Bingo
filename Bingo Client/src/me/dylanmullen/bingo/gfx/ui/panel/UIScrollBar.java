@@ -18,11 +18,13 @@ public class UIScrollBar extends BasicScrollBarUI
 {
 
 	private UIColourSet set;
+	private int width;
 
-	public UIScrollBar(JScrollBar verticalScrollBar)
+	public UIScrollBar(JScrollBar verticalScrollBar, int width)
 	{
-		set = BingoApp.getInstance().getColourManager().getSet("frame");
-		verticalScrollBar.setPreferredSize(new Dimension(20, verticalScrollBar.getHeight()));
+		this.width = width;
+		this.set = BingoApp.getInstance().getColourManager().getSet("frame");
+		verticalScrollBar.setPreferredSize(new Dimension(width, verticalScrollBar.getHeight()));
 	}
 
 	@Override
@@ -53,7 +55,7 @@ public class UIScrollBar extends BasicScrollBarUI
 			@Override
 			public Dimension getPreferredSize()
 			{
-				return new Dimension(20, 20);
+				return new Dimension(width, width);
 			}
 		};
 		button.setBorder(null);
