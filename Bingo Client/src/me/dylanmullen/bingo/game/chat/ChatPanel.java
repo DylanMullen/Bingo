@@ -32,15 +32,18 @@ public class ChatPanel extends UIPanel
 	{
 		setBackground(BingoApp.getInstance().getColourManager().getSet("frame").getColour("side-primary").toColour());
 
+		int inputHeight = getHeight() / 10;
 		JScrollPane scroll = new JScrollPane();
-		this.chatMessagesComponent = new ChatMessagesComponent(scroll, 15, 15, getWidth() - 30, getHeight() - 45 - 50);
+		this.chatMessagesComponent = new ChatMessagesComponent(scroll, 0, 0, getWidth(),
+				getHeight() - inputHeight - 20);
 		scroll.setViewportView(getChatMessagesComponent());
-		scroll.setBounds(15, 15, getWidth() - 30, getHeight() - 45 - 50);
+		scroll.setBounds(0, 0, getWidth(), getHeight() - inputHeight - 20);
 		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scroll.setBorder(null);
 
-		this.chatInputComponent = new ChatInputComponent(this, 15, getHeight() - 15 - 50, getWidth() - 30, 50);
+		this.chatInputComponent = new ChatInputComponent(this, 10, getHeight() - inputHeight - 10, getWidth() - 20,
+				inputHeight);
 		getChatInputComponent().create();
 	}
 
@@ -49,6 +52,8 @@ public class ChatPanel extends UIPanel
 	{
 		add(getChatMessagesComponent().getScrollPanel());
 		add(getChatInputComponent());
+		for(int i =0;i<20;i++)
+			recieveMessage(1, "TwixDylan", "User", "Test");
 	}
 
 	public void recieveMessage(long timestamp, String username, String usergroup, String message)

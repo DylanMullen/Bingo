@@ -121,11 +121,11 @@ public class BingoWindow extends Window
 	@SuppressWarnings("unchecked")
 	public void showDebug()
 	{
-		JSONObject object = new JSONObject();
-		for(int i =0;i<20;i++)
-			object.put(UUID.randomUUID().toString(), 10);
-		BingoCloud cloud = new BingoCloud(UUID.randomUUID(), object, container.getWidth(), container.getHeight());
-		container.setScrollCurrentPanel(cloud);
+		GamePanel gp = new GamePanel(UUID.randomUUID(), 0, 0, container.getWidth(), container.getHeight());
+		gp.setup();
+		gp.create();
+		gp.repaint();
+		container.setCurrentPanel(gp);
 	}
 
 	/**

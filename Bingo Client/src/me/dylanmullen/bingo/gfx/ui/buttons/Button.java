@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.RenderingHints;
 
 public class Button extends UIButton
 {
@@ -26,17 +27,17 @@ public class Button extends UIButton
 	{
 		this.customShape = customShape;
 	}
-	
+
 	@Override
 	protected void paintComponent(Graphics g)
 	{
 		Graphics2D g2 = (Graphics2D) g;
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2.setColor(getBackground());
 		if (customShape != null)
 		{
 			g2.fillPolygon(customShape);
-		}
-		else
+		} else
 			g2.fillRect(0, 0, getWidth(), getHeight());
 		drawText(g2, 0, (getInformation().getMainColour() != null ? getInformation().getMainColour().getTextColour()
 				: Color.BLACK));
