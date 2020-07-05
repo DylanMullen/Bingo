@@ -20,6 +20,8 @@ public class BingoCardGroup extends UIPanel
 
 	private UUID dropletUUID;
 	private List<BingoCard> cards;
+	
+	private CardPagnationPanel pagnation;
 
 	/**
 	 * This is the Bingo Card Container.<br>
@@ -48,7 +50,6 @@ public class BingoCardGroup extends UIPanel
 			BingoCard card = new BingoCard(dropletUUID, getCardIndentX(i + 1), getCardIndentY(row, i),
 					getCardWidth(getWidth() / 2), getCardHeight(), info);
 			card.addMouseListener(new BingoCardListener(this));
-			card.setPurchased(true);
 			cards.add(card);
 			add(card);
 
@@ -86,6 +87,9 @@ public class BingoCardGroup extends UIPanel
 		setBackground(Color.WHITE);
 
 		this.cards = new ArrayList<BingoCard>();
+		this.pagnation = new CardPagnationPanel(getWidth()/4, getHeight()-getHeight()/10, getWidth()/2, getHeight()/10);
+		
+		add(pagnation);
 		setOpaque(false);
 	}
 
@@ -102,7 +106,7 @@ public class BingoCardGroup extends UIPanel
 
 	private int getCardYOffset()
 	{
-		return getHeight() - getMaxCardHeight();
+		return (getHeight()-this.pagnation.getHeight()) - getMaxCardHeight();
 	}
 
 	private int getMaxCardHeight()

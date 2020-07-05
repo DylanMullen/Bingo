@@ -92,7 +92,7 @@ public class ProfilePanel extends UIPanel implements EventListener
 		{
 		}));
 		topUp.updateColours(BingoApp.getInstance().getColourManager().getSet("buttons").getColour("purchase-bg"),
-				BingoApp.getInstance().getColourManager().getSet("buttons").getColour("purchase-active"));
+				BingoApp.getInstance().getColourManager().getSet("buttons").getColour("purchase-bg").darken(0.15));
 
 		getGrid().addGridItem(new GridItem(username, 1, 2), 0);
 		getGrid().addGridItem(new GridItem(money, 1, 1), 1);

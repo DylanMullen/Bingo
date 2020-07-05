@@ -34,7 +34,6 @@ public class ServerInformationComponent extends JComponent implements EventListe
 
 	private String statusText;
 	private UIColourSet set;
-	private UIColour currentColour;
 
 	public ServerInformationComponent(Vector2I pos, Vector2I dim)
 	{
@@ -62,7 +61,6 @@ public class ServerInformationComponent extends JComponent implements EventListe
 		EventHandler.getHandler().registerListener(ServerStatusChangeEvent.class, this);
 	}
 
-	@SuppressWarnings("deprecation")
 	public void setup()
 	{
 		setOpaque(false);
@@ -121,23 +119,21 @@ public class ServerInformationComponent extends JComponent implements EventListe
 		statusText = status.getMesssage();
 		setFont(FontUtil.getFont(statusText, this, new Vector2I(getWidth() - 10, getHeight())));
 
-		setBackground(set.getColour("connected").toColour());
-		setForeground(set.getColour("connected").darken(0.25).toColour());
-		// switch (status)
-//		{
-//			case UNDEFINED:
-//				setBackground(set.getColour("undefined").toColour());
-//				setForeground(set.getColour("undefined").darken(0.05).toColour());
-//				break;
-//			case CONNECTED:
-//				setBackground(set.getColour("connected").toColour());
-//				setForeground(set.getColour("connected").darken(0.05).toColour());
-//				break;
-//			case DISCONNECTED:
-//				setBackground(set.getColour("disconnected").toColour());
-//				setForeground(set.getColour("disconnected").darken(0.05).toColour());
-//				break;
-//		}
+		switch (status)
+		{
+			case UNDEFINED:
+				setBackground(set.getColour("undefined").toColour());
+				setForeground(set.getColour("undefined").darken(0.25).toColour());
+				break;
+			case CONNECTED:
+				setBackground(set.getColour("connected").toColour());
+				setForeground(set.getColour("connected").darken(0.25).toColour());
+				break;
+			case DISCONNECTED:
+				setBackground(set.getColour("disconnected").toColour());
+				setForeground(set.getColour("disconnected").darken(0.25).toColour());
+				break;
+		}
 	}
 
 	@Override

@@ -32,11 +32,13 @@ public class BingoCard extends JComponent
 	private PurchaseOverlay purchaseOverlay;
 
 	private BingoSquare[] squares;
-	public final int BUFFER = 36;
+	public static final int BUFFER = 36;
 
 	private UIColourSet set;
 	private CardInformation cardInfo;
 
+	private Font headerFont;
+	private Font gridFont;
 	private int x, y;
 
 	/**
@@ -73,13 +75,13 @@ public class BingoCard extends JComponent
 		int heightSize = widthSize;
 
 		height = heightSize * 3;
-		height += this.BUFFER;
+		height += BingoCard.BUFFER;
 
 		setBounds(x, y, width, height);
 		this.squares = new BingoSquare[9 * 3];
 
 		int indentX = 0;
-		int indentY = this.BUFFER;
+		int indentY = BingoCard.BUFFER;
 
 		for (int i = 0; i < squares.length; i++)
 		{
@@ -119,8 +121,10 @@ public class BingoCard extends JComponent
 				row--;
 			setNumber(row, info.getNumbers()[i]);
 		}
-		
-		setFont(FontUtil.getFont(info.getUUID().toString(),this, new Vector2I(getWidth()-2, BUFFER)));
+
+		this.headerFont = FontUtil.getFont(info.getUUID().toString(), this,
+				new Vector2I((getWidth() - 10) - getWidth() / 5, BUFFER));
+		this.gridFont = FontUtil.getFont("90", this, new Vector2I((getWidth() / 9) - 15, (getWidth() / 9) - 15));
 	}
 
 	/**
@@ -153,8 +157,9 @@ public class BingoCard extends JComponent
 		{
 			if (this.purchaseOverlay == null)
 			{
-				this.purchaseOverlay = new PurchaseOverlay(this, set.getColour("selected").applyTransparency(80), 0,
-						this.BUFFER, getWidth(), getHeight() - this.BUFFER);
+				this.purchaseOverlay = new PurchaseOverlay(this, set.getColour("selected").applyTransparency(150), 0,
+						BingoCard.BUFFER, getWidth(), getHeight() - BingoCard.BUFFER);
+				this.setForeground(set.getColour("selected").getTextColour());
 				this.purchaseOverlay.setup();
 			}
 
@@ -187,20 +192,20 @@ public class BingoCard extends JComponent
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-		setBackground((isPurchased() ? set.getColour("purchased")
-				: (isSelected() ? set.getColour("selected") : set.getColour("header"))).toColour());
+		setBackground(getCurrentColour().toColour());
 
 		g2.setColor(getBackground());
 		g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
 
-		// TODO Store the font in a class variable. More efficent than creating a
-		// variable every draw call.
-		Font font = new Font("Calibri", Font.PLAIN, 25);
-		g2.setFont(font);
-
 		paintTop(g2);
 		paintGrid(g2);
 		super.paintComponent(g);
+	}
+
+	private UIColour getCurrentColour()
+	{
+		return (isPurchased() ? set.getColour("purchased")
+				: (isSelected() ? set.getColour("selected") : set.getColour("header")));
 	}
 
 	/**
@@ -214,14 +219,31 @@ public class BingoCard extends JComponent
 		if (getUUID() == null)
 			return;
 
-		// TODO Store the font in a class variable. More efficent than creating a
-		// variable every draw call.
+//		g2.setColor(getCurrentColour().darken(0.25).toColour());
+//		g2.setStroke(new BasicStroke(4));
+//		g2.drawLine(0, BUFFER-2, getWidth(), BUFFER-2);
+		g2.setFont(headerFont);
+		drawUUID(g2);
+		drawInfoPill(g2);
+	}
 
-		g2.setFont(getFont());
+	private void drawUUID(Graphics2D g2)
+	{
 		g2.setColor(Color.WHITE);
-
 		Dimension dim = FontUtil.getFontSize(getFontMetrics(getFont()), getUUID().toString(), 0, 0);
-		g2.drawString(getUUID().toString(), getWidth() / 2 - (dim.width / 2), this.BUFFER / 2 + dim.height / 4);
+		int xPos = ((getWidth()) - (getWidth() / 5)) / 2 - (dim.width / 2) - 10;
+		g2.drawString(getUUID().toString(), xPos, BingoCard.BUFFER / 2 + dim.height / 4);
+	}
+
+	private void drawInfoPill(Graphics2D g2)
+	{
+		g2.setColor(Color.BLACK);
+		g2.fillRoundRect(getWidth() - getWidth() / 5 - 5, BingoCard.BUFFER / 2 - (BingoCard.BUFFER - 8) / 2,
+				getWidth() / 5, BingoCard.BUFFER - 8, 10, 10);
+		Dimension textDimension = FontUtil.getFontSize(getFontMetrics(getFont()), "WTG", 0, 0);
+		g2.setColor(Color.white);
+		g2.drawString("WTG", (getWidth() - 5) - ((getWidth() / 5) / 2) - (textDimension.width / 2),
+				BingoCard.BUFFER / 2 + textDimension.height / 4);
 	}
 
 	/**
@@ -234,6 +256,7 @@ public class BingoCard extends JComponent
 	 */
 	private void paintGrid(Graphics2D g2)
 	{
+		g2.setFont(gridFont);
 		for (int i = 0; i < this.squares.length; i++)
 		{
 			BingoSquare square = this.squares[i];
@@ -295,7 +318,7 @@ public class BingoCard extends JComponent
 	 */
 	private Color getColour(int n)
 	{
-		return (n % 2 == 0 ? set.getColour("secondary") : set.getColour("primary")).toColour();
+		return (n % 2 == 0 ? set.getColour("primary").darken(0.15) : set.getColour("primary")).toColour();
 	}
 
 	/**
