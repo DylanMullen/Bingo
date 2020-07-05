@@ -46,7 +46,7 @@ public class InformationComponent extends JComponent
 	 */
 	public InformationComponent(String headerText, String infoText, Vector2I pos, Vector2I dim, UIColour colour)
 	{
-		setBounds(pos.getX(), pos.getY(), pos.getX(), pos.getY());
+		setBounds(pos.getX(), pos.getY(), dim.getX(), dim.getY());
 		this.header = headerText;
 		this.info = infoText;
 		this.textColour = colour.getTextColour();

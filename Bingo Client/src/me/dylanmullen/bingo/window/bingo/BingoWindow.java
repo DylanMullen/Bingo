@@ -118,13 +118,13 @@ public class BingoWindow extends Window
 		container.setCurrentPanel(panel);
 	}
 
-	@SuppressWarnings("unchecked")
 	public void showDebug()
 	{
 		GamePanel gp = new GamePanel(UUID.randomUUID(), 0, 0, container.getWidth(), container.getHeight());
 		gp.setup();
 		gp.create();
 		gp.repaint();
+		gp.getHeaderComponent().debug();
 		container.setCurrentPanel(gp);
 	}
 

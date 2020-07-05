@@ -1,7 +1,8 @@
-package me.dylanmullen.bingo.game.components;
+package me.dylanmullen.bingo.game.header;
 
 import me.dylanmullen.bingo.core.BingoApp;
-import me.dylanmullen.bingo.gfx.ui.colour.UIColour;
+import me.dylanmullen.bingo.game.components.HeaderInfoPanel;
+import me.dylanmullen.bingo.game.header.numbers.NumbersCalledComponent;
 import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
 
 public class HeaderPanel extends UIPanel
@@ -10,7 +11,7 @@ public class HeaderPanel extends UIPanel
 	private static final long serialVersionUID = 1154494652172939716L;
 
 	private NumbersCalledComponent numbersComp;
-	private InfoPanel info;
+	private HeaderInfoPanel info;
 
 	public HeaderPanel(int x, int y, int width, int height)
 	{
@@ -24,11 +25,11 @@ public class HeaderPanel extends UIPanel
 		setBackground(BingoApp.getInstance().getColourManager().getSet("frame").getColour("header").toColour());
 		setLayout(null);
 
-		this.numbersComp = new NumbersCalledComponent(0, 0, getWidth(), getHeight());
+		this.numbersComp = new NumbersCalledComponent(getWidth() / 4, 0, (getWidth() / 4) * 3, getHeight());
 		numbersComp.setup();
 		numbersComp.create();
 
-		this.info = new InfoPanel(getWidth() / 4, 0, getWidth() / 2, getHeight());
+		this.info = new HeaderInfoPanel(0, 0, getWidth() / 4, getHeight());
 		info.setup();
 		info.create();
 		info.setText("Join A Game!");
@@ -39,19 +40,26 @@ public class HeaderPanel extends UIPanel
 	{
 		add(info);
 	}
-	
+
 	public void showNumberComp()
 	{
-		info.setVisible(false);
-		info.repaint();
-		remove(info);
 		numbersComp.setVisible(true);
 		numbersComp.repaint();
 		numbersComp.setDisplaying(true);
 		add(numbersComp);
 		repaint();
 	}
-	
+
+	public void debug()
+	{
+		showNumberComp();
+		numbersComp.update(50);
+		numbersComp.update(60);
+//		numbersComp.update(70);
+		numbersComp.update(80);
+		numbersComp.update(90);
+	}
+
 	public boolean isShowingNumbers()
 	{
 		return getNumbersComp().isDisplaying();
@@ -61,8 +69,8 @@ public class HeaderPanel extends UIPanel
 	{
 		return numbersComp;
 	}
-	
-	public InfoPanel getInfo()
+
+	public HeaderInfoPanel getInfo()
 	{
 		return info;
 	}

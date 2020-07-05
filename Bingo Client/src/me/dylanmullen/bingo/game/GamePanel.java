@@ -5,7 +5,7 @@ import java.util.UUID;
 import me.dylanmullen.bingo.core.BingoApp;
 import me.dylanmullen.bingo.game.chat.ChatPanel;
 import me.dylanmullen.bingo.game.components.GameComponent;
-import me.dylanmullen.bingo.game.components.HeaderPanel;
+import me.dylanmullen.bingo.game.header.HeaderPanel;
 import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
 
 /**
