@@ -1,5 +1,7 @@
 package me.dylanmullen.bingo.game.chat;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.UUID;
 
 import javax.swing.JScrollPane;
@@ -35,6 +37,7 @@ public class ChatPanel extends UIPanel
 
 		int inputHeight = getHeight() / 10;
 		JScrollPane scroll = new JScrollPane();
+		scroll.setBackground(Color.red);
 		this.chatMessagesComponent = new ChatMessagesComponent(scroll, 0, 0, getWidth(),
 				getHeight() - inputHeight - 20);
 		scroll.setViewportView(getChatMessagesComponent());
@@ -54,8 +57,6 @@ public class ChatPanel extends UIPanel
 	{
 		add(getChatMessagesComponent().getScrollPanel());
 		add(getChatInputComponent());
-		for (int i = 0; i < 20; i++)
-			recieveMessage(1, "TwixDylan", "User", "Test");
 	}
 
 	public void recieveMessage(long timestamp, String username, String usergroup, String message)
@@ -65,9 +66,11 @@ public class ChatPanel extends UIPanel
 
 	public void sendMessage(String message)
 	{
-		if (message.length() > 128 || message.length() == 0)
-			return;
-		PacketHandler.sendPacket(constructPacket(message), null);
+//		if (message.length() > 128 || message.length() == 0)
+//			return;
+//		PacketHandler.sendPacket(constructPacket(message), null);
+		for (int i = 0; i < 5; i++)
+			recieveMessage(System.currentTimeMillis(), "TwixDylan", "Admin", message);
 	}
 
 	@SuppressWarnings("unchecked")

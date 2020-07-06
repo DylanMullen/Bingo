@@ -1,7 +1,6 @@
 package me.dylanmullen.bingo.game.header;
 
 import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -74,13 +73,13 @@ public class NumbersCalledComponent extends UIPanel
 	{
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		drawBubbles(g2);
 	}
 
 	private void drawBubbles(Graphics2D g2)
 	{
 		int indentX = getWidth() / 2 - (((dimension * 4)) + (dimension + 20) + 20) / 2;
-		int total = (((dimension * 4)) + (dimension + 20)) + 20;
 		int indentY = getHeight() / 2 - (dimension / 2);
 		for (int i = 0; i < numbers.length; i++)
 		{

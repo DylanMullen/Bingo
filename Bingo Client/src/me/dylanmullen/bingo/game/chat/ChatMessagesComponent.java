@@ -16,6 +16,8 @@ import javax.swing.Scrollable;
 import javax.swing.SwingConstants;
 
 import me.dylanmullen.bingo.core.BingoApp;
+import me.dylanmullen.bingo.gfx.ui.colour.UIColour;
+import me.dylanmullen.bingo.gfx.ui.colour.UIColourSet;
 
 /**
  * @author Dylan
@@ -31,6 +33,7 @@ public class ChatMessagesComponent extends JComponent implements Scrollable, Mou
 	private List<ChatMessage> chatMessages;
 
 	private boolean updateScrollbar;
+	private UIColourSet set;
 
 	private Font font = new Font("Calibri", Font.PLAIN, 15);
 	private int maxUnitIncrement = 20;
@@ -42,11 +45,18 @@ public class ChatMessagesComponent extends JComponent implements Scrollable, Mou
 		this.scrollPanel = scroll;
 		this.chatMessages = new ArrayList<ChatMessage>();
 		this.updateScrollbar = false;
+		this.set = BingoApp.getInstance().getColourManager().getSet("chat");
 	}
 
 	public void addMessage(String displayName, String userGroup, String mes)
 	{
-		ChatMessage message = new ChatMessage(0, indentY, getWidth());
+		UIColour colour = null;
+		if (chatMessages.size() % 2 == 0)
+			colour = set.getColour("secondary");
+		else
+			colour = set.getColour("primary");
+		ChatMessage message = new ChatMessage(0, indentY,
+				getWidth() - getScrollPanel().getVerticalScrollBar().getWidth(), colour);
 		message.setMessage(mes);
 		message.setUsername(displayName);
 		message.setUserGroup(userGroup);
@@ -55,7 +65,12 @@ public class ChatMessagesComponent extends JComponent implements Scrollable, Mou
 		indentY += message.getHeight();
 		chatMessages.add(message);
 		add(message);
-		repaint();
+		if (indentY > getHeight())
+		{
+			resizeMessages();
+			repaint();
+		} else
+			repaint();
 	}
 
 	@Override
@@ -88,6 +103,15 @@ public class ChatMessagesComponent extends JComponent implements Scrollable, Mou
 			getScrollPanel().getVerticalScrollBar().setValue(height);
 			this.updateScrollbar = false;
 		}
+	}
+
+	private void resizeMessages()
+	{
+		chatMessages.parallelStream().forEach(e ->
+		{
+			if (e.getWidth() != getWidth() - 15)
+				e.resizeMessage(getWidth() - 15);
+		});
 	}
 
 	private int getItemHeights()
