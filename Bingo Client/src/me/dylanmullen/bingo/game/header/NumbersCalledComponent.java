@@ -1,6 +1,9 @@
-package me.dylanmullen.bingo.game.header.numbers;
+package me.dylanmullen.bingo.game.header;
 
 import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -11,15 +14,24 @@ import me.dylanmullen.bingo.core.BingoApp;
 import me.dylanmullen.bingo.gfx.ui.colour.UIColour;
 import me.dylanmullen.bingo.gfx.ui.colour.UIColourSet;
 import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
+import me.dylanmullen.bingo.util.FontUtil;
+import me.dylanmullen.bingo.util.Vector2I;
 
 public class NumbersCalledComponent extends UIPanel
 {
 
 	private static final long serialVersionUID = 4164051545883107133L;
 
-	private boolean displaying = false;
 	private UIColourSet colours;
 	private UIColour current;
+
+	private int[] numbers;
+	private int dimension;
+
+	private Font primaryFont;
+	private Font secondaryFont;
+
+	private boolean displaying = false;
 
 	public NumbersCalledComponent(int x, int y, int width, int height)
 	{
@@ -35,14 +47,16 @@ public class NumbersCalledComponent extends UIPanel
 		});
 	}
 
-	private int[] numbers;
-
 	@Override
 	public void setup()
 	{
 		setBounds(x, y, width, height);
 		setLayout(null);
 		setOpaque(false);
+		this.dimension = (getHeight() - 10) / 4 * 3;
+		this.primaryFont = FontUtil.getFont("90", this, new Vector2I((dimension + 20) - 30, (dimension + 20) - 30));
+		this.secondaryFont = FontUtil.getFont("90", this, new Vector2I(dimension - 30, dimension - 30));
+
 		this.numbers = new int[5];
 		for (int i = 0; i < numbers.length; i++)
 		{
@@ -65,24 +79,41 @@ public class NumbersCalledComponent extends UIPanel
 
 	private void drawBubbles(Graphics2D g2)
 	{
-		int dim = (getHeight() - 10) / 4 * 3;
-		int indentX = getWidth() / 2 - (((dim * 4) / 2) + (dim + 10));
-		int indentY = getHeight() / 2 - (dim / 2);
+		int indentX = getWidth() / 2 - (((dimension * 4)) + (dimension + 20) + 20) / 2;
+		int total = (((dimension * 4)) + (dimension + 20)) + 20;
+		int indentY = getHeight() / 2 - (dimension / 2);
 		for (int i = 0; i < numbers.length; i++)
 		{
 			if (numbers[i] == -1)
 				continue;
 			setColour(numbers[i]);
+			int currentDimension = dimension + (i == 0 ? 20 : 0);
+
 			g2.setColor(current.toColour());
-			g2.fillOval(indentX, indentY - (i == 0 ? 10 : 0), dim + (i == 0 ? 20 : 0), dim + (i == 0 ? 20 : 0));
+			g2.fillOval(indentX, indentY - (i == 0 ? 10 : 0), currentDimension, currentDimension);
 			g2.setStroke(new BasicStroke(2));
 			g2.setColor(current.darken(0.15).toColour());
-			g2.drawOval(indentX, indentY - (i == 0 ? 10 : 0), dim + (i == 0 ? 20 : 0), dim + (i == 0 ? 20 : 0));
+			g2.drawOval(indentX, indentY - (i == 0 ? 10 : 0), currentDimension, currentDimension);
 
 			g2.setColor(current.getTextColour());
 
-			indentX += dim + (i == 0 ? 20 : 0) + 5;
+			Dimension dim = setFont(numbers[i], i, g2);
+			g2.drawString(numbers[i] + "", (indentX + (currentDimension / 2)) - dim.width / 2,
+					((indentY - (i == 0 ? 10 : 0)) + ((currentDimension) / 2)) + dim.height / 4);
+
+			indentX += currentDimension + 5;
 		}
+
+	}
+
+	private Dimension setFont(int number, int index, Graphics2D g2)
+	{
+		if (index == 0)
+			g2.setFont(primaryFont);
+		else
+			g2.setFont(secondaryFont);
+
+		return FontUtil.getFontSize(getFontMetrics(g2.getFont()), number + "", 0, 0);
 	}
 
 	private void setColour(int number)
@@ -90,7 +121,6 @@ public class NumbersCalledComponent extends UIPanel
 		int temp = number / 10;
 		if (temp == 9)
 			temp--;
-		System.out.println(number);
 		this.current = colours.getColour("ball-" + temp);
 	}
 

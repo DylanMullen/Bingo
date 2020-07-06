@@ -1,8 +1,8 @@
 package me.dylanmullen.bingo.game.header;
 
+import java.awt.Graphics;
+
 import me.dylanmullen.bingo.core.BingoApp;
-import me.dylanmullen.bingo.game.components.HeaderInfoPanel;
-import me.dylanmullen.bingo.game.header.numbers.NumbersCalledComponent;
 import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
 
 public class HeaderPanel extends UIPanel
@@ -23,13 +23,17 @@ public class HeaderPanel extends UIPanel
 	{
 		setBounds(x, y, width, height);
 		setBackground(BingoApp.getInstance().getColourManager().getSet("frame").getColour("header").toColour());
+		setForeground(
+				BingoApp.getInstance().getColourManager().getSet("frame").getColour("header").darken(0.15).toColour());
 		setLayout(null);
 
-		this.numbersComp = new NumbersCalledComponent(getWidth() / 4, 0, (getWidth() / 4) * 3, getHeight());
+		this.numbersComp = new NumbersCalledComponent(0, 0, (int) ((getWidth() / 4) * 2.5), getHeight() - 10);
 		numbersComp.setup();
 		numbersComp.create();
 
-		this.info = new HeaderInfoPanel(0, 0, getWidth() / 4, getHeight());
+		this.info = new HeaderInfoPanel((int) ((getWidth() / 4) * 2.5), 0, getWidth() - (int) ((getWidth() / 4) * 2.5),
+				getHeight());
+		info.setBackground(getForeground());
 		info.setup();
 		info.create();
 		info.setText("Join A Game!");
@@ -39,6 +43,14 @@ public class HeaderPanel extends UIPanel
 	public void create()
 	{
 		add(info);
+	}
+
+	@Override
+	protected void paintComponent(Graphics g)
+	{
+		super.paintComponent(g);
+		g.setColor(getForeground());
+		g.fillRect(0, getHeight() - 10, getWidth(), 10);
 	}
 
 	public void showNumberComp()
@@ -55,7 +67,7 @@ public class HeaderPanel extends UIPanel
 		showNumberComp();
 		numbersComp.update(50);
 		numbersComp.update(60);
-//		numbersComp.update(70);
+		numbersComp.update(70);
 		numbersComp.update(80);
 		numbersComp.update(90);
 	}
