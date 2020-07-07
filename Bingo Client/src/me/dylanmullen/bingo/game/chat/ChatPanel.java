@@ -1,7 +1,6 @@
 package me.dylanmullen.bingo.game.chat;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.util.UUID;
 
 import javax.swing.JScrollPane;
@@ -66,11 +65,9 @@ public class ChatPanel extends UIPanel
 
 	public void sendMessage(String message)
 	{
-//		if (message.length() > 128 || message.length() == 0)
-//			return;
-//		PacketHandler.sendPacket(constructPacket(message), null);
-		for (int i = 0; i < 5; i++)
-			recieveMessage(System.currentTimeMillis(), "TwixDylan", "Admin", message);
+		if (message.length() > 128 || message.length() == 0)
+			return;
+		PacketHandler.sendPacket(constructPacket(message), null);
 	}
 
 	@SuppressWarnings("unchecked")

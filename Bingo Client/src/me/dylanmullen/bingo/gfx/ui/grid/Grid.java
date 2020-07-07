@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import me.dylanmullen.bingo.util.Vector2I;
+
 /**
  * @author Dylan
  * @date 19 Jun 2020
@@ -110,11 +112,25 @@ public class Grid
 			updateBounds(i, valueSize);
 		}
 	}
-	
-	public void updateWidth(int width)
+
+	public Grid updatePosition(Vector2I pos)
+	{
+		this.x = pos.getX();
+		this.y = pos.getY();
+		return this;
+	}
+
+	public int getTotalHeight()
+	{
+		int height = getGridSettings().getItemHeight(getGridItems().size()) * getGridItems().size();
+		height += getGridSettings().getGap();
+		return height;
+	}
+
+	public Grid updateWidth(int width)
 	{
 		getGridSettings().setWidth(width);
-		updatePositions();
+		return this;
 	}
 
 	/**
@@ -170,5 +186,12 @@ public class Grid
 	public int getY()
 	{
 		return this.y;
+	}
+
+	public int getTotalWidth()
+	{
+		int width = getGridSettings().getItemWidth() * getGridSettings().getCols();
+		width += (getGridSettings().getGap() * 2) * getGridSettings().getCols();
+		return width;
 	}
 }

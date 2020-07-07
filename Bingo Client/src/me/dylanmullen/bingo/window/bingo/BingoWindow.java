@@ -62,9 +62,8 @@ public class BingoWindow extends Window
 		this.container = new Container(getSideBar().getWidth(), getTopMenu().getHeight(),
 				getWidth() - getSideBar().getWidth(), getHeight() - getTopMenu().getHeight());
 		add(container);
-		showDebug();
-//		showHomePanel();
-//		showBingoCloud();
+//		showDebug();
+		showHomePanel();
 	}
 
 	/**
@@ -94,10 +93,8 @@ public class BingoWindow extends Window
 	public void showHomePanel()
 	{
 		if (getHomePanel() == null)
-		{
 			this.home = new HomePanel(this, getWidth() / 4, getHeight() / 10, (getWidth() / 4 * 3),
 					getHeight() - topMenu.getHeight());
-		}
 //		getSideBar().getHomeButton().setActive(true);
 		container.setScrollCurrentPanel(getHomePanel());
 	}
@@ -124,7 +121,6 @@ public class BingoWindow extends Window
 		gp.setup();
 		gp.create();
 		gp.repaint();
-		gp.getHeaderComponent().debug();
 		container.setCurrentPanel(gp);
 	}
 

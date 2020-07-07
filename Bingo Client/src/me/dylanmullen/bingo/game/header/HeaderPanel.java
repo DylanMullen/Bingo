@@ -62,16 +62,6 @@ public class HeaderPanel extends UIPanel
 		repaint();
 	}
 
-	public void debug()
-	{
-		showNumberComp();
-		numbersComp.update(50);
-		numbersComp.update(60);
-		numbersComp.update(70);
-		numbersComp.update(80);
-		numbersComp.update(90);
-	}
-
 	public boolean isShowingNumbers()
 	{
 		return getNumbersComp().isDisplaying();

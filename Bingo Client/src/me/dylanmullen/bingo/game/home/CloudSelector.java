@@ -102,14 +102,7 @@ public class CloudSelector extends JComponent
 	@SuppressWarnings("unchecked")
 	private void setup()
 	{
-		this.bannerHeight = (int) (((getHeight() - (this.OFFSET * 2)) / 3) * 2);
-		this.priceBubbleHeight = (int) (((getWidth() - (this.OFFSET * 2)) / 4.5) - this.GAP * 2);
-		this.buttonHeight = getHeight() - bannerHeight - (this.OFFSET * 3);
-
-		this.textFont = new Font("Calibri", Font.PLAIN, 25);
-		this.priceFont = FontUtil.getFont((int) (price * 100) + "", this,
-				new Vector2I(this.priceBubbleHeight - 15, this.priceBubbleHeight - 15));
-
+		setupBoundaries();
 		this.joinButton = new RoundedButton("Join Now!",
 				new ButtonInformation(new Vector2I(this.OFFSET * 2, this.OFFSET + this.GAP * 2 + this.bannerHeight),
 						new Vector2I(getWidth() - (this.OFFSET * 4), this.buttonHeight), () ->
@@ -131,6 +124,36 @@ public class CloudSelector extends JComponent
 		getJoinButton().updateColours(set.getColour("join-bg"), set.getColour("join-bg").darken(0.05));
 	}
 
+	private void setupBoundaries()
+	{
+		this.bannerHeight = (int) (((getHeight() - (this.OFFSET * 2)) / 3) * 2);
+		this.priceBubbleHeight = (int) (((getWidth() - (this.OFFSET * 2)) / 4.5) - this.GAP * 2);
+		this.buttonHeight = getHeight() - bannerHeight - (this.OFFSET * 3);
+
+		this.textFont = new Font("Calibri", Font.PLAIN, 25);
+		this.priceFont = FontUtil.getFont((int) (price * 100) + "", this,
+				new Vector2I(this.priceBubbleHeight - 15, this.priceBubbleHeight - 15));
+
+		if (joinButton != null)
+			updateButtonBounds();
+	}
+
+	private void updateButtonBounds()
+	{
+		joinButton.getInformation().updateBounds(
+				new Vector2I(this.OFFSET * 2, this.OFFSET + this.GAP * 2 + this.bannerHeight),
+				new Vector2I(getWidth() - (this.OFFSET * 4), this.buttonHeight));
+		joinButton.updateBounds();
+	}
+
+	@Override
+	public void setBounds(int x, int y, int width, int height)
+	{
+		super.setBounds(x, y, width, height);
+		setupBoundaries();
+		repaint();
+	}
+
 	/**
 	 * Creates the Game Selector.
 	 */
@@ -138,18 +161,6 @@ public class CloudSelector extends JComponent
 	{
 		setup();
 		add(getJoinButton());
-	}
-
-	/**
-	 * Updates the bounds of the Game Selector and the contents within the Game
-	 * Selector.
-	 */
-	public void updateBounds()
-	{
-		setup();
-		getJoinButton().setBounds(this.OFFSET * 2, this.OFFSET + this.GAP * 2 + this.bannerHeight,
-				getWidth() - (this.OFFSET * 4), this.buttonHeight);
-		getJoinButton().updateBounds();
 		repaint();
 	}
 
@@ -158,21 +169,21 @@ public class CloudSelector extends JComponent
 	{
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
 		drawBody(g2);
 		drawImageBanner(g2);
 		drawNameBanner(g2);
 		drawPriceBubble(g2);
 		super.paintComponent(g);
+
 	}
 
 	private void drawBody(Graphics2D g2)
 	{
 		g2.setColor(getBackground());
-		g2.fillRoundRect(2, 2, getWidth() - 4, getHeight() - 4, 15, 15);
+		g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
 		g2.setColor(getForeground());
-		g2.setStroke(new BasicStroke(2));
-		g2.drawRoundRect(2, 2, getWidth() - 4, getHeight() - 4, 15, 15);
+		g2.setStroke(new BasicStroke(4, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL));
+		g2.drawRoundRect(1, 1, getWidth() - 3, getHeight() - 3, 15, 15);
 		g2.setStroke(new BasicStroke());
 	}
 

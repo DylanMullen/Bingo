@@ -1,12 +1,8 @@
 package me.dylanmullen.bingo.game.components;
 
 import java.awt.Graphics;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
-
-import org.json.simple.JSONArray;
 
 import me.dylanmullen.bingo.core.BingoApp;
 import me.dylanmullen.bingo.game.cards.BingoCardGroup;
@@ -38,16 +34,6 @@ public class GameComponent extends UIPanel
 	@Override
 	public void create()
 	{
-		List<CardInformation> cards = new ArrayList<CardInformation>();
-
-		JSONArray numbers = new JSONArray();
-		Random rand = new Random();
-		for (int i = 0; i < 15; i++)
-			numbers.add(i * (rand.nextInt(8 - 1) + 1));
-
-		for (int i = 0; i < 6; i++)
-			cards.add(new CardInformation(UUID.randomUUID(), numbers));
-		createCardGroup(UUID.randomUUID(), cards);
 	}
 
 	@Override

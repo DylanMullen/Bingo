@@ -4,8 +4,6 @@ import java.awt.BasicStroke;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -44,15 +42,6 @@ public class BingoCloud extends UIPanel
 		this.set = BingoApp.getInstance().getColourManager().getSet("frame");
 		setup();
 		setupDropletSelectors(droplets);
-
-		addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mouseClicked(MouseEvent e)
-			{
-				repaint();
-			}
-		});
 
 	}
 
