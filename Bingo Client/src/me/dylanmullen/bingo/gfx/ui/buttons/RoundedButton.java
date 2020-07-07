@@ -1,5 +1,6 @@
 package me.dylanmullen.bingo.gfx.ui.buttons;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -23,6 +24,11 @@ public class RoundedButton extends UIButton
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2.setColor(getBackground());
 		g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
+
+		g2.setColor(getInformation().getHoverColour().toColour());
+		g2.setStroke(new BasicStroke(4));
+		g2.drawRoundRect(1, 1, getWidth() - 3, getHeight() - 3, 15, 15);
+
 		drawText(g2, 0, (getInformation().getMainColour() != null ? getInformation().getMainColour().getTextColour()
 				: Color.BLACK));
 	}
