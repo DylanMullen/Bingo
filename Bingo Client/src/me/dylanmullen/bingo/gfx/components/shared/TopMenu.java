@@ -42,7 +42,7 @@ public class TopMenu extends UIPanel
 		setBackground(set.getColour("top-menu").toColour());
 		UIColour colour = BingoApp.getInstance().getColourManager().getSet("buttons").getColour("close");
 		close = new ImageButton(
-				BingoApp.getInstance().getAtlastManager().getAtlas("uiAtlas", 42).getImage(0, 1, Color.BLACK,
+				BingoApp.getInstance().getAtlastManager().getAtlas("uiAtlas", 64).getImage(4, 1, Color.WHITE,
 						colour.toColour()),
 				ImageButtonType.CENTER, new ButtonInformation(new Vector2I(getWidth() - (getWidth() / 8), 0),
 						new Vector2I(getWidth() / 8, getHeight()), () ->

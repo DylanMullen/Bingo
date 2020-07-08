@@ -64,15 +64,15 @@ public class DropletSelector extends JComponent
 		{
 			body = new Polygon();
 			body.addPoint(0, 0);
-			body.addPoint(joinButton.getX(), 0);
-			body.addPoint(joinButton.getX() + 10, getHeight());
+			body.addPoint(joinButton.getX() + 10, 0);
+			body.addPoint(joinButton.getX(), getHeight());
 			body.addPoint(0, getHeight());
 
 			buttonShape = new Polygon();
-			buttonShape.addPoint(0, 0);
+			buttonShape.addPoint(10, 0);
 			buttonShape.addPoint(getWidth(), 0);
 			buttonShape.addPoint(getWidth(), getHeight());
-			buttonShape.addPoint(10, getHeight());
+			buttonShape.addPoint(0, getHeight());
 
 			joinButton.getInformation().updateBounds(new Vector2I(getWidth() - 100, 0), new Vector2I(100, getHeight()));
 			joinButton.setCustomShape(buttonShape);
@@ -137,6 +137,11 @@ public class DropletSelector extends JComponent
 		g2.setColor(Color.white);
 		g2.setStroke(new BasicStroke(2));
 		g2.drawLine(body.xpoints[1], 0, body.xpoints[2], getHeight());
+	}
+
+	private void drawPills(Graphics2D g2)
+	{
+		g2.setColor(Color.BLACK);
 	}
 
 	private void drawInstanceString(Graphics2D g2)

@@ -3,6 +3,7 @@ package me.dylanmullen.bingo.gfx.ui.buttons;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
@@ -30,6 +31,8 @@ public abstract class UIButton extends JComponent
 
 	private boolean hovered;
 	private boolean focused;
+	
+	private Polygon customShape;
 
 	public UIButton(String text, ButtonInformation information)
 	{
@@ -208,7 +211,17 @@ public abstract class UIButton extends JComponent
 	{
 		return hovered;
 	}
-
+	
+	public Polygon getCustomShape()
+	{
+		return customShape;
+	}
+	
+	public void setCustomShape(Polygon customShape)
+	{
+		this.customShape = customShape;
+	}
+	
 	public void setActive(boolean active)
 	{
 		this.active = active;

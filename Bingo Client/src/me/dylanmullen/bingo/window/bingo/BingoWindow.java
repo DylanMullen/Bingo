@@ -63,7 +63,8 @@ public class BingoWindow extends Window
 				getWidth() - getSideBar().getWidth(), getHeight() - getTopMenu().getHeight());
 		add(container);
 //		showDebug();
-		showHomePanel();
+//		showHomePanel();
+		showBingoCloud(UUID.randomUUID(), null);
 	}
 
 	/**

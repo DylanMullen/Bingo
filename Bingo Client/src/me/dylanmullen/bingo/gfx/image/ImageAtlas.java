@@ -2,6 +2,7 @@ package me.dylanmullen.bingo.gfx.image;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.io.IOException;
@@ -76,17 +77,35 @@ public class ImageAtlas
 	{
 		BufferedImage img = getSubImage(x, y);
 		BufferedImage temp = new BufferedImage(this.size, this.size, BufferedImage.TYPE_INT_ARGB);
+
 		Graphics2D g2 = temp.createGraphics();
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2.drawImage(img, 0, 0, this.size, this.size, null);
 		g2.dispose();
 
 		int[] initialBuf = ((DataBufferInt) temp.getRaster().getDataBuffer()).getData();
 
 		for (int i = 0; i < initialBuf.length; i++)
-			if (initialBuf[i] == colour.getRGB())
-				initialBuf[i] = toReplace.getRGB();
+		{
+			Color current = new Color(initialBuf[i], true);
+			if (isColour(current, colour))
+			{
+				initialBuf[i] = new Color(toReplace.getRed(), toReplace.getGreen(), toReplace.getBlue(), current.getAlpha()).getRGB();
+			}
+		}
 
 		return temp;
+	}
+
+	private boolean isColour(Color color, Color replace)
+	{
+		if (color.getRed() != replace.getRed())
+			return false;
+		else if (color.getGreen() != replace.getGreen())
+			return false;
+		else if (color.getBlue() != replace.getBlue())
+			return false;
+		return true;
 	}
 
 	/**

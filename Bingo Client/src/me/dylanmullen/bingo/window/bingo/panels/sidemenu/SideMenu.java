@@ -51,7 +51,7 @@ public class SideMenu extends UIPanel
 		super(x, y, width, height);
 		this.bingoWindow = bingoWindow;
 		this.set = BingoApp.getInstance().getColourManager().getSet("frame");
-		this.uiIcons = BingoApp.getInstance().getAtlastManager().getAtlas("uiAtlas", 42);
+		this.uiIcons = BingoApp.getInstance().getAtlastManager().getAtlas("uiAtlas", 64);
 		setBackground(set.getColour("side-primary").toColour());
 		setForeground(set.getColour("side-primary").lighten(0.35).toColour());
 	}
@@ -80,11 +80,11 @@ public class SideMenu extends UIPanel
 	private void createButtons()
 	{
 		ButtonContainer buttons = new ButtonContainer(0, getHeight() / 2, getWidth(), getHeight() / 2)
-				.setButtonHeight(60);
+				.setButtonHeight(64);
 
 		Color color = BingoApp.getInstance().getColourManager().getSet("buttons").getColour("sidepanel-active")
 				.toColour();
-		this.homeButton = new SidePanelButton("Home", uiIcons.getImage(1, 0, Color.BLACK, color),
+		this.homeButton = new SidePanelButton("Home", uiIcons.getImage(0, 0, Color.WHITE, color),
 				new ButtonInformation(null, null, () ->
 				{
 					if (!getHomeButton().isActive())
@@ -92,12 +92,12 @@ public class SideMenu extends UIPanel
 						getBingoWindow().showHomePanel();
 					}
 				}));
-		this.playButton = new SidePanelButton("Bingo", uiIcons.getImage(0, 0, Color.BLACK, color),
+		this.playButton = new SidePanelButton("Bingo", uiIcons.getImage(1, 0, Color.WHITE, color),
 				new ButtonInformation(null, null, () ->
 				{
 					System.out.println("Not implemented yet");
 				}));
-		this.settingsButton = new SidePanelButton("Settings", uiIcons.getImage(3, 0, Color.BLACK, color),
+		this.settingsButton = new SidePanelButton("Settings", uiIcons.getImage(2, 0, Color.WHITE, color),
 				new ButtonInformation(null, null, () ->
 				{
 					System.out.println("Not implemented yet");

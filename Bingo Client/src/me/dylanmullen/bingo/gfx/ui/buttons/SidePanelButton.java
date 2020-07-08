@@ -63,8 +63,11 @@ public class SidePanelButton extends UIButton
 	private void drawContent(Graphics2D g2)
 	{
 		if (image != null)
+		{
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			g2.drawImage(image, (getWidth() / 20) + 5, 5 + getHeight() / 2 - (getHeight() / 2), getHeight() - 10,
 					getHeight() - 10, null);
+		}
 		drawText(g2, (getWidth() / 20) + 5 + getHeight(), colours.getColour("sidepanel-active").toColour());
 	}
 

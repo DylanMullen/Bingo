@@ -10,7 +10,6 @@ public class Button extends UIButton
 {
 
 	private static final long serialVersionUID = 9115079720635266490L;
-	private Polygon customShape;
 
 	public Button(String text, ButtonInformation information)
 	{
@@ -20,12 +19,7 @@ public class Button extends UIButton
 	public Button(String text, Polygon customShape, ButtonInformation information)
 	{
 		super(text, information);
-		this.customShape = customShape;
-	}
-
-	public void setCustomShape(Polygon customShape)
-	{
-		this.customShape = customShape;
+		setCustomShape(customShape);
 	}
 
 	@Override
@@ -34,9 +28,9 @@ public class Button extends UIButton
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2.setColor(getBackground());
-		if (customShape != null)
+		if (getCustomShape() != null)
 		{
-			g2.fillPolygon(customShape);
+			g2.fillPolygon(getCustomShape());
 		} else
 			g2.fillRect(0, 0, getWidth(), getHeight());
 		drawText(g2, 0, (getInformation().getMainColour() != null ? getInformation().getMainColour().getTextColour()
