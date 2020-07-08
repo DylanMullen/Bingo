@@ -2,16 +2,19 @@ package me.dylanmullen.bingo.window.bingo.panels.sidemenu;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.util.List;
 
 import me.dylanmullen.bingo.core.BingoApp;
 import me.dylanmullen.bingo.gfx.image.ImageAtlas;
-import me.dylanmullen.bingo.gfx.ui.buttons.ButtonContainer;
 import me.dylanmullen.bingo.gfx.ui.buttons.ButtonInformation;
+import me.dylanmullen.bingo.gfx.ui.buttons.ButtonListener;
 import me.dylanmullen.bingo.gfx.ui.buttons.SidePanelButton;
 import me.dylanmullen.bingo.gfx.ui.colour.UIColourSet;
+import me.dylanmullen.bingo.gfx.ui.grid.Grid;
+import me.dylanmullen.bingo.gfx.ui.grid.GridItem;
+import me.dylanmullen.bingo.gfx.ui.grid.GridSettings;
 import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
+import me.dylanmullen.bingo.util.Vector2I;
 import me.dylanmullen.bingo.window.bingo.BingoWindow;
 
 /**
@@ -53,7 +56,7 @@ public class SideMenu extends UIPanel
 		this.set = BingoApp.getInstance().getColourManager().getSet("frame");
 		this.uiIcons = BingoApp.getInstance().getAtlastManager().getAtlas("uiAtlas", 64);
 		setBackground(set.getColour("side-primary").toColour());
-		setForeground(set.getColour("side-primary").lighten(0.35).toColour());
+		setForeground(set.getColour("side-primary").lighten(0.25).toColour());
 	}
 
 	@Override
@@ -74,54 +77,53 @@ public class SideMenu extends UIPanel
 		createButtons();
 	}
 
+	private Grid grid;
+
 	/**
 	 * Creates the side panel buttons and adds them to the Button Container.
 	 */
 	private void createButtons()
 	{
-		ButtonContainer buttons = new ButtonContainer(0, getHeight() / 2, getWidth(), getHeight() / 2)
-				.setButtonHeight(58);
+		grid = new Grid(new GridSettings(getWidth(), getHeight() / 2, -1, 1, 0), 0, getHeight() / 2);
+		grid.getGridSettings().setFixedRowHeight(58);
 
+		grid.addGridItem(new GridItem(createButton("Home", new Vector2I(0, 0), () ->
+		{
+			System.out.println("Not implemented");
+		}), 1, 1), 0);
+		grid.addGridItem(new GridItem(createButton("Bingo", new Vector2I(1, 0), () ->
+		{
+			System.out.println("Not implemented");
+		}), 1, 1), 1);
+		grid.addGridItem(new GridItem(createButton("Friends", new Vector2I(3, 0), () ->
+		{
+			System.out.println("Not implemented");
+		}), 1, 1), 2);
+		grid.addGridItem(new GridItem(createButton("Settings", new Vector2I(2, 0), () ->
+		{
+			System.out.println("Not implemented");
+		}), 1, 1), 3);
+		grid.addGridItem(new GridItem(createButton("Logout", new Vector2I(4, 1), () ->
+		{
+			System.out.println("Not implemented");
+		}), 1, 1), 4);
+
+		grid.updatePositions();
+		for (List<GridItem> item : grid.getGridItems().values())
+			item.stream().forEach(e -> {
+				SidePanelButton button = (SidePanelButton)e.getComponent();
+				button.setup();
+				add(button);	
+			});
+	}
+
+	private SidePanelButton createButton(String name, Vector2I textureCoords, ButtonListener listener)
+	{
 		Color color = BingoApp.getInstance().getColourManager().getSet("buttons").getColour("sidepanel-active")
 				.toColour();
-		this.homeButton = new SidePanelButton("Home", uiIcons.getImage(0, 0, Color.WHITE, color),
-				new ButtonInformation(null, null, () ->
-				{
-					if (!getHomeButton().isActive())
-					{
-						getBingoWindow().showHomePanel();
-					}
-				}));
-		this.playButton = new SidePanelButton("Bingo", uiIcons.getImage(1, 0, Color.WHITE, color),
-				new ButtonInformation(null, null, () ->
-				{
-					System.out.println("Not implemented yet");
-				}));
-		this.settingsButton = new SidePanelButton("Settings", uiIcons.getImage(2, 0, Color.WHITE, color),
-				new ButtonInformation(null, null, () ->
-				{
-					System.out.println("Not implemented yet");
-				}));
-
-		buttons.addButton(getHomeButton());
-		buttons.addButton(getPlayButton());
-		buttons.addButton(getSettingsButton());
-
-		buttons.populate();
-		getPlayButton().setup();
-		getHomeButton().setup();
-		getSettingsButton().setup();
-		buttons.setBackground(getBackground());
-		add(buttons);
-
-		addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mouseClicked(MouseEvent e)
-			{
-				repaint();
-			}
-		});
+		return new SidePanelButton(name,
+				uiIcons.getImage(textureCoords.getX(), textureCoords.getY(), Color.WHITE, color),
+				new ButtonInformation(null, null, listener));
 	}
 
 	@Override

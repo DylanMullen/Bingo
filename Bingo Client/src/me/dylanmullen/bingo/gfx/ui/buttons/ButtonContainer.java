@@ -72,10 +72,16 @@ public class ButtonContainer extends JComponent
 		for (UIButton btn : getButtons())
 		{
 			btn.updateBounds(new Vector2I(getX(), indent), new Vector2I(getWidth(), this.BTN_HEIGHT));
+			if (btn instanceof SidePanelButton)
+			{
+				System.out.println("seu");
+				((SidePanelButton) btn).setup();
+			}
 			indent += this.BTN_HEIGHT;
 			add(btn);
 		}
 	}
+
 	/**
 	 * Sets the button height for each of the buttons.
 	 * 
