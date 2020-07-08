@@ -9,6 +9,8 @@ import java.awt.image.BufferedImage;
 import me.dylanmullen.bingo.core.BingoApp;
 import me.dylanmullen.bingo.gfx.ui.buttons.ButtonInformation.TextPosition;
 import me.dylanmullen.bingo.gfx.ui.colour.UIColourSet;
+import me.dylanmullen.bingo.util.FontUtil;
+import me.dylanmullen.bingo.util.Vector2I;
 
 /**
  * @author Dylan
@@ -28,14 +30,15 @@ public class SidePanelButton extends UIButton
 		super(text, information);
 		this.image = icon;
 		this.colours = BingoApp.getInstance().getColourManager().getSet("buttons");
-		setup();
+//		setup();
 	}
 
-	protected void setup()
+	public void setup()
 	{
 		updateColours(BingoApp.getInstance().getColourManager().getSet("frame").getColour("side-primary").lighten(0.35),
 				BingoApp.getInstance().getColourManager().getSet("frame").getColour("side-primary").lighten(0.25));
-		setFont(new Font("Calibri", Font.BOLD, 25));
+		getInformation().setFont(FontUtil.getFont(getText(), this,
+				new Vector2I(getWidth() - ((getWidth() / 20) + 5 + getHeight()), getHeight()-30)));
 		getInformation().setTextPosition(TextPosition.LEFT);
 	}
 

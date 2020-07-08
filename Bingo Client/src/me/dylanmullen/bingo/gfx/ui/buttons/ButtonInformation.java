@@ -110,4 +110,9 @@ public class ButtonInformation
 		this.position = pos;
 		this.dimensions = dim;
 	}
+
+	public void setFont(Font font2)
+	{
+		this.font = font2;
+	}
 }

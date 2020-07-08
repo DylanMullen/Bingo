@@ -80,7 +80,7 @@ public class SideMenu extends UIPanel
 	private void createButtons()
 	{
 		ButtonContainer buttons = new ButtonContainer(0, getHeight() / 2, getWidth(), getHeight() / 2)
-				.setButtonHeight(64);
+				.setButtonHeight(58);
 
 		Color color = BingoApp.getInstance().getColourManager().getSet("buttons").getColour("sidepanel-active")
 				.toColour();
@@ -108,6 +108,9 @@ public class SideMenu extends UIPanel
 		buttons.addButton(getSettingsButton());
 
 		buttons.populate();
+		getPlayButton().setup();
+		getHomeButton().setup();
+		getSettingsButton().setup();
 		buttons.setBackground(getBackground());
 		add(buttons);
 
