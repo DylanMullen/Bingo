@@ -2,10 +2,8 @@ sidepanel-bg,94,62,107
 sidepanel-hover,117,73,127
 sidepanel-active,76,209,55
 close,198,25,25
-register-bg,94,153,186
-register-active,78,178,186
 login-bg,94,153,186
-login-active,78,178,186
+register-bg,94,153,186
 purchase-bg,251,197,49
 cancel-bg,229,112,0
 send,72,126,176

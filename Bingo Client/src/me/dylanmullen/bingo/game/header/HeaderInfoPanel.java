@@ -2,12 +2,12 @@ package me.dylanmullen.bingo.game.header;
 
 import me.dylanmullen.bingo.core.BingoApp;
 import me.dylanmullen.bingo.game.droplet.LineState;
+import me.dylanmullen.bingo.gfx.components.shared.InformationComponent;
 import me.dylanmullen.bingo.gfx.ui.colour.UIColour;
 import me.dylanmullen.bingo.gfx.ui.grid.Grid;
 import me.dylanmullen.bingo.gfx.ui.grid.GridItem;
 import me.dylanmullen.bingo.gfx.ui.grid.GridSettings;
 import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
-import me.dylanmullen.bingo.window.bingo.panels.sidemenu.InformationComponent;
 
 public class HeaderInfoPanel extends UIPanel
 {

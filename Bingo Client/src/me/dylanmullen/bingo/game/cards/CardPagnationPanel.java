@@ -39,15 +39,15 @@ public class CardPagnationPanel extends UIPanel
 	{
 
 		ImageButton left = new ImageButton(
-				BingoApp.getInstance().getAtlastManager().getAtlas("uiAtlas", 42).getSubImage(0, 0),
+				BingoApp.getInstance().getAtlastManager().getAtlas("uiAtlas", 64).getSubImage(0,1),
 				ImageButtonType.CENTER, new ButtonInformation(new Vector2I(10, getHeight() / 2 - (getHeight() - 15) / 2),
 						new Vector2I(getHeight() - 15, getHeight() - 15), () ->
 						{
-
+							
 						}));
 
 		ImageButton right = new ImageButton(
-				BingoApp.getInstance().getAtlastManager().getAtlas("uiAtlas", 42).getSubImage(0, 0),
+				BingoApp.getInstance().getAtlastManager().getAtlas("uiAtlas", 64).getSubImage(1, 1),
 				ImageButtonType.CENTER,
 				new ButtonInformation(
 						new Vector2I(getWidth() - ((getHeight() - 15) + 10),

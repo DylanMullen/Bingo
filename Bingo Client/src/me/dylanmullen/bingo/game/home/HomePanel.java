@@ -63,7 +63,7 @@ public class HomePanel extends UIPanel
 
 	private void sendCloudRetrivalPacket()
 	{
-		debug();
+//		debug();
 		Packet packet = PacketHandler.createPacket(17, new JSONObject());
 		PacketHandler.sendPacket(packet, new PacketCallback()
 		{

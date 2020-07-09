@@ -1,4 +1,4 @@
-package me.dylanmullen.bingo.window.bingo.panels.sidemenu;
+package me.dylanmullen.bingo.gfx.components.shared;
 
 import java.awt.Color;
 import java.awt.Dimension;

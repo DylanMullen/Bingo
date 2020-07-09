@@ -47,21 +47,21 @@ public class BingoCloud extends UIPanel
 
 	private void setupDropletSelectors(JSONObject droplets)
 	{
-		for (int i = 0; i < 4; i++)
-		{
-			DropletSelector selector = new DropletSelector(0, 0, width, 0);
-			selector.setupInformation(uuid, UUID.randomUUID(), i, i, 0);
-			dropletSelectors.add(selector);
-		}
-		int index = 1;
-//		for (Object key : droplets.keySet())
+//		for (int i = 0; i < 4; i++)
 //		{
 //			DropletSelector selector = new DropletSelector(0, 0, width, 0);
-//			selector.setupInformation(uuid, UUID.fromString((String) key), index,
-//					((Number) droplets.get(key)).intValue(), 0);
+//			selector.setupInformation(uuid, UUID.randomUUID(), i, i, 0);
 //			dropletSelectors.add(selector);
-//			index++;
 //		}
+		int index = 1;
+		for (Object key : droplets.keySet())
+		{
+			DropletSelector selector = new DropletSelector(0, 0, width, 0);
+			selector.setupInformation(uuid, UUID.fromString((String) key), index,
+					((Number) droplets.get(key)).intValue(), 0);
+			dropletSelectors.add(selector);
+			index++;
+		}
 		updateAllSelectors();
 	}
 

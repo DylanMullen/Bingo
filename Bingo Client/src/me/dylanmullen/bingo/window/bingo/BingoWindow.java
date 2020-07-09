@@ -63,8 +63,8 @@ public class BingoWindow extends Window
 				getWidth() - getSideBar().getWidth(), getHeight() - getTopMenu().getHeight());
 		add(container);
 //		showDebug();
-//		showHomePanel();
-		showBingoCloud(UUID.randomUUID(), null);
+		showHomePanel();
+//		showBingoCloud(UUID.randomUUID(), null);
 	}
 
 	/**
@@ -118,11 +118,6 @@ public class BingoWindow extends Window
 
 	public void showDebug()
 	{
-		GamePanel gp = new GamePanel(UUID.randomUUID(), 0, 0, container.getWidth(), container.getHeight());
-		gp.setup();
-		gp.create();
-		gp.repaint();
-		container.setCurrentPanel(gp);
 	}
 
 	/**

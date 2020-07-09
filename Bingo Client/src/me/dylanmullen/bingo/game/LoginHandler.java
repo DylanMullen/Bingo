@@ -3,12 +3,12 @@ package me.dylanmullen.bingo.game;
 import org.json.simple.JSONObject;
 
 import me.dylanmullen.bingo.gfx.components.login.InformationPanel;
-import me.dylanmullen.bingo.gfx.ui.input.UIPasswordField;
-import me.dylanmullen.bingo.gfx.ui.input.UITextField;
+import me.dylanmullen.bingo.gfx.ui.input.InputGroup;
 import me.dylanmullen.bingo.net.PacketHandler;
 import me.dylanmullen.bingo.net.callbacks.LoginCallback;
 import me.dylanmullen.bingo.net.packet.Packet;
-import me.dylanmullen.bingo.window.login.panels.LoginPanel;
+import me.dylanmullen.bingo.window.login.panels.LoginInformationContainer;
+import me.dylanmullen.bingo.window.login.panels.LoginContainer;
 
 /**
  * @author Dylan
@@ -37,18 +37,18 @@ public class LoginHandler
 	 * This will make a client side validation check before sending the request to
 	 * the server.
 	 * 
-	 * @param loginPanel The login panel which contains the fields.
+	 * @param login The login panel which contains the fields.
 	 */
-	public void handleLoginRequest(LoginPanel loginPanel)
+	public void handleLoginRequest(LoginInformationContainer login)
 	{
-		UITextField username = loginPanel.getLoginInfoComponent().getUsername();
-		UIPasswordField password = loginPanel.getLoginInfoComponent().getPassword();
+		InputGroup username = login.getUsername();
+		InputGroup password = login.getPassword();
 
-		if (!checkFields(loginPanel, username, password))
+		if (!checkFields(login.getLoginPanel(), username, password))
 			return;
 
-		PacketHandler.sendPacket(constructPacket(1,username.getText(), new String(password.getPassword())),
-				new LoginCallback(loginPanel.getWarningInfoComponent()));
+		PacketHandler.sendPacket(constructPacket(1, username.getText(), password.getText()),
+				new LoginCallback(login.getLoginPanel().getWarningInfoComponent()));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -69,29 +69,30 @@ public class LoginHandler
 	 * 
 	 * @param loginPanel The login panel which contains the fields.
 	 */
-	public void handleRegisterRequest(LoginPanel loginPanel)
+	public void handleRegisterRequest(LoginInformationContainer login)
 	{
-		UITextField username = loginPanel.getLoginInfoComponent().getUsername();
-		UIPasswordField password = loginPanel.getLoginInfoComponent().getPassword();
+		InputGroup username = login.getUsername();
+		InputGroup password = login.getPassword();
 
-		if (!checkFields(loginPanel, username, password))
+		if (!checkFields(login.getLoginPanel(), username, password))
 			return;
-		PacketHandler.sendPacket(constructPacket(2,username.getText(), new String(password.getPassword())), null);
+
+		PacketHandler.sendPacket(constructPacket(2, username.getText(), password.getText()), null);
 	}
 
 	/**
 	 * Checks if the field values are valid for the request.
 	 * 
-	 * @param loginPanel    The login panel to update the information component.
-	 * @param usernameField The username field to validate.
-	 * @param passwordField The password field to validate.
+	 * @param loginPanel The login panel to update the information component.
+	 * @param username   The username field to validate.
+	 * @param password   The password field to validate.
 	 * @return Returns true if the fields contain valid inputs.
 	 */
-	private boolean checkFields(LoginPanel loginPanel, UITextField usernameField, UIPasswordField passwordField)
+	private boolean checkFields(LoginContainer loginPanel, InputGroup username, InputGroup password)
 	{
 		boolean valid = true;
-		valid = checkUsername(loginPanel.getWarningInfoComponent(), usernameField);
-		valid = (!valid ? false : checkPassword(loginPanel.getWarningInfoComponent(), passwordField));
+		valid = checkUsername(loginPanel.getWarningInfoComponent(), username);
+		valid = (!valid ? false : checkPassword(loginPanel.getWarningInfoComponent(), password));
 		return valid;
 	}
 
@@ -105,22 +106,22 @@ public class LoginHandler
 	 * </ul>
 	 * 
 	 * @param warningComponent The warning component to update if invalid
-	 * @param usernameField    The username field to validate
+	 * @param username         The username field to validate
 	 * @return Returns true if the username is valid.
 	 */
-	private boolean checkUsername(InformationPanel warningComponent, UITextField usernameField)
+	private boolean checkUsername(InformationPanel warningComponent, InputGroup username)
 	{
-		if (usernameField.isPlaceholder())
-		{
-			warningComponent.updateText("Invalid Username\nUsername cannot be Username");
-			return false;
-		}
-		if (usernameField.getText().length() < 3)
+//		if (username.isPlaceholder())
+//		{
+//			warningComponent.updateText("Invalid Username\nUsername cannot be Username");
+//			return false;
+//		}
+		if (username.getText().length() < 3)
 		{
 			warningComponent.updateText("Invalid Username\nUsername must be more than 3 characters");
 			return false;
 		}
-		if (usernameField.getText().contains(" "))
+		if (username.getText().contains(" "))
 		{
 			warningComponent.updateText("Invalid Username\nUsername cannot contain a space");
 			return false;
@@ -138,17 +139,17 @@ public class LoginHandler
 	 * </ul>
 	 * 
 	 * @param warningComponent The warrning component to update if invalid.
-	 * @param passwordField    The password field to validate.
+	 * @param password2        The password field to validate.
 	 * @return Returns true if the password is valid.
 	 */
-	private boolean checkPassword(InformationPanel warningComponent, UIPasswordField passwordField)
+	private boolean checkPassword(InformationPanel warningComponent, InputGroup password2)
 	{
-		String password = new String(passwordField.getPassword());
-		if (passwordField.isPlaceHolder())
-		{
-			warningComponent.updateText("Invalid Password\nPassword cannot be Password");
-			return false;
-		}
+		String password = new String(password2.getText());
+//		if (password2.isPlaceHolder())
+//		{
+//			warningComponent.updateText("Invalid Password\nPassword cannot be Password");
+//			return false;
+//		}
 		if (password.length() < 3)
 		{
 			warningComponent.updateText("Invalid Password\nPassword must be more than 3 characters");
