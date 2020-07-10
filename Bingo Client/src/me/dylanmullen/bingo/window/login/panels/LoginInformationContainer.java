@@ -1,6 +1,5 @@
 package me.dylanmullen.bingo.window.login.panels;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
@@ -9,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.dylanmullen.bingo.core.BingoApp;
+import me.dylanmullen.bingo.game.LoginHandler;
 import me.dylanmullen.bingo.gfx.ui.buttons.Button;
 import me.dylanmullen.bingo.gfx.ui.buttons.ButtonInformation;
 import me.dylanmullen.bingo.gfx.ui.buttons.RoundedButton;
@@ -58,6 +58,7 @@ public class LoginInformationContainer extends UIPanel
 		this.buttonSet = BingoApp.getInstance().getColourManager().getSet("buttons");
 		this.frameSet = BingoApp.getInstance().getColourManager().getSet("frame");
 		setBackground(frameSet.getColour("side-primary").toColour());
+		setForeground(frameSet.getColour("side-primary").lighten(0.25).toColour());
 	}
 
 	@Override
@@ -74,10 +75,13 @@ public class LoginInformationContainer extends UIPanel
 
 	public void showInput()
 	{
-		grid = new Grid(new GridSettings(getWidth()-20, getHeight() / 3, 2, 1, 5), 10, (int) (getHeight() / 5 * 2) + 35);
+		grid = new Grid(new GridSettings(getWidth() - 20, getHeight() / 3, 2, 1, 5), 10,
+				(int) (getHeight() / 5 * 2) + 35);
 		grid.getGridSettings().setFixedRowHeight(48);
-		grid.addGridItem(new GridItem(createInput("Username", false), 1, 1), 0);
-		grid.addGridItem(new GridItem(createInput("Password", true), 1, 1), 1);
+		username=createInput("Username", false);
+		password=createInput("Password", true);
+		grid.addGridItem(new GridItem(username, 1, 1), 0);
+		grid.addGridItem(new GridItem(password, 1, 1), 1);
 		grid.getItems().stream().forEach(e ->
 		{
 			InputGroup group = (InputGroup) e.getComponent();
@@ -95,12 +99,12 @@ public class LoginInformationContainer extends UIPanel
 		Button login = new Button("Login",
 				new ButtonInformation(new Vector2I(10, yPos), new Vector2I(width - 10, getHeight() / 10), () ->
 				{
-
+					LoginHandler.getHandlerInstance().handleLoginRequest(this);
 				}));
 		Button register = new Button("Register",
 				new ButtonInformation(new Vector2I(width - 10, yPos), new Vector2I(width, getHeight() / 10), () ->
 				{
-
+					LoginHandler.getHandlerInstance().handleRegisterRequest(this);
 				}));
 		login.updateColours(buttonSet.getColour("login-bg"), buttonSet.getColour("login-bg").darken(0.15));
 		register.updateColours(buttonSet.getColour("register-bg"), buttonSet.getColour("register-bg").darken(0.15));
@@ -126,7 +130,7 @@ public class LoginInformationContainer extends UIPanel
 	{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
-		g2.setColor(Color.black);
+		g2.setColor(getForeground());
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2.fillRoundRect(15, 15, getWidth() - 30, (int) (getHeight() / 5 * 2), 15, 15);
 	}
