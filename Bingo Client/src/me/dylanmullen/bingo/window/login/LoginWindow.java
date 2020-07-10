@@ -23,7 +23,7 @@ public class LoginWindow extends Window
 	 */
 	public LoginWindow()
 	{
-		super("Login Window", 720, 405);
+		super("Login Window", 768, 432);
 		setUndecorated(true);
 		createComponents();
 	}

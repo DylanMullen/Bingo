@@ -15,17 +15,12 @@ public class LoginContainer extends UIPanel
 
 	private static final long serialVersionUID = 4140252095370157896L;
 
-	private Grid grid;
-
 	private InformationPanel warningInfoComponent;
 	private LoginInformationContainer loginInfoComponent;
-
-	private int indent;
 
 	public LoginContainer(int x, int y, int width, int height)
 	{
 		super(x, y, width, height);
-		this.indent = (width / 100) * 5;
 	}
 
 	@Override
@@ -34,8 +29,8 @@ public class LoginContainer extends UIPanel
 		setBounds(x, y, width, height);
 		setLayout(null);
 		setBackground(BingoApp.getInstance().getColourManager().getSet("frame").getColour("content").toColour());
-		loginInfoComponent = new LoginInformationContainer(this, getWidth() - (int) (getWidth() / 3 * 1.15), 0,
-				(int) (getWidth() / 3 * 1.25), getHeight());
+		loginInfoComponent = new LoginInformationContainer(this, getWidth() - getWidth() / 3, 0, (int) (getWidth() / 3),
+				getHeight());
 		loginInfoComponent.create();
 	}
 

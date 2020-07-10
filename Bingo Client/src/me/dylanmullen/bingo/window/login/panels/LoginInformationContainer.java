@@ -1,10 +1,15 @@
 package me.dylanmullen.bingo.window.login.panels;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
+import java.awt.RenderingHints;
 import java.util.ArrayList;
 import java.util.List;
 
 import me.dylanmullen.bingo.core.BingoApp;
-import me.dylanmullen.bingo.game.LoginHandler;
+import me.dylanmullen.bingo.gfx.ui.buttons.Button;
 import me.dylanmullen.bingo.gfx.ui.buttons.ButtonInformation;
 import me.dylanmullen.bingo.gfx.ui.buttons.RoundedButton;
 import me.dylanmullen.bingo.gfx.ui.colour.UIColourSet;
@@ -31,7 +36,8 @@ public class LoginInformationContainer extends UIPanel
 	private Grid grid;
 	private InputGroup username, password;
 	private List<RoundedButton> buttons;
-	private UIColourSet set;
+	private UIColourSet buttonSet;
+	private UIColourSet frameSet;
 
 	/**
 	 * Creates the Login Information panel used for logging in users to the Bingo
@@ -49,76 +55,98 @@ public class LoginInformationContainer extends UIPanel
 		super(x, y, width, height);
 		this.panel = loginPanel;
 		this.buttons = new ArrayList<RoundedButton>();
-		this.set = BingoApp.getInstance().getColourManager().getSet("buttons");
-		setBackground(BingoApp.getInstance().getColourManager().getSet("frame").getColour("side-primary").toColour());
+		this.buttonSet = BingoApp.getInstance().getColourManager().getSet("buttons");
+		this.frameSet = BingoApp.getInstance().getColourManager().getSet("frame");
+		setBackground(frameSet.getColour("side-primary").toColour());
 	}
 
 	@Override
 	public void setup()
 	{
 		showInput();
-//		setOpaque(false);
 	}
 
 	@Override
 	public void create()
 	{
 		setup();
-		for (RoundedButton button : getButtons())
-			add(button);
 	}
 
 	public void showInput()
 	{
-		grid = new Grid(new GridSettings(getWidth(), getHeight() / 4 * 2 - 10, 2, 2, (width / 100)), 0, 5);
-		
-		username=createInput("Username", true);
-		password = createInput("Password", true);
-		grid.addGridItem(new GridItem(username, 1, 2), 0, false);
-		grid.addGridItem(new GridItem(password, 1, 2), 1, false);
-		grid.updatePositions();
-
+		grid = new Grid(new GridSettings(getWidth()-20, getHeight() / 3, 2, 1, 5), 10, (int) (getHeight() / 5 * 2) + 35);
+		grid.getGridSettings().setFixedRowHeight(48);
+		grid.addGridItem(new GridItem(createInput("Username", false), 1, 1), 0);
+		grid.addGridItem(new GridItem(createInput("Password", true), 1, 1), 1);
 		grid.getItems().stream().forEach(e ->
 		{
-			add(e.getComponent());
-			InputGroup input = (InputGroup) e.getComponent();
-			input.setupShapes();
+			InputGroup group = (InputGroup) e.getComponent();
+			group.setupShapes();
+			add(group);
 		});
-//
-//		RoundedButton login = new RoundedButton("Login",
-//				new ButtonInformation(new Vector2I(5, getHeight() / 2 + (getHeight() / 4) / 2),
-//						new Vector2I(getWidth() / 2 - 10, getHeight() / 4), () ->
-//						{
-//							LoginHandler.getHandlerInstance().handleLoginRequest(this);
-//						}));
-//		RoundedButton register = new RoundedButton("Register",
-//				new ButtonInformation(new Vector2I(15 + getWidth() / 2 - 10, getHeight() / 2 + (getHeight() / 4) / 2),
-//						new Vector2I(getWidth() / 2 - 10, getHeight() / 4), () ->
-//						{
-//
-//						}));
-//		login.updateColours(set.getColour("login-bg"), set.getColour("login-bg").darken(0.15));
-//		register.updateColours(set.getColour("register-bg"), set.getColour("register-bg").darken(0.15));
-//		add(login);
-//		add(register);
+		createButtons();
+	}
+
+	private void createButtons()
+	{
+		int width = getWidth() / 2;
+		int yPos = grid.getY() + grid.getTotalHeight();
+
+		Button login = new Button("Login",
+				new ButtonInformation(new Vector2I(10, yPos), new Vector2I(width - 10, getHeight() / 10), () ->
+				{
+
+				}));
+		Button register = new Button("Register",
+				new ButtonInformation(new Vector2I(width - 10, yPos), new Vector2I(width, getHeight() / 10), () ->
+				{
+
+				}));
+		login.updateColours(buttonSet.getColour("login-bg"), buttonSet.getColour("login-bg").darken(0.15));
+		register.updateColours(buttonSet.getColour("register-bg"), buttonSet.getColour("register-bg").darken(0.15));
+
+		setShapes(login, register);
+		add(login);
+		add(register);
+	}
+
+	private void setShapes(Button login, Button register)
+	{
+		Polygon loginShape = new Polygon();
+		loginShape.addPoint(0, 0);
+		loginShape.addPoint(login.getWidth(), 0);
+		loginShape.addPoint(login.getWidth() - 10, login.getHeight());
+		loginShape.addPoint(0, login.getHeight());
+
+		login.setCustomShape(loginShape);
+	}
+
+	@Override
+	protected void paintComponent(Graphics g)
+	{
+		super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setColor(Color.black);
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2.fillRoundRect(15, 15, getWidth() - 30, (int) (getHeight() / 5 * 2), 15, 15);
 	}
 
 	private InputGroup createInput(String span, boolean hidden)
 	{
 		return new InputGroup(span, null, null,
-				BingoApp.getInstance().getColourManager().getSet("frame").getColour("content").darken(0.15), hidden);
+				BingoApp.getInstance().getColourManager().getSet("loginInput").getColour("primary"), hidden);
 	}
 
 	public InputGroup getPassword()
 	{
 		return password;
 	}
-	
+
 	public InputGroup getUsername()
 	{
 		return username;
 	}
-	
+
 	/**
 	 * Returns the Login Panel that this Component belongs to.
 	 * 

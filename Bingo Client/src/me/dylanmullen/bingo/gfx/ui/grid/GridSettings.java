@@ -70,5 +70,10 @@ public class GridSettings
 	{
 		this.width = width;
 	}
+	
+	public int getHeight()
+	{
+		return height;
+	}
 
 }

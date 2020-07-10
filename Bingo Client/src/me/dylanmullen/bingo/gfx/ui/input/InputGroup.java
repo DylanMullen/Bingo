@@ -41,12 +41,7 @@ public class InputGroup extends JComponent
 		spanShape.addPoint(10 + textDimension.width, getHeight());
 		spanShape.addPoint(0, getHeight());
 
-		Polygon inputShape = new Polygon();
-		inputShape.addPoint(10, 0);
-		inputShape.addPoint(getWidth(), 0);
-		inputShape.addPoint(getWidth(), getHeight());
-		inputShape.addPoint(0, getHeight());
-		input = new InputField(inputShape, new Vector2I(textDimension.width + 10, 0),
+		input = new InputField(null, new Vector2I(textDimension.width + 10, 0),
 				new Vector2I(getWidth() - textDimension.width + 20, getHeight()), true);
 		input.setBackground(colour.toColour());
 		input.setForeground(getForeground());
@@ -55,12 +50,19 @@ public class InputGroup extends JComponent
 		add(input);
 		repaint();
 	}
+	
+	@Override
+	public void paint(Graphics g)
+	{
+		paintChildren(g);
+		paintComponent(g);
+	}
 
 	public String getText()
 	{
 		return input.getText();
 	}
-	
+
 	@Override
 	protected void paintComponent(Graphics g)
 	{
