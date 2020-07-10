@@ -59,6 +59,20 @@ public class FontUtil
 		return font;
 	}
 
+	public static Font getFont(String text, Component component, Vector2I dimensions)
+	{
+		Font font = new Font("Calibri", Font.PLAIN, 0);
+
+		for (int i = dimensions.getY(); i > 0; i--)
+		{
+			font = new Font(font.getName(), font.getStyle(), i);
+			Dimension dim = getFontSize(component.getFontMetrics(font), text, 0, 0);
+			if (dimensions.getX() > dim.width)
+				break;
+		}
+		return font;
+	}
+
 	/**
 	 * Deprecated Method. <br>
 	 * This method is intensive and should only be used behind the scenes and not

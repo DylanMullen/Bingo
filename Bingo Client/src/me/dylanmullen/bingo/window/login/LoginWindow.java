@@ -1,8 +1,8 @@
 package me.dylanmullen.bingo.window.login;
 
+import me.dylanmullen.bingo.gfx.components.shared.TopMenu;
 import me.dylanmullen.bingo.window.Window;
-import me.dylanmullen.bingo.window.login.panels.LoginPanel;
-import me.dylanmullen.bingo.window.ui.TopMenu;
+import me.dylanmullen.bingo.window.login.panels.LoginContainer;
 
 /**
  * @author Dylan
@@ -15,7 +15,7 @@ public class LoginWindow extends Window
 	private static final long serialVersionUID = -4105651394392717980L;
 
 	private TopMenu topMenu;
-	private LoginPanel loginPanel;
+	private LoginContainer loginPanel;
 
 	/**
 	 * Create the Login Window for the Bingo Application.<br>
@@ -23,7 +23,7 @@ public class LoginWindow extends Window
 	 */
 	public LoginWindow()
 	{
-		super("Login Window", 450, 400);
+		super("Login Window", 768, 432);
 		setUndecorated(true);
 		createComponents();
 	}
@@ -43,7 +43,7 @@ public class LoginWindow extends Window
 		getTopMenu().setup();
 		getTopMenu().create();
 
-		this.loginPanel = new LoginPanel(0, getTopMenu().getHeight(), getWidth(),
+		this.loginPanel = new LoginContainer(0, getTopMenu().getHeight(), getWidth(),
 				getHeight() - getTopMenu().getHeight());
 		getLoginPanel().setup();
 		getLoginPanel().create();
@@ -70,7 +70,7 @@ public class LoginWindow extends Window
 	 * 
 	 * @return {@link #loginPanel}
 	 */
-	public LoginPanel getLoginPanel()
+	public LoginContainer getLoginPanel()
 	{
 		return this.loginPanel;
 	}

@@ -12,22 +12,15 @@ public abstract class Overlay extends JComponent
 	private static final long serialVersionUID = -2003166127277432695L;
 
 	private Color backgroundColour;
-	private int opacityValue;
 
-	public Overlay(Color bgColour, int opacity, int x, int y, int width, int height)
+	public Overlay(Color bgColour, int x, int y, int width, int height)
 	{
-		this.opacityValue = opacity;
-		this.backgroundColour = createTransparentBackground(bgColour);
+		this.backgroundColour = bgColour;
 		setBounds(x, y, width, height);
 		setLayout(null);
 	}
 
 	public abstract void setup();
-
-	private Color createTransparentBackground(Color bgColor)
-	{
-		return new Color(bgColor.getRed(), bgColor.getGreen(), bgColor.getBlue(), this.opacityValue);
-	}
 
 	@Override
 	protected void paintComponent(Graphics g)

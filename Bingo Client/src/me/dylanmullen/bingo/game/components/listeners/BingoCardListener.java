@@ -4,14 +4,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import me.dylanmullen.bingo.game.cards.BingoCard;
-import me.dylanmullen.bingo.game.cards.BingoCardContainer;
+import me.dylanmullen.bingo.game.cards.BingoCardGroup;
 
 public class BingoCardListener extends MouseAdapter
 {
 
-	private BingoCardContainer group;
+	private BingoCardGroup group;
 
-	public BingoCardListener(BingoCardContainer group)
+	public BingoCardListener(BingoCardGroup group)
 	{
 		this.group = group;
 	}

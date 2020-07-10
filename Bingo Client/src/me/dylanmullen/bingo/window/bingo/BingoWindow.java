@@ -2,8 +2,6 @@ package me.dylanmullen.bingo.window.bingo;
 
 import java.util.UUID;
 
-import javax.swing.UIManager;
-
 import org.json.simple.JSONObject;
 
 import me.dylanmullen.bingo.events.EventHandler;
@@ -14,9 +12,9 @@ import me.dylanmullen.bingo.game.droplet.BingoCloud;
 import me.dylanmullen.bingo.game.droplet.BingoDroplet;
 import me.dylanmullen.bingo.game.droplet.DropletManager;
 import me.dylanmullen.bingo.game.home.HomePanel;
+import me.dylanmullen.bingo.gfx.components.shared.TopMenu;
 import me.dylanmullen.bingo.window.Window;
 import me.dylanmullen.bingo.window.bingo.panels.sidemenu.SideMenu;
-import me.dylanmullen.bingo.window.ui.TopMenu;
 
 /**
  * @author Dylan
@@ -64,8 +62,9 @@ public class BingoWindow extends Window
 		this.container = new Container(getSideBar().getWidth(), getTopMenu().getHeight(),
 				getWidth() - getSideBar().getWidth(), getHeight() - getTopMenu().getHeight());
 		add(container);
+//		showDebug();
 		showHomePanel();
-//		showBingoCloud();
+//		showBingoCloud(UUID.randomUUID(), null);
 	}
 
 	/**
@@ -83,7 +82,7 @@ public class BingoWindow extends Window
 		getSideBar().create();
 		getContentPanel().add(getSideBar());
 
-		this.topMenu = new TopMenu(this, getWidth() / 4, 0, getWidth() / 4 * 3, getHeight() / 10);
+		this.topMenu = new TopMenu(this, getWidth() / 4, 0, getWidth() / 4 * 3, getHeight() / 15);
 		getTopMenu().setup();
 		getTopMenu().create();
 		getContentPanel().add(getTopMenu());
@@ -95,13 +94,9 @@ public class BingoWindow extends Window
 	public void showHomePanel()
 	{
 		if (getHomePanel() == null)
-		{
-			this.home = new HomePanel(this, getWidth() / 4, getHeight() / 10,
-					(getWidth() / 4 * 3) - ((Integer) UIManager.get("ScrollBar.width")).intValue(),
+			this.home = new HomePanel(this, getWidth() / 4, getHeight() / 10, (getWidth() / 4 * 3),
 					getHeight() - topMenu.getHeight());
-		}
-
-		getSideBar().getHomeButton().setActive(true);
+//		getSideBar().getHomeButton().setActive(true);
 		container.setScrollCurrentPanel(getHomePanel());
 	}
 
@@ -119,6 +114,10 @@ public class BingoWindow extends Window
 		panel.create();
 		panel.repaint();
 		container.setCurrentPanel(panel);
+	}
+
+	public void showDebug()
+	{
 	}
 
 	/**

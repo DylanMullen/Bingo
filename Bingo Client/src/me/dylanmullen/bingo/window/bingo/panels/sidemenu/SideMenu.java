@@ -1,21 +1,28 @@
 package me.dylanmullen.bingo.window.bingo.panels.sidemenu;
 
-import java.awt.Dimension;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.util.List;
 
+import me.dylanmullen.bingo.core.BingoApp;
+import me.dylanmullen.bingo.gfx.image.ImageAtlas;
+import me.dylanmullen.bingo.gfx.ui.buttons.ButtonInformation;
+import me.dylanmullen.bingo.gfx.ui.buttons.ButtonListener;
+import me.dylanmullen.bingo.gfx.ui.buttons.SidePanelButton;
+import me.dylanmullen.bingo.gfx.ui.colour.UIColourSet;
+import me.dylanmullen.bingo.gfx.ui.grid.Grid;
+import me.dylanmullen.bingo.gfx.ui.grid.GridItem;
+import me.dylanmullen.bingo.gfx.ui.grid.GridSettings;
+import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
+import me.dylanmullen.bingo.util.Vector2I;
 import me.dylanmullen.bingo.window.bingo.BingoWindow;
-import me.dylanmullen.bingo.window.bingo.ui.buttons.ButtonContainer;
-import me.dylanmullen.bingo.window.bingo.ui.buttons.SidePanelButton;
-import me.dylanmullen.bingo.window.ui.Panel;
-import me.dylanmullen.bingo.window.ui.UIColour;
 
 /**
  * @author Dylan
  * @date 18 Jun 2020
  * @project Bingo Client
  */
-public class SideMenu extends Panel
+public class SideMenu extends UIPanel
 {
 
 	private static final long serialVersionUID = 7856700131153385897L;
@@ -26,6 +33,9 @@ public class SideMenu extends Panel
 	private SidePanelButton homeButton;
 	private SidePanelButton playButton;
 	private SidePanelButton settingsButton;
+
+	private UIColourSet set;
+	private ImageAtlas uiIcons;
 
 	/**
 	 * This the the side navigation bar for the application.<br>
@@ -43,6 +53,10 @@ public class SideMenu extends Panel
 	{
 		super(x, y, width, height);
 		this.bingoWindow = bingoWindow;
+		this.set = BingoApp.getInstance().getColourManager().getSet("frame");
+		this.uiIcons = BingoApp.getInstance().getAtlastManager().getAtlas("uiAtlas", 64);
+		setBackground(set.getColour("side-primary").toColour());
+		setForeground(set.getColour("side-primary").lighten(0.25).toColour());
 	}
 
 	@Override
@@ -50,59 +64,78 @@ public class SideMenu extends Panel
 	{
 		setBounds(x, y, width, height);
 		setLayout(null);
-		setBackground(UIColour.FRAME_BINGO_BG_TOP.toColor());
+		setOpaque(false);
 	}
 
 	@Override
 	public void create()
 	{
-		this.profilePanel = new ProfilePanel(30, 30, getWidth() - 60, (int) (getHeight() / 2.75));
+		this.profilePanel = new ProfilePanel(set.getColour("profile"), 30, 30, getWidth() - 60,
+				(int) (getHeight() / 2.75));
 		getProfilePanel().setup();
 		add(getProfilePanel());
 		createButtons();
 	}
+
+	private Grid grid;
 
 	/**
 	 * Creates the side panel buttons and adds them to the Button Container.
 	 */
 	private void createButtons()
 	{
-		ButtonContainer buttons = new ButtonContainer(0, getHeight() / 2, getWidth(), getHeight() / 2)
-				.setButtonHeight(60);
+		grid = new Grid(new GridSettings(getWidth(), getHeight() / 2, -1, 1, 0), 0, getHeight() / 2);
+		grid.getGridSettings().setFixedRowHeight(58);
 
-		this.homeButton = new SidePanelButton("Home", new Dimension(1, 0));
-		getHomeButton().addMouseListener(new MouseAdapter()
+		grid.addGridItem(new GridItem(createButton("Home", new Vector2I(0, 0), () ->
 		{
-			@Override
-			public void mouseClicked(MouseEvent e)
-			{
-				if (!getHomeButton().isActive())
-				{
-					getBingoWindow().showHomePanel();
-				}
-			}
-		});
-		this.playButton = new SidePanelButton("Play", new Dimension(2, 0));
-		getPlayButton().addMouseListener(new MouseAdapter()
+			System.out.println("Not implemented");
+		}), 1, 1), 0);
+		grid.addGridItem(new GridItem(createButton("Bingo", new Vector2I(1, 0), () ->
 		{
-			@Override
-			public void mouseClicked(MouseEvent e)
-			{
-				if (!getPlayButton().isActive())
-				{
-//					getBingoWindow().showBingoPanel();
-				}
-			}
-		});
-		this.settingsButton = new SidePanelButton("Settings", new Dimension(3, 0));
+			System.out.println("Not implemented");
+		}), 1, 1), 1);
+		grid.addGridItem(new GridItem(createButton("Friends", new Vector2I(3, 0), () ->
+		{
+			System.out.println("Not implemented");
+		}), 1, 1), 2);
+		grid.addGridItem(new GridItem(createButton("Settings", new Vector2I(2, 0), () ->
+		{
+			System.out.println("Not implemented");
+		}), 1, 1), 3);
+		grid.addGridItem(new GridItem(createButton("Logout", new Vector2I(4, 1), () ->
+		{
+			System.out.println("Not implemented");
+		}), 1, 1), 4);
 
-		buttons.addButton(getHomeButton());
-		buttons.addButton(getPlayButton());
-		buttons.addButton(getSettingsButton());
+		grid.updatePositions();
+		for (List<GridItem> item : grid.getGridItems().values())
+			item.stream().forEach(e -> {
+				SidePanelButton button = (SidePanelButton)e.getComponent();
+				button.setup();
+				add(button);	
+			});
+	}
 
-		buttons.populate();
-		buttons.setBackground(UIColour.FRAME_BINGO_BG_SIDE.toColor());
-		add(buttons);
+	private SidePanelButton createButton(String name, Vector2I textureCoords, ButtonListener listener)
+	{
+		Color color = BingoApp.getInstance().getColourManager().getSet("buttons").getColour("sidepanel-active")
+				.toColour();
+		return new SidePanelButton(name,
+				uiIcons.getImage(textureCoords.getX(), textureCoords.getY(), Color.WHITE, color),
+				new ButtonInformation(null, null, listener));
+	}
+
+	@Override
+	protected void paintComponent(Graphics g)
+	{
+		g.setColor(getBackground());
+		g.fillRect(0, 0, getWidth(), (int) (getHeight() / 2));
+		g.setColor(getForeground());
+		g.fillRect(0, getHeight() / 2, getWidth(), getHeight() / 2);
+		g.setColor(set.getColour("side-primary").lighten(0.15).toColour());
+		g.fillRect(0, getHeight() / 2 - 10, getWidth(), 10);
+		super.paintComponent(g);
 	}
 
 	/**
