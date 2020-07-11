@@ -47,8 +47,7 @@ public class LoginHandler
 		if (!checkFields(login.getLoginPanel(), username, password))
 			return;
 
-		PacketHandler.sendPacket(constructPacket(1, username.getText(), password.getText()),
-				new LoginCallback(login.getLoginPanel().getWarningInfoComponent()));
+		PacketHandler.sendPacket(constructPacket(1, username.getText(), password.getText()), new LoginCallback(login));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -91,8 +90,8 @@ public class LoginHandler
 	private boolean checkFields(LoginContainer loginPanel, InputGroup username, InputGroup password)
 	{
 		boolean valid = true;
-		valid = checkUsername(loginPanel.getWarningInfoComponent(), username);
-		valid = (!valid ? false : checkPassword(loginPanel.getWarningInfoComponent(), password));
+		valid = checkUsername(loginPanel.getLoginInfoComponent(), username);
+		valid = (!valid ? false : checkPassword(loginPanel.getLoginInfoComponent(), password));
 		return valid;
 	}
 
@@ -109,7 +108,7 @@ public class LoginHandler
 	 * @param username         The username field to validate
 	 * @return Returns true if the username is valid.
 	 */
-	private boolean checkUsername(InformationPanel warningComponent, InputGroup username)
+	private boolean checkUsername(LoginInformationContainer warningComponent, InputGroup username)
 	{
 //		if (username.isPlaceholder())
 //		{
@@ -118,12 +117,12 @@ public class LoginHandler
 //		}
 		if (username.getText().length() < 3)
 		{
-			warningComponent.updateText("Invalid Username\nUsername must be more than 3 characters");
+			warningComponent.constructMessage("Invalid Username\nUsername must be more than 3 characters");
 			return false;
 		}
 		if (username.getText().contains(" "))
 		{
-			warningComponent.updateText("Invalid Username\nUsername cannot contain a space");
+			warningComponent.constructMessage("Invalid Username\nUsername cannot contain a space");
 			return false;
 		}
 		return true;
@@ -142,7 +141,7 @@ public class LoginHandler
 	 * @param password2        The password field to validate.
 	 * @return Returns true if the password is valid.
 	 */
-	private boolean checkPassword(InformationPanel warningComponent, InputGroup password2)
+	private boolean checkPassword(LoginInformationContainer warningComponent, InputGroup password2)
 	{
 		String password = new String(password2.getText());
 //		if (password2.isPlaceHolder())
@@ -152,12 +151,12 @@ public class LoginHandler
 //		}
 		if (password.length() < 3)
 		{
-			warningComponent.updateText("Invalid Password\nPassword must be more than 3 characters");
+			warningComponent.constructMessage("Invalid Password\nPassword must be more than 3 characters");
 			return false;
 		}
 		if (password.contains(" "))
 		{
-			warningComponent.updateText("Invalid Password\nPassword cannot contain a space");
+			warningComponent.constructMessage("Invalid Password\nPassword cannot contain a space");
 			return false;
 		}
 		return true;

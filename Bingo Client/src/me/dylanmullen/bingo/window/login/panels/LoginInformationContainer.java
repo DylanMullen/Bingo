@@ -1,5 +1,8 @@
 package me.dylanmullen.bingo.window.login.panels;
 
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
@@ -18,6 +21,7 @@ import me.dylanmullen.bingo.gfx.ui.grid.GridItem;
 import me.dylanmullen.bingo.gfx.ui.grid.GridSettings;
 import me.dylanmullen.bingo.gfx.ui.input.InputGroup;
 import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
+import me.dylanmullen.bingo.util.FontUtil;
 import me.dylanmullen.bingo.util.Vector2I;
 import me.dylanmullen.bingo.window.login.LoginWindow;
 
@@ -30,6 +34,7 @@ public class LoginInformationContainer extends UIPanel
 {
 
 	private static final long serialVersionUID = -6138313483836658937L;
+	private final int OFFSET = 5;
 
 	private LoginContainer panel;
 
@@ -38,6 +43,8 @@ public class LoginInformationContainer extends UIPanel
 	private List<RoundedButton> buttons;
 	private UIColourSet buttonSet;
 	private UIColourSet frameSet;
+
+	private List<String> lines;
 
 	/**
 	 * Creates the Login Information panel used for logging in users to the Bingo
@@ -54,17 +61,21 @@ public class LoginInformationContainer extends UIPanel
 	{
 		super(x, y, width, height);
 		this.panel = loginPanel;
-		this.buttons = new ArrayList<RoundedButton>();
-		this.buttonSet = BingoApp.getInstance().getColourManager().getSet("buttons");
-		this.frameSet = BingoApp.getInstance().getColourManager().getSet("frame");
-		setBackground(frameSet.getColour("side-primary").toColour());
-		setForeground(frameSet.getColour("side-primary").lighten(0.25).toColour());
+
 	}
 
 	@Override
 	public void setup()
 	{
+		this.lines = new ArrayList<>();
+		this.buttons = new ArrayList<RoundedButton>();
+		this.buttonSet = BingoApp.getInstance().getColourManager().getSet("buttons");
+		this.frameSet = BingoApp.getInstance().getColourManager().getSet("frame");
+		setBackground(frameSet.getColour("side-primary").toColour());
+		setForeground(frameSet.getColour("side-primary").lighten(0.25).toColour());
 		showInput();
+		constructMessage("Login");
+		setFont(new Font("Calibri", Font.PLAIN, 36));
 	}
 
 	@Override
@@ -78,8 +89,8 @@ public class LoginInformationContainer extends UIPanel
 		grid = new Grid(new GridSettings(getWidth() - 20, getHeight() / 3, 2, 1, 5), 10,
 				(int) (getHeight() / 5 * 2) + 35);
 		grid.getGridSettings().setFixedRowHeight(48);
-		username=createInput("Username", false);
-		password=createInput("Password", true);
+		username = createInput("Username", false);
+		password = createInput("Password", true);
 		grid.addGridItem(new GridItem(username, 1, 1), 0);
 		grid.addGridItem(new GridItem(password, 1, 1), 1);
 		grid.getItems().stream().forEach(e ->
@@ -131,14 +142,55 @@ public class LoginInformationContainer extends UIPanel
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setColor(getForeground());
+		g2.setFont(getFont());
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2.fillRoundRect(15, 15, getWidth() - 30, (int) (getHeight() / 5 * 2), 15, 15);
+		drawMessage(g2);
+	}
+
+	private void drawMessage(Graphics2D g2)
+	{
+		g2.setColor(frameSet.getColour("side-primary").getTextColour());
+		Dimension prev = null;
+		int indentY = 15 + (int) (getHeight() / 5 * 2) / 2;
+		for (String string : lines)
+		{
+			prev = FontUtil.getFontSize(getFontMetrics(getFont()), string, 0, 0);
+
+			indentY += prev.height / 4;
+			g2.drawString(string, getWidth() / 2 - (prev.width / 2), indentY);
+			indentY += 5;
+		}
 	}
 
 	private InputGroup createInput(String span, boolean hidden)
 	{
 		return new InputGroup(span, null, null,
 				BingoApp.getInstance().getColourManager().getSet("loginInput").getColour("primary"), hidden);
+	}
+
+	public void constructMessage(String message)
+	{
+		lines.clear();
+		FontMetrics metrics = getFontMetrics(getFont());
+		StringBuilder lineBuilder = new StringBuilder();
+		int currentWidth = 0;
+
+		for (int i = 0; i < message.length(); i++)
+		{
+			currentWidth = FontUtil.getFontSize(metrics, lineBuilder.toString(), 0, 0).width;
+			if (currentWidth >= getWidth() - 30)
+			{
+				currentWidth = 0;
+				lines.add(lineBuilder.toString());
+				lineBuilder = new StringBuilder();
+			}
+			lineBuilder.append(message.charAt(i));
+
+			if (message.length() - 1 == i)
+				lines.add(lineBuilder.toString());
+		}
+		repaint();
 	}
 
 	public InputGroup getPassword()

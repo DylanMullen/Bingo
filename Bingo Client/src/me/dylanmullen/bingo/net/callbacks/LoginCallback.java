@@ -6,6 +6,7 @@ import me.dylanmullen.bingo.core.BingoApp;
 import me.dylanmullen.bingo.events.events.user.UserInformationChangeEvent;
 import me.dylanmullen.bingo.gfx.components.login.InformationPanel;
 import me.dylanmullen.bingo.net.packet.PacketCallback;
+import me.dylanmullen.bingo.window.login.panels.LoginInformationContainer;
 
 /**
  * @author Dylan
@@ -15,7 +16,7 @@ import me.dylanmullen.bingo.net.packet.PacketCallback;
 public class LoginCallback extends PacketCallback
 {
 
-	private InformationPanel warningComponent;
+	private LoginInformationContainer warningComponent;
 
 	/**
 	 * A callback to the Login Packet. <br>
@@ -24,7 +25,7 @@ public class LoginCallback extends PacketCallback
 	 * 
 	 * @param warning
 	 */
-	public LoginCallback(InformationPanel warning)
+	public LoginCallback(LoginInformationContainer warning)
 	{
 		this.warningComponent = warning;
 	}
@@ -36,13 +37,14 @@ public class LoginCallback extends PacketCallback
 		{
 			synchronized (this.warningComponent)
 			{
-				this.warningComponent.updateText(getErrorMessage());
+				this.warningComponent.constructMessage(getErrorMessage());
 			}
 			return false;
 		}
 
-		UserInformationChangeEvent userInformation = new UserInformationChangeEvent(UUID.fromString(getString("userUUID")),
-				getString("userDisplayName"), getDouble("userCredits"), getInteger("userWins"));
+		UserInformationChangeEvent userInformation = new UserInformationChangeEvent(
+				UUID.fromString(getString("userUUID")), getString("userDisplayName"), getDouble("userCredits"),
+				getInteger("userWins"));
 		BingoApp.getInstance().openBingoWindow(userInformation);
 		return true;
 	}

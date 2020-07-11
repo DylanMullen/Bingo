@@ -1,8 +1,6 @@
 package me.dylanmullen.bingo.window.login.panels;
 
 import me.dylanmullen.bingo.core.BingoApp;
-import me.dylanmullen.bingo.gfx.components.login.InformationPanel;
-import me.dylanmullen.bingo.gfx.ui.grid.Grid;
 import me.dylanmullen.bingo.gfx.ui.panel.UIPanel;
 
 /**
@@ -15,7 +13,6 @@ public class LoginContainer extends UIPanel
 
 	private static final long serialVersionUID = 4140252095370157896L;
 
-	private InformationPanel warningInfoComponent;
 	private LoginInformationContainer loginInfoComponent;
 
 	public LoginContainer(int x, int y, int width, int height)
@@ -44,10 +41,4 @@ public class LoginContainer extends UIPanel
 	{
 		return loginInfoComponent;
 	}
-
-	public InformationPanel getWarningInfoComponent()
-	{
-		return warningInfoComponent;
-	}
-
 }
