@@ -72,7 +72,6 @@ public class DropletManager implements EventListener
 
 		if (droplet == null)
 		{
-			System.out.println("droplet null");
 			if (event instanceof DropletJoinEvent)
 			{
 				joinDroplet(((DropletJoinEvent) event).getDropletUUID(), ((DropletJoinEvent) event).getNewState());
@@ -90,7 +89,7 @@ public class DropletManager implements EventListener
 			return;
 		} else if (event instanceof LineStateChangeEvent)
 		{
-			droplet.setLineState((((LineStateChangeEvent) event).getNewState()));
+			droplet.setLineState((((LineStateChangeEvent) event).getNewState()),(((LineStateChangeEvent) event).getPrize()));
 			return;
 		} else if (event instanceof DropletStartingEvent)
 		{

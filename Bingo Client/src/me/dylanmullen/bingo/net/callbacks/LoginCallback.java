@@ -3,9 +3,7 @@ package me.dylanmullen.bingo.net.callbacks;
 import java.util.UUID;
 
 import me.dylanmullen.bingo.core.BingoApp;
-import me.dylanmullen.bingo.events.EventHandler;
 import me.dylanmullen.bingo.events.events.user.UserInformationChangeEvent;
-import me.dylanmullen.bingo.game.UserInformation;
 import me.dylanmullen.bingo.gfx.components.login.InformationPanel;
 import me.dylanmullen.bingo.net.packet.PacketCallback;
 
@@ -48,11 +46,6 @@ public class LoginCallback extends PacketCallback
 		BingoApp.getInstance().openBingoWindow(userInformation);
 		return true;
 	}
-
-//	message.put("userUUID", uuid.toString());
-//	message.put("userDisplayName", getDisplayName());
-//	message.put("userCredits", getCredits());
-//	message.put("userWins", getWins());
 
 	private String getErrorMessage()
 	{

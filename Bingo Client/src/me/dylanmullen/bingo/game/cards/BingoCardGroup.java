@@ -20,7 +20,7 @@ public class BingoCardGroup extends UIPanel
 
 	private UUID dropletUUID;
 	private List<BingoCard> cards;
-	
+
 	private CardPagnationPanel pagnation;
 
 	/**
@@ -87,8 +87,9 @@ public class BingoCardGroup extends UIPanel
 		setBackground(Color.WHITE);
 
 		this.cards = new ArrayList<BingoCard>();
-		this.pagnation = new CardPagnationPanel(getWidth()/4, getHeight()-getHeight()/10, getWidth()/2, getHeight()/10);
-		
+		this.pagnation = new CardPagnationPanel(getWidth() / 4, getHeight() - getHeight() / 10, getWidth() / 2,
+				getHeight() / 10);
+
 		add(pagnation);
 		setOpaque(false);
 	}
@@ -106,7 +107,7 @@ public class BingoCardGroup extends UIPanel
 
 	private int getCardYOffset()
 	{
-		return (getHeight()-this.pagnation.getHeight()) - getMaxCardHeight();
+		return (getHeight() - this.pagnation.getHeight()) - getMaxCardHeight();
 	}
 
 	private int getMaxCardHeight()
@@ -138,7 +139,7 @@ public class BingoCardGroup extends UIPanel
 				break;
 			getCards().get(index).updateCardInformation(newCards.get(i));
 			getCards().get(index).setVisible(true);
-			getCards().get(index).setY(getCardIndentY(0, index));
+			getCards().get(index).setY(getCardIndentY(i / 2, index));
 			getCards().get(index).repaint();
 			index++;
 		}
@@ -161,7 +162,7 @@ public class BingoCardGroup extends UIPanel
 			BingoCard card = getCard(uuid);
 
 			card.setPurchased(true);
-			card.setY(getCardIndentY(0, i));
+			card.setY(getCardIndentY(i / 2, i));
 			card.repaint();
 		}
 

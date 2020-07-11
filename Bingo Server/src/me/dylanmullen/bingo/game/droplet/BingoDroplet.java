@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -117,7 +116,6 @@ public class BingoDroplet
 				updateGameState(GameState.LOBBY);
 				new LobbyRunnable(this).run();
 				updateGameState(GameState.PLAYING);
-				rig();
 				new GameRunnable(this).run();
 				restart();
 			} while (isPlaying());
@@ -155,10 +153,6 @@ public class BingoDroplet
 
 		Collections.shuffle(numbers);
 
-	}
-
-	private void rig()
-	{
 	}
 
 	private void restart()
@@ -208,7 +202,12 @@ public class BingoDroplet
 	private void updateLineState()
 	{
 		int index = lineState.getLinesRequired() + 1;
-		lineState = LineState.getByLines(index);
+		setLineState(LineState.getByLines(index));
+	}
+
+	public void setLineState(LineState state)
+	{
+		this.lineState = state;
 		sendLineState();
 	}
 
@@ -348,7 +347,7 @@ public class BingoDroplet
 	 */
 	public BingoCardGroup generateCards(User user)
 	{
-		BingoCardGroup group = new BingoCardGroup(user, 3, settings.getMaxNumbers());
+		BingoCardGroup group = new BingoCardGroup(user, 5, settings.getMaxNumbers());
 		group.generateCards();
 		cards.add(group);
 		return group;
@@ -395,6 +394,7 @@ public class BingoDroplet
 		JSONObject message = new JSONObject();
 		message.put("dropletUUID", uuid.toString());
 		message.put("lineState", lineState.getLinesRequired());
+		message.put("prize", getSettings().getWinningPrize(lineState, 1));
 		packet.setMessageSection(message);
 		return packet;
 	}

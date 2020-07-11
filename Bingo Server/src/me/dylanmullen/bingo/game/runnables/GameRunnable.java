@@ -1,6 +1,7 @@
 package me.dylanmullen.bingo.game.runnables;
 
 import me.dylanmullen.bingo.game.droplet.BingoDroplet;
+import me.dylanmullen.bingo.game.droplet.BingoDroplet.LineState;
 
 public class GameRunnable implements Runnable
 {
@@ -19,6 +20,7 @@ public class GameRunnable implements Runnable
 	@Override
 	public void run()
 	{
+		game.setLineState(LineState.ONE);
 		long then = 0;
 		while (playing)
 		{

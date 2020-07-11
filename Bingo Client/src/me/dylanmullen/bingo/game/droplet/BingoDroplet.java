@@ -106,7 +106,7 @@ public class BingoDroplet
 		if (getGamePanel().getGameComponent().getWinner().isVisible())
 			getGamePanel().getGameComponent().hideWinnerOverlay();
 
-		getGamePanel().getHeaderComponent().getNumbersComp().update(number);
+		getGamePanel().getHeaderComponent().updateNextNumbers(number);
 		getGamePanel().getGameComponent().getCardGroup().markNumber(number);
 	}
 
@@ -129,10 +129,14 @@ public class BingoDroplet
 	 * Sets the new Line State of the game.
 	 * 
 	 * @param lineState The new Line State.
+	 * @param d
 	 */
-	public void setLineState(LineState lineState)
+	public void setLineState(LineState lineState, double d)
 	{
 		this.lineState = lineState;
+		getGamePanel().getHeaderComponent().getInfo().updateLineState(lineState);
+		System.out.println(d);
+		getGamePanel().getHeaderComponent().getInfo().updatePrize(d);
 	}
 
 	/**

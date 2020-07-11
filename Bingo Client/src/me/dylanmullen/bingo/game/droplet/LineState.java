@@ -2,7 +2,7 @@ package me.dylanmullen.bingo.game.droplet;
 
 public enum LineState
 {
-	ONE(0), TWO(1), FULLHOUSE(2);
+	ONE(1), TWO(2), FULLHOUSE(3);
 
 	private int lines;
 

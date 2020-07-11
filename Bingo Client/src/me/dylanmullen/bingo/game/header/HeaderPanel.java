@@ -61,6 +61,12 @@ public class HeaderPanel extends UIPanel
 		add(numbersComp);
 		repaint();
 	}
+	
+	public void updateNextNumbers(int number)
+	{
+		getNumbersComp().update(number);
+		getInfo().updateCalls();
+	}
 
 	public boolean isShowingNumbers()
 	{
