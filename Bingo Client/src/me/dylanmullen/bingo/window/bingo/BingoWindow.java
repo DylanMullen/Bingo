@@ -1,5 +1,7 @@
 package me.dylanmullen.bingo.window.bingo;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.json.simple.JSONObject;
@@ -8,6 +10,7 @@ import me.dylanmullen.bingo.events.EventHandler;
 import me.dylanmullen.bingo.events.events.user.UserInformationChangeEvent;
 import me.dylanmullen.bingo.game.GamePanel;
 import me.dylanmullen.bingo.game.UserInformation;
+import me.dylanmullen.bingo.game.components.overlays.WinnerOverlay;
 import me.dylanmullen.bingo.game.droplet.BingoCloud;
 import me.dylanmullen.bingo.game.droplet.BingoDroplet;
 import me.dylanmullen.bingo.game.droplet.DropletManager;
@@ -62,9 +65,7 @@ public class BingoWindow extends Window
 		this.container = new Container(getSideBar().getWidth(), getTopMenu().getHeight(),
 				getWidth() - getSideBar().getWidth(), getHeight() - getTopMenu().getHeight());
 		add(container);
-//		showDebug();
 		showHomePanel();
-//		showBingoCloud(UUID.randomUUID(), null);
 	}
 
 	/**
@@ -114,10 +115,6 @@ public class BingoWindow extends Window
 		panel.create();
 		panel.repaint();
 		container.setCurrentPanel(panel);
-	}
-
-	public void showDebug()
-	{
 	}
 
 	/**

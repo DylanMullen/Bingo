@@ -34,7 +34,6 @@ public class LoginInformationContainer extends UIPanel
 {
 
 	private static final long serialVersionUID = -6138313483836658937L;
-	private final int OFFSET = 5;
 
 	private LoginContainer panel;
 
