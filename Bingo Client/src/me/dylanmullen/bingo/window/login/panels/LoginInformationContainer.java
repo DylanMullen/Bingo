@@ -75,7 +75,7 @@ public class LoginInformationContainer extends UIPanel
 		setForeground(frameSet.getColour("side-primary").lighten(0.25).toColour());
 		showInput();
 		constructMessage("Login");
-		setFont(new Font("Calibri", Font.PLAIN, 36));
+		setFont(new Font("Calibri", Font.PLAIN, 24));
 	}
 
 	@Override
@@ -176,20 +176,34 @@ public class LoginInformationContainer extends UIPanel
 		StringBuilder lineBuilder = new StringBuilder();
 		int currentWidth = 0;
 
-		for (int i = 0; i < message.length(); i++)
+		for (String line : message.split("\n"))
 		{
-			currentWidth = FontUtil.getFontSize(metrics, lineBuilder.toString(), 0, 0).width;
-			if (currentWidth >= getWidth() - 30)
+			currentWidth = FontUtil.getFontSize(metrics, line, 0, 0).width;
+			if (currentWidth > getWidth() - 30)
 			{
 				currentWidth = 0;
+				for (int i = 0; i < line.split(" ").length; i++)
+				{
+					String word = line.split(" ")[i];
+					currentWidth += FontUtil.getFontSize(metrics, word + " ", 0, 0).width;
+					if (currentWidth >= getWidth() - 30)
+					{
+						lines.add(lineBuilder.toString());
+						currentWidth = 0;
+						lineBuilder = new StringBuilder();
+						lineBuilder.append(word + " ");
+					} else
+						lineBuilder.append(word + " ");
+
+				}
+			} else
+			{
+				lineBuilder.append(line);
 				lines.add(lineBuilder.toString());
 				lineBuilder = new StringBuilder();
 			}
-			lineBuilder.append(message.charAt(i));
-
-			if (message.length() - 1 == i)
-				lines.add(lineBuilder.toString());
 		}
+		lines.add(lineBuilder.toString());
 		repaint();
 	}
 
