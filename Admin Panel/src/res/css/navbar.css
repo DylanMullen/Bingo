@@ -8,8 +8,9 @@
 .navbar
 {
     background-color: var(--navbar-colour);
-    width: 15rem;
+    min-width: 15rem;
     height: 100vh;
+    padding: 0;
 }
 
 .navbar > ul

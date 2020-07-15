@@ -1,12 +1,15 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import Navbar from './components/navbar';
+
+import Navbar from './res/js/components/navbar';
+import Homepage from './res/js/pages/home';
+import LoginPage from './res/js/pages/Login';
 
 function App() {
   return (
-    <div className="App">
+    <div className="app">
       <Navbar />
+      <Homepage />
     </div>
   );
 }
