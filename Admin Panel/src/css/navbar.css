@@ -1,0 +1,58 @@
+:root
+{
+    --navbar-colour:#2f3640;
+    --navbar-item:#353b48;
+    --navbar-item-secondary: #494e5a;
+}
+
+.navbar
+{
+    background-color: var(--navbar-colour);
+    width: 15rem;
+    height: 100vh;
+}
+
+.navbar > ul
+{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.nav-item
+{
+    width: 100%;
+    height: 2.5rem;
+    background-color: var(--navbar-item);
+}   
+
+.nav-item:nth-child(2n)
+{
+    background-color: var(--navbar-item-secondary);
+}
+
+.nav-item a
+{
+    height: 100%;
+    text-decoration: none;
+    display: flex;
+    justify-content: center ;
+    align-items: center;
+    color: var(--text-colour);
+}
+
+.nav-item img
+{
+    height: 100%;
+    width: auto;
+}
+
+.nav-bottom{
+    margin-top: auto;
+}
