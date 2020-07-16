@@ -34,7 +34,7 @@ class LoginForm extends React.Component {
                                 <Form.Label>Password</Form.Label>
                                 <Form.Control type="password" placeholder="Password" />
                             </Form.Group>
-                            <Button variant="primary" type="submit" block>Login</Button>
+                            <Button variant="primary" type="link" href="/home" block>Login</Button>
                         </Form>
                     </Card.Body>
                 </Card>

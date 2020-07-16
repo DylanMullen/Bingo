@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Button, ButtonGroup, Row, Container, Jumbotron, Card } from 'react-bootstrap';
+import { Table, Button, ButtonGroup, Row, Container, Jumbotron, Card, Nav, NavDropdown } from 'react-bootstrap';
 import UserInformation from '../components/UserInformation';
 
 export default class UserPage extends React.Component {
@@ -7,16 +7,27 @@ export default class UserPage extends React.Component {
         users: [],
         contacts: []
     };
-    F
+
+    constructor(props)
+    {
+        super(props);
+        this.fetchUsers();
+
+    }
+
     render() {
         return (
             <main>
                 <Jumbotron className="text-center">
                     <h1>User Management</h1>
                 </Jumbotron>
-                <Container>
+                <Container> 
                     <Card>
-                        <Card.Header as="h4" className="text-center">Registered Users</Card.Header>
+                        <Card.Header as="h4" className="text-center">
+                            <h2>Users</h2>
+                            {this.showTabs()}
+                        </Card.Header>
+
                         <Card.Body>
                             <Container fluid>
                                 <Row>
@@ -36,7 +47,6 @@ export default class UserPage extends React.Component {
     }
 
     componentDidMount() {
-        this.fetchUsers();
     }
 
     fetchUsers() {
@@ -52,5 +62,22 @@ export default class UserPage extends React.Component {
                     })
                 });
             });
+    }
+
+    showTabs() {
+        return (
+            <Nav justify fill variant="tabs">
+                <Nav.Item>
+                    <Nav.Link>All Users</Nav.Link>
+                </Nav.Item>
+                <NavDropdown title="Staff">
+                    <NavDropdown.Item>All Staff</NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item>Admin</NavDropdown.Item>
+                    <NavDropdown.Item>Developer</NavDropdown.Item>
+                    <NavDropdown.Item>Founder</NavDropdown.Item>
+                </NavDropdown>
+            </Nav>
+        );
     }
 }

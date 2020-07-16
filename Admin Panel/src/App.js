@@ -5,15 +5,37 @@ import Navbar from './res/js/components/navbar';
 import Homepage from './res/js/pages/home';
 import UserPage from './res/js/pages/Users';
 import LoginPage from './res/js/pages/Login';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+
+
 
 function App() {
   return (
-    <div className="app">
-      {/* <Navbar />
-      <UserPage /> */}
-      <LoginPage />
-    </div>
+    <Router>
+      <div className="app">
+        <Switch>
+          <Route path="/login">
+            <LoginPage />
+          </Route>
+          <Route path="/home">
+            <Navbar />
+            <Homepage />
+          </Route>
+          <Route path="/users">
+            <Navbar />
+            <UserPage />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
+
   );
 }
 
 export default App;
+
