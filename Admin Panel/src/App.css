@@ -7,14 +7,27 @@
   --text-colour: #fff;
 }
 
+#root,.app
+{
+  width: 100%;
+  height: 100vh;
+}
+
+main{
+  width: 100%;
+  min-height: 100%;
+}
+
+#login
+{
+  display: flex;
+  align-items: center;
+  padding: 0 30vw;
+}
+
 .app
 {
   display: flex;  
-}
-
-main
-{
-  width: 100%;
 }
 
 .wrapper
