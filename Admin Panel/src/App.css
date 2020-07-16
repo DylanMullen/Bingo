@@ -1,5 +1,6 @@
 @import "./res/css/navbar.css";
 @import "./res/css/informationtab.css";
+@import "./res/css/user.css";
 
 :root
 {
@@ -9,6 +10,11 @@
 .app
 {
   display: flex;  
+}
+
+main
+{
+  width: 100%;
 }
 
 .wrapper

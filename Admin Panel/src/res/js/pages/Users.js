@@ -1,41 +1,37 @@
 import React from 'react';
-import { Table, Button, ButtonGroup,Row } from 'react-bootstrap';
+import { Table, Button, ButtonGroup, Row, Container, Jumbotron, Card } from 'react-bootstrap';
+import UserInformation from '../components/UserInformation';
 
 export default class UserPage extends React.Component {
     state = {
         users: [],
         contacts: []
     };
-F
+    F
     render() {
         return (
-            <Table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Usergroup</th>
-                        <th>Manage</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {this.state.users.map((element) => {
-                        return (
-                            <tr>
-                                <td>{element.name}</td>
-                                <td>{element.userGroup}</td>
-                                <td>
-                                    <Row>
-                                    <Button variant="warning">Edit</Button>
-                                    <Button variant="danger">Delete</Button>
-                                    </Row>
-                                </td>
-                            </tr>    
-                        );
-                    })}
-                </tbody>
-
-            </Table>
-
+            <main>
+                <Jumbotron className="text-center">
+                    <h1>User Management</h1>
+                </Jumbotron>
+                <Container>
+                    <Card>
+                        <Card.Header as="h4" className="text-center">Registered Users</Card.Header>
+                        <Card.Body>
+                            <Container fluid>
+                                <Row>
+                                    {this.state.users.map(x => {
+                                        return <UserInformation
+                                            username={x.name}
+                                            usergroup={x.userGroup}
+                                            image="https://upload.wikimedia.org/wikipedia/commons/e/ee/Flag_Admirals_of_the_Blue_Squadron_Royal_Navy.png" />
+                                    })}
+                                </Row>
+                            </Container>
+                        </Card.Body>
+                    </Card>
+                </Container>
+            </main>
         );
     }
 
@@ -50,8 +46,8 @@ F
                 this.setState({
                     users: data.map((element) => {
                         return {
-                            name: element.name,
-                            userGroup: element.description
+                            name: "TwixDylan",
+                            userGroup: "Founder"
                         };
                     })
                 });
