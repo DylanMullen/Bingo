@@ -1,21 +1,20 @@
 import React from 'react';
+import { Card } from 'react-bootstrap';
 
-class Container extends React.Component
+class Section extends React.Component
 {
     render()
     {
         return (
-            <section id={this.props.id}>
-                <div className="section-header">
-                    <h1>{this.props.header}</h1>
-                </div>
-                <div className="section-content">
+            <Card>
+                <Card.Body>
+                    <Card.Title>{this.props.title}</Card.Title>
                     {this.props.children}
-                </div>
-                <div className="section-footer" />
-            </section>
+                    <Card.Text>{this.props.text}</Card.Text>
+                </Card.Body>
+            </Card>
         );
     }
 }
 
-export default Container;
+export default Section;
