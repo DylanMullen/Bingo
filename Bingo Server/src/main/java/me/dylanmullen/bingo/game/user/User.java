@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import org.springframework.boot.orm.jpa.EntityScan;
+
 import me.dylanmullen.bingo.game.droplet.BingoDroplet;
 import me.dylanmullen.bingo.net.Client;
 

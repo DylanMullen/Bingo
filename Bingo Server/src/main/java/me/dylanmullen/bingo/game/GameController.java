@@ -1,7 +1,9 @@
 package me.dylanmullen.bingo.game;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.json.simple.JSONObject;
 
@@ -152,5 +154,9 @@ public class GameController
 				return cloud;
 		return null;
 	}
-
+	
+	public List<JSONObject> getClouds()
+	{
+		return bingoGames.stream().map(e-> e.getCloudInformation()).collect(Collectors.toList());
+	}
 }

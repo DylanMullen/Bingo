@@ -11,6 +11,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import GameListPage from './res/js/pages/GameList';
 
 
 
@@ -29,6 +30,10 @@ function App() {
           <Route path="/users">
             <Navbar />
             <UserPage />
+          </Route>
+          <Route path="/games">
+            <Navbar />
+            <GameListPage />
           </Route>
         </Switch>
       </div>

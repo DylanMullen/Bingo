@@ -1,7 +1,9 @@
 package me.dylanmullen.bingo.game.user;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import me.dylanmullen.bingo.game.user.callbacks.UserLoginCallback;
 import me.dylanmullen.bingo.game.user.callbacks.UserRegisterCallback;
@@ -79,7 +81,12 @@ public class UserManager
 			return null;
 		}
 	}
-
+	
+	public List<UserInformation> getActiveUsersInformation()
+	{
+		return users.stream().map(e->e.getUserInformation()).collect(Collectors.toList());
+	}
+	
 	public HashSet<User> getUsers()
 	{
 		return users;

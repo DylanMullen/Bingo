@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -447,8 +446,18 @@ public class BingoDroplet
 
 	public JSONObject toJSON()
 	{
+		JSONObject players = new JSONObject();
+		usersConnected.stream().forEach(e ->
+		{
+			players.put(e.getUserInformation().getUUID().toString(), e.getUserInformation().getDisplayName());
+		});
+
 		JSONObject object = new JSONObject();
 		object.put("players", getConnectedPlayersSize());
+		object.put("connected-players", players);
+		object.put("gamestate", getGameState().getStateCode());
+		object.put("linestate", lineState.getLinesRequired());
+		object.put("current-pot", getSettings().getPot());
 		return object;
 	}
 

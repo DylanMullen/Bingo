@@ -1,7 +1,5 @@
 import React from 'react';
-import { Card, Row, Col, Table, Image, Button, ButtonGroup, Accordion } from 'react-bootstrap';
-import Container from './section';
-
+import { Card, Row, Col, Table, Image, Button, ButtonGroup, Accordion, Container, Badge } from 'react-bootstrap';
 const userGroupClasses = {
     user: "user",
     admin: "admin",
@@ -39,6 +37,43 @@ class UserDisplay extends React.Component {
                 <UserGroupPill group={this.props.usergroup} />
                 <h2>{this.props.username}</h2>
             </div>
+        );
+    }
+}
+
+export class UserHomeDisplay extends React.Component
+{
+    render()
+    {
+        return (
+            <Card>
+                <Card.Body>
+                    <Row>
+                        <Col md={4}>
+                            <Image thumbnail fluid src={this.props.image} className="shadow-sm" />
+                        </Col>
+                        <Col xs={12} md={8}>
+                            <Container>
+                                <Row>
+                                    <Col><h1>Welcome {this.props.name}</h1></Col>
+                                </Row>
+                                <hr />
+                                <Row>
+                                    <Col md={4}>
+                                        <Badge pill variant="primary" className="full-width">10 Bingo Games</Badge>
+                                        <Badge pill variant="warning" className="full-width">10 Reports</Badge>
+                                        <Badge pill variant="success" className="full-width">10 Active Members</Badge>
+                                    </Col>
+                                    <Col md={8}>
+                                    </Col>
+                                </Row>
+                            </Container>
+                        </Col>
+                    </Row>
+                    <hr />
+                    {this.props.children}
+                </Card.Body>
+            </Card>
         );
     }
 }

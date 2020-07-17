@@ -1,5 +1,6 @@
 package me.dylanmullen.bingo.game.user;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
@@ -30,7 +31,7 @@ public class UserInformation
 	{
 		this.uuid = uuid;
 	}
-
+	
 	public void populateInformation(String username)
 	{
 		SQLTicket ticket = SQLFactory.insertData(SQLFactory.getController().getDatabase().getUserInfoTableName(),

@@ -21,13 +21,14 @@ public class BingoCloud
 		this.uuid = UUID.randomUUID();
 		this.settings = settings;
 		this.droplets = new ArrayList<>();
-		droplets.add(createDroplet());
-		droplets.add(createDroplet());
+		createDroplet();
+		createDroplet();
 	}
 
 	public BingoDroplet createDroplet()
 	{
 		BingoDroplet droplet = new BingoDroplet(settings);
+		droplets.add(droplet);
 		return droplet;
 	}
 
@@ -74,6 +75,26 @@ public class BingoCloud
 		return object;
 	}
 
+	public JSONObject getCloudInformation()
+	{
+		JSONObject information = new JSONObject();
+		information.put("uuid", this.uuid.toString());
+		information.put("name", this.settings.getName());
+		information.put("ticket-price", settings.getTicketPrice());
+		information.put("instances", droplets.size());
+		JSONObject dropletInfo = new JSONObject();
+		droplets.stream().forEach(e ->
+		{
+			JSONObject object = new JSONObject();
+			object.put("users-connected", e.getConnectedPlayersSize());
+			object.put("gamestate", e.getGameState().getStateCode());
+			dropletInfo.put(e.getUUID().toString(), object);
+		});
+
+		information.put("droplet-information", dropletInfo);
+		return information;
+	}
+
 	public JSONObject getCloudJSON()
 	{
 		JSONObject contents = new JSONObject();
@@ -83,5 +104,4 @@ public class BingoCloud
 		contents.put("ticketPrice", settings.getTicketPrice());
 		return contents;
 	}
-
 }
