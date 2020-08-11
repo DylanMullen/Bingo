@@ -104,4 +104,9 @@ public class BingoCloud
 		contents.put("ticketPrice", settings.getTicketPrice());
 		return contents;
 	}
+	
+	public String getName()
+	{
+		return settings.getName();
+	}
 }

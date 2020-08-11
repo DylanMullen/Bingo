@@ -1,9 +1,10 @@
 package me.dylanmullen.bingo.game;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.json.simple.JSONObject;
 
@@ -146,7 +147,7 @@ public class GameController
 		ChatMessage chatMessage = droplet.getChat().submitMessage(user, message);
 		droplet.sendMessage(chatMessage);
 	}
-
+	
 	public BingoCloud getBingoCloud(UUID cloudUUID)
 	{
 		for (BingoCloud cloud : bingoGames)
@@ -154,9 +155,17 @@ public class GameController
 				return cloud;
 		return null;
 	}
-	
-	public List<JSONObject> getClouds()
+
+	public BingoCloud getBingoCloud(String name)
 	{
-		return bingoGames.stream().map(e-> e.getCloudInformation()).collect(Collectors.toList());
+		for (BingoCloud cloud : bingoGames)
+			if (cloud.getName().equals(name))
+				return cloud;
+		return null;
+	}
+
+	public Set<BingoCloud> getClouds()
+	{
+		return bingoGames;
 	}
 }
