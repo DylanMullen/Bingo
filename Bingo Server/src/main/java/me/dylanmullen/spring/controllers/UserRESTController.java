@@ -1,27 +1,36 @@
 package me.dylanmullen.spring.controllers;
 
+import java.util.List;
 import java.util.UUID;
 
-import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import me.dylanmullen.spring.beans.UserBean;
+import me.dylanmullen.spring.services.UserServices;
 
 @RestController
 @RequestMapping(value = "/users")
 public class UserRESTController
 {
 
-	@RequestMapping("/")
-	public JSONObject getUsers()
+	@Autowired
+	private UserServices service;
+
+	@RequestMapping("")
+	public List<UserBean> getUsers(@RequestParam(value = "page", required = false, defaultValue = "0") int page)
 	{
-		return null;
+		return service.getUsers(page);
 	}
-	
+
 	@RequestMapping("/{uuid}")
-	public JSONObject getUser(@PathVariable("uuid") UUID uuid)
+	public UserBean getUser(@PathVariable("uuid") String uuid)
 	{
-		return null;
+		UserBean bean = service.getUser(uuid);
+		return bean;
 	}
 
 }
