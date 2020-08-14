@@ -3,6 +3,7 @@ package me.dylanmullen.bingo.game;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.UUID;
 
@@ -147,7 +148,7 @@ public class GameController
 		ChatMessage chatMessage = droplet.getChat().submitMessage(user, message);
 		droplet.sendMessage(chatMessage);
 	}
-	
+
 	public BingoCloud getBingoCloud(UUID cloudUUID)
 	{
 		for (BingoCloud cloud : bingoGames)

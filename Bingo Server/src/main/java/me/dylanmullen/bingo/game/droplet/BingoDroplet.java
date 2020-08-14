@@ -453,6 +453,7 @@ public class BingoDroplet
 		});
 
 		JSONObject object = new JSONObject();
+		object.put("uuid", getUUID().toString());
 		object.put("players", getConnectedPlayersSize());
 		object.put("connected-players", players);
 		object.put("gamestate", getGameState().getStateCode());

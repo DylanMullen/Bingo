@@ -1,13 +1,12 @@
 package me.dylanmullen.spring.controllers;
 
-import java.util.UUID;
-
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import me.dylanmullen.spring.services.DropletService;
 import me.dylanmullen.spring.services.GameService;
 
 @RestController
@@ -17,6 +16,9 @@ public class BingoRESTController
 
 	@Autowired
 	private GameService service;
+
+	@Autowired
+	private DropletService dropletService;
 
 	@RequestMapping()
 	public JSONObject getGames()
@@ -33,7 +35,7 @@ public class BingoRESTController
 	@RequestMapping("/{name}/droplets")
 	public JSONObject getDroplets(@PathVariable("name") String bingoName)
 	{
-		return null;
+		return dropletService.getDropletsFromCloud(bingoName);
 	}
 
 }

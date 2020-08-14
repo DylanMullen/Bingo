@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.json.simple.JSONObject;
 
+import me.dylanmullen.bingo.core.BingoServer;
 import me.dylanmullen.bingo.game.GameSettings;
 import me.dylanmullen.bingo.game.user.User;
 
@@ -22,13 +23,13 @@ public class BingoCloud
 		this.settings = settings;
 		this.droplets = new ArrayList<>();
 		createDroplet();
-		createDroplet();
 	}
 
 	public BingoDroplet createDroplet()
 	{
 		BingoDroplet droplet = new BingoDroplet(settings);
 		droplets.add(droplet);
+		DropletManager.getManager().addDroplets(droplet);
 		return droplet;
 	}
 
@@ -75,6 +76,11 @@ public class BingoCloud
 		return object;
 	}
 
+	public List<BingoDroplet> getDroplets()
+	{
+		return droplets;
+	}
+
 	public JSONObject getCloudInformation()
 	{
 		JSONObject information = new JSONObject();
@@ -104,7 +110,7 @@ public class BingoCloud
 		contents.put("ticketPrice", settings.getTicketPrice());
 		return contents;
 	}
-	
+
 	public String getName()
 	{
 		return settings.getName();
