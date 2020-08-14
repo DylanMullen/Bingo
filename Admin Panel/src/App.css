@@ -1,0 +1,47 @@
+@import "./res/css/navbar.css";
+@import "./res/css/informationtab.css";
+@import "./res/css/user.css";
+
+:root
+{
+  --text-colour: #fff;
+}
+
+#root,.app
+{
+  width: 100%;
+  height: 100vh;
+}
+
+main{
+  width: 100%;
+  min-height: 100%;
+}
+
+#login
+{
+  display: flex;
+  align-items: center;
+  padding: 0 30vw;
+}
+
+.app
+{
+  display: flex;  
+}
+
+.wrapper
+{
+  width: 100%;
+}
+
+h1,h2,h3,h4,h5,h6,p
+{
+  margin: 0;
+  padding: 0;
+}
+
+.full-width
+{
+  width:100%;
+}

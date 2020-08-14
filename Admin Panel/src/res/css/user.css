@@ -1,0 +1,87 @@
+
+.user-information
+{
+  min-height: 4rem;
+  flex-direction: row !important;
+}
+
+.profile-avatar
+{
+    height: 5rem;
+    max-width: 5rem;
+}
+
+.profile-avatar
+{
+    width: 4rem;
+    height: 4rem;
+}
+
+.user-display
+{
+    display: flex;
+    align-items: center;
+}
+
+.user-information-content
+{
+    display: flex;
+    padding: 0 .5rem;
+}
+
+.user-information-footer
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.user-information-drop
+{
+    width: 100%;
+}
+
+.user-management
+{
+    width: 75%;
+}
+
+.user-management .btn-group
+{
+    min-width: 100%;
+}
+
+.user-pill
+{
+    border-radius: .5rem;
+    text-align: center;
+}
+
+/* --- Pill Style --- */
+
+.pill-user
+{
+    background-color: #95a5a6;
+    color: black;
+}
+
+.pill-developer
+{
+    background-color: #8e44ad;
+    color: white;
+}
+
+
+.pill-admin
+{
+    background-color: #f1c40f;
+    color: black;
+}
+
+.pill-founder
+{
+    background-color: #27ae60;
+    color: black;
+}
+

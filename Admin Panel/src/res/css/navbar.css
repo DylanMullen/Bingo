@@ -1,0 +1,25 @@
+:root
+{
+    --navbar-colour:#2f3640;
+}
+
+.navbar
+{
+    background-color: var(--navbar-colour);
+    min-width: 15rem;
+    height: 100vh;
+    padding: 0;
+}
+
+.navbar > ul
+{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
