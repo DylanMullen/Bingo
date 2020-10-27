@@ -29,15 +29,16 @@ public class UserManager
 	{
 		UserLoginCallback callback = new UserLoginCallback(client, packetUUID);
 		SQLTicket ticket = SQLFactory.selectData(SQLFactory.getController().getDatabase().getLoginTableName(), "uuid",
-				new String[] { "email", "password" }, new String[] { username, password }, callback);
+				new String[] { "username", "password" }, new String[] { username, password }, callback);
 		SQLFactory.sendTicket(ticket);
 	}
 
 	public void register(Client client, UUID packetUUID, String username, String password)
 	{
 		UserRegisterCallback callback = new UserRegisterCallback(client, packetUUID, username, password);
+		System.out.println(username + ": username");
 		SQLTicket ticket = SQLFactory.selectData(SQLFactory.getController().getDatabase().getLoginTableName(), "uuid",
-				new String[] { "email" }, new String[] { username }, callback);
+				new String[] { "username" }, new String[] { username }, callback);
 		SQLFactory.sendTicket(ticket);
 	}
 

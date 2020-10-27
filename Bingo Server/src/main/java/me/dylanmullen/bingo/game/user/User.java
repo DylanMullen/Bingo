@@ -31,10 +31,10 @@ public class User
 		userInformation.load(client, packetUUID);
 	}
 
-	public void createUserInformation()
+	public void createUserInformation(String username)
 	{
 		userInformation = new UserInformation(uuid);
-		userInformation.populateInformation("");
+		userInformation.populateInformation(username);
 	}
 
 	public void addDroplet(BingoDroplet droplet)

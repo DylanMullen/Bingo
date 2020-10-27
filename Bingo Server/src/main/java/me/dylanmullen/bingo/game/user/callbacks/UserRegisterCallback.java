@@ -47,12 +47,12 @@ public class UserRegisterCallback extends SQLCallback
 
 			UUID uuid = UUID.randomUUID();
 			SQLTicket ticket = SQLFactory.insertData(SQLFactory.getController().getDatabase().getLoginTableName(),
-					new String[] { "uuid", "email", "password" }, new String[] { uuid.toString().replace("-", ""), username, password },
+					new String[] { "uuid", "username", "password" }, new String[] { uuid.toString().replace("-", ""), username, password },
 					null);
 			SQLFactory.sendTicket(ticket);
 
 			UserManager.getInstance().addUser(client, uuid);
-			UserManager.getInstance().getUser(uuid).createUserInformation();
+			UserManager.getInstance().getUser(uuid).createUserInformation(username);
 		} catch (SQLException e)
 		{
 			e.printStackTrace();

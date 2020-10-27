@@ -61,7 +61,7 @@ public class SQLDatabase
 		this.userInfoTable = (String) config.getValue("database.tables", "userInfo");
 		
 		SQLFactory.sendTicket(SQLFactory.createTable(loginTable,
-				new String[] { "uuid;varchar;32", "email;varchar;40", "password;varchar;36" }, "uuid", null));
+				new String[] { "uuid;varchar;32", "username;varchar;40", "password;varchar;36" }, "uuid", null));
 		SQLFactory.sendTicket(SQLFactory.createTable(userInfoTable, new String[] { "uuid;varchar;32",
 				"username;varchar;16", "credits;double;-1", "wins;int;-1", "losses;int;-1" }, "uuid", null));
 	}

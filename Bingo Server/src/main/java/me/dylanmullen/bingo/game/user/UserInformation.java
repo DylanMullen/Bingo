@@ -36,7 +36,7 @@ public class UserInformation
 	{
 		SQLTicket ticket = SQLFactory.insertData(SQLFactory.getController().getDatabase().getUserInfoTableName(),
 				new String[] { "uuid", "username", "credits", "wins", "losses" },
-				new String[] { uuid.toString().replace("-", ""), "testUsername", "0.0", "0", "0" }, null);
+				new String[] { uuid.toString().replace("-", ""), username, "0.0", "0", "0" }, null);
 		SQLFactory.sendTicket(ticket);
 	}
 

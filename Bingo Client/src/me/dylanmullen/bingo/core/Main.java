@@ -1,5 +1,7 @@
 package me.dylanmullen.bingo.core;
 
+import java.util.UUID;
+
 /**
  * @author Dylan
  * @date 17 Jun 2020
@@ -16,5 +18,6 @@ public class Main
 	public static void main(String[] args)
 	{
 		new BingoApp();
+		System.out.println(UUID.randomUUID());
 	}
 }

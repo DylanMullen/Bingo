@@ -12,7 +12,7 @@ public class Runner
 	public static void main(String[] args)
 	{
 		new BingoServer(4585);
-		SpringApplication.run(Runner.class, args);
+//		SpringApplication.run(Runner.class, args);
 	}
 
 }

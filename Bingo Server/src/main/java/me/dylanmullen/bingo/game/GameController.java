@@ -1,9 +1,6 @@
 package me.dylanmullen.bingo.game;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.UUID;
 
@@ -106,7 +103,6 @@ public class GameController
 		Packet packet = PacketHandler.createPacket(user.getClient(), 5, null);
 		packet.setMessageSection(message);
 		packet.setPacketUUID(packetToRelay);
-		System.out.println(message);
 		PacketHandler.sendPacket(packet);
 	}
 
