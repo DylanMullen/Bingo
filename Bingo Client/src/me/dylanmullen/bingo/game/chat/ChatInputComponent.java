@@ -31,6 +31,7 @@ public class ChatInputComponent extends UIPanel
 				new Vector2I(getWidth() - getTextArea().getWidth()+5, getHeight()), () ->
 				{
 					getChatPanel().sendMessage(getTextArea().getText());
+					getTextArea().setText("");
 				}));
 		submitButton.setCustomShape(getShape());
 		this.submitButton.updateColours(BingoApp.getInstance().getColourManager().getSet("buttons").getColour("send"),
