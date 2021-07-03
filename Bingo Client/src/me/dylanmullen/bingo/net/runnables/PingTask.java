@@ -5,6 +5,8 @@ import org.json.simple.JSONObject;
 import me.dylanmullen.bingo.net.PacketHandler;
 import me.dylanmullen.bingo.net.ServerStatusManager;
 import me.dylanmullen.bingo.net.ServerStatusManager.ServerStatus;
+import me.dylanmullen.bingo.net.handlers.ClientHandler;
+import me.dylanmullen.bingo.net.handlers.ClientIncomingHandler;
 import me.dylanmullen.bingo.net.packet.PacketCallback;
 import me.dylanmullen.bingo.util.Task;
 
@@ -35,7 +37,7 @@ public class PingTask extends Task
 	{
 		if (!this.response)
 		{
-			if (this.counter >= 2)
+			if (this.counter >= 1)
 			{
 				ServerStatusManager.getManager().setStatus(ServerStatus.DISCONNECTED);
 			}
@@ -53,6 +55,11 @@ public class PingTask extends Task
 	 */
 	public void forcePing()
 	{
+		if(!ClientHandler.getInstance().isConnected())
+		{
+			ClientHandler.getInstance().sendIdentityPacket();
+			return;
+		}
 		PacketHandler.sendPacket(PacketHandler.createPacket(004, new JSONObject()), new PacketCallback()
 		{
 			@Override

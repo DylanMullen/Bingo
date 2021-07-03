@@ -66,7 +66,7 @@ public class BingoCard extends JComponent
 	 * The method calculates the height and width of each square based on the width
 	 * and height of the Bingo Card.
 	 * 
-	 * @param width  The width of the Bingo Card
+	 * @param width  The width of the Bingo Card (Nice)
 	 * @param height The height of the Bingo Cards
 	 */
 	private void createSquares(int width, int height)

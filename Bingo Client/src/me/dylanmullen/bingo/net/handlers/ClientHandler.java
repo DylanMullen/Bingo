@@ -5,6 +5,10 @@ import java.util.UUID;
 
 import org.json.simple.JSONObject;
 
+import me.dylanmullen.bingo.events.Event;
+import me.dylanmullen.bingo.events.EventHandler;
+import me.dylanmullen.bingo.events.EventListener;
+import me.dylanmullen.bingo.events.events.ServerStatusChangeEvent;
 import me.dylanmullen.bingo.net.Client;
 import me.dylanmullen.bingo.net.PacketHandler;
 import me.dylanmullen.bingo.net.PacketTicket;
@@ -17,7 +21,7 @@ import me.dylanmullen.bingo.net.runnables.PingTask;
  * @date 17 Jun 2020
  * @project Bingo Client
  */
-public class ClientHandler
+public class ClientHandler implements EventListener
 {
 
 	private Client client;
@@ -49,6 +53,7 @@ public class ClientHandler
 		if (ClientHandler.handler == null)
 			ClientHandler.handler = this;
 
+		EventHandler.getHandler().registerListener(ServerStatusChangeEvent.class, this);
 		createClient(address, port);
 		createHandlers();
 		sendIdentityPacket();
@@ -60,7 +65,7 @@ public class ClientHandler
 	 */
 	private void createRunnables()
 	{
-		this.pingTask = new PingTask(5);
+		this.pingTask = new PingTask(2.5);
 		this.pingTask.start();
 	}
 
@@ -75,7 +80,7 @@ public class ClientHandler
 	}
 
 	@SuppressWarnings("unchecked")
-	private void sendIdentityPacket()
+	public void sendIdentityPacket()
 	{
 		Packet packet = new Packet(0);
 		JSONObject message = new JSONObject();
@@ -87,6 +92,7 @@ public class ClientHandler
 			@Override
 			public boolean callback()
 			{
+				setConnected(true);
 				encryption.setAesKey((String) getMessage().get("aesKey"));
 				getPingTask().forcePing();
 				return false;
@@ -116,6 +122,7 @@ public class ClientHandler
 	{
 		if (this.tickets.contains(ticket))
 			return;
+		
 		this.tickets.add(ticket);
 		handleOutgoing(ticket);
 	}
@@ -244,5 +251,27 @@ public class ClientHandler
 	public EncryptionHandler getEncryption()
 	{
 		return this.encryption;
+	}
+
+	@Override
+	public void receive(Event event)
+	{
+		if(event instanceof ServerStatusChangeEvent)
+		{
+			ServerStatusChangeEvent status = (ServerStatusChangeEvent) event;
+			
+			switch(status.getStatus())
+			{
+				case CONNECTED:
+					if(!isConnected())
+						sendIdentityPacket();
+					break;
+				case DISCONNECTED:
+					setConnected(false);
+					break;
+				default:
+					break;
+			}
+		}
 	}
 }

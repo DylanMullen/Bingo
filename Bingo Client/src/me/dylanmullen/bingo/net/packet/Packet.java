@@ -60,11 +60,12 @@ public class Packet
 	{
 		String data = toString();
 
+		System.out.println(data + ":" + getID());
 		if (encrypt)
 			data = ClientHandler.getInstance().getEncryption().encrypt(data);
 		if (data == null)
 			return null;
-
+		
 		return new DatagramPacket(data.getBytes(), data.getBytes().length, client.getIP(), client.getPort());
 	}
 
