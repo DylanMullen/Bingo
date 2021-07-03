@@ -35,12 +35,11 @@ public class UserRegisterCallback extends SQLCallback
 	{
 		try
 		{
+			Packet packet = PacketHandler.createPacket(client, 005, null);
+			packet.setPacketUUID(packetToRelay);
 			if (result.next())
 			{
-				Packet packet = PacketHandler.createPacket(client, 005, null);
-				packet.setPacketUUID(packetToRelay);
 				packet.setMessageSection(createInvalidMessage());
-				
 				PacketHandler.sendPacket(packet);
 				return true;
 			}
@@ -53,6 +52,8 @@ public class UserRegisterCallback extends SQLCallback
 
 			UserManager.getInstance().addUser(client, uuid);
 			UserManager.getInstance().getUser(uuid).createUserInformation(username);
+			packet.setMessageSection(createSuccessMessage());
+			PacketHandler.sendPacket(packet);
 		} catch (SQLException e)
 		{
 			e.printStackTrace();
@@ -69,5 +70,14 @@ public class UserRegisterCallback extends SQLCallback
 		message.put("errorMessage", "Email already exists");
 		return message;
 	}
+	
+	@SuppressWarnings("unchecked")
+	private JSONObject createSuccessMessage()
+	{
+		JSONObject message = new JSONObject();
+		message.put("responseType", 200);
+		return message;
+	}
+	
 	
 }

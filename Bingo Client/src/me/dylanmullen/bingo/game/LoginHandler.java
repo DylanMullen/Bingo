@@ -6,6 +6,7 @@ import me.dylanmullen.bingo.gfx.components.login.InformationPanel;
 import me.dylanmullen.bingo.gfx.ui.input.InputGroup;
 import me.dylanmullen.bingo.net.PacketHandler;
 import me.dylanmullen.bingo.net.callbacks.LoginCallback;
+import me.dylanmullen.bingo.net.callbacks.RegisterCallback;
 import me.dylanmullen.bingo.net.packet.Packet;
 import me.dylanmullen.bingo.window.login.panels.LoginInformationContainer;
 import me.dylanmullen.bingo.window.login.panels.LoginContainer;
@@ -76,7 +77,7 @@ public class LoginHandler
 		if (!checkFields(login.getLoginPanel(), username, password))
 			return;
 
-		PacketHandler.sendPacket(constructPacket(2, username.getText(), password.getText()), null);
+		PacketHandler.sendPacket(constructPacket(2, username.getText(), password.getText()), new RegisterCallback(login));
 	}
 
 	/**

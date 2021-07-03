@@ -84,12 +84,13 @@ public class IncomingHandler implements Runnable
 	private JSONObject decodeData(Client client, byte[] data)
 	{
 		String packetData = new String(data).trim();
-		if(packetData == null)
-			return null;
 		
 		if (client != null)
 			packetData = EncryptionHandler.decrypt(client, packetData);
 		
+		if(packetData == null)
+			return null;
+
 		JSONParser parser = new JSONParser();
 		try
 		{
