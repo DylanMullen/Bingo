@@ -60,7 +60,6 @@ public class Packet
 	{
 		String data = toString();
 
-		System.out.println(data + ":" + getID());
 		if (encrypt)
 			data = ClientHandler.getInstance().getEncryption().encrypt(data);
 		if (data == null)

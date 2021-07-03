@@ -155,17 +155,20 @@ public class BingoCardGroup extends UIPanel
 	{
 		if (purchasedCards == null)
 			return;
-		
-		int index = 0;
+
+		int row = 0;
 		for (int i = 0; i < purchasedCards.size(); i++)
 		{
+			if (i % 2 == 0 && i != 0)
+				row++;
+
 			UUID uuid = purchasedCards.get(i);
 			BingoCard card = getCard(uuid);
 
 			card.setPurchased(true);
-			card.setY(getCardIndentY(i / 2, index));
-			card.repaint();
-			index++;
+
+			card.setY(getCardIndentY(row, i));
+			card.setX(getCardIndentX(i + 1));
 		}
 
 		for (BingoCard card : getCards())

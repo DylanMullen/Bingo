@@ -59,7 +59,6 @@ public class PacketHandler
 	public static void handlePacket(int id, JSONObject data)
 	{
 		JSONObject message = (JSONObject) data.get("packetMessage");
-		System.out.println(id);
 		try
 		{
 			UUID dropletUUID = UUID.fromString((String) message.get("dropletUUID"));

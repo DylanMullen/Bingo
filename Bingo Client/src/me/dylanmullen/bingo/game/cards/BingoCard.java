@@ -389,6 +389,14 @@ public class BingoCard extends JComponent
 	public void setY(int y)
 	{
 		setBounds(x, y, getWidth(), getHeight());
+		this.y = y;
+		repaint();
+	}
+	
+	public void setX(int x)
+	{
+		setBounds(x, y, getWidth(), getHeight());
+		this.x = x;
 		repaint();
 	}
 
